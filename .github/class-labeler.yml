@@ -1,0 +1,8 @@
+'🖥️ FE frontend':
+  - 'client/**/*'
+
+':leaves: backend':
+  - 'backend/**/*'
+
+':green_apple: iOS':
+  - 'iOS/**/*'
