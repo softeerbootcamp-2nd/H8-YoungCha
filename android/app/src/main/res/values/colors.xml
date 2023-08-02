@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="main_hyundai_blue">#FF0E2B5C</color>
+    <color name="sub_active_blue">#FF4CA7CE</color>
+    <color name="icon_yellow">#FFFFA724</color>
+    <color name="tag_sky_blue">#FFDEEBFF</color>
+    <color name="cool_grey_black">#FF202732</color>
+    <color name="cool_grey_004">#FF595C61</color>
+    <color name="cool_grey_003">#FFA5ACB8</color>
+    <color name="cool_grey_002">#FFD1D9E3</color>
+    <color name="cool_grey_001">#FFEDF2FA</color>
 </resources>
