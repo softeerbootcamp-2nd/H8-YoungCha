@@ -6,16 +6,21 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "format": "prettier --write --cache .",
+    "prettier": "prettier --write --cache .",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "cd .. && husky install client/.husky",
+    "lint-staged": "lint-staged"
   },
   "dependencies": {
+    "lint-staged": "^13.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.6.7",
+    "@commitlint/config-conventional": "^17.6.7",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
@@ -28,8 +33,15 @@
     "eslint-plugin-react": "^7.33.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "husky": "^8.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }
