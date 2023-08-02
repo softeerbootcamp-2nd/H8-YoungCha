@@ -6,4 +6,14 @@ spring:
     password:
   sql:
     init:
-      mode: never
+      mode: always
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: debug
+          datasource:
+            init:
+              ScriptUtils: debug
