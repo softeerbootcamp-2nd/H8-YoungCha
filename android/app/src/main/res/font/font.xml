@@ -5,4 +5,36 @@
         android:fontStyle="normal"
         android:font="@font/hyundai_sans_head_bold"/>
 
+    <font
+        android:fontStyle="normal"
+        android:font="@font/hyundai_sans_head_kr_otf_bold"/>
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/hyundai_sans_head_kr_otf_medium"/>
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/hyundai_sans_head_kr_otf_regular"/>
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/hyundai_sans_head_medium"/>
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/hyundai_sans_text_kr_otf_bold"/>
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/hyundai_sans_text_kr_otf_medium"/>
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/hyundai_sans_text_kr_otf_regular"/>
+
+    <font
+        android:fontStyle="normal"
+        android:font="@font/hyundai_sans_text_medium"/>
+
 </font-family>
