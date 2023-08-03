@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_trim"
+    app:startDestination="@id/selfModeFragment">
+
+    <fragment
+        android:id="@+id/selfModeFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.SelfModeFragment"
+        android:label="fragment_self_mode"
+        tools:layout="@layout/fragment_self_mode">
+        <action
+            android:id="@+id/action_selfModeFragment_to_guideModeFragment"
+            app:destination="@id/guideModeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/guideModeFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.GuideModeFragment"
+        android:label="fragment_guide_mode"
+        tools:layout="@layout/fragment_guide_mode">
+        <action
+            android:id="@+id/action_guideModeFragment_to_selfModeFragment"
+            app:destination="@id/selfModeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+</navigation>
