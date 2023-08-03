@@ -1,6 +1,6 @@
 CREATE TABLE `dictionary`
 (
-    `id`          bigint       NOT NULL,
+    `id`          bigint       NOT NULL AUTO_INCREMENT,
     `word`        varchar(50)  NOT NULL,
     `description` varchar(255) NOT NULL,
     `img_url`     varchar(255) NULL
@@ -24,7 +24,8 @@ CREATE TABLE `option`
     `name`        varchar(100) NOT NULL,
     `price`       int          NOT NULL,
     `feedback`    varchar(255) NULL,
-    `category_id` bigint       NOT NULL
+    `category_id` bigint       NOT NULL,
+    `parent_id`   bigint       NOT NULL
 );
 
 CREATE TABLE `sell`
@@ -32,7 +33,7 @@ CREATE TABLE `sell`
     `id`                bigint    NOT NULL AUTO_INCREMENT,
     `trim_id`           bigint    NOT NULL,
     `engine_id`         bigint    NOT NULL,
-    `bodytype_id`       bigint    NOT NULL,
+    `body_type_id`      bigint    NOT NULL,
     `driving_system_id` bigint    NOT NULL,
     `exterior_color_id` bigint    NOT NULL,
     `interior_color_id` bigint    NOT NULL,
@@ -49,11 +50,11 @@ CREATE TABLE `sell_selective_options`
     `option_id` bigint NOT NULL
 );
 
-CREATE TABLE `판매_h_genuine_accessories`
+CREATE TABLE `sell_h_genuine_accessories`
 (
-    `아이디`    bigint NOT NULL AUTO_INCREMENT,
-    `옵션 아이디` bigint NOT NULL,
-    `판매 아이디` bigint NOT NULL
+    `id`        bigint NOT NULL AUTO_INCREMENT,
+    `option_id` bigint NOT NULL,
+    `sell_id`   bigint NOT NULL
 );
 
 CREATE TABLE `keyword`
@@ -74,7 +75,7 @@ CREATE TABLE `estimate`
     `id`                bigint    NOT NULL AUTO_INCREMENT,
     `trim_id`           bigint    NOT NULL,
     `engine_id`         bigint    NOT NULL,
-    `bodytype_id`       bigint    NOT NULL,
+    `body_type_id`      bigint    NOT NULL,
     `driving_system_id` bigint    NOT NULL,
     `exterior_color_id` bigint    NOT NULL,
     `interior_color_id` bigint    NOT NULL,
@@ -126,6 +127,21 @@ CREATE TABLE `trim`
     `car_id`  bigint       NOT NULL
 );
 
+CREATE TABLE `trim_option`
+(
+    `id`         bigint  NOT NULL AUTO_INCREMENT,
+    `type`       tinyint NOT NULL,
+    `trim_id`    bigint  NOT NULL,
+    `options_id` bigint  NOT NULL
+);
+
+CREATE TABLE `option_relation`
+(
+    `id`       VARCHAR(255) NOT NULL AUTO_INCREMENT
+        `parent_id` bigint NOT NULL,
+    `child_id` bigint       NOT NULL
+);
+
 ALTER TABLE `dictionary`
     ADD CONSTRAINT `PK_DICTIONARY` PRIMARY KEY (
                                                 `id`
@@ -156,9 +172,9 @@ ALTER TABLE `sell_selective_options`
                                                             `id`
         );
 
-ALTER TABLE `판매_h_genuine_accessories`
-    ADD CONSTRAINT `PK_판매_H_GENUINE_ACCESSORIES` PRIMARY KEY (
-                                                              `아이디`
+ALTER TABLE `sell_h_genuine_accessories`
+    ADD CONSTRAINT `PK_SELL_H_GENUINE_ACCESSORIES` PRIMARY KEY (
+                                                                `id`
         );
 
 ALTER TABLE `keyword`
@@ -199,5 +215,15 @@ ALTER TABLE `detail`
 ALTER TABLE `trim`
     ADD CONSTRAINT `PK_TRIM` PRIMARY KEY (
                                           `id`
+        );
+
+ALTER TABLE `trim_option`
+    ADD CONSTRAINT `PK_TRIM_OPTION` PRIMARY KEY (
+                                                 `id`
+        );
+
+ALTER TABLE `option_relation`
+    ADD CONSTRAINT `PK_OPTION_RELATION` PRIMARY KEY (
+                                                     `id`
         );
 
