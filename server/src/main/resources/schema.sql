@@ -137,9 +137,9 @@ CREATE TABLE `trim_option`
 
 CREATE TABLE `option_relation`
 (
-    `id`       VARCHAR(255) NOT NULL AUTO_INCREMENT
-        `parent_id` bigint NOT NULL,
-    `child_id` bigint       NOT NULL
+    `id`        bigint NOT NULL AUTO_INCREMENT,
+    `parent_id` bigint NOT NULL,
+    `child_id`  bigint NOT NULL
 );
 
 ALTER TABLE `dictionary`
