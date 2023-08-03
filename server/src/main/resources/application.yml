@@ -1,1 +1,46 @@
+spring:
+  profiles:
+    active:
+      - local
+      - secret
 
+--- # local
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: debug
+          datasource:
+            init:
+              ScriptUtils: debug
+
+--- # dev
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: debug
+          datasource:
+            init:
+              ScriptUtils: debug
