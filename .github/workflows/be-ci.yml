@@ -1,4 +1,4 @@
-name: ci
+name: be-ci
 
 on:
   pull_request:
@@ -8,6 +8,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -26,7 +30,7 @@ jobs:
         uses: madrapps/jacoco-report@v1.2
         with:
           title: 📝 테스트 커버리지 리포트입니다
-          paths: ${{ github.workspace }}/server/build/reports/jacoco/test/jacocoTestReport.xml
+          paths: ./build/reports/jacoco/test/jacocoTestReport.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 80
           min-coverage-changed-files: 50
