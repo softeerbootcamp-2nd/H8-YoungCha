@@ -3,6 +3,8 @@
     <style name="Base.Theme.Ohmycarset" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="Theme.Ohmycarset" parent="Base.Theme.Ohmycarset" />
