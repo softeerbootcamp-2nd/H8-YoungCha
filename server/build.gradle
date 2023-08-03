@@ -30,6 +30,10 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+test {
+    finalizedBy jacocoTestReport
+}
+
 jacoco {
     toolVersion = "0.8.5"
 }
