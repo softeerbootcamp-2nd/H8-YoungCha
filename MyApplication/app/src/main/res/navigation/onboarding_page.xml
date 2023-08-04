@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onboarding_page"
+    android:name="androidx.navigation.fragment.NavHostFragment"
+    app:startDestination="@id/onboardingPage1">
+    <fragment
+        android:id="@+id/onboardingPage1"
+        android:name="com.hr.teamproject.OnBoardingFirstFragment"
+        android:label="fragment_onboarding_page1"
+        tools:layout="@layout/fragment_onboarding_page1">
+        <action
+            android:id="@+id/action_onboardingPage1_to_onboardingPage2"
+            app:destination="@id/onboardingPage2" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboardingPage2"
+        android:name="com.hr.teamproject.OnBoardingSecondFragment"
+        android:label="fragment_onboarding_page2"
+        tools:layout="@layout/fragment_onboarding_page2">
+        <action
+            android:id="@+id/action_onboardingPage2_to_onboardingPage3"
+            app:destination="@id/onboardingPage3" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboardingPage3"
+        android:name="com.hr.teamproject.OnBoardingThirdFragment"
+        android:label="fragment_onboarding_page3"
+        tools:layout="@layout/fragment_onboarding_page3" />
+</navigation>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_main_script"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:text="@string/on_boarding_page2_main_text"
+            android:textSize="23sp"
+            android:textColor="@color/cool_grey_black"
+            app:layout_constraintBottom_toTopOf="@+id/tv_sub_script"
+            app:layout_constraintStart_toStartOf="@+id/tv_sub_script" />
+
+        <TextView
+            android:id="@+id/tv_sub_script"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/on_boarding_page2_sub_text"
+            android:textColor="@color/cool_grey_003"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_main_script" />
+
+
+        <ImageView
+            android:id="@+id/iv_onboarding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:visibility="invisible"
+            android:src="@drawable/img_onboarding_second"
+            app:layout_constraintBottom_toTopOf="@+id/btn_next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="13dp"
+            android:background="@drawable/btn_style"
+            android:text="@string/on_boarding_page2_btn_next"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

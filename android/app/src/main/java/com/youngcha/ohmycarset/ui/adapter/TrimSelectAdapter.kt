@@ -1,15 +1,23 @@
-package com.youngcha.ohmycarset.adapters
+package com.youngcha.ohmycarset.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.databinding.ItemTrimSelectBinding
-import com.youngcha.ohmycarset.models.Trim
-import com.youngcha.ohmycarset.viewmodels.TrimSelectViewModel
+import com.youngcha.ohmycarset.model.Trim
+import com.youngcha.ohmycarset.viewmodel.TrimSelectViewModel
 
 class TrimSelectAdapter(
-    private val trims: List<Trim>,
-    private val viewModel: TrimSelectViewModel): RecyclerView.Adapter<TrimSelectAdapter.TrimSelectViewHolder>() {
+    private var trims: List<Trim>,
+    private val viewModel: TrimSelectViewModel
+) : RecyclerView.Adapter<TrimSelectAdapter.TrimSelectViewHolder>() {
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateTrims(trims: List<Trim>) {
+        this.trims = trims
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrimSelectViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -26,5 +34,6 @@ class TrimSelectAdapter(
 
     override fun getItemCount(): Int = trims.size
 
-    class TrimSelectViewHolder(val binding: ItemTrimSelectBinding) : RecyclerView.ViewHolder(binding.root)
+    class TrimSelectViewHolder(val binding: ItemTrimSelectBinding) :
+        RecyclerView.ViewHolder(binding.root)
 }

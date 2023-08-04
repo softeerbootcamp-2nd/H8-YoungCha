@@ -4,23 +4,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.activity.MainActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fc_nav_host"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navGraph="@navigation/nav_trim" />
+
+            <TextView
+                android:id="@+id/tv_select_main_trim_txt_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="19dp"
+                android:layout_marginTop="119dp"
+                android:fontFamily="@font/hyundai_sans_head_kr_medium"
+                android:text="@string/trim_text_1"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_select_sub_trim_txt_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hyundai_sans_head_kr_otf_regular"
+                android:text="@string/trim_text_2"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/tv_select_main_trim_txt_1"
+                app:layout_constraintTop_toTopOf="@id/tv_select_main_trim_txt_1" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_trim_select"
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:layout_marginTop="22dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_select_main_trim_txt_1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <ImageButton
         android:id="@+id/ib_exit"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:background="@drawable/ic_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/tv_create_my_car_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_create_my_car_title" />
 
     <TextView
         android:id="@+id/tv_create_my_car_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="129dp"
         android:fontFamily="@font/hyundai_sans_head_bold"
+        android:gravity="center"
         android:text="@string/title_create_my_car"
         android:textColor="@color/cool_grey_black"
         android:textSize="20sp"
@@ -34,6 +98,7 @@
         android:layout_height="28dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/ic_dictionary_off"
+        app:layout_constraintBottom_toBottomOf="@id/tv_create_my_car_title"
         app:layout_constraintEnd_toStartOf="@id/ib_model_change"
         app:layout_constraintTop_toTopOf="@id/tv_create_my_car_title" />
 
@@ -43,37 +108,8 @@
         android:layout_height="28dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/ic_model_change"
+        app:layout_constraintBottom_toBottomOf="@id/tv_create_my_car_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_create_my_car_title" />
-
-    <TextView
-        android:id="@+id/tv_trim_txt_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
-        android:fontFamily="@font/hyundai_sans_head_kr_otf_medium"
-        android:text="원하는 트림"
-        android:textSize="18sp"
-        android:layout_marginTop="119dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-        android:id="@+id/tv_trim_txt_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/hyundai_sans_head_kr_otf_regular"
-        android:text="을 선택하세요."
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@id/tv_trim_txt_1"
-        app:layout_constraintTop_toTopOf="@id/tv_trim_txt_1" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_trim_select"
-        android:layout_width="match_parent"
-        android:layout_height="85dp"
-        android:layout_marginTop="22dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_trim_txt_1" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
