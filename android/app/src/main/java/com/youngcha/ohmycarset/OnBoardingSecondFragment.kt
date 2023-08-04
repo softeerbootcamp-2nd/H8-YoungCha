@@ -14,13 +14,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class OnBoardingSecondFragment : Fragment() {
-    private lateinit var binding: FragmentOnboardingPage2Binding
+    private var _binding: FragmentOnboardingPage2Binding?=null
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentOnboardingPage2Binding.inflate(inflater, container, false)
+        _binding = FragmentOnboardingPage2Binding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -30,8 +31,8 @@ class OnBoardingSecondFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             delay(500)
             val fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
-            binding.ivOnboarding.startAnimation(fadeInAnimation)
             binding.ivOnboarding.visibility = View.VISIBLE
+            binding.ivOnboarding.startAnimation(fadeInAnimation)
         }
 
         val navOptions = NavOptions.Builder()
@@ -45,5 +46,10 @@ class OnBoardingSecondFragment : Fragment() {
             findNavController().navigate(R.id.onboardingPage3, null, navOptions)
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -13,13 +13,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class OnBoardingThirdFragment : Fragment() {
-    private lateinit var binding: FragmentOnboardingPage3Binding
+    private var _binding: FragmentOnboardingPage3Binding? = null
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentOnboardingPage3Binding.inflate(inflater, container, false)
+        _binding = FragmentOnboardingPage3Binding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -30,12 +31,16 @@ class OnBoardingThirdFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             delay(500)
             val fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
-            binding.ivOnboarding.startAnimation(fadeInAnimation)
             binding.ivOnboarding.visibility = View.VISIBLE
+            binding.ivOnboarding.startAnimation(fadeInAnimation)
         }
 
         binding.btnNext.setOnClickListener {
             startActivity(intent)
         }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
