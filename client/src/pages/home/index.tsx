@@ -1,4 +1,7 @@
-import MainBelowArrowIcon from '../../assets/icons/main-below-arrow';
+import * as Icon from '../../assets/icons';
+import InsideColorBox from './InsideColorBox';
+import MainOptionBox from './MainOptionBox';
+import OutsideColorBox from './OutsideColorBox';
 
 const TEXT_MAKING_MY_CAR = '내 차 만들기';
 const TEXT_PALISADE = 'PALISADE';
@@ -42,14 +45,87 @@ function Home() {
               </p>
 
               <div className="flex flex-col items-center ">
-                <MainBelowArrowIcon opacity={0.8} />
-                <MainBelowArrowIcon
+                <Icon.MainBelowArrow opacity={0.8} />
+                <Icon.MainBelowArrow
                   opacity={0.4}
                   className="relative bottom-[18px]"
                 />
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="w-full h-[335px] bg-grey-001">
+        <div className="max-w-7xl pt-[65px] m-auto">
+          <h2 className="text-center font-hsans-head text-[40px] font-medium leading-[52px] tracking-[-1.6px] text-grey-black mb-[118px]">
+            모델 한 눈에 비교하기
+          </h2>
+          <div className="flex justify-between px-[192px] font-hsans-head">
+            <div className="flex flex-col gap-[16px] items-center">
+              <h3 className="text-grey-black text-[28px] font-medium tracking-[-0.84px]">
+                Exclusive
+              </h3>
+              <p className="body2">기본에 충실</p>
+            </div>
+            <div className="flex flex-col gap-[16px] items-center">
+              <h3 className="text-grey-black text-[28px] font-medium tracking-[-0.84px]">
+                Le Blanc (르블랑)
+              </h3>
+              <p className="body2">모두가 선택한 베스트셀러</p>
+            </div>
+            <div className="flex flex-col gap-[16px] items-center">
+              <h3 className="text-grey-black text-[28px] font-medium tracking-[-0.84px]">
+                Prestige
+              </h3>
+              <p className="body2">부담없는 고급감</p>
+            </div>
+            <div className="flex flex-col gap-[16px] items-center">
+              <h3 className="text-grey-black text-[28px] font-medium tracking-[-0.84px]">
+                Calligraphy
+              </h3>
+              <p className="body2">최고를 원한다면</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full">
+        <div className="max-w-7xl pt-[40px] m-auto px-[142px]">
+          <ul className="flex justify-between">
+            <li className="w-[214px] h-[155px] flex flex-col items-center gap-[8px]">
+              <img src="src/assets/images/palisade.png" alt="palisade" />
+              <p className="font-normal body1 text-grey-black">
+                38,960,000원 부터
+              </p>
+            </li>
+            <li className="w-[214px] h-[155px] flex flex-col items-center gap-[8px]">
+              <img src="src/assets/images/palisade.png" alt="palisade" />
+              <p className="font-normal body1 text-grey-black">
+                38,960,000원 부터
+              </p>
+            </li>
+            <li className=" flex flex-col items-center gap-[8px]">
+              <img
+                src="src/assets/images/palisade.png"
+                alt="palisade"
+                className="w-[214px] h-[155px]"
+              />
+              <p className="font-normal body1 text-grey-black">
+                38,960,000원 부터
+              </p>
+            </li>
+            <li className="w-[214px] h-[155px] flex flex-col items-center gap-[8px]">
+              <img src="src/assets/images/palisade.png" alt="palisade" />
+              <p className="font-normal body1 text-grey-black">
+                38,960,000원 부터
+              </p>
+            </li>
+          </ul>
+
+          <MainOptionBox />
+          <OutsideColorBox />
+          <InsideColorBox />
         </div>
       </div>
     </div>
