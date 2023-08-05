@@ -7,7 +7,7 @@
     app:startDestination="@id/onboardingPage1">
     <fragment
         android:id="@+id/onboardingPage1"
-        android:name="com.youngcha.ohmycarset.OnBoardingFirstFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.OnBoardingFirstFragment"
         tools:layout="@layout/fragment_onboarding_page1"
         android:label="fragment_onboarding_page1">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboardingPage2"
-        android:name="com.youngcha.ohmycarset.OnBoardingSecondFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.OnBoardingSecondFragment"
         tools:layout="@layout/fragment_onboarding_page2"
         android:label="fragment_onboarding_page2">
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboardingPage3"
-        android:name="com.youngcha.ohmycarset.OnBoardingThirdFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.OnBoardingThirdFragment"
         tools:layout="@layout/fragment_onboarding_page3"
         android:label="fragment_onboarding_page3" />
 </navigation>

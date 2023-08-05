@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset
+package com.youngcha.ohmycarset.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,21 +9,20 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.youngcha.ohmycarset.databinding.FragmentOnboardingPage1Binding
+import com.youngcha.ohmycarset.R
+import com.youngcha.ohmycarset.databinding.FragmentOnboardingPage2Binding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class OnBoardingFirstFragment : Fragment() {
-    private var _binding: FragmentOnboardingPage1Binding?=null
+class OnBoardingSecondFragment : Fragment() {
+    private var _binding: FragmentOnboardingPage2Binding?=null
     private val binding get() = _binding!!
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentOnboardingPage1Binding.inflate(inflater, container, false)
+        _binding = FragmentOnboardingPage2Binding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -45,8 +44,9 @@ class OnBoardingFirstFragment : Fragment() {
             .build()
 
         binding.btnNext.setOnClickListener {
-            findNavController().navigate(R.id.onboardingPage2, null, navOptions)
+            findNavController().navigate(R.id.onboardingPage3, null, navOptions)
         }
+
     }
 
     override fun onDestroyView() {
