@@ -3,30 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_trim"
-    app:startDestination="@id/selfModeFragment">
-
-    <fragment
-        android:id="@+id/selfModeFragment"
-        android:name="com.youngcha.ohmycarset.ui.fragment.SelfModeFragment"
-        android:label="fragment_self_mode"
-        tools:layout="@layout/fragment_self_mode">
-
-        <argument
-            android:name="SelectedTrimName"
-            android:defaultValue=""
-            app:argType="string" />
-        <action
-            android:id="@+id/action_selfModeFragment_to_guideModeFragment"
-            app:destination="@id/guideModeFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
-
-        <action
-            android:id="@+id/action_selfModeFragment_self"
-            app:destination="@id/selfModeFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
-    </fragment>
+    app:startDestination="@id/guideModeFragment">
 
     <fragment
         android:id="@+id/guideModeFragment"
@@ -35,8 +12,8 @@
         tools:layout="@layout/fragment_guide_mode">
 
         <argument
-            android:name="SelectedTrimName"
-            android:defaultValue=""
+            android:name="selectedTrimName"
+            android:defaultValue="Guide Mode"
             app:argType="string" />
 
         <action
@@ -51,4 +28,29 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
     </fragment>
+
+    <fragment
+        android:id="@+id/selfModeFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.SelfModeFragment"
+        android:label="fragment_self_mode"
+        tools:layout="@layout/fragment_self_mode">
+
+        <argument
+            android:name="selectedTrimName"
+            android:defaultValue="Le Blanc"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_selfModeFragment_to_guideModeFragment"
+            app:destination="@id/guideModeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_selfModeFragment_self"
+            app:destination="@id/selfModeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+
 </navigation>

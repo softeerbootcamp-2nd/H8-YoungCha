@@ -3,18 +3,26 @@ package com.youngcha.ohmycarset.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.youngcha.ohmycarset.enums.TrimType
 import com.youngcha.ohmycarset.model.Trim
 import com.youngcha.ohmycarset.model.TrimState
 
-class TrimSelectViewModel: ViewModel() {
+class TrimSelectViewModel : ViewModel() {
     private val _trimState = MutableLiveData<TrimState>()
     val trimState: LiveData<TrimState> = _trimState
 
     private val _clickedPosition = MutableLiveData<Int>()
     val clickedPosition: LiveData<Int> = _clickedPosition
 
-    fun setTrims(trimsList: List<Trim>) {
-        _trimState.value = TrimState(trimsList.first(), trimsList)
+    init {
+        val initialTrims = listOf(
+            Trim(TrimType.GUIDE, "Guide Mode", "#나만을 위한 팰리세이드", true),
+            Trim(TrimType.SELF, "Exclusive", "#기본에 충실", false),
+            Trim(TrimType.SELF, "Le Blanc", "#베스트셀러", false),
+            Trim(TrimType.SELF, "Prestige", "#부담없는 고급감", false),
+            Trim(TrimType.SELF, "Calligraphy", "#최고를 원한다면", false)
+        )
+        _trimState.value = TrimState(initialTrims[0], initialTrims)
     }
 
     fun onItemClicked(clickedTrim: Trim) {
@@ -28,5 +36,4 @@ class TrimSelectViewModel: ViewModel() {
         }
         _trimState.value = TrimState(clickedTrim, updatedTrims ?: listOf())
     }
-
 }
