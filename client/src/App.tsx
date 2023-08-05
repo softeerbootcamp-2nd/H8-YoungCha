@@ -1,8 +1,12 @@
+import Home from './pages/home';
+
 function App() {
   return (
     <>
-      <div className=" title1">title-1</div>
-      <div className="head-title3-regular">title-2</div>
+      <header className="w-full h-[85px] bg-slate-200 fixed opacity-80">
+        헤더
+      </header>
+      <Home />
     </>
   );
 }
