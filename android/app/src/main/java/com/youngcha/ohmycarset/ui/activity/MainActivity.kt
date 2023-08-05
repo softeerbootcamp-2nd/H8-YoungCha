@@ -46,7 +46,10 @@ class MainActivity : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.trimState.observe(this) { trimState ->
             updateRecyclerView(trimState.trims)
-            handleNavigation(trimState.currTrim)
+
+            if (!trimState.isFirstLoad) {
+                handleNavigation(trimState.currTrim)
+            }
         }
 
         viewModel.clickedPosition.observe(this) { position ->

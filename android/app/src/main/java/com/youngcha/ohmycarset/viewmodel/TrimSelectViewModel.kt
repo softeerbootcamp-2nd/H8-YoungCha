@@ -22,7 +22,7 @@ class TrimSelectViewModel : ViewModel() {
             Trim(TrimType.SELF, "Prestige", "#부담없는 고급감", false),
             Trim(TrimType.SELF, "Calligraphy", "#최고를 원한다면", false)
         )
-        _trimState.value = TrimState(initialTrims[0], initialTrims)
+        _trimState.value = TrimState(isFirstLoad = true, initialTrims[0], initialTrims)
     }
 
     fun onItemClicked(clickedTrim: Trim) {
@@ -34,6 +34,6 @@ class TrimSelectViewModel : ViewModel() {
             if (trim == clickedTrim) trim.copy(isChecked = true)
             else trim.copy(isChecked = false)
         }
-        _trimState.value = TrimState(clickedTrim, updatedTrims ?: listOf())
+        _trimState.value = TrimState(false, clickedTrim, updatedTrims ?: listOf())
     }
 }
