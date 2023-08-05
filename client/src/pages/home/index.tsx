@@ -1,4 +1,5 @@
 import * as Icon from '../../assets/icons';
+import BasicOptionBox from './BasicOptionBox';
 import InsideColorBox from './InsideColorBox';
 import MainOptionBox from './MainOptionBox';
 import OutsideColorBox from './OutsideColorBox';
@@ -126,6 +127,33 @@ function Home() {
           <MainOptionBox />
           <OutsideColorBox />
           <InsideColorBox />
+          <BasicOptionBox />
+
+          <div className="flex justify-between px-[48px] mb-[69px]">
+            <div className="w-[140px] h-[50px] bg-main-blue text-white rounded-[6px] flex justify-center items-center">
+              내 차 만들기
+            </div>
+            <div className="w-[140px] h-[50px] bg-main-blue text-white rounded-[6px] flex justify-center items-center">
+              내 차 만들기
+            </div>
+            <div className="w-[140px] h-[50px] bg-main-blue text-white rounded-[6px] flex justify-center items-center">
+              내 차 만들기
+            </div>
+            <div className="w-[140px] h-[50px] bg-main-blue text-white rounded-[6px] flex justify-center items-center">
+              내 차 만들기
+            </div>
+          </div>
+
+          <div className="flex justify-center mb-[204px]">
+            <div className="flex justify-center gap-[80px] bg-grey-001 w-[533px] h-[90px] items-center rounded-[6px]">
+              <p className="title5 text-grey-black">
+                무엇을 골라야 할 지 모르겠다면?
+              </p>
+              <p className="text-[32px] font-hsans-head text-grey-black font-medium tracking-[-0.96px]">
+                Guide Mode
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
