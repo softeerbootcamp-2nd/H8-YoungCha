@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import pixel from './plugins/pixel';
 import typography from './plugins/typography';
 
 export default {
@@ -17,10 +18,10 @@ export default {
         'grey-black': '#202732',
       },
     },
-    fontFamily: {
-      'hsans-head': ['Hyundai Sans Head KR', 'sans-serif'],
-      'hsans-text': ['HyundaiSansText', 'sans-serif'],
-    },
   },
-  plugins: [typography],
+  fontFamily: {
+    'hsans-head': ['Hyundai Sans Head KR', 'sans-serif'],
+    'hsans-text': ['HyundaiSansText', 'sans-serif'],
+  },
+  plugins: [typography, pixel],
 };
