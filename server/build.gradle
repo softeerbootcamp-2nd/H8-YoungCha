@@ -51,7 +51,9 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, excludes: [
-                    "**/*Application*"
+                    "**/ServerApplication*",
+                    "**/common/dto/**",
+                    "**/common/exception/**"
             ])
         }))
     }
@@ -69,7 +71,9 @@ tasks.jacocoTestCoverageVerification {
             }
 
             excludes = [
-                    "**/*Application*"
+                    "**/ServerApplication*",
+                    "**/common/dto/**",
+                    "**/common/exception/**"
             ]
         }
     }
