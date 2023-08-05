@@ -6,7 +6,7 @@ function MainOptionBox() {
       <h3 className="font-medium text-grey-black mb-[28px] mt-[56px] text-center">
         핵심 옵션
       </h3>
-      <div className="flex justify-between ">
+      <div className="flex justify-between px-[22px]">
         <ul className="flex flex-col gap-[36px]">
           <li className="flex gap-[30px] items-center">
             <Icon.MainNavagationOption />

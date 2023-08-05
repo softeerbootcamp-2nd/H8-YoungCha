@@ -4,7 +4,7 @@ function InsideColorBox() {
       <h3 className="font-medium text-grey-black mb-[28px] mt-[56px] text-center">
         내장 색상
       </h3>
-      <div className="flex justify-between">
+      <div className="flex justify-between px-[24px]">
         <ul className="flex flex-col gap-[24px]">
           <li className="flex items-center gap-[12px]">
             <img

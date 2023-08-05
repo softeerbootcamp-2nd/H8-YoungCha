@@ -6,7 +6,7 @@ function OutsideColorBox() {
       <h3 className="font-medium text-grey-black mb-[28px] mt-[56px] text-center">
         외장 색상
       </h3>
-      <div className="flex justify-between">
+      <div className="flex justify-between px-[41px]">
         <ul className="flex flex-col gap-[24px]">
           <li className="flex items-center gap-[15px]">
             <Icon.MainOutsideWhite />
