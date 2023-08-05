@@ -1,8 +1,9 @@
-interface MainBelowArrowIconProps {
+interface MainBelowArrowProps {
   opacity: number;
   className?: string;
 }
-function MainBelowArrowIcon({ opacity, className }: MainBelowArrowIconProps) {
+
+function MainBelowArrow({ opacity, className }: MainBelowArrowProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -21,4 +22,5 @@ function MainBelowArrowIcon({ opacity, className }: MainBelowArrowIconProps) {
     </svg>
   );
 }
-export default MainBelowArrowIcon;
+
+export default MainBelowArrow;
