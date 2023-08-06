@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
+import android.widget.EdgeEffect
 import androidx.activity.viewModels
+import androidx.core.widget.NestedScrollView
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +44,20 @@ class MainActivity : AppCompatActivity() {
                 LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = this@MainActivity.adapter
         }
+
+        // 스크롤 리스너 설정
+        binding.nsvSelfTrimScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            // 아래로 스크롤될 경우
+            if (scrollY > oldScrollY) {
+                binding.ivDropDownTrim.visibility = View.GONE
+                binding.tvDetailInfoTxt.visibility = View.GONE
+            }
+            // 위로 스크롤될 경우
+            else if (scrollY < oldScrollY) {
+                binding.ivDropDownTrim.visibility = View.VISIBLE
+                binding.tvDetailInfoTxt.visibility = View.VISIBLE
+            }
+        })
     }
 
     private fun observeViewModel() {
