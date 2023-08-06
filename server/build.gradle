@@ -5,7 +5,7 @@ plugins {
     id 'jacoco'
 }
 
-group = 'com.youngcha'
+group = 'team.youngcha'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -20,10 +20,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:rest-assured:4.5.1'
 }
 
 tasks.named('test') {
@@ -49,7 +52,9 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, excludes: [
-                    "**/*Application*"
+                    "**/*Application*",
+                    "**/common/dto/**",
+                    "**/common/exception/**"
             ])
         }))
     }
@@ -67,7 +72,9 @@ tasks.jacocoTestCoverageVerification {
             }
 
             excludes = [
-                    "**/*Application*"
+                    "**/*Application*",
+                    "**/common/dto/**",
+                    "**/common/exception/**"
             ]
         }
     }
