@@ -34,7 +34,7 @@ function Home() {
                 {TEXT_MAIN_DETAIL_COMPARE}
               </p>
 
-              <div className="flex flex-col items-center ">
+              <div className="relative flex flex-col items-center top-[12px] animate-bounce">
                 <Icon.MainBelowArrow opacity={0.8} />
                 <Icon.MainBelowArrow
                   opacity={0.4}
