@@ -6,6 +6,10 @@ public class SuccessResponse<T> {
 
     private final T data;
 
+    private SuccessResponse() {
+        this.data = null;
+    }
+
     public SuccessResponse(T data) {
         this.data = data;
     }

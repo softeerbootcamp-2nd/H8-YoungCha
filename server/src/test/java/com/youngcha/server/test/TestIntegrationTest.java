@@ -1,18 +1,17 @@
 package com.youngcha.server.test;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.youngcha.server.IntegrationTestBase;
+import com.youngcha.server.common.dto.ErrorResponse;
+import com.youngcha.server.common.dto.SuccessResponse;
+import io.restassured.RestAssured;
+import io.restassured.common.mapper.TypeRef;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultActions;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class TestIntegrationTest extends IntegrationTestBase {
 
@@ -21,33 +20,43 @@ class TestIntegrationTest extends IntegrationTestBase {
 
     @Test
     @DisplayName("성공 응답을 받는다.")
-    void test() throws Exception {
-        //given
-        String url = "/test/ok";
+    void test() {
+        ExtractableResponse<Response> response = RestAssured
+                .given()
+                .log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
 
-        //when
-        ResultActions actions = mockMvc.perform(get(url).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .when()
+                .get("/test/ok")
 
-        //then
-        String response = extractDataFromResponse(actions, new TypeReference<>() {
+                .then()
+                .log().all()
+                .extract();
+
+        SuccessResponse<String> successResponse = response.body().as(new TypeRef<>() {
         });
-        assertThat(response).isEqualTo("ok");
+        softAssertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        softAssertions.assertThat(successResponse.getData()).isEqualTo("ok");
     }
 
     @Test
     @DisplayName("bad request 예외가 발생한다.")
-    void error() throws Exception {
-        //given
-        String url = "/test/error";
+    void error() {
+        ExtractableResponse<Response> response = RestAssured
+                .given()
+                .log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
 
-        //when
-        ResultActions actions = mockMvc.perform(get(url).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .when()
+                .get("/test/error")
 
-        //then
-        actions.andExpect(jsonPath("$.message").value("error"));
+                .then()
+                .log().all()
+                .extract();
+
+        ErrorResponse errorResponse = response.body().as(new TypeRef<>() {
+        });
+        softAssertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        softAssertions.assertThat(errorResponse.getMessage()).isEqualTo("error");
     }
 }
