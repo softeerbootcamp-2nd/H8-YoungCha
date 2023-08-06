@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
 
     // @RequestParam 오류
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<ErrorResponse> missingServletRequestParameterException(MissingServletRequestParameterException e) {
+    public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
         logger.error("MissingServletRequestParameterException : {}", e.getMessage());
         ErrorResponse errorResponse = new ErrorResponse("잘못된 파라미터입니다.", e.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
