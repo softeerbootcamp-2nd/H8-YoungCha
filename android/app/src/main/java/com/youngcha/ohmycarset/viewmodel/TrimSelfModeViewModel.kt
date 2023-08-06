@@ -29,7 +29,7 @@ class TrimSelfModeViewModel: ViewModel() {
             minPrice = "38,960,000원 부터",
             mainOptions = listOf(
                 TrimSelfModeMainOption(
-                    imgUrl = "https://example.com/mainOption1.jpg",
+                    imgUrl = R.drawable.img_core_option_explain,
                     description = "Main option 1"
                 )
             ),

@@ -9,10 +9,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentTrimSelfModeBinding
+import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelectAdapter
+import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeExteriorColorAdapter
+import com.youngcha.ohmycarset.util.decorator.GridSpacingItemDecoration
 import com.youngcha.ohmycarset.viewmodel.TrimSelfModeViewModel
 
 class TrimSelfModeFragment : Fragment() {
@@ -20,6 +25,7 @@ class TrimSelfModeFragment : Fragment() {
     private var _binding: FragmentTrimSelfModeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: TrimSelfModeViewModel by viewModels()
+    private lateinit var trimSelfModeExteriorColorAdapter: TrimSelfModeExteriorColorAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +41,26 @@ class TrimSelfModeFragment : Fragment() {
         val selectedTrimName = args.selectedTrimName
 
         setupTabs()
-
-
+        observeViewModel()
+        setupRecyclerView()
         Log.d("로그", selectedTrimName)
+    }
+
+    private fun observeViewModel() {
+        viewModel.trimSelfModeData.observe(viewLifecycleOwner) {trim ->
+            binding.trim = trim
+            trimSelfModeExteriorColorAdapter.updateTrimSelfModeExteriorColor(trim.exteriorColor)
+            // trim.exteriorColor
+            // trim.internalColor
+        }
+    }
+
+    private fun setupRecyclerView() {
+        trimSelfModeExteriorColorAdapter = TrimSelfModeExteriorColorAdapter()
+        val layoutManager = GridLayoutManager(context, 2)
+        binding.rvExteriorColor.layoutManager = layoutManager
+        binding.rvExteriorColor.addItemDecoration(GridSpacingItemDecoration(2, 6))
+        binding.rvExteriorColor.adapter = trimSelfModeExteriorColorAdapter
     }
 
     private fun setupTabs() {

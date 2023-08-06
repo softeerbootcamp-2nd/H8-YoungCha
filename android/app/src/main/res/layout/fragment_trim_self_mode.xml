@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.youngcha.ohmycarset.viewmodel.TrimSelfModeViewModel" />
@@ -25,10 +25,10 @@
             android:layout_width="match_parent"
             android:layout_height="500dp"
             android:scaleType="fitXY"
-            android:src="@drawable/img_leblanc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:testImageSource="@{trim.imgUrl}" />
 
         <TextView
             android:id="@+id/tv_car_name"
@@ -45,28 +45,31 @@
 
         <TextView
             android:id="@+id/tv_trim_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:fontFamily="@font/hyundai_sans_head_kr_medium"
+            android:text="@{trim.description}"
             android:textColor="@color/white"
             android:textSize="32sp"
-            android:text="@{trim.description}"
+            app:layout_constraintEnd_toStartOf="@id/tv_trim_price"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_car_name"
             tools:text="@string/leblanc_full_name" />
 
         <TextView
             android:id="@+id/tv_trim_price"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="454dp"
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/hyundai_sans_head_kr_regular"
+            android:text="@{trim.minPrice}"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:text="@{trim.minPrice}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_trim_name"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_trim_name"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/leblanc_price_kr" />
 
         <TextView
@@ -86,10 +89,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="558dp"
-            android:src="@drawable/img_core_option_explain"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:testImageSource="@{trim.mainOptions[0].imgUrl}" />
 
         <View
             android:id="@+id/v_line_1"
@@ -121,6 +124,7 @@
             android:fontFamily="@font/hyundai_sans_text_kr_medium"
             android:textColor="@color/main_hyundai_blue"
             android:textSize="14sp"
+            android:text="@{String.valueOf(trim.exteriorColor.size())}"
             app:layout_constraintStart_toEndOf="@id/tv_exterior_color_txt"
             app:layout_constraintTop_toTopOf="@id/tv_exterior_color_txt"
             tools:text="6" />

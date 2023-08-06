@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset.ui.adapter
+package com.youngcha.ohmycarset.ui.adapter.recyclerview
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -42,7 +42,7 @@ class TrimSelectAdapter(
         }
 
         fun bind(trimCategory: TrimCategory) {
-            binding.trim = trimCategory
+            binding.trimCategory = trimCategory
             binding.executePendingBindings()
         }
     }

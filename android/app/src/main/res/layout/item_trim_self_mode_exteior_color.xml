@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="exterior_color"
+            type="com.youngcha.ohmycarset.model.TrimSelfModeExteriorColor" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="166dp"
+        android:layout_height="116dp"
+        android:background="@color/cool_grey_001">
+
+        <com.youngcha.ohmycarset.ui.customview.CircleCustomView
+            android:id="@+id/cv_circle_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="19dp"
+            app:fillColor="@{exterior_color.code}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            android:text="@{exterior_color.name}"
+            android:textColor="@color/cool_grey_black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_circle_view" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

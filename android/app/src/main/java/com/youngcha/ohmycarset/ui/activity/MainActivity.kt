@@ -14,7 +14,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import com.youngcha.ohmycarset.R
-import com.youngcha.ohmycarset.ui.adapter.TrimSelectAdapter
+import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelectAdapter
 import com.youngcha.ohmycarset.databinding.ActivityMainBinding
 import com.youngcha.ohmycarset.model.TrimCategory
 import com.youngcha.ohmycarset.enums.TrimType
