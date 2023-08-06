@@ -1,4 +1,4 @@
-package com.youngcha.server;
+package team.youngcha;
 
 import io.restassured.RestAssured;
 import org.assertj.core.api.SoftAssertions;

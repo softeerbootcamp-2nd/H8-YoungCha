@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `trim`
 (
     `id`      bigint       NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name`    varchar(50)  NOT NULL,
+    `price`   int          NOT NULL,
     `img_url` varchar(255) NOT NULL,
     `car_id`  bigint       NOT NULL,
     CONSTRAINT `FK_car_TO_trim_1` FOREIGN KEY (`car_id`)

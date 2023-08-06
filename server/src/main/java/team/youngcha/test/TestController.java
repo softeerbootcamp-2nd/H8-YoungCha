@@ -1,7 +1,7 @@
-package com.youngcha.server.test;
+package team.youngcha.test;
 
-import com.youngcha.server.common.dto.SuccessResponse;
-import com.youngcha.server.common.exception.CustomException;
+import team.youngcha.common.dto.SuccessResponse;
+import team.youngcha.common.exception.CustomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

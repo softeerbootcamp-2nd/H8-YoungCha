@@ -1,4 +1,4 @@
-package com.youngcha.server.common.dto;
+package team.youngcha.common.dto;
 
 public class SuccessResponse<T> {
 

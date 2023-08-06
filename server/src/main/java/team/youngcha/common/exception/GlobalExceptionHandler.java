@@ -1,6 +1,6 @@
-package com.youngcha.server.common.exception;
+package team.youngcha.common.exception;
 
-import com.youngcha.server.common.dto.ErrorResponse;
+import team.youngcha.common.dto.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
