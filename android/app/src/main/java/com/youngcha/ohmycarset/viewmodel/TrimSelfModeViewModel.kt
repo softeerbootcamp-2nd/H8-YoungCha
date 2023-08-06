@@ -32,6 +32,7 @@ class TrimSelfModeViewModel : ViewModel() {
         val allOptions = trimSelfModeData.value?.options ?: emptyList()
 
         val matchedOptions = if (tabName == "전체") {
+            showAllItems()
             allOptions
         } else {
             allOptions.filter { option ->

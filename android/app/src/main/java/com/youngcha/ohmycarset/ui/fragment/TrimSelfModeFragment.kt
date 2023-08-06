@@ -74,6 +74,7 @@ class TrimSelfModeFragment : Fragment() {
         }
 
         viewModel.filteredOptions.observe(viewLifecycleOwner) { options ->
+            binding.rvOption.layoutManager?.scrollToPosition(0)
             trimSelfModeOptionAdapter.updateTrimSelfModeOptions(options)
         }
     }
