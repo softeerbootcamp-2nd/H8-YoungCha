@@ -11,7 +11,7 @@
 
         <variable
             name="trim"
-            type="com.youngcha.ohmycarset.model.Trim" />
+            type="com.youngcha.ohmycarset.model.TrimCategory" />
     </data>
 
     <androidx.cardview.widget.CardView

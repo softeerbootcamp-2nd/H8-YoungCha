@@ -11,19 +11,18 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.youngcha.ohmycarset.R
-import com.youngcha.ohmycarset.databinding.FragmentGuideModeBinding
-import com.youngcha.ohmycarset.databinding.FragmentSelfModeBinding
+import com.youngcha.ohmycarset.databinding.FragmentTrimSelfModeBinding
 
-class SelfModeFragment : Fragment() {
-    private val args: SelfModeFragmentArgs by navArgs()
-    private var _binding: FragmentSelfModeBinding? = null
+class TrimSelfModeFragment : Fragment() {
+    private val args: TrimSelfModeFragmentArgs by navArgs()
+    private var _binding: FragmentTrimSelfModeBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentSelfModeBinding.inflate(inflater, container, false)
+        _binding = FragmentTrimSelfModeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -52,7 +51,9 @@ class SelfModeFragment : Fragment() {
 
         binding.tlDefaultList.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                val tabName = tab.text.toString()
+                val customView = tab.customView
+                val tvTabName = customView?.findViewById<TextView>(R.id.tv_tab_name)
+                val tabName = tvTabName?.text.toString() ?: ""
                 Snackbar.make(binding.root, tabName, Snackbar.LENGTH_SHORT).show()
             }
 

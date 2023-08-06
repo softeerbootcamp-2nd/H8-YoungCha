@@ -6,9 +6,7 @@ import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
-import android.widget.EdgeEffect
 import androidx.activity.viewModels
 import androidx.core.widget.NestedScrollView
 import androidx.navigation.NavDirections
@@ -18,10 +16,10 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.ui.adapter.TrimSelectAdapter
 import com.youngcha.ohmycarset.databinding.ActivityMainBinding
-import com.youngcha.ohmycarset.model.Trim
+import com.youngcha.ohmycarset.model.TrimCategory
 import com.youngcha.ohmycarset.enums.TrimType
 import com.youngcha.ohmycarset.ui.fragment.GuideModeFragmentDirections
-import com.youngcha.ohmycarset.ui.fragment.SelfModeFragmentDirections
+import com.youngcha.ohmycarset.ui.fragment.TrimSelfModeFragmentDirections
 import com.youngcha.ohmycarset.util.MILLISECONDS_PER_INCH
 import com.youngcha.ohmycarset.viewmodel.TrimSelectViewModel
 
@@ -91,11 +89,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.trimState.observe(this) { trimState ->
-            updateRecyclerView(trimState.trims)
+        viewModel.trimCategoryState.observe(this) { trimState ->
+            updateRecyclerView(trimState.trimCategories)
 
             if (!trimState.isFirstLoad) {
-                handleNavigation(trimState.currTrim)
+                handleNavigation(trimState.currTrimCategory)
             }
         }
 
@@ -106,39 +104,39 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateRecyclerView(trims: List<Trim>) {
-        adapter.updateTrims(trims)
+    private fun updateRecyclerView(trimCategories: List<TrimCategory>) {
+        adapter.updateTrims(trimCategories)
     }
 
-    private fun handleNavigation(selectedTrim: Trim) {
+    private fun handleNavigation(selectedTrimCategory: TrimCategory) {
         val currentDestinationId = findNavController(R.id.fc_nav_host).currentDestination?.id
-        val action = when (selectedTrim.type) {
-            TrimType.SELF -> getSelfAction(currentDestinationId, selectedTrim)
-            TrimType.GUIDE -> getGuideAction(currentDestinationId, selectedTrim)
+        val action = when (selectedTrimCategory.type) {
+            TrimType.SELF -> getSelfAction(currentDestinationId, selectedTrimCategory)
+            TrimType.GUIDE -> getGuideAction(currentDestinationId, selectedTrimCategory)
         }
         action?.let { navigateTo(it) }
     }
 
-    private fun getSelfAction(currentDestinationId: Int?, selectedTrim: Trim): NavDirections? {
+    private fun getSelfAction(currentDestinationId: Int?, selectedTrimCategory: TrimCategory): NavDirections? {
         return when (currentDestinationId) {
-            R.id.selfModeFragment -> SelfModeFragmentDirections.actionSelfModeFragmentSelf(
-                selectedTrim.name
+            R.id.trimSelfModeFragment -> TrimSelfModeFragmentDirections.actionSelfModeFragmentSelf(
+                selectedTrimCategory.name
             )
 
             else -> GuideModeFragmentDirections.actionGuideModeFragmentToSelfModeFragment(
-                selectedTrim.name
+                selectedTrimCategory.name
             )
         }
     }
 
-    private fun getGuideAction(currentDestinationId: Int?, selectedTrim: Trim): NavDirections? {
+    private fun getGuideAction(currentDestinationId: Int?, selectedTrimCategory: TrimCategory): NavDirections? {
         return when (currentDestinationId) {
             R.id.guideModeFragment -> GuideModeFragmentDirections.actionGuideModeFragmentSelf(
-                selectedTrim.name
+                selectedTrimCategory.name
             )
 
-            else -> SelfModeFragmentDirections.actionSelfModeFragmentToGuideModeFragment(
-                selectedTrim.name
+            else -> TrimSelfModeFragmentDirections.actionSelfModeFragmentToGuideModeFragment(
+                selectedTrimCategory.name
             )
         }
     }

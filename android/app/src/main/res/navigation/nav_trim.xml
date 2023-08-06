@@ -18,7 +18,7 @@
 
         <action
             android:id="@+id/action_guideModeFragment_to_selfModeFragment"
-            app:destination="@id/selfModeFragment"
+            app:destination="@id/trimSelfModeFragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
 
@@ -30,10 +30,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/selfModeFragment"
-        android:name="com.youngcha.ohmycarset.ui.fragment.SelfModeFragment"
-        android:label="fragment_self_mode"
-        tools:layout="@layout/fragment_self_mode">
+        android:id="@+id/trimSelfModeFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.TrimSelfModeFragment"
+        android:label="fragment_trim_self_mode"
+        tools:layout="@layout/fragment_trim_self_mode">
 
         <argument
             android:name="selectedTrimName"
@@ -48,7 +48,7 @@
 
         <action
             android:id="@+id/action_selfModeFragment_self"
-            app:destination="@id/selfModeFragment"
+            app:destination="@id/trimSelfModeFragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
     </fragment>
