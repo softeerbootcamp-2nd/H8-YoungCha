@@ -24,8 +24,7 @@ CREATE TABLE IF NOT EXISTS `option`
     `name`        varchar(100) NOT NULL,
     `price`       int          NOT NULL,
     `feedback`    varchar(255) NULL,
-    `category_id` bigint       NOT NULL,
-    `parent_id`   bigint       NOT NULL
+    `category_id` bigint       NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `sell`
@@ -142,256 +141,284 @@ CREATE TABLE IF NOT EXISTS `option_relation`
     `child_id`  bigint NOT NULL
 );
 
-ALTER TABLE `option` ADD CONSTRAINT `FK_category_TO_option_1` FOREIGN KEY (
-                                                                           `category_id`
-    )
-    REFERENCES `category` (
+ALTER TABLE `option`
+    ADD CONSTRAINT `FK_category_TO_option_1` FOREIGN KEY (
+                                                          `category_id`
+        )
+        REFERENCES `category` (
+                               `id`
+            );
+
+ALTER TABLE `sell`
+    ADD CONSTRAINT `FK_trim_TO_sell_1` FOREIGN KEY (
+                                                    `trim_id`
+        )
+        REFERENCES `trim` (
                            `id`
-        );
+            );
 
-ALTER TABLE `option` ADD CONSTRAINT `FK_option_TO_option_1` FOREIGN KEY (
-                                                                         `parent_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
+ALTER TABLE `sell`
+    ADD CONSTRAINT `FK_option_TO_sell_1` FOREIGN KEY (
+                                                      `engine_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
-ALTER TABLE `sell` ADD CONSTRAINT `FK_trim_TO_sell_1` FOREIGN KEY (
-                                                                   `trim_id`
-    )
-    REFERENCES `trim` (
-                       `id`
-        );
+ALTER TABLE `sell`
+    ADD CONSTRAINT `FK_option_TO_sell_2` FOREIGN KEY (
+                                                      `body_type_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
-ALTER TABLE `sell` ADD CONSTRAINT `FK_option_TO_sell_1` FOREIGN KEY (
-                                                                     `engine_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
+ALTER TABLE `sell`
+    ADD CONSTRAINT `FK_option_TO_sell_3` FOREIGN KEY (
+                                                      `driving_system_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
-ALTER TABLE `sell` ADD CONSTRAINT `FK_option_TO_sell_2` FOREIGN KEY (
-                                                                     `body_type_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
+ALTER TABLE `sell`
+    ADD CONSTRAINT `FK_option_TO_sell_4` FOREIGN KEY (
+                                                      `exterior_color_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
-ALTER TABLE `sell` ADD CONSTRAINT `FK_option_TO_sell_3` FOREIGN KEY (
-                                                                     `driving_system_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
+ALTER TABLE `sell`
+    ADD CONSTRAINT `FK_option_TO_sell_5` FOREIGN KEY (
+                                                      `interior_color_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
-ALTER TABLE `sell` ADD CONSTRAINT `FK_option_TO_sell_4` FOREIGN KEY (
-                                                                     `exterior_color_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
+ALTER TABLE `sell`
+    ADD CONSTRAINT `FK_option_TO_sell_6` FOREIGN KEY (
+                                                      `wheel_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
-ALTER TABLE `sell` ADD CONSTRAINT `FK_option_TO_sell_5` FOREIGN KEY (
-                                                                     `interior_color_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
-
-ALTER TABLE `sell` ADD CONSTRAINT `FK_option_TO_sell_6` FOREIGN KEY (
-                                                                     `wheel_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
-
-ALTER TABLE `sell_selective_options` ADD CONSTRAINT `FK_sell_TO_sell_selective_options_1` FOREIGN KEY (
-                                                                                                       `sell_id`
-    )
-    REFERENCES `sell` (
-                       `id`
-        );
-
-ALTER TABLE `sell_selective_options` ADD CONSTRAINT `FK_option_TO_sell_selective_options_1` FOREIGN KEY (
-                                                                                                         `option_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
-
-ALTER TABLE `sell_h_genuine_accessories` ADD CONSTRAINT `FK_option_TO_sell_h_genuine_accessories_1` FOREIGN KEY (
-                                                                                                                 `option_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
-
-ALTER TABLE `sell_h_genuine_accessories` ADD CONSTRAINT `FK_sell_TO_sell_h_genuine_accessories_1` FOREIGN KEY (
-                                                                                                               `sell_id`
-    )
-    REFERENCES `sell` (
-                       `id`
-        );
-
-ALTER TABLE `option_keyword` ADD CONSTRAINT `FK_option_TO_option_keyword_1` FOREIGN KEY (
-                                                                                         `option_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
-
-ALTER TABLE `option_keyword` ADD CONSTRAINT `FK_keyword_TO_option_keyword_1` FOREIGN KEY (
-                                                                                          `keyword_id`
-    )
-    REFERENCES `keyword` (
-                          `id`
-        );
-
-ALTER TABLE `estimate` ADD CONSTRAINT `FK_trim_TO_estimate_1` FOREIGN KEY (
-                                                                           `trim_id`
-    )
-    REFERENCES `trim` (
-                       `id`
-        );
-
-ALTER TABLE `estimate` ADD CONSTRAINT `FK_option_TO_estimate_1` FOREIGN KEY (
-                                                                             `engine_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
-
-ALTER TABLE `estimate` ADD CONSTRAINT `FK_option_TO_estimate_2` FOREIGN KEY (
-                                                                             `body_type_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
-
-ALTER TABLE `estimate` ADD CONSTRAINT `FK_option_TO_estimate_3` FOREIGN KEY (
-                                                                             `driving_system_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
-
-ALTER TABLE `estimate` ADD CONSTRAINT `FK_option_TO_estimate_4` FOREIGN KEY (
-                                                                             `exterior_color_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
-
-ALTER TABLE `estimate` ADD CONSTRAINT `FK_option_TO_estimate_5` FOREIGN KEY (
-                                                                             `interior_color_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
-
-ALTER TABLE `estimate` ADD CONSTRAINT `FK_option_TO_estimate_6` FOREIGN KEY (
-                                                                             `wheel_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
-
-ALTER TABLE `estimate` ADD CONSTRAINT `FK_keyword_TO_estimate_1` FOREIGN KEY (
-                                                                              `keyword1_id`
-    )
-    REFERENCES `keyword` (
-                          `id`
-        );
-
-ALTER TABLE `estimate` ADD CONSTRAINT `FK_keyword_TO_estimate_2` FOREIGN KEY (
-                                                                              `keyword2_id`
-    )
-    REFERENCES `keyword` (
-                          `id`
-        );
-
-ALTER TABLE `estimate` ADD CONSTRAINT `FK_keyword_TO_estimate_3` FOREIGN KEY (
-                                                                              `keyword3_id`
-    )
-    REFERENCES `keyword` (
-                          `id`
-        );
-
-ALTER TABLE `estimate_h_genuine_accessories` ADD CONSTRAINT `FK_estimate_TO_estimate_h_genuine_accessories_1` FOREIGN KEY (
-                                                                                                                           `estimate_id`
-    )
-    REFERENCES `estimate` (
+ALTER TABLE `sell_selective_options`
+    ADD CONSTRAINT `FK_sell_TO_sell_selective_options_1` FOREIGN KEY (
+                                                                      `sell_id`
+        )
+        REFERENCES `sell` (
                            `id`
-        );
+            );
 
-ALTER TABLE `estimate_h_genuine_accessories` ADD CONSTRAINT `FK_option_TO_estimate_h_genuine_accessories_1` FOREIGN KEY (
-                                                                                                                         `option_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
+ALTER TABLE `sell_selective_options`
+    ADD CONSTRAINT `FK_option_TO_sell_selective_options_1` FOREIGN KEY (
+                                                                        `option_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
-ALTER TABLE `estimate_selective_options` ADD CONSTRAINT `FK_estimate_TO_estimate_selective_options_1` FOREIGN KEY (
-                                                                                                                   `estimate_id`
-    )
-    REFERENCES `estimate` (
+ALTER TABLE `sell_h_genuine_accessories`
+    ADD CONSTRAINT `FK_option_TO_sell_h_genuine_accessories_1` FOREIGN KEY (
+                                                                            `option_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
+
+ALTER TABLE `sell_h_genuine_accessories`
+    ADD CONSTRAINT `FK_sell_TO_sell_h_genuine_accessories_1` FOREIGN KEY (
+                                                                          `sell_id`
+        )
+        REFERENCES `sell` (
                            `id`
-        );
+            );
 
-ALTER TABLE `estimate_selective_options` ADD CONSTRAINT `FK_option_TO_estimate_selective_options_1` FOREIGN KEY (
-                                                                                                                 `option_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
+ALTER TABLE `option_keyword`
+    ADD CONSTRAINT `FK_option_TO_option_keyword_1` FOREIGN KEY (
+                                                                `option_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
-ALTER TABLE `option_image` ADD CONSTRAINT `FK_option_TO_option_image_1` FOREIGN KEY (
-                                                                                     `option_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
+ALTER TABLE `option_keyword`
+    ADD CONSTRAINT `FK_keyword_TO_option_keyword_1` FOREIGN KEY (
+                                                                 `keyword_id`
+        )
+        REFERENCES `keyword` (
+                              `id`
+            );
 
-ALTER TABLE `detail` ADD CONSTRAINT `FK_option_TO_detail_1` FOREIGN KEY (
-                                                                         `option_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
+ALTER TABLE `estimate`
+    ADD CONSTRAINT `FK_trim_TO_estimate_1` FOREIGN KEY (
+                                                        `trim_id`
+        )
+        REFERENCES `trim` (
+                           `id`
+            );
 
-ALTER TABLE `trim` ADD CONSTRAINT `FK_car_TO_trim_1` FOREIGN KEY (
-                                                                  `car_id`
-    )
-    REFERENCES `car` (
-                      `id`
-        );
+ALTER TABLE `estimate`
+    ADD CONSTRAINT `FK_option_TO_estimate_1` FOREIGN KEY (
+                                                          `engine_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
-ALTER TABLE `trim_option` ADD CONSTRAINT `FK_trim_TO_trim_option_1` FOREIGN KEY (
-                                                                                 `trim_id`
-    )
-    REFERENCES `trim` (
-                       `id`
-        );
+ALTER TABLE `estimate`
+    ADD CONSTRAINT `FK_option_TO_estimate_2` FOREIGN KEY (
+                                                          `body_type_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
-ALTER TABLE `trim_option` ADD CONSTRAINT `FK_option_TO_trim_option_1` FOREIGN KEY (
-                                                                                   `options_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
+ALTER TABLE `estimate`
+    ADD CONSTRAINT `FK_option_TO_estimate_3` FOREIGN KEY (
+                                                          `driving_system_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
-ALTER TABLE `option_relation` ADD CONSTRAINT `FK_option_TO_option_relation_1` FOREIGN KEY (
-                                                                                           `parent_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
+ALTER TABLE `estimate`
+    ADD CONSTRAINT `FK_option_TO_estimate_4` FOREIGN KEY (
+                                                          `exterior_color_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
-ALTER TABLE `option_relation` ADD CONSTRAINT `FK_option_TO_option_relation_2` FOREIGN KEY (
-                                                                                           `child_id`
-    )
-    REFERENCES `option` (
-                         `id`
-        );
+ALTER TABLE `estimate`
+    ADD CONSTRAINT `FK_option_TO_estimate_5` FOREIGN KEY (
+                                                          `interior_color_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
+
+ALTER TABLE `estimate`
+    ADD CONSTRAINT `FK_option_TO_estimate_6` FOREIGN KEY (
+                                                          `wheel_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
+
+ALTER TABLE `estimate`
+    ADD CONSTRAINT `FK_keyword_TO_estimate_1` FOREIGN KEY (
+                                                           `keyword1_id`
+        )
+        REFERENCES `keyword` (
+                              `id`
+            );
+
+ALTER TABLE `estimate`
+    ADD CONSTRAINT `FK_keyword_TO_estimate_2` FOREIGN KEY (
+                                                           `keyword2_id`
+        )
+        REFERENCES `keyword` (
+                              `id`
+            );
+
+ALTER TABLE `estimate`
+    ADD CONSTRAINT `FK_keyword_TO_estimate_3` FOREIGN KEY (
+                                                           `keyword3_id`
+        )
+        REFERENCES `keyword` (
+                              `id`
+            );
+
+ALTER TABLE `estimate_h_genuine_accessories`
+    ADD CONSTRAINT `FK_estimate_TO_estimate_h_genuine_accessories_1` FOREIGN KEY (
+                                                                                  `estimate_id`
+        )
+        REFERENCES `estimate` (
+                               `id`
+            );
+
+ALTER TABLE `estimate_h_genuine_accessories`
+    ADD CONSTRAINT `FK_option_TO_estimate_h_genuine_accessories_1` FOREIGN KEY (
+                                                                                `option_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
+
+ALTER TABLE `estimate_selective_options`
+    ADD CONSTRAINT `FK_estimate_TO_estimate_selective_options_1` FOREIGN KEY (
+                                                                              `estimate_id`
+        )
+        REFERENCES `estimate` (
+                               `id`
+            );
+
+ALTER TABLE `estimate_selective_options`
+    ADD CONSTRAINT `FK_option_TO_estimate_selective_options_1` FOREIGN KEY (
+                                                                            `option_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
+
+ALTER TABLE `option_image`
+    ADD CONSTRAINT `FK_option_TO_option_image_1` FOREIGN KEY (
+                                                              `option_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
+
+ALTER TABLE `detail`
+    ADD CONSTRAINT `FK_option_TO_detail_1` FOREIGN KEY (
+                                                        `option_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
+
+ALTER TABLE `trim`
+    ADD CONSTRAINT `FK_car_TO_trim_1` FOREIGN KEY (
+                                                   `car_id`
+        )
+        REFERENCES `car` (
+                          `id`
+            );
+
+ALTER TABLE `trim_option`
+    ADD CONSTRAINT `FK_trim_TO_trim_option_1` FOREIGN KEY (
+                                                           `trim_id`
+        )
+        REFERENCES `trim` (
+                           `id`
+            );
+
+ALTER TABLE `trim_option`
+    ADD CONSTRAINT `FK_option_TO_trim_option_1` FOREIGN KEY (
+                                                             `options_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
+
+ALTER TABLE `option_relation`
+    ADD CONSTRAINT `FK_option_TO_option_relation_1` FOREIGN KEY (
+                                                                 `parent_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
+
+ALTER TABLE `option_relation`
+    ADD CONSTRAINT `FK_option_TO_option_relation_2` FOREIGN KEY (
+                                                                 `child_id`
+        )
+        REFERENCES `option` (
+                             `id`
+            );
 
 
