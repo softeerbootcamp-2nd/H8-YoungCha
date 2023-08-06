@@ -33,10 +33,10 @@ class TestIntegrationTest extends IntegrationTestBase {
                 .log().all()
                 .extract();
 
-        SuccessResponse<String> successResponse = response.body().as(new TypeRef<>() {
+        SuccessResponse<SuccessResponse<String>> successResponse = response.body().as(new TypeRef<>() {
         });
         softAssertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        softAssertions.assertThat(successResponse.getData()).isEqualTo("ok");
+        softAssertions.assertThat(successResponse.getData().getData()).isEqualTo("ok");
     }
 
     @Test
