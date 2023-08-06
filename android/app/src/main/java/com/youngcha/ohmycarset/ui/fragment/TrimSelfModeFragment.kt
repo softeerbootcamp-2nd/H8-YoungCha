@@ -7,16 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentTrimSelfModeBinding
+import com.youngcha.ohmycarset.viewmodel.TrimSelfModeViewModel
 
 class TrimSelfModeFragment : Fragment() {
     private val args: TrimSelfModeFragmentArgs by navArgs()
     private var _binding: FragmentTrimSelfModeBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: TrimSelfModeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
