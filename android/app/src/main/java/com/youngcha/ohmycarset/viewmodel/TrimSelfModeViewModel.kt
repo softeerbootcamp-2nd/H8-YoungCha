@@ -17,6 +17,8 @@ class TrimSelfModeViewModel : ViewModel() {
     val trimSelfModeData: LiveData<TrimSelfMode> = _trimSelfModeData
     val displayItemCount: MutableLiveData<Int> = MutableLiveData(5)
 
+    val filteredOptions: MutableLiveData<List<TrimSelfModeOption>> = MutableLiveData()
+
     // ViewModel 초기화
     init {
         loadTrimSelfMode()
@@ -24,6 +26,20 @@ class TrimSelfModeViewModel : ViewModel() {
 
     fun showAllItems() {
         displayItemCount.value = trimSelfModeData.value?.options?.size
+    }
+
+    fun filterOptionsByTabName(tabName: String) {
+        val allOptions = trimSelfModeData.value?.options ?: emptyList()
+
+        val matchedOptions = if (tabName == "전체") {
+            allOptions
+        } else {
+            allOptions.filter { option ->
+                option.type == tabName
+            }
+        }
+
+        filteredOptions.value = matchedOptions
     }
 
     private fun loadTrimSelfMode() {

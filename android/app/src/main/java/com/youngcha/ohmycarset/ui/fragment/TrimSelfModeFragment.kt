@@ -72,6 +72,10 @@ class TrimSelfModeFragment : Fragment() {
         viewModel.displayItemCount.observe(viewLifecycleOwner) { count ->
             trimSelfModeOptionAdapter.setDisplayItemCount(count)
         }
+
+        viewModel.filteredOptions.observe(viewLifecycleOwner) { options ->
+            trimSelfModeOptionAdapter.updateTrimSelfModeOptions(options)
+        }
     }
 
     private fun clickListener() {
@@ -125,6 +129,8 @@ class TrimSelfModeFragment : Fragment() {
                 val tvTabName = customView?.findViewById<TextView>(R.id.tv_tab_name)
                 val tabName = tvTabName?.text.toString() ?: ""
                 Snackbar.make(binding.root, tabName, Snackbar.LENGTH_SHORT).show()
+
+                viewModel.filterOptionsByTabName(tabName)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
