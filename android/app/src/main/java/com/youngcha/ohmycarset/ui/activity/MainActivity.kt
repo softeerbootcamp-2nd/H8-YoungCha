@@ -20,6 +20,7 @@ import com.youngcha.ohmycarset.model.TrimCategory
 import com.youngcha.ohmycarset.enums.TrimType
 import com.youngcha.ohmycarset.ui.fragment.GuideModeFragmentDirections
 import com.youngcha.ohmycarset.ui.fragment.TrimSelfModeFragmentDirections
+import com.youngcha.ohmycarset.ui.listener.CustomScrollChangeListener
 import com.youngcha.ohmycarset.util.MILLISECONDS_PER_INCH
 import com.youngcha.ohmycarset.viewmodel.TrimSelectViewModel
 
@@ -46,48 +47,9 @@ class MainActivity : AppCompatActivity() {
             adapter = this@MainActivity.adapter
         }
 
-        binding.nsvSelfTrimScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            val isNearBottom = scrollY >= (v.getChildAt(0).height - v.height - 200 * resources.displayMetrics.density)
-
-            // 아래로 스크롤될 경우
-            if (scrollY > oldScrollY) {
-                // 투명도 애니메이션 (1f에서 0f로)
-                val fadeOut = ObjectAnimator.ofFloat(binding.ivDropDownTrim, "alpha", 1f, 0f)
-                fadeOut.duration = 300 // 300ms 동안
-                fadeOut.addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        binding.ivDropDownTrim.visibility = View.GONE
-                    }
-                })
-                fadeOut.start()
-
-                val fadeOutText = ObjectAnimator.ofFloat(binding.tvDetailInfoTxt, "alpha", 1f, 0f)
-                fadeOutText.duration = 300 // 300ms 동안
-                fadeOutText.addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        binding.tvDetailInfoTxt.visibility = View.GONE
-                    }
-                })
-                fadeOutText.start()
-            }
-            // 위로 스크롤될 경우
-            else if (scrollY < oldScrollY && !isNearBottom) {
-                // 뷰가 보여지기 전에 투명도를 0으로 설정
-                binding.ivDropDownTrim.alpha = 0f
-                binding.tvDetailInfoTxt.alpha = 0f
-                binding.ivDropDownTrim.visibility = View.VISIBLE
-                binding.tvDetailInfoTxt.visibility = View.VISIBLE
-
-                // 투명도 애니메이션 (0f에서 1f로)
-                val fadeIn = ObjectAnimator.ofFloat(binding.ivDropDownTrim, "alpha", 0f, 1f)
-                fadeIn.duration = 300 // 300ms 동안
-                fadeIn.start()
-
-                val fadeInText = ObjectAnimator.ofFloat(binding.tvDetailInfoTxt, "alpha", 0f, 1f)
-                fadeInText.duration = 300 // 300ms 동안
-                fadeInText.start()
-            }
-        })
+        binding.nsvSelfTrimScroll.setOnScrollChangeListener(
+            CustomScrollChangeListener(binding.ivDropDownTrim, binding.tvDetailInfoTxt)
+        )
     }
 
     private fun observeViewModel() {

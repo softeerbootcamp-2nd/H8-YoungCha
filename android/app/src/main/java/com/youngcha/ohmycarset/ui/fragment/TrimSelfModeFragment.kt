@@ -53,7 +53,7 @@ class TrimSelfModeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val selectedTrimName = args.selectedTrimName
+        // val selectedTrimName = args.selectedTrimName
 
         setupTabs()
         clickListener()
@@ -129,7 +129,6 @@ class TrimSelfModeFragment : Fragment() {
                 val customView = tab.customView
                 val tvTabName = customView?.findViewById<TextView>(R.id.tv_tab_name)
                 val tabName = tvTabName?.text.toString() ?: ""
-                Snackbar.make(binding.root, tabName, Snackbar.LENGTH_SHORT).show()
 
                 viewModel.filterOptionsByTabName(tabName)
             }
