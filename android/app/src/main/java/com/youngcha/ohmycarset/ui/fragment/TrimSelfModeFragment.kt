@@ -107,6 +107,7 @@ class TrimSelfModeFragment : Fragment() {
         trimSelfModeOptionAdapter = TrimSelfModeOptionAdapter()
         binding.rvOption.layoutManager = LinearLayoutManager(context)
         binding.rvOption.addItemDecoration(TopSpacingItemDecoration(12))
+        binding.rvOption.itemAnimator?.changeDuration = 300
         binding.rvOption.adapter = trimSelfModeOptionAdapter
 
     }

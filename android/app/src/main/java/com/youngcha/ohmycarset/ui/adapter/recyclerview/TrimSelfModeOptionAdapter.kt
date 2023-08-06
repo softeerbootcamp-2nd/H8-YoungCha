@@ -3,6 +3,7 @@ package com.youngcha.ohmycarset.ui.adapter.recyclerview
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.databinding.ItemTrimSelfModeOptionBinding
 import com.youngcha.ohmycarset.model.TrimSelfModeOption
@@ -12,10 +13,23 @@ class TrimSelfModeOptionAdapter: RecyclerView.Adapter<TrimSelfModeOptionAdapter.
     private var trimSelfModeOptions: List<TrimSelfModeOption> = emptyList()
     private var displayItemCount: Int = 5
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateTrimSelfModeOptions(trimSelfModeOptions: List<TrimSelfModeOption>) {
-        this.trimSelfModeOptions = trimSelfModeOptions
-        notifyDataSetChanged()
+    fun updateTrimSelfModeOptions(newTrimSelfModeOptions: List<TrimSelfModeOption>) {
+        val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize() = trimSelfModeOptions.size
+
+            override fun getNewListSize() = newTrimSelfModeOptions.size
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return trimSelfModeOptions[oldItemPosition] == newTrimSelfModeOptions[newItemPosition]
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return trimSelfModeOptions[oldItemPosition] == newTrimSelfModeOptions[newItemPosition]
+            }
+        })
+
+        trimSelfModeOptions = newTrimSelfModeOptions
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun setDisplayItemCount(count: Int) {
