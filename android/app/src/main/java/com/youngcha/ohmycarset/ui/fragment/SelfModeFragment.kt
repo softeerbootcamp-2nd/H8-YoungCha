@@ -30,6 +30,7 @@ class SelfModeFragment : Fragment() {
         val selectedTrimName = args.selectedTrimName
 
         Log.d("로그", selectedTrimName)
+
     }
 
     override fun onDestroyView() {

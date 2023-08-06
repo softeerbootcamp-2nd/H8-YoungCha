@@ -1,5 +1,8 @@
 package com.youngcha.ohmycarset.ui.activity
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -45,17 +48,44 @@ class MainActivity : AppCompatActivity() {
             adapter = this@MainActivity.adapter
         }
 
-        // 스크롤 리스너 설정
         binding.nsvSelfTrimScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             // 아래로 스크롤될 경우
             if (scrollY > oldScrollY) {
-                binding.ivDropDownTrim.visibility = View.GONE
-                binding.tvDetailInfoTxt.visibility = View.GONE
+                // 투명도 애니메이션 (1f에서 0f로)
+                val fadeOut = ObjectAnimator.ofFloat(binding.ivDropDownTrim, "alpha", 1f, 0f)
+                fadeOut.duration = 300 // 300ms 동안
+                fadeOut.addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        binding.ivDropDownTrim.visibility = View.GONE
+                    }
+                })
+                fadeOut.start()
+
+                val fadeOutText = ObjectAnimator.ofFloat(binding.tvDetailInfoTxt, "alpha", 1f, 0f)
+                fadeOutText.duration = 300 // 300ms 동안
+                fadeOutText.addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        binding.tvDetailInfoTxt.visibility = View.GONE
+                    }
+                })
+                fadeOutText.start()
             }
             // 위로 스크롤될 경우
             else if (scrollY < oldScrollY) {
+                // 뷰가 보여지기 전에 투명도를 0으로 설정
+                binding.ivDropDownTrim.alpha = 0f
+                binding.tvDetailInfoTxt.alpha = 0f
                 binding.ivDropDownTrim.visibility = View.VISIBLE
                 binding.tvDetailInfoTxt.visibility = View.VISIBLE
+
+                // 투명도 애니메이션 (0f에서 1f로)
+                val fadeIn = ObjectAnimator.ofFloat(binding.ivDropDownTrim, "alpha", 0f, 1f)
+                fadeIn.duration = 300 // 300ms 동안
+                fadeIn.start()
+
+                val fadeInText = ObjectAnimator.ofFloat(binding.tvDetailInfoTxt, "alpha", 0f, 1f)
+                fadeInText.duration = 300 // 300ms 동안
+                fadeInText.start()
             }
         })
     }
