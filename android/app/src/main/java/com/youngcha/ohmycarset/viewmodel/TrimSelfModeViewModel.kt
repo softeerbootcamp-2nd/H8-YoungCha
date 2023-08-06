@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.model.TrimSelfMode
 import com.youngcha.ohmycarset.model.TrimSelfModeExteriorColor
-import com.youngcha.ohmycarset.model.TrimSelfModeInternalColor
+import com.youngcha.ohmycarset.model.TrimSelfModeInteriorColor
 import com.youngcha.ohmycarset.model.TrimSelfModeMainOption
 
 class TrimSelfModeViewModel: ViewModel() {
@@ -41,9 +41,9 @@ class TrimSelfModeViewModel: ViewModel() {
                 TrimSelfModeExteriorColor(code = "#1C2234", name = "문라이트 블루 펄"),
                 TrimSelfModeExteriorColor(code = "#333635", name = "가이아 브라운 펄")
             ),
-            internalColor = listOf(
-                TrimSelfModeInternalColor(url = R.drawable.img_quilting_natural, name = "퀄팅 천연(블랙)"),
-                TrimSelfModeInternalColor(url = R.drawable.img_cool_grey, name = "쿨 그레이")
+            interiorColor = listOf(
+                TrimSelfModeInteriorColor(url = R.drawable.img_quilting_natural, name = "퀄팅 천연(블랙)"),
+                TrimSelfModeInteriorColor(url = R.drawable.img_cool_grey, name = "쿨 그레이")
             )
         )
 

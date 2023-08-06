@@ -68,7 +68,6 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_trim_name"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/leblanc_price_kr" />
 
@@ -122,9 +121,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            android:text="@{String.valueOf(trim.exteriorColor.size())}"
             android:textColor="@color/main_hyundai_blue"
             android:textSize="14sp"
-            android:text="@{String.valueOf(trim.exteriorColor.size())}"
             app:layout_constraintStart_toEndOf="@id/tv_exterior_color_txt"
             app:layout_constraintTop_toTopOf="@id/tv_exterior_color_txt"
             tools:text="6" />
@@ -169,6 +168,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            android:text="@{String.valueOf(trim.interiorColor.size())}"
             android:textColor="@color/main_hyundai_blue"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/tv_interior_color_txt"
@@ -179,9 +179,9 @@
             android:id="@+id/rv_interior_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="31dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_interior_color_cnt" />

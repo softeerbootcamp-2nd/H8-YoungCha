@@ -4,17 +4,21 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class GridSpacingItemDecoration(private val spanCount: Int, private val spacing: Int) : RecyclerView.ItemDecoration() {
+class GridSpacingItemDecoration(private val spanCount: Int, private val spacingDp: Int, private val topSpacingDp: Int) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
         outRect: Rect, view: View,
         parent: RecyclerView, state: RecyclerView.State
     ) {
-        val position = parent.getChildAdapterPosition(view) // item position
-        val column = position % spanCount // item column
+        val position = parent.getChildAdapterPosition(view)
+        val column = position % spanCount
 
-        if (position > spanCount - 1) { // 첫 번째 행이 아닐 경우 marginTop을 설정
-            outRect.top = 8
+        val spacing = dpToPx(spacingDp / 2, view)
+        val topSpacing = dpToPx(topSpacingDp, view)
+
+        // 첫 번째 행이 아닌 경우 marginTop을 설정
+        if (position >= spanCount) {
+            outRect.top = topSpacing
         }
 
         if (column == 0) {
@@ -22,5 +26,9 @@ class GridSpacingItemDecoration(private val spanCount: Int, private val spacing:
         } else {
             outRect.left = spacing
         }
+    }
+
+    private fun dpToPx(dp: Int, view: View): Int {
+        return (dp * view.resources.displayMetrics.density).toInt()
     }
 }

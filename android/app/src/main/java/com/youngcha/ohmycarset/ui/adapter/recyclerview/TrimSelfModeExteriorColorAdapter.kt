@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.databinding.ItemTrimSelfModeExteiorColorBinding
 import com.youngcha.ohmycarset.model.TrimSelfModeExteriorColor
-class TrimSelfModeExteriorColorAdapter(
-) : RecyclerView.Adapter<TrimSelfModeExteriorColorAdapter.TrimSelfModeExteriorColorViewHolder>() {
+class TrimSelfModeExteriorColorAdapter: RecyclerView.Adapter<TrimSelfModeExteriorColorAdapter.TrimSelfModeExteriorColorViewHolder>() {
 
     private var trimSelfModeExteriorColor: List<TrimSelfModeExteriorColor> = emptyList()
 

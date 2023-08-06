@@ -9,7 +9,7 @@ data class TrimSelfModeInternalColor(
  */
 
 // Test: drawable에 준비한 test image 넣기
-data class TrimSelfModeInternalColor(
+data class TrimSelfModeInteriorColor(
     val url: Int,
     val name: String
 )
