@@ -1,6 +1,6 @@
-package com.youngcha.server.common.exception;
+package team.youngcha.common.exception;
 
-import com.youngcha.server.common.dto.ErrorResponse;
+import team.youngcha.common.dto.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
 
     // @RequestParam 오류
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<ErrorResponse> missingServletRequestParameterException(MissingServletRequestParameterException e) {
+    public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
         logger.error("MissingServletRequestParameterException : {}", e.getMessage());
         ErrorResponse errorResponse = new ErrorResponse("잘못된 파라미터입니다.", e.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);

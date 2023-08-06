@@ -1,8 +1,5 @@
-package com.youngcha.server.test;
+package team.youngcha.test;
 
-import com.youngcha.server.common.dto.ErrorResponse;
-import com.youngcha.server.common.dto.SuccessResponse;
-import com.youngcha.server.common.exception.CustomException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import team.youngcha.common.dto.ErrorResponse;
+import team.youngcha.common.dto.SuccessResponse;
+import team.youngcha.common.exception.CustomException;
 
 @Tag(name = "Test API", description = "테스트 API")
 @RestController

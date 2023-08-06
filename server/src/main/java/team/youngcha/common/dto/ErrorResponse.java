@@ -1,4 +1,4 @@
-package com.youngcha.server.common.dto;
+package team.youngcha.common.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

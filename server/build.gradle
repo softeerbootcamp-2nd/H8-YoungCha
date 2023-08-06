@@ -5,7 +5,7 @@ plugins {
     id 'jacoco'
 }
 
-group = 'com.youngcha'
+group = 'team.youngcha'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -55,7 +55,7 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, excludes: [
-                    "**/ServerApplication*",
+                    "**/*Application*",
                     "**/common/dto/**",
                     "**/common/exception/**"
             ])
@@ -75,7 +75,7 @@ tasks.jacocoTestCoverageVerification {
             }
 
             excludes = [
-                    "**/ServerApplication*",
+                    "**/*Application*",
                     "**/common/dto/**",
                     "**/common/exception/**"
             ]

@@ -1,8 +1,8 @@
-package com.youngcha.server.test;
+package team.youngcha.test;
 
-import com.youngcha.server.IntegrationTestBase;
-import com.youngcha.server.common.dto.ErrorResponse;
-import com.youngcha.server.common.dto.SuccessResponse;
+import team.youngcha.IntegrationTestBase;
+import team.youngcha.common.dto.ErrorResponse;
+import team.youngcha.common.dto.SuccessResponse;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;

@@ -1,4 +1,4 @@
-package com.youngcha.server.common.exception;
+package team.youngcha.common.exception;
 
 import org.springframework.http.HttpStatus;
 
