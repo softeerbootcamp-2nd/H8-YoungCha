@@ -12,5 +12,6 @@ data class TrimSelfMode(
     val minPrice: String,
     val mainOptions: List<TrimSelfModeMainOption>,
     val exteriorColor: List<TrimSelfModeExteriorColor>,
-    val interiorColor: List<TrimSelfModeInteriorColor>
+    val interiorColor: List<TrimSelfModeInteriorColor>,
+    val options: List<TrimSelfModeOption>
 )

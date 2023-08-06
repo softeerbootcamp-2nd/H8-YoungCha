@@ -1,6 +1,7 @@
 package com.youngcha.ohmycarset.ui.fragment
 
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,25 +10,38 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentTrimSelfModeBinding
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeExteriorColorAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeInteriorColorAdapter
+import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeOptionAdapter
 import com.youngcha.ohmycarset.util.decorator.GridSpacingItemDecoration
 import com.youngcha.ohmycarset.util.decorator.TopSpacingItemDecoration
 import com.youngcha.ohmycarset.viewmodel.TrimSelfModeViewModel
 
 class TrimSelfModeFragment : Fragment() {
+
+    // Args
     private val args: TrimSelfModeFragmentArgs by navArgs()
+
+    // ViewModel
+    private val viewModel: TrimSelfModeViewModel by viewModels()
+
+    // Binding
     private var _binding: FragmentTrimSelfModeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TrimSelfModeViewModel by viewModels()
+
+    // Adapters
     private lateinit var trimSelfModeExteriorColorAdapter: TrimSelfModeExteriorColorAdapter
     private lateinit var trimSelfModeInteriorColorAdapter: TrimSelfModeInteriorColorAdapter
+    private lateinit var trimSelfModeOptionAdapter: TrimSelfModeOptionAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,9 +56,9 @@ class TrimSelfModeFragment : Fragment() {
         val selectedTrimName = args.selectedTrimName
 
         setupTabs()
+        clickListener()
         observeViewModel()
         setupRecyclerView()
-        Log.d("로그", selectedTrimName)
     }
 
     private fun observeViewModel() {
@@ -52,19 +66,44 @@ class TrimSelfModeFragment : Fragment() {
             binding.trim = trim
             trimSelfModeExteriorColorAdapter.updateTrimSelfModeExteriorColor(trim.exteriorColor)
             trimSelfModeInteriorColorAdapter.updateTrimSelfModeInteriorColor(trim.interiorColor)
+            trimSelfModeOptionAdapter.updateTrimSelfModeOptions(trim.options)
+        }
+
+        viewModel.displayItemCount.observe(viewLifecycleOwner) { count ->
+            trimSelfModeOptionAdapter.setDisplayItemCount(count)
+        }
+    }
+
+    private fun clickListener() {
+        binding.vPlusInfo.setOnClickListener {
+            TransitionManager.beginDelayedTransition(binding.rvOption)
+
+            binding.vPlusInfo.visibility = View.GONE
+            binding.tvPlusInfoTxt.visibility = View.GONE
+            binding.ivPlusInfoImg.visibility = View.GONE
+
+            viewModel.showAllItems()
         }
     }
 
     private fun setupRecyclerView() {
+        // Exterior Color RecyclerView
         trimSelfModeExteriorColorAdapter = TrimSelfModeExteriorColorAdapter()
         binding.rvExteriorColor.layoutManager = GridLayoutManager(context, 2)
         binding.rvExteriorColor.addItemDecoration(GridSpacingItemDecoration(2, 6, 8))
         binding.rvExteriorColor.adapter = trimSelfModeExteriorColorAdapter
 
+        // Interior Color RecyclerView
         trimSelfModeInteriorColorAdapter = TrimSelfModeInteriorColorAdapter()
         binding.rvInteriorColor.layoutManager = LinearLayoutManager(context)
         binding.rvInteriorColor.addItemDecoration(TopSpacingItemDecoration(24))
         binding.rvInteriorColor.adapter = trimSelfModeInteriorColorAdapter
+
+        // Option RecyclerView
+        trimSelfModeOptionAdapter = TrimSelfModeOptionAdapter()
+        binding.rvOption.layoutManager = LinearLayoutManager(context)
+        binding.rvOption.addItemDecoration(TopSpacingItemDecoration(12))
+        binding.rvOption.adapter = trimSelfModeOptionAdapter
 
     }
 
@@ -72,15 +111,15 @@ class TrimSelfModeFragment : Fragment() {
         val tabNames = listOf("전체", "성능", "지능형 안전기술", "안전", "외관", "내장", "시트", "편의", "멀티미디어")
 
         for (name in tabNames) {
-            val tab = binding.tlDefaultList.newTab()
+            val tab = binding.tlOption.newTab()
             val customView = layoutInflater.inflate(R.layout.view_custom_tab, null)
             val tvTabName = customView.findViewById<TextView>(R.id.tv_tab_name)
             tvTabName.text = name
             tab.customView = customView
-            binding.tlDefaultList.addTab(tab)
+            binding.tlOption.addTab(tab)
         }
 
-        binding.tlDefaultList.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.tlOption.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val customView = tab.customView
                 val tvTabName = customView?.findViewById<TextView>(R.id.tv_tab_name)

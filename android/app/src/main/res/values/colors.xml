@@ -11,4 +11,5 @@
     <color name="cool_grey_003">#FFA5ACB8</color>
     <color name="cool_grey_002">#FFD1D9E3</color>
     <color name="cool_grey_001">#FFEDF2FA</color>
+    <color name="trim_self_mode_option_txt_color">#FF212121</color>
 </resources>

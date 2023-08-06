@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.databinding.ItemTrimSelfModeExteiorColorBinding
 import com.youngcha.ohmycarset.model.TrimSelfModeExteriorColor
-class TrimSelfModeExteriorColorAdapter: RecyclerView.Adapter<TrimSelfModeExteriorColorAdapter.TrimSelfModeExteriorColorViewHolder>() {
+
+class TrimSelfModeExteriorColorAdapter :
+    RecyclerView.Adapter<TrimSelfModeExteriorColorAdapter.TrimSelfModeExteriorColorViewHolder>() {
 
     private var trimSelfModeExteriorColor: List<TrimSelfModeExteriorColor> = emptyList()
 
@@ -16,7 +18,10 @@ class TrimSelfModeExteriorColorAdapter: RecyclerView.Adapter<TrimSelfModeExterio
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrimSelfModeExteriorColorViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): TrimSelfModeExteriorColorViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemTrimSelfModeExteiorColorBinding.inflate(inflater, parent, false)
         return TrimSelfModeExteriorColorViewHolder(binding)
@@ -34,6 +39,7 @@ class TrimSelfModeExteriorColorAdapter: RecyclerView.Adapter<TrimSelfModeExterio
 
         fun bind(trimSelfModeExteriorColor: TrimSelfModeExteriorColor) {
             binding.exteriorColor = trimSelfModeExteriorColor
+            binding.rank = adapterPosition
             binding.executePendingBindings()
         }
     }

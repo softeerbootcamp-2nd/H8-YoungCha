@@ -1,6 +1,7 @@
 package com.youngcha.ohmycarset.ui.adapter.binding
 
 import android.graphics.Color
+import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.youngcha.ohmycarset.ui.customview.CircleCustomView
@@ -31,3 +32,8 @@ fun setFillColor(view: CircleCustomView, colorStr: String?) {
     ...
     app:testImageSource="@{@drawable/img_test1}" />
  */
+
+@BindingAdapter("app:isVisibleForRankZero")
+fun View.isVisibleForRankZero(rank: Int) {
+    visibility = if (rank == 0) View.VISIBLE else View.GONE
+}

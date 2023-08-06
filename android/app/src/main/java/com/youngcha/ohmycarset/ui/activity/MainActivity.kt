@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.nsvSelfTrimScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            val isNearBottom = scrollY >= (v.getChildAt(0).height - v.height - 200 * resources.displayMetrics.density)
+
             // 아래로 스크롤될 경우
             if (scrollY > oldScrollY) {
                 // 투명도 애니메이션 (1f에서 0f로)
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                 fadeOutText.start()
             }
             // 위로 스크롤될 경우
-            else if (scrollY < oldScrollY) {
+            else if (scrollY < oldScrollY && !isNearBottom) {
                 // 뷰가 보여지기 전에 투명도를 0으로 설정
                 binding.ivDropDownTrim.alpha = 0f
                 binding.tvDetailInfoTxt.alpha = 0f
