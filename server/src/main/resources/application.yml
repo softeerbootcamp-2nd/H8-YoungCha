@@ -30,6 +30,7 @@ spring:
   config:
     activate:
       on-profile: dev
+    import: secrets/application-env.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${MYSQL_URL}
