@@ -21,8 +21,8 @@ jobs:
 
       - name: Create secret file
         run: |
-          mkdir .server/src/main/resources/secrets
-          echo "  ${{ secrets.APPLICATION_ENV }}" > ./src/main/resources/secrets/application-env.yml
+          mkdir server/src/main/resources/secrets
+          echo "  ${{ secrets.APPLICATION_ENV }}" > server/src/main/resources/secrets/application-env.yml
 
       - name: Build with Gradle
         working-directory: server
