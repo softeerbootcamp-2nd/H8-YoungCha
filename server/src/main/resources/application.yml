@@ -24,6 +24,12 @@ logging:
           datasource:
             init:
               ScriptUtils: debug
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  api-docs:
+    groups:
+      enabled: true
 
 --- # dev
 spring:
@@ -44,3 +50,9 @@ logging:
           datasource:
             init:
               ScriptUtils: debug
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  api-docs:
+    groups:
+      enabled: true
