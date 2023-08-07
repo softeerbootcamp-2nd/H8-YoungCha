@@ -1,5 +1,3 @@
-import React from 'react';
-
 function GuideModeButton() {
   return (
     <div className="flex justify-center">

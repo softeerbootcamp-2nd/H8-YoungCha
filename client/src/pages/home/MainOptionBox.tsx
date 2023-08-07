@@ -1,4 +1,3 @@
-import React from 'react';
 import OptionLayout from './OptionLayout';
 
 type DataType = { imgUrl: string; description: string };

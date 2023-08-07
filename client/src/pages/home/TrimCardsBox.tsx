@@ -1,5 +1,3 @@
-import React from 'react';
-
 function TrimCarsBox() {
   return (
     <div className="flex justify-between gap-16px">

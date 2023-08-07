@@ -1,4 +1,3 @@
-import React from 'react';
 import * as Icon from '../../assets/icons';
 import OptionLayout from './OptionLayout';
 

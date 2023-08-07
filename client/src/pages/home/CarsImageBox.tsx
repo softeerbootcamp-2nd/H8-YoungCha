@@ -1,5 +1,3 @@
-import React from 'react';
-
 type DataType = { imgUrl: string; minPrice: string };
 interface CarsImageBoxProps {
   datas: DataType[];

@@ -1,5 +1,4 @@
 import OptionLayout from './OptionLayout';
-import React from 'react';
 
 type DataType = {
   name: string;

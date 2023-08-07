@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface OptionLayoutProps {
   title?: string;
   children?: React.ReactNode;

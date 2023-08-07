@@ -1,4 +1,3 @@
-import React from 'react';
 import * as Icon from '../../assets/icons';
 import BasicOptionBox from './BasicOptionBox';
 import CarsImageBox from './CarsImageBox';
@@ -15,10 +14,10 @@ const TEXT_PALISADE = 'PALISADE';
 const TEXT_MAIN_DETAIL_COMPARE = '자세한 설명과 비교를 원한다면';
 
 const carsNameLists = [
-  { name: 'Exclusive', description: '기본에 충실' },
-  { name: 'Exclusive2', description: '기본에 충실' },
-  { name: 'Exclusive3', description: '기본에 충실' },
-  { name: 'Exclusive4', description: '기본에 충실' },
+  { name: 'Exclusive', description: '기본에 충실', isBest: false },
+  { name: 'Exclusive2', description: '기본에 충실', isBest: true },
+  { name: 'Exclusive3', description: '기본에 충실', isBest: false },
+  { name: 'Exclusive4', description: '기본에 충실', isBest: false },
 ];
 
 const carsImageLists = [
