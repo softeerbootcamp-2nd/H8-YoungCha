@@ -1,18 +1,19 @@
+import React from 'react';
 import OptionLayout from './OptionLayout';
 
 function MakingCarButtonsBox() {
   return (
     <OptionLayout>
-      <li className="w-[140px] h-[50px] bg-main-blue text-white rounded-[6px] flex justify-center items-center">
+      <li className="flex items-center justify-center text-white w-140px h-50px bg-main-blue rounded-6px">
         내 차 만들기
       </li>
-      <li className="w-[140px] h-[50px] bg-main-blue text-white rounded-[6px] flex justify-center items-center">
+      <li className="flex items-center justify-center text-white w-140px h-50px bg-main-blue rounded-6px">
         내 차 만들기
       </li>
-      <li className="w-[140px] h-[50px] bg-main-blue text-white rounded-[6px] flex justify-center items-center">
+      <li className="flex items-center justify-center text-white w-140px h-50px bg-main-blue rounded-6px">
         내 차 만들기
       </li>
-      <li className="w-[140px] h-[50px] bg-main-blue text-white rounded-[6px] flex justify-center items-center">
+      <li className="flex items-center justify-center text-white w-140px h-50px bg-main-blue rounded-6px">
         내 차 만들기
       </li>
     </OptionLayout>

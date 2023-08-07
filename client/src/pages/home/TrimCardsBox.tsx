@@ -1,19 +1,21 @@
+import React from 'react';
+
 function TrimCarsBox() {
   return (
-    <div className="flex justify-between gap-[16px]">
-      <div className="bg-white w-[192px] h-[123px] shrink-0 flex justify-center items-center">
+    <div className="flex justify-between gap-16px">
+      <div className="flex items-center justify-center bg-white w-192px h-123px shrink-0">
         trim card
       </div>
-      <div className="bg-white w-[192px] h-[123px] shrink-0 flex justify-center items-center">
+      <div className="flex items-center justify-center bg-white w-192px h-123px shrink-0">
         trim card
       </div>
-      <div className="bg-white w-[192px] h-[123px] shrink-0 flex justify-center items-center">
+      <div className="flex items-center justify-center bg-white w-192px h-123px shrink-0">
         trim card
       </div>
-      <div className="bg-white w-[192px] h-[123px] shrink-0 flex justify-center items-center">
+      <div className="flex items-center justify-center bg-white w-192px h-123px shrink-0">
         trim card
       </div>
-      <div className="bg-white w-[192px] h-[123px] shrink-0 flex justify-center items-center">
+      <div className="flex items-center justify-center bg-white w-192px h-123px shrink-0">
         trim card
       </div>
     </div>

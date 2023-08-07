@@ -1,3 +1,4 @@
+import React from 'react';
 import * as Icon from '../../assets/icons';
 import BasicOptionBox from './BasicOptionBox';
 import CarsImageBox from './CarsImageBox';
@@ -189,13 +190,13 @@ const basicOptionLists = [
 function Home() {
   return (
     <div>
-      <div className="w-full h-screen pt-[85px] bg-center bg-cover bg-main-background-image flex justify-center">
-        <div className="px-[128px] max-w-7xl flex flex-col justify-between py-[16px]">
+      <div className="flex justify-center w-full h-screen bg-center bg-cover pt-85px bg-main-background-image">
+        <div className="flex flex-col justify-between px-128px max-w-7xl py-16px">
           <div>
-            <p className="text-white text-[24px] font-hsans-head tracking-[-0.96px] leading-[31.2px]">
+            <p className="text-white text-24px font-hsans-head tracking-[-0.96px] leading-[31.2px]">
               {TEXT_MAKING_MY_CAR}
             </p>
-            <p className="text-white text-[64px] font-hsans-head leading-[83.2px] font-medium">
+            <p className="font-medium text-white text-64px font-hsans-head leading-[83.2px]">
               {TEXT_PALISADE}
             </p>
           </div>
@@ -203,15 +204,15 @@ function Home() {
           <div>
             <TrimCarsBox />
             <div>
-              <p className="text-center text-white opacity-60 title mt-[24px]">
+              <p className="text-center text-white opacity-60 title mt-24px">
                 {TEXT_MAIN_DETAIL_COMPARE}
               </p>
 
-              <div className="relative flex flex-col items-center top-[12px] animate-bounce">
+              <div className="relative flex flex-col items-center top-12px animate-bounce">
                 <Icon.MainBelowArrow opacity={0.8} />
                 <Icon.MainBelowArrow
                   opacity={0.4}
-                  className="relative bottom-[18px]"
+                  className="relative bottom-18px"
                 />
               </div>
             </div>
@@ -219,11 +220,11 @@ function Home() {
         </div>
       </div>
 
-      <div className="w-full mb-[400px]">
+      <div className="w-full mb-400px">
         <CarsNameListBox datas={carsNameLists} />
-        <div className="max-w-7xl pt-[32px] m-auto flex flex-col gap-[60px] px-[128px]">
+        <div className="flex flex-col m-auto max-w-7xl pt-32px gap-60px px-128px">
           <CarsImageBox datas={carsImageLists} />
-          <div className="flex flex-col gap-[48px]">
+          <div className="flex flex-col gap-48px">
             <MainOptionBox datas={MainOptionLists} />
             <OutsideColorBox datas={outsideColorLists} />
             <InsideColorBox datas={insideColorLists} />

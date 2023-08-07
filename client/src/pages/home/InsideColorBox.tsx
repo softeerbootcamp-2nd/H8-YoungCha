@@ -1,3 +1,4 @@
+import React from 'react';
 import OptionLayout from './OptionLayout';
 
 type DataType = { url: string; description: string };
@@ -11,13 +12,10 @@ function InsideColorBox({ datas }: OutsideColorBoxProps) {
   return (
     <OptionLayout title={TITLE}>
       {datas.map((data) => (
-        <ul
-          className="flex flex-col gap-[24px] w-full"
-          key={data[0].description}
-        >
+        <ul className="flex flex-col w-full gap-24px" key={data[0].description}>
           {data.map(({ url, description }) => (
-            <li className="flex gap-[12px] items-center" key={description}>
-              <img src={url} alt={description} className="w-[100px] h-[35px]" />
+            <li className="flex items-center gap-12px" key={description}>
+              <img src={url} alt={description} className="w-100px h-35px" />
               <p className="body2 text-grey-black">{description}</p>
             </li>
           ))}

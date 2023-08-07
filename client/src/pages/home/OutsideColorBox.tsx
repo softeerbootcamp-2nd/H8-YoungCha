@@ -1,3 +1,4 @@
+import React from 'react';
 import * as Icon from '../../assets/icons';
 import OptionLayout from './OptionLayout';
 
@@ -12,12 +13,9 @@ function OutsideColorBox({ datas }: OutsideColorBoxProps) {
   return (
     <OptionLayout title={TITLE}>
       {datas.map((data) => (
-        <ul
-          className="flex flex-col gap-[24px] w-full"
-          key={data[0].description}
-        >
+        <ul className="flex flex-col w-full gap-24px" key={data[0].description}>
           {data.map(({ code, description }) => (
-            <li className="flex gap-[15px] items-center" key={description}>
+            <li className="flex items-center gap-15px" key={description}>
               <Icon.MainOutsideColor code={code} />
               <p className="body2 text-grey-004">{description}</p>
             </li>
