@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.youngcha.ohmycarset.ui.customview.CircleView
+import com.youngcha.ohmycarset.ui.customview.CircleCustomView
 
 @BindingAdapter("imageUrl")
 fun loadImage(view: ImageView, imageUrl: String) {
@@ -17,7 +17,7 @@ fun loadImage(view: ImageView, imageUrl: Int) {
 }
 
 @BindingAdapter("app:fillColor")
-fun setFillColor(view: CircleView, colorStr: String?) {
+fun setFillColor(view: CircleCustomView, colorStr: String?) {
     if (!colorStr.isNullOrEmpty()) {
         try {
             view.setFillColor(Color.parseColor(colorStr))

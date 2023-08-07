@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.youngcha.ohmycarset.R
 
-class CircleView@JvmOverloads constructor(
+class CircleCustomView@JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

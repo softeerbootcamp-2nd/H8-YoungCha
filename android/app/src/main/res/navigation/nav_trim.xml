@@ -51,14 +51,6 @@
             app:destination="@id/trimSelfModeFragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_trimSelfModeFragment_to_makeCarSelfModeFragment"
-            app:destination="@id/makeCarSelfModeFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/makeCarSelfModeFragment"
-        android:name="com.youngcha.ohmycarset.ui.fragment.MakeCarSelfModeFragment"
-        android:label="fragment_make_car_self_mode"
-        tools:layout="@layout/fragment_make_car_self_mode" />
 
 </navigation>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Custom Tab Text Style -->
-    <style name="MyCustomTabText">
-        <item name="android:fontFamily">@font/hyundai_sans_head_kr_medium</item>
-        <item name="android:textSize">16sp</item> <!-- 원하는 텍스트 크기로 변경 가능 -->
-        <!-- 다른 속성들도 필요하다면 여기에 추가 -->
-    </style>
-</resources>

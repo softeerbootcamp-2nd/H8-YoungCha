@@ -114,7 +114,7 @@ class TrimSelfModeFragment : Fragment() {
 
         for (name in tabNames) {
             val tab = binding.tlOption.newTab()
-            val customView = layoutInflater.inflate(R.layout.view_custom_tab_name, null)
+            val customView = layoutInflater.inflate(R.layout.view_custom_tab, null)
             val tvTabName = customView.findViewById<TextView>(R.id.tv_tab_name)
             tvTabName.text = name
             tab.customView = customView
