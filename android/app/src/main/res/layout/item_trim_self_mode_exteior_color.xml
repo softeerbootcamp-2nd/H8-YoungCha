@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="@id/v_best_color"
             app:layout_constraintTop_toTopOf="@id/v_best_color" />
 
-        <com.youngcha.ohmycarset.ui.customview.CircleCustomView
+        <com.youngcha.ohmycarset.ui.customview.CircleView
             android:id="@+id/cv_circle_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
