@@ -1,116 +1,29 @@
-function InsideColorBox() {
+import OptionLayout from './OptionLayout';
+
+type DataType = { url: string; description: string };
+interface OutsideColorBoxProps {
+  datas: DataType[][];
+}
+
+const TITLE = '내장 색상';
+
+function InsideColorBox({ datas }: OutsideColorBoxProps) {
   return (
-    <>
-      <h3 className="font-medium text-grey-black mb-[28px] mt-[56px] text-center">
-        내장 색상
-      </h3>
-      <div className="flex justify-between px-[24px]">
-        <ul className="flex flex-col gap-[24px]">
-          <li className="flex items-center gap-[12px]">
-            <img
-              src="src/assets/images/black-leather.png"
-              alt="인조가죽 블랙"
-              className="w-[100px] h-[35px]"
-            />
-            <p className="font-medium body2 text-grey-black">인조가죽(블랙)</p>
-          </li>
-          <li className="flex items-center gap-[12px]">
-            <img
-              src="src/assets/images/black-leather.png"
-              alt="인조가죽 블랙"
-              className="w-[100px] h-[35px]"
-            />
-            <p className="font-medium body2 text-grey-black">인조가죽(블랙)</p>
-          </li>
-          <li className="flex items-center gap-[12px]">
-            <img
-              src="src/assets/images/black-leather.png"
-              alt="인조가죽 블랙"
-              className="w-[100px] h-[35px]"
-            />
-            <p className="font-medium body2 text-grey-black">인조가죽(블랙)</p>
-          </li>
+    <OptionLayout title={TITLE}>
+      {datas.map((data) => (
+        <ul
+          className="flex flex-col gap-[24px] w-full"
+          key={data[0].description}
+        >
+          {data.map(({ url, description }) => (
+            <li className="flex gap-[12px] items-center" key={description}>
+              <img src={url} alt={description} className="w-[100px] h-[35px]" />
+              <p className="body2 text-grey-black">{description}</p>
+            </li>
+          ))}
         </ul>
-        <ul className="flex flex-col gap-[24px]">
-          <li className="flex items-center gap-[12px]">
-            <img
-              src="src/assets/images/black-leather.png"
-              alt="인조가죽 블랙"
-              className="w-[100px] h-[35px]"
-            />
-            <p className="font-medium body2 text-grey-black">인조가죽(블랙)</p>
-          </li>
-          <li className="flex items-center gap-[12px]">
-            <img
-              src="src/assets/images/black-leather.png"
-              alt="인조가죽 블랙"
-              className="w-[100px] h-[35px]"
-            />
-            <p className="font-medium body2 text-grey-black">인조가죽(블랙)</p>
-          </li>
-          <li className="flex items-center gap-[12px]">
-            <img
-              src="src/assets/images/black-leather.png"
-              alt="인조가죽 블랙"
-              className="w-[100px] h-[35px]"
-            />
-            <p className="font-medium body2 text-grey-black">인조가죽(블랙)</p>
-          </li>
-        </ul>
-        <ul className="flex flex-col gap-[24px]">
-          <li className="flex items-center gap-[12px]">
-            <img
-              src="src/assets/images/black-leather.png"
-              alt="인조가죽 블랙"
-              className="w-[100px] h-[35px]"
-            />
-            <p className="font-medium body2 text-grey-black">인조가죽(블랙)</p>
-          </li>
-          <li className="flex items-center gap-[12px]">
-            <img
-              src="src/assets/images/black-leather.png"
-              alt="인조가죽 블랙"
-              className="w-[100px] h-[35px]"
-            />
-            <p className="font-medium body2 text-grey-black">인조가죽(블랙)</p>
-          </li>
-          <li className="flex items-center gap-[12px]">
-            <img
-              src="src/assets/images/black-leather.png"
-              alt="인조가죽 블랙"
-              className="w-[100px] h-[35px]"
-            />
-            <p className="font-medium body2 text-grey-black">인조가죽(블랙)</p>
-          </li>
-        </ul>
-        <ul className="flex flex-col gap-[24px]">
-          <li className="flex items-center gap-[12px]">
-            <img
-              src="src/assets/images/black-leather.png"
-              alt="인조가죽 블랙"
-              className="w-[100px] h-[35px]"
-            />
-            <p className="font-medium body2 text-grey-black">인조가죽(블랙)</p>
-          </li>
-          <li className="flex items-center gap-[12px]">
-            <img
-              src="src/assets/images/black-leather.png"
-              alt="인조가죽 블랙"
-              className="w-[100px] h-[35px]"
-            />
-            <p className="font-medium body2 text-grey-black">인조가죽(블랙)</p>
-          </li>
-          <li className="flex items-center gap-[12px]">
-            <img
-              src="src/assets/images/black-leather.png"
-              alt="인조가죽 블랙"
-              className="w-[100px] h-[35px]"
-            />
-            <p className="font-medium body2 text-grey-black">인조가죽(블랙)</p>
-          </li>
-        </ul>
-      </div>
-    </>
+      ))}
+    </OptionLayout>
   );
 }
 

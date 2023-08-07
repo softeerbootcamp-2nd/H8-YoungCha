@@ -1,6 +1,6 @@
 function GuideModeButton() {
   return (
-    <div className="flex justify-center mb-[204px]">
+    <div className="flex justify-center">
       <div className="flex justify-center gap-[80px] bg-grey-001 w-[533px] h-[90px] items-center rounded-[6px]">
         <p className="title5 text-grey-black">
           무엇을 골라야 할 지 모르겠다면?

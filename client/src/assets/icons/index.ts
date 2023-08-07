@@ -1,5 +1,4 @@
 import MainBelowArrow from './main-below-arrow';
-import MainOutsideWhite from './main-outside-white';
-import MainNavagationOption from './main-navigation-option';
+import MainOutsideColor from './main-outside-color';
 
-export { MainBelowArrow, MainNavagationOption, MainOutsideWhite };
+export { MainBelowArrow, MainOutsideColor };

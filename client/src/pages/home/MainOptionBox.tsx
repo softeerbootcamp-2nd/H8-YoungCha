@@ -1,70 +1,33 @@
-import * as Icon from '../../assets/icons';
+import OptionLayout from './OptionLayout';
 
-function MainOptionBox() {
+type DataType = { imgUrl: string; description: string };
+interface MainOptionBoxProps {
+  datas: DataType[][];
+}
+
+const TITLE = '핵심 옵션';
+
+function MainOptionBox({ datas }: MainOptionBoxProps) {
   return (
-    <>
-      <h3 className="font-medium text-grey-black mb-[28px] mt-[56px] text-center">
-        핵심 옵션
-      </h3>
-      <div className="flex justify-between px-[22px]">
-        <ul className="flex flex-col gap-[36px]">
-          <li className="flex gap-[30px] items-center">
-            <Icon.MainNavagationOption />
-            <p className="body3 text-grey-004">12.3인치 내비게이션</p>
-          </li>
-          <li className="flex gap-[30px] items-center">
-            <Icon.MainNavagationOption />
-            <p className="body3 text-grey-004">12.3인치 내비게이션</p>
-          </li>
-          <li className="flex gap-[30px] items-center">
-            <Icon.MainNavagationOption />
-            <p className="body3 text-grey-004">12.3인치 내비게이션</p>
-          </li>
+    <OptionLayout title={TITLE}>
+      {datas.map((data) => (
+        <ul
+          className="flex flex-col gap-[8px] w-full"
+          key={data[0].description}
+        >
+          {data.map(({ imgUrl, description }) => (
+            <li className="flex gap-[8px] items-center" key={description}>
+              <img
+                src={imgUrl}
+                alt="description"
+                className="w-[80px] h-[60px]"
+              />
+              <p className="body3 text-grey-004">{description}</p>
+            </li>
+          ))}
         </ul>
-        <ul className="flex flex-col gap-[36px]">
-          <li className="flex gap-[30px] items-center">
-            <Icon.MainNavagationOption />
-            <p className="body3 text-grey-004">12.3인치 내비게이션</p>
-          </li>
-          <li className="flex gap-[30px] items-center">
-            <Icon.MainNavagationOption />
-            <p className="body3 text-grey-004">12.3인치 내비게이션</p>
-          </li>
-          <li className="flex gap-[30px] items-center">
-            <Icon.MainNavagationOption />
-            <p className="body3 text-grey-004">12.3인치 내비게이션</p>
-          </li>
-        </ul>
-        <ul className="flex flex-col gap-[36px]">
-          <li className="flex gap-[30px] items-center">
-            <Icon.MainNavagationOption />
-            <p className="body3 text-grey-004">12.3인치 내비게이션</p>
-          </li>
-          <li className="flex gap-[30px] items-center">
-            <Icon.MainNavagationOption />
-            <p className="body3 text-grey-004">12.3인치 내비게이션</p>
-          </li>
-          <li className="flex gap-[30px] items-center">
-            <Icon.MainNavagationOption />
-            <p className="body3 text-grey-004">12.3인치 내비게이션</p>
-          </li>
-        </ul>
-        <ul className="flex flex-col gap-[36px]">
-          <li className="flex gap-[30px] items-center">
-            <Icon.MainNavagationOption />
-            <p className="body3 text-grey-004">12.3인치 내비게이션</p>
-          </li>
-          <li className="flex gap-[30px] items-center">
-            <Icon.MainNavagationOption />
-            <p className="body3 text-grey-004">12.3인치 내비게이션</p>
-          </li>
-          <li className="flex gap-[30px] items-center">
-            <Icon.MainNavagationOption />
-            <p className="body3 text-grey-004">12.3인치 내비게이션</p>
-          </li>
-        </ul>
-      </div>
-    </>
+      ))}
+    </OptionLayout>
   );
 }
 
