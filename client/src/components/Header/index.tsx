@@ -2,11 +2,11 @@ import HyundaiLogoButton from './HyundaiLogoButton';
 import DictionaryToggleButton from './DictionaryToggleButton';
 import ModelChangeButton from './ModelChangeButton';
 
-interface headerProps {
+interface HeaderProps {
   backgroundColor?: string;
 }
 
-function Header({ backgroundColor }: headerProps) {
+function Header({ backgroundColor }: HeaderProps) {
   return (
     <div
       className={`flex justify-between max-w-7xl px-[128px] py-[32px] fixed z-100 w-full mx-auto left-0 right-0 ${backgroundColor}`}
