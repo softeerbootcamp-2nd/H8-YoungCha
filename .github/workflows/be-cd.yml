@@ -11,6 +11,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
@@ -27,6 +28,9 @@ jobs:
       - name: Build with Gradle
         working-directory: server
         run: ./gradlew build -x test
+
+      - name: Set up Docker buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: Docker build and push
         run: |
