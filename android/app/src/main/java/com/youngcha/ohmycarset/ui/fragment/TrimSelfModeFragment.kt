@@ -2,7 +2,6 @@ package com.youngcha.ohmycarset.ui.fragment
 
 import android.os.Bundle
 import android.transition.TransitionManager
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +9,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentTrimSelfModeBinding
