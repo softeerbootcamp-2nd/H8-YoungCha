@@ -3,30 +3,37 @@ package com.youngcha.ohmycarset.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.youngcha.ohmycarset.model.Trim
-import com.youngcha.ohmycarset.model.TrimState
+import com.youngcha.ohmycarset.enums.TrimType
+import com.youngcha.ohmycarset.model.TrimCategory
+import com.youngcha.ohmycarset.model.TrimCategoryState
 
-class TrimSelectViewModel: ViewModel() {
-    private val _trimState = MutableLiveData<TrimState>()
-    val trimState: LiveData<TrimState> = _trimState
+class TrimSelectViewModel : ViewModel() {
+    private val _trimCategoryState = MutableLiveData<TrimCategoryState>()
+    val trimCategoryState: LiveData<TrimCategoryState> = _trimCategoryState
 
     private val _clickedPosition = MutableLiveData<Int>()
     val clickedPosition: LiveData<Int> = _clickedPosition
 
-    fun setTrims(trimsList: List<Trim>) {
-        _trimState.value = TrimState(trimsList.first(), trimsList)
+    init {
+        val initialTrimCategories = listOf(
+            TrimCategory(TrimType.GUIDE, "Guide Mode", "#나만을 위한 팰리세이드", true),
+            TrimCategory(TrimType.SELF, "Exclusive", "#기본에 충실", false),
+            TrimCategory(TrimType.SELF, "Le Blanc", "#베스트셀러", false),
+            TrimCategory(TrimType.SELF, "Prestige", "#부담없는 고급감", false),
+            TrimCategory(TrimType.SELF, "Calligraphy", "#최고를 원한다면", false)
+        )
+        _trimCategoryState.value = TrimCategoryState(isFirstLoad = true, initialTrimCategories[0], initialTrimCategories)
     }
 
-    fun onItemClicked(clickedTrim: Trim) {
-        trimState.value?.trims?.indexOf(clickedTrim)?.let {
+    fun onItemClicked(clickedTrimCategory: TrimCategory) {
+        trimCategoryState.value?.trimCategories?.indexOf(clickedTrimCategory)?.let {
             _clickedPosition.value = it
         }
 
-        val updatedTrims = trimState.value?.trims?.map { trim ->
-            if (trim == clickedTrim) trim.copy(isChecked = true)
+        val updatedTrims = trimCategoryState.value?.trimCategories?.map { trim ->
+            if (trim == clickedTrimCategory) trim.copy(isChecked = true)
             else trim.copy(isChecked = false)
         }
-        _trimState.value = TrimState(clickedTrim, updatedTrims ?: listOf())
+        _trimCategoryState.value = TrimCategoryState(false, clickedTrimCategory, updatedTrims ?: listOf())
     }
-
 }

@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset
+package com.youngcha.ohmycarset.ui.activity
 
 import android.content.Intent
 import android.os.Bundle

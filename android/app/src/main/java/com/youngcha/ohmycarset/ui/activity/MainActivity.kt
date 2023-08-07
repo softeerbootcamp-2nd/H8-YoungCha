@@ -1,25 +1,30 @@
 package com.youngcha.ohmycarset.ui.activity
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.view.View
 import androidx.activity.viewModels
+import androidx.core.widget.NestedScrollView
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import com.youngcha.ohmycarset.R
-import com.youngcha.ohmycarset.ui.adapter.TrimSelectAdapter
+import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelectAdapter
 import com.youngcha.ohmycarset.databinding.ActivityMainBinding
-import com.youngcha.ohmycarset.model.Trim
+import com.youngcha.ohmycarset.model.TrimCategory
 import com.youngcha.ohmycarset.enums.TrimType
 import com.youngcha.ohmycarset.ui.fragment.GuideModeFragmentDirections
-import com.youngcha.ohmycarset.ui.fragment.SelfModeFragmentDirections
+import com.youngcha.ohmycarset.ui.fragment.TrimSelfModeFragmentDirections
+import com.youngcha.ohmycarset.ui.listener.CustomScrollChangeListener
 import com.youngcha.ohmycarset.util.MILLISECONDS_PER_INCH
 import com.youngcha.ohmycarset.viewmodel.TrimSelectViewModel
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
     private val viewModel: TrimSelectViewModel by viewModels()
     private lateinit var adapter: TrimSelectAdapter
@@ -34,17 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        val trims = listOf(
-            Trim(TrimType.GUIDE, "#Guide Mode", "#나만을 위한 팰리세이드", true),
-            Trim(TrimType.SELF, "Exclusive", "#기본에 충실", false),
-            Trim(TrimType.SELF, "Le Blanc", "#베스트셀러", false),
-            Trim(TrimType.SELF, "Prestige", "#부담없는 고급감", false),
-            Trim(TrimType.SELF, "Calligraphy", "#최고를 원한다면", false)
-        )
-
-        adapter = TrimSelectAdapter(trims, viewModel)
-
-        viewModel.setTrims(trims)
+        adapter = TrimSelectAdapter(viewModel)
 
         binding.rvTrimSelect.apply {
             layoutManager =
@@ -52,12 +47,18 @@ class MainActivity : AppCompatActivity() {
             adapter = this@MainActivity.adapter
         }
 
+        binding.nsvSelfTrimScroll.setOnScrollChangeListener(
+            CustomScrollChangeListener(binding.ivDropDownTrim, binding.tvDetailInfoTxt)
+        )
     }
 
     private fun observeViewModel() {
-        viewModel.trimState.observe(this) { trimState ->
-            updateRecyclerView(trimState.trims)
-            handleNavigation(trimState.currTrim)
+        viewModel.trimCategoryState.observe(this) { trimState ->
+            updateRecyclerView(trimState.trimCategories)
+
+            if (!trimState.isFirstLoad) {
+                handleNavigation(trimState.currTrimCategory)
+            }
         }
 
         viewModel.clickedPosition.observe(this) { position ->
@@ -67,28 +68,41 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateRecyclerView(trims: List<Trim>) {
-        adapter.updateTrims(trims)
+    private fun updateRecyclerView(trimCategories: List<TrimCategory>) {
+        adapter.updateTrims(trimCategories)
     }
 
-    private fun handleNavigation(selectedTrim: Trim) {
+    private fun handleNavigation(selectedTrimCategory: TrimCategory) {
         val currentDestinationId = findNavController(R.id.fc_nav_host).currentDestination?.id
-
-        val action = when (selectedTrim.type) {
-            TrimType.SELF -> getSelfAction(currentDestinationId)
-            TrimType.GUIDE -> getGuideAction(currentDestinationId)
+        val action = when (selectedTrimCategory.type) {
+            TrimType.SELF -> getSelfAction(currentDestinationId, selectedTrimCategory)
+            TrimType.GUIDE -> getGuideAction(currentDestinationId, selectedTrimCategory)
         }
         action?.let { navigateTo(it) }
     }
 
-    private fun getSelfAction(currentDestinationId: Int?) = when (currentDestinationId) {
-        R.id.selfModeFragment -> SelfModeFragmentDirections.actionSelfModeFragmentSelf()
-        else -> GuideModeFragmentDirections.actionGuideModeFragmentToSelfModeFragment()
+    private fun getSelfAction(currentDestinationId: Int?, selectedTrimCategory: TrimCategory): NavDirections? {
+        return when (currentDestinationId) {
+            R.id.trimSelfModeFragment -> TrimSelfModeFragmentDirections.actionSelfModeFragmentSelf(
+                selectedTrimCategory.name
+            )
+
+            else -> GuideModeFragmentDirections.actionGuideModeFragmentToSelfModeFragment(
+                selectedTrimCategory.name
+            )
+        }
     }
 
-    private fun getGuideAction(currentDestinationId: Int?) = when (currentDestinationId) {
-        R.id.guideModeFragment -> GuideModeFragmentDirections.actionGuideModeFragmentSelf()
-        else -> SelfModeFragmentDirections.actionSelfModeFragmentToGuideModeFragment()
+    private fun getGuideAction(currentDestinationId: Int?, selectedTrimCategory: TrimCategory): NavDirections? {
+        return when (currentDestinationId) {
+            R.id.guideModeFragment -> GuideModeFragmentDirections.actionGuideModeFragmentSelf(
+                selectedTrimCategory.name
+            )
+
+            else -> TrimSelfModeFragmentDirections.actionSelfModeFragmentToGuideModeFragment(
+                selectedTrimCategory.name
+            )
+        }
     }
 
     private fun navigateTo(action: NavDirections) {
@@ -109,6 +123,5 @@ class MainActivity : AppCompatActivity() {
             smoothScroller.targetPosition = position
             layoutManager.startSmoothScroll(smoothScroller)
         }
-
     }
 }

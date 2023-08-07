@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset
+package com.youngcha.ohmycarset.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentOnboardingPage3Binding
+import com.youngcha.ohmycarset.ui.activity.MainActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

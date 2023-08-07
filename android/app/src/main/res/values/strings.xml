@@ -62,4 +62,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="onboarding_image">onboarding image</string>
 
+    <string name="palisade">팰리세이드</string>
+    <string name="leblanc_full_name">Le Blanc 르블랑</string>
+    <string name="core_option">핵심 옵션</string>
+    <string name="select_complete">선택 완료</string>
+    <string name="detail_info_txt">자세한 정보를 보고싶다면</string>
+    <string name="plus_info">더보기</string>
+    <string name="best">Best</string>
 </resources>

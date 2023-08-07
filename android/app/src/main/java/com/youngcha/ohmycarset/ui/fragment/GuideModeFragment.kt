@@ -25,9 +25,9 @@ class GuideModeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val selectedTrimName = args.SelectedTrimName
+        val selectedTrimName = args.selectedTrimName
 
-        Log.d("로그", selectedTrimName.toString())
+        Log.d("로그", selectedTrimName)
     }
 
     override fun onDestroyView() {

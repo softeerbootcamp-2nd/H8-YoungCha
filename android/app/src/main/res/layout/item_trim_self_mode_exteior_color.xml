@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="rank"
+            type="int" />
+
+        <variable
+            name="exterior_color"
+            type="com.youngcha.ohmycarset.model.TrimSelfModeExteriorColor" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="166dp"
+        android:layout_height="116dp"
+        android:background="@color/cool_grey_001">
+
+        <View
+            android:id="@+id/v_best_color"
+            android:layout_width="45dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/btn_mainstyle"
+            app:isVisibleForRankZero="@{rank}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_best_color_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            android:text="@string/best"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:isVisibleForRankZero="@{rank}"
+            app:layout_constraintBottom_toBottomOf="@id/v_best_color"
+            app:layout_constraintEnd_toEndOf="@id/v_best_color"
+            app:layout_constraintStart_toStartOf="@id/v_best_color"
+            app:layout_constraintTop_toTopOf="@id/v_best_color" />
+
+        <com.youngcha.ohmycarset.ui.customview.CircleCustomView
+            android:id="@+id/cv_circle_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="19dp"
+            app:fillColor="@{exterior_color.code}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            android:text="@{exterior_color.name}"
+            android:textColor="@color/cool_grey_black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_circle_view" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
