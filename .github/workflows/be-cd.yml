@@ -20,7 +20,8 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Gradle
-        run: ./gradlew bootJar test
+        working-directory: server
+        run: ./gradlew build -x test
 
       - name: Docker build and push
         run: |
