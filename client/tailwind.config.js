@@ -16,6 +16,7 @@ export default {
         'grey-003': '#AEB1B7',
         'grey-004': '#595C61',
         'grey-black': '#202732',
+        'best-red': '#FF4D4D',
       },
     },
     fontFamily: {

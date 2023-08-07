@@ -1,7 +1,7 @@
-import OptionLayout from './OptionLayout';
 import React from 'react';
+import OptionLayout from './OptionLayout';
 
-type DataType = { name: string; description: string };
+type DataType = { name: string; description: string; isBest?: boolean };
 interface CarsNameListBoxProps {
   datas: DataType[];
 }
@@ -19,11 +19,17 @@ function CarsNameListBox({ datas }: CarsNameListBoxProps) {
 
       <div className="flex items-center justify-center bg-grey-001 py-[36px]">
         <OptionLayout>
-          {datas.map(({ name, description }) => (
+          {datas.map(({ name, description, isBest }) => (
             <li
-              className="flex flex-col items-center w-full gap-16px"
+              className="relative flex flex-col items-center w-full gap-16px"
               key={name}
             >
+              {isBest && (
+                <strong className="absolute title5 text-best-red top-[-8px]">
+                  best
+                </strong>
+              )}
+              <div></div>
               <h3 className="text-grey-black text-28px font-medium tracking-[-0.84px]">
                 {name}
               </h3>
