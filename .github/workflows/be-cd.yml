@@ -11,6 +11,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
 
     steps:
       - uses: actions/checkout@v3
@@ -22,11 +25,10 @@ jobs:
 
       - name: Create secret file
         run: |
-          mkdir server/src/main/resources/secrets
-          echo "  ${{ secrets.APPLICATION_ENV }}" > server/src/main/resources/secrets/application-env.yml
+          mkdir src/main/resources/secrets
+          echo "${{ secrets.APPLICATION_ENV }}" > src/main/resources/secrets/application-env.yml
 
       - name: Build with Gradle
-        working-directory: server
         run: ./gradlew build -x test
 
       - name: Set up Docker buildx
@@ -35,7 +37,7 @@ jobs:
       - name: Docker build and push
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f server/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }} .
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
 
       - name: Deploy to dev
