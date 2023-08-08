@@ -18,10 +18,11 @@ export default {
         'grey-black': '#202732',
       },
     },
+    fontFamily: {
+      'hsans-head': ['Hyundai Sans Head KR', 'sans-serif'],
+      'hsans-text': ['Hyundai Sans Text KR', 'sans-serif'],
+    },
   },
-  fontFamily: {
-    'hsans-head': ['Hyundai Sans Head KR', 'sans-serif'],
-    'hsans-text': ['HyundaiSansText', 'sans-serif'],
-  },
+
   plugins: [typography, pixel],
 };

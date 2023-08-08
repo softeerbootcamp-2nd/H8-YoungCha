@@ -3,45 +3,46 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Hyndai Sans Head KR';
+  font-family: 'Hyundai Sans Head KR';
   font-weight: 400;
   src:
-    local('Hyndai Sans Head KR'),
-    url('../src/assets/font/HyundaiSansHeadKRRegular.woff2') format('woff2'),
-    url('../src/assets/font/HyundaiSansHeadKRRegular.ttf') format('truetype');
+    local('Hyundai Sans Head KR'),
+    url('/src/assets/font/HyundaiSansHeadKRRegular.woff2') format('woff2'),
+    url('/src/assets/font/HyundaiSansHeadKRRegular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Hyndai Sans Head KR';
+  font-family: 'Hyundai Sans Head KR';
   font-weight: 500;
   src:
-    local('Hyndai Sans Head KR'),
-    url('../src/assets/font/HyundaiSansHeadKRMedium.woff2') format('woff2'),
-    url('../src/assets/font/HyundaiSansHeadKRMedium.ttf') format('truetype');
+    local('Hyundai Sans Head KR'),
+    url('/src/assets/font/HyundaiSansHeadKRMedium.woff2') format('woff2'),
+    url('/src/assets/font/HyundaiSansHeadKRMedium.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Hyndai Sans Text KR';
+  font-family: 'Hyundai Sans Text KR';
   font-weight: 400;
   src:
-    local('Hyndai Sans Text KR'),
-    url('../src/assets/font/HyundaiSansTextKRRegular.woff2') format('woff2'),
-    url('../src/assets/font/HyundaiSansTextKRRegular.ttf') format('truetype');
+    local('Hyundai Sans Text KR'),
+    url('/src/assets/font/HyundaiSansTextKRRegular.woff2') format('woff2'),
+    url('/src/assets/font/HyundaiSansTextKRRegular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Hyndai Sans Text KR';
+  font-family: 'Hyundai Sans Text KR';
   font-weight: 500;
   src:
-    local('Hyndai Sans Text KR'),
-    url('../src/assets/font/HyundaiSansTextKRMedium.woff2') format('woff2'),
-    url('../src/assets/font/HyundaiSansTextKRMedium.ttf') format('truetype');
+    local('Hyundai Sans Text KR'),
+    url('/src/assets/font/HyundaiSansTextKRMedium.woff2') format('woff2'),
+    url('/src/assets/font/HyundaiSansTextKRMedium.ttf') format('truetype');
 }
 
 @layer base {
   html {
-    font-family: 'Hyndai Sans Text KR';
+    font-family: 'Hyundai Sans Text KR';
     font-weight: 400;
     line-height: 130%;
+    letter-spacing: -0.48px;
   }
 }
