@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="19dp"
-                android:layout_marginTop="119dp"
+                android:layout_marginTop="74dp"
                 android:fontFamily="@font/hyundai_sans_head_kr_medium"
                 android:text="@string/trim_text_1"
                 android:textColor="@color/cool_grey_black"
