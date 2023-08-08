@@ -18,7 +18,7 @@ function ProgressItem({
   return (
     <button onClick={handleOnClick}>
       <p
-        className={`w-[120px] ${
+        className={`w-120px ${
           isSelected ? 'text-main-blue' : 'text-grey-002'
         } ${isSelected ? 'font-medium' : 'font-normal'}`}
       >{`0${itemIndex} ${itemName}`}</p>
