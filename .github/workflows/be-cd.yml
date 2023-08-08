@@ -1,7 +1,7 @@
 name: be-cd
 
 on:
-  pull_request:
+  push:
     branches:
       - dev/be
 
