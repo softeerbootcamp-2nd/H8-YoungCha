@@ -49,8 +49,21 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            sudo docker stop ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
-            sudo docker rm ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
-            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
-            sudo docker image prune -f
+            if [ "$(docker ps -aqf name="^spring$")" ];
+            then
+              echo "> spring container 제거"
+              docker stop ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+              docker rm ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+            else
+              echo "> 구동 중인 spring container가 없으므로 종료하지 않습니다."
+            fi
+            
+            if [[ "$(docker images -q ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest 2> /dev/null)" != "" ]]; then
+              echo "> latest image 삭제"
+              docker rmi ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+            fi
+            
+            echo "> docker compose up"
+            docker compose up -d --build spring
+        
+            docker image prune -f
