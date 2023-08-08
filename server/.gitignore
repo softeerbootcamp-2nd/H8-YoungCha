@@ -37,3 +37,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### application env ###
+src/main/resources/secrets
