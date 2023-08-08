@@ -21,9 +21,9 @@ public class DictionaryController {
 
     private final DictionaryService dictionaryService;
 
-    @Operation(summary = "백카사전 전체 조회", description = "백카사전의 전체 데이터를 요청합니다")
+    @Operation(summary = "백카사전 전체 조회", description = "백카사전의 전체 데이터를 조회합니다")
     @GetMapping
-    public ResponseEntity<SuccessResponse<List<FindDictionaryResponse>>> getDictionary() {
+    public ResponseEntity<SuccessResponse<List<FindDictionaryResponse>>> findDictionary() {
         List<FindDictionaryResponse> dictionary = dictionaryService.findDictionary();
         SuccessResponse<List<FindDictionaryResponse>> successResponse = new SuccessResponse<>(dictionary);
         return ResponseEntity.ok(successResponse);
