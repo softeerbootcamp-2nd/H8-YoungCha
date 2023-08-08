@@ -22,8 +22,10 @@ import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelectAdapter
 import com.youngcha.ohmycarset.databinding.ActivityMainBinding
 import com.youngcha.ohmycarset.model.TrimCategory
 import com.youngcha.ohmycarset.enums.TrimType
+import com.youngcha.ohmycarset.ui.customview.HeaderToolBar
 import com.youngcha.ohmycarset.ui.fragment.GuideModeFragmentDirections
 import com.youngcha.ohmycarset.ui.fragment.TrimSelfModeFragmentDirections
+import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.ui.listener.CustomScrollChangeListener
 import com.youngcha.ohmycarset.util.MILLISECONDS_PER_INCH
 import com.youngcha.ohmycarset.viewmodel.TrimSelectViewModel

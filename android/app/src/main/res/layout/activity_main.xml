@@ -73,6 +73,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.youngcha.ohmycarset.ui.customview.HeaderToolBar
+        android:id="@+id/htb_header_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:layout_constraintEnd_toEndOf="parent"
