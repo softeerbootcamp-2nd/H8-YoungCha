@@ -6,6 +6,8 @@ interface HeaderProps {
   backgroundColor?: string;
 }
 
+const TEXT_MAKING_MY_CAR = '내 차 만들기';
+
 function Header({ backgroundColor }: HeaderProps) {
   return (
     <div
@@ -17,7 +19,9 @@ function Header({ backgroundColor }: HeaderProps) {
           <span>|</span>
         </div>
         <div>
-          <span className="pl-20px title3 font-medium">내 차 만들기</span>
+          <span className="font-medium pl-20px title3">
+            {TEXT_MAKING_MY_CAR}
+          </span>
         </div>
       </div>
       <div className="flex gap-20px">
