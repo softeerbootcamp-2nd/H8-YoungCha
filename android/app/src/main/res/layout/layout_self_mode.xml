@@ -15,9 +15,11 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_root_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="204dp"
+        android:layout_marginBottom="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:context=".ui.fragment.TrimSelfModeFragment">
 
         <ImageView
@@ -243,6 +245,7 @@
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginTop="18dp"
+            android:layout_marginBottom="200dp"
             android:background="@drawable/btn_plus_info"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

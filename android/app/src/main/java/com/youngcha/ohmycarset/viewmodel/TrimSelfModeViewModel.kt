@@ -98,6 +98,7 @@ class TrimSelfModeViewModel : ViewModel() {
                 TrimSelfModeOption(R.drawable.img_test_1, "성능2", "성능")
             )
             /*
+            백엔드 - 페이징 check - jetpack
                     val tabNames = listOf("전체", "성능", "지능형 안전기술", "안전", "외관", "내장", "시트", "편의", "멀티미디어")
             ISG 시스템 - 기본 포함
     통합주행모드 - 기본 포함

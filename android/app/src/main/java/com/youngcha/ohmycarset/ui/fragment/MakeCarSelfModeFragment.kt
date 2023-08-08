@@ -1,17 +1,12 @@
 package com.youngcha.ohmycarset.ui.fragment
 
-import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import com.youngcha.ohmycarset.R
-import com.youngcha.ohmycarset.databinding.FragmentGuideModeBinding
 import com.youngcha.ohmycarset.databinding.FragmentMakeCarSelfModeBinding
 
 class MakeCarSelfModeFragment : Fragment() {
