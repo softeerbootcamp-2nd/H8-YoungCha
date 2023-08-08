@@ -39,4 +39,4 @@ out/
 .vscode/
 
 ### application env ###
-server/src/main/resources/secrets
+src/main/resources/secrets
