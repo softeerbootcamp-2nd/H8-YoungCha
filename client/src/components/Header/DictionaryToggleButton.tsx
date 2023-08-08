@@ -11,7 +11,7 @@ function DictionaryToggleButton() {
     <button className="flex text-center title5" onClick={toggleDictionary}>
       {dictionaryOn ? <Icon.DictionaryOnIcon /> : <Icon.DictionaryOffIcon />}
       <span
-        className={`pl-[4px] ${
+        className={`pl-4px ${
           dictionaryOn ? 'text-icon-yellow' : 'text-grey-black'
         }`}
       >
