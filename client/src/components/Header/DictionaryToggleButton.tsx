@@ -2,10 +2,10 @@ import * as Icon from '../../assets/icons';
 import { useState } from 'react';
 
 function DictionaryToggleButton() {
-  const [dictionaryOn, setDictionary] = useState<boolean>(false);
+  const [dictionaryOn, setDictionaryOn] = useState(false);
 
   function toggleDictionary() {
-    setDictionary((prevState) => !prevState);
+    setDictionaryOn((prevState) => !prevState);
   }
   return (
     <button className="flex text-center title5" onClick={toggleDictionary}>
