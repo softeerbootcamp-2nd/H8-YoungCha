@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentOnboardingPage3Binding
 import com.youngcha.ohmycarset.ui.activity.MainActivity
@@ -37,8 +39,16 @@ class OnBoardingThirdFragment : Fragment() {
             binding.ivOnboarding.startAnimation(fadeInAnimation)
         }
 
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.slide_in_right)
+            .setExitAnim(R.anim.slide_out_left)
+            .setPopEnterAnim(R.anim.slide_in_left)
+            .setPopExitAnim(R.anim.slide_out_right)
+            .build()
+
         binding.btnNext.setOnClickListener {
-            startActivity(intent)
+            findNavController().navigate(R.id.trimSelectFragment, null, navOptions)
+            //startActivity(intent)
         }
     }
     override fun onDestroyView() {
