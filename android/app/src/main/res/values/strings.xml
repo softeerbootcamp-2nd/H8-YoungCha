@@ -1,0 +1,78 @@
+<resources>
+    <string name="app_name">oh, my car set!</string>
+
+    <!--OnBoarding Part-->
+    <string name="skip">건너뛰기</string>
+    <string name="on_boarding_page1_main_text">환영합니다!\n온라인 차량 견적 서비스\n내 차 만들기 입니다.</string>
+    <string name="on_boarding_page1_sub_text">쉽고 편한 내 차 만들기를 위한\n2가지 기능들을 소개해드려요.</string>
+    <string name="on_boarding_page1_btn_next">함께 알아보기</string>
+    <string name="on_boarding_page2_main_text">1/2 \n나에게 딱맞는 추천을 받고 싶다면\n가이드 모드를 활용하세요</string>
+    <string name="on_boarding_page2_sub_text">어떤 것부터 선택해야할 지 모르겠나요?\n가이드와 함께 차근차근 선택해보세요.</string>
+    <string name="on_boarding_page2_btn_next">다음</string>
+    <string name="on_boarding_page3_main_text">2/2 \n 모르는 단어가 있다면\n백카사전을 활용해보세요</string>
+    <string name="on_boarding_page3_sub_text">상단 사전 아이콘을 클릭하면 백카사전이 ON되며,\n초보자를 위한 설명이 제공됩니다.</string>
+    <string name="on_boarding_page3_btn_next">내 차 만들기 시작</string>
+
+    <!--Main Page-->
+    <string name="main_trim_select_txt">원하는 트림을 선택해주세요</string>
+
+    <string name="guide_mode_name_en">Guide Mode</string>
+    <string name="guide_mode_name_kr">가이드 모드</string>
+    <string name="self_mode_kr">셀프 모드</string>
+    <string name="guide_mode_tag">#나만을 위한 팰리세이드</string>
+    <string name="guide_mode_explain_txt">나에게 딱맞는 구성으로</string>
+
+    <string name="main_feature">핵심 기능</string>
+    <string name="guide_process">이렇게 진행돼요</string>
+    <string name="guide_target_user">이런 분들에게 도움이 될 거에요</string>
+
+    <string name="palisade_name_kr">팰리세이드</string>
+    <string name="leblanc_name_en">Le Blanc</string>
+    <string name="leblanc_name_kr">르블랑</string>
+    <string name="leblanc_name_tag">#베스트셀러</string>
+    <string name="leblanc_price_kr">38,960,000원 부터</string>
+
+    <string name="main_option">핵심 옵션</string>
+    <string name="exterior_color">외장 색상</string>
+    <string name="interior_color">내장 색상</string>
+    <string name="default_list">기본 포함 품목</string>
+    <string name="default_list_total">전체</string>
+    <string name="default_list_performance">성능</string>
+    <string name="default_list_safety_intelligent">지능형 안전기술</string>
+    <string name="default_list_safety">안전</string>
+    <string name="default_list_exterior">외관</string>
+    <string name="default_list_interior">내장</string>
+    <string name="default_list_seat">시트</string>
+    <string name="default_list_convenient">편의</string>
+    <string name="default_list_multimedia">멀티미디어</string>
+
+    <string name="power_train">파워트레인</string>
+    <string name="driving_system">구동 방식</string>
+    <string name="body_type">바디 타입</string>
+    <string name="wheel">휠 선택</string>
+    <string name="option">옵션 선택</string>
+    <string name="quotation">견적 내기</string>
+
+    <string name="select">을 선택해주세요.</string>
+    <string name="title_create_my_car">내 차 만들기</string>
+    <string name="trim_text_1">원하는 트림</string>
+    <string name="trim_text_2">을 선택하세요.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="onboarding_image">onboarding image</string>
+
+    <string name="palisade">팰리세이드</string>
+    <string name="leblanc_full_name">Le Blanc 르블랑</string>
+    <string name="core_option">핵심 옵션</string>
+    <string name="select_complete">선택 완료</string>
+    <string name="detail_info_txt">자세한 정보를 보고싶다면</string>
+    <string name="plus_info">더보기</string>
+    <string name="best">Best</string>
+
+    <string name="guide_best1">차를 구매해야 하는데, 정보가 너무 부족해요.</string>
+    <string name="guide_best2">제 상황에 딱맞는 옵션이 뭔지 궁금해요.</string>
+    <string name="guide_best3">차에 대해 잘 몰라서 어디서부터 무엇을\n선택해야할 지 모르겠어요.</string>
+
+
+</resources>

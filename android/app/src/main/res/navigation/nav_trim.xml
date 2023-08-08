@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_trim"
+    app:startDestination="@id/guideModeFragment">
+
+    <fragment
+        android:id="@+id/guideModeFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.GuideModeFragment"
+        android:label="fragment_guide_mode"
+        tools:layout="@layout/fragment_guide_mode">
+
+        <argument
+            android:name="selectedTrimName"
+            android:defaultValue="Guide Mode"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_guideModeFragment_to_selfModeFragment"
+            app:destination="@id/trimSelfModeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_guideModeFragment_self"
+            app:destination="@id/guideModeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/trimSelfModeFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.TrimSelfModeFragment"
+        android:label="fragment_trim_self_mode"
+        tools:layout="@layout/fragment_trim_self_mode">
+
+        <argument
+            android:name="selectedTrimName"
+            android:defaultValue="Le Blanc"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_selfModeFragment_to_guideModeFragment"
+            app:destination="@id/guideModeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/action_selfModeFragment_self"
+            app:destination="@id/trimSelfModeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_trimSelfModeFragment_to_makeCarSelfModeFragment"
+            app:destination="@id/makeCarSelfModeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/makeCarSelfModeFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.MakeCarSelfModeFragment"
+        android:label="fragment_make_car_self_mode"
+        tools:layout="@layout/fragment_make_car_self_mode" />
+
+</navigation>
