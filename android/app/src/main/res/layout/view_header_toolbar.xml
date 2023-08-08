@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="11dp"
+    android:paddingBottom="13dp">
+
+    <ImageButton
+        android:id="@+id/ib_exit"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/ic_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/ll_header_frame"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ll_header_frame" />
+
+    <LinearLayout
+        android:id="@+id/ll_header_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_header_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hyundai_sans_head_bold"
+            android:gravity="center"
+            android:textColor="@color/cool_grey_black"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/ib_mode_change"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_drop_down"/>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/ib_dictionary_off"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ic_dictionary_off"
+        app:layout_constraintBottom_toBottomOf="@id/ll_header_frame"
+        app:layout_constraintEnd_toStartOf="@id/ib_model_change"
+        app:layout_constraintTop_toTopOf="@id/ll_header_frame" />
+
+    <ImageButton
+        android:id="@+id/ib_model_change"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ic_model_change"
+        app:layout_constraintBottom_toBottomOf="@id/ll_header_frame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ll_header_frame" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
