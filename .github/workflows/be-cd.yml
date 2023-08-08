@@ -52,8 +52,8 @@ jobs:
             if [ "$(docker ps -aqf name="^spring$")" ];
             then
               echo "> spring container 제거"
-              docker stop ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
-              docker rm ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+              docker stop spring
+              docker rm spring
             else
               echo "> 구동 중인 spring container가 없으므로 종료하지 않습니다."
             fi
