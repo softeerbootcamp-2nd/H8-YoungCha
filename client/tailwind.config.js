@@ -16,11 +16,16 @@ export default {
         'grey-003': '#AEB1B7',
         'grey-004': '#595C61',
         'grey-black': '#202732',
+        'best-red': '#FF4D4D',
       },
     },
     fontFamily: {
       'hsans-head': ['Hyundai Sans Head KR', 'sans-serif'],
       'hsans-text': ['Hyundai Sans Text KR', 'sans-serif'],
+    },
+    backgroundImage: {
+      'main-background-image':
+        "url('./src/assets/images/main-background-car.png')",
     },
   },
 
