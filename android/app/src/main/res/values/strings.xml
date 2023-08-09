@@ -73,6 +73,8 @@
     <string name="guide_best1">차를 구매해야 하는데, 정보가 너무 부족해요.</string>
     <string name="guide_best2">제 상황에 딱맞는 옵션이 뭔지 궁금해요.</string>
     <string name="guide_best3">차에 대해 잘 몰라서 어디서부터 무엇을\n선택해야할 지 모르겠어요.</string>
+    <string name="next">다음</string>
+    <string name="prev">이전</string>
 
 
 </resources>
