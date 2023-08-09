@@ -43,9 +43,7 @@ public class DictionaryIntegrationTest extends IntegrationTestBase {
 
         softAssertions.assertThat(successResponse.getData().get(1).getWord()).isEqualTo("파워 트레인");
         softAssertions.assertThat(successResponse.getData().get(1).getDescription()).isEqualTo("엔진에서 구동바퀴사이의 모든 기관을 지칭하는 말이에요. 자동차 플랫폼과 비슷한 뜻이에요.");
-        softAssertions.assertThat(successResponse.getData().get(1).getImgUrl()).isEqualTo(null);
-
-        softAssertions.assertAll();
+        softAssertions.assertThat(successResponse.getData().get(1).getImgUrl()).isNull();
     }
 
 }
