@@ -32,13 +32,13 @@ function ProgressBar() {
   }
 
   return (
-    <div className="min-w-1024px text-center h-26px title5">
+    <nav className="min-w-1024px text-center h-26px title5">
       <span className="relative mx-auto whitespace-nowrap">
         {makeCategory()}
         <SelectedBar active={selectedCategory} />
       </span>
       <div className="w-full h-0.5 absolute top-23px bg-grey-002" />
-    </div>
+    </nav>
   );
 }
 
