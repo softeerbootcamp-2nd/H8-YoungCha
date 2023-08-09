@@ -19,6 +19,12 @@ public class FindDictionaryResponse {
     @Schema(description = "설명 이미지")
     private String imgUrl;
 
+    public FindDictionaryResponse(String word, String description, String imgUrl) {
+        this.word = word;
+        this.description = description;
+        this.imgUrl = imgUrl;
+    }
+
     public FindDictionaryResponse(final Dictionary dictionary) {
         this.word = dictionary.getWord();
         this.description = dictionary.getDescription();
