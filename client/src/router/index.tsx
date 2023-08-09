@@ -1,4 +1,5 @@
 import App from '@/App';
+import Home from '@/pages/home';
 import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
         path: 'model/:id',
         element: <Outlet />,
         children: [
-          { index: true, element: <div>main</div> },
+          { index: true, element: <Home /> },
           {
             path: 'guide',
             element: <Outlet />,
