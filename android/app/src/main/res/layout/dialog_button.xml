@@ -8,10 +8,6 @@
         <variable
             name="button_dialog"
             type="com.youngcha.ohmycarset.model.dialog.ButtonDialog" />
-
-        <variable
-            name="handler"
-            type="com.youngcha.ohmycarset.ui.customview.ButtonDialogView" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,10 +20,10 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="26dp"
+            app:imageResource="@{button_dialog.icon}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:testImageSource="@{button_dialog.img}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -38,7 +34,7 @@
             android:gravity="center"
             android:text="@{button_dialog.title}"
             android:textColor="@color/main_hyundai_blue"
-            android:textSize="12sp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ic_icon" />
@@ -52,29 +48,43 @@
             android:gravity="center"
             android:text="@{button_dialog.explain}"
             android:textColor="@color/main_hyundai_blue"
-            android:textSize="20sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
-        <ImageView
-            android:id="@+id/iv_img"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_img_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="25dp"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="0dp"
+            app:dynamicHeight="@{button_dialog.img != 1 ? 150f : 0f}"
+            app:dynamicWidth="@{button_dialog.img != 1 ? 308f : 0f}"
             app:layout_constraintBottom_toTopOf="@id/btn_left"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_explain"
-            app:testImageSource="@{button_dialog.img}" />
+            app:layout_constraintTop_toBottomOf="@id/tv_explain">
+
+            <ImageView
+                android:id="@+id/iv_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                app:imageResource="@{button_dialog.img != 1 ? button_dialog.img : @android:color/transparent}" />
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_left"
             android:layout_width="150dp"
             android:layout_height="46dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginBottom="18dp"
             android:background="@drawable/btn_basic"
             android:fontFamily="@font/hyundai_sans_head_kr_medium"
@@ -89,6 +99,8 @@
             android:id="@+id/btn_right"
             android:layout_width="150dp"
             android:layout_height="46dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="18dp"
             android:background="@drawable/btn_main_style"
             android:fontFamily="@font/hyundai_sans_head_kr_medium"
             android:text="@{button_dialog.btnText2}"
