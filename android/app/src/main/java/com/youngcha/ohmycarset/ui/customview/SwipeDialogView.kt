@@ -1,24 +1,16 @@
 package com.youngcha.ohmycarset.ui.customview
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.DialogSwipeBinding
-import com.youngcha.ohmycarset.model.SwipeDialog
+import com.youngcha.ohmycarset.model.dialog.SwipeDialog
 import com.youngcha.ohmycarset.ui.adapter.dialog.SwipeAdapter
 
 class SwipeDialogView(

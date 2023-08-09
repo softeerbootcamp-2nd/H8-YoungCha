@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.databinding.ItemDialogSwipeBinding
-import com.youngcha.ohmycarset.model.SwipeDialog
+import com.youngcha.ohmycarset.model.dialog.SwipeDialog
 
 class SwipeAdapter(
     private val swipeDialogData: List<SwipeDialog>,

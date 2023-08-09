@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset.model
+package com.youngcha.ohmycarset.model.dialog
 
 data class SwipeDialog(
     val img: Int,
