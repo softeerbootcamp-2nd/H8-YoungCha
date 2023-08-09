@@ -22,15 +22,15 @@ function Button({ children, size, color, onClick }: ButtonProps) {
 function getButtonSize(size: string) {
   switch (size) {
     case 'xs':
-      return 'w-[80px] h-[32px]';
+      return 'w-80px h-32px';
     case 'sm':
-      return 'w-[113px] h-[46px]';
+      return 'w-113px h-46px';
     case 'md':
-      return 'w-[140px] h-[50px]';
+      return 'w-140px h-50px';
     case 'lg':
-      return 'w-[150px] h-[46px]';
+      return 'w-150px h-46px';
     case 'xl':
-      return 'w-[244px] h-[57px]';
+      return 'w-244px h-57px';
   }
 }
 
