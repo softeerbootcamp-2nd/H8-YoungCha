@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.youngcha.ohmycarset.model.PowerTrain
 import com.youngcha.ohmycarset.R
 
-class PalisadeViewModel : ViewModel() {
+class CarComponentViewModel : ViewModel() {
     private val _powerTrainData = MutableLiveData<PowerTrain>()
     val powerTrainData: LiveData<PowerTrain> = _powerTrainData
 

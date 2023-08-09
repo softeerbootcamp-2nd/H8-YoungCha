@@ -10,13 +10,13 @@ import androidx.fragment.app.viewModels
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentSelfmodePowertrainBinding
 import com.youngcha.ohmycarset.ui.interfaces.ComponentClick
-import com.youngcha.ohmycarset.viewmodel.PalisadeViewModel
+import com.youngcha.ohmycarset.viewmodel.CarComponentViewModel
 
 class PowerTrainFragment : Fragment(), ComponentClick {
     //private val args:PowerTrainFragmentArgs by navArgs()
 
     //VideModel
-    private val viewModel: PalisadeViewModel by viewModels()
+    private val viewModel: CarComponentViewModel by viewModels()
 
     //Binding
     private var _binding: FragmentSelfmodePowertrainBinding? = null
