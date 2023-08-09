@@ -1,84 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp_container"
-        android:layout_width="300dp"
-        android:layout_height="480dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tb_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:background="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vp_container"
-        app:tabBackground="@drawable/dialog_swipe_tab_default_dot"
-        app:tabGravity="center"
-        app:tabIndicator="@drawable/dialog_swipe_tab_default_dot"
-        app:tabIndicatorColor="@color/white"
-        app:tabIndicatorGravity="stretch" />
+        <variable
+            name="handler"
+            type="com.youngcha.ohmycarset.ui.customview.SwipeDialogView" />
+    </data>
 
-    <LinearLayout
-        android:id="@+id/ll_prev"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/vp_container"
-        app:layout_constraintTop_toTopOf="@id/tb_indicator">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:background="@drawable/ic_prev"
-            android:backgroundTint="@color/cool_grey_003" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_container"
+            android:layout_width="300dp"
+            android:layout_height="480dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tb_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="2dp"
-            android:fontFamily="@font/hyundai_sans_text_kr_regular"
-            android:text="@string/prev"
-            android:textColor="@color/cool_grey_003"
-            android:textSize="14sp" />
+            android:layout_marginTop="9dp"
+            android:background="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vp_container"
+            app:tabBackground="@drawable/dialog_swipe_tab_default_dot"
+            app:tabGravity="center"
+            app:tabIndicator="@drawable/dialog_swipe_tab_default_dot"
+            app:tabIndicatorColor="@color/white"
+            app:tabIndicatorGravity="stretch"
+            app:tabIndicatorHeight="8dp" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/vp_container"
-        app:layout_constraintTop_toTopOf="@id/tb_indicator">
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/ll_prev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="2dp"
-            android:fontFamily="@font/hyundai_sans_text_kr_regular"
-            android:text="@string/next"
-            android:textColor="@color/cool_grey_003"
-            android:textSize="14sp" />
+            android:onClick="@{() -> handler.onPrevClicked()}"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/vp_container"
+            app:layout_constraintTop_toTopOf="@id/tb_indicator">
 
-        <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:background="@drawable/ic_next"
-            android:backgroundTint="@color/cool_grey_003" />
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="@drawable/ic_prev"
+                android:backgroundTint="@color/cool_grey_003" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="2dp"
+                android:fontFamily="@font/hyundai_sans_text_kr_regular"
+                android:text="@string/prev"
+                android:textColor="@color/cool_grey_003"
+                android:textSize="14sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> handler.onNextClicked()}"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/vp_container"
+            app:layout_constraintTop_toTopOf="@id/tb_indicator">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="2dp"
+                android:fontFamily="@font/hyundai_sans_text_kr_regular"
+                android:text="@string/next"
+                android:textColor="@color/cool_grey_003"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="@drawable/ic_next"
+                android:backgroundTint="@color/cool_grey_003" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/ib_dialog_exit"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="19dp"
+            android:background="@drawable/ic_close"
+            android:backgroundTint="@color/white"
+            android:onClick="@{() -> handler.onExitClicked()}"
+            app:layout_constraintEnd_toEndOf="@id/vp_container"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
