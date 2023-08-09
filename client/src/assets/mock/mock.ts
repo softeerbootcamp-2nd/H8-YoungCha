@@ -1,5 +1,5 @@
 // TODO: 실제 데이터로 변경
-interface Trim {
+export interface Trim {
   id: number;
   name: string;
   backgroundImgUrl: string;
