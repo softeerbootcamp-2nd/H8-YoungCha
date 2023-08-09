@@ -25,7 +25,7 @@ export default {
     },
     backgroundImage: {
       'main-background-image':
-        "url('./src/assets/images/main-background-car.png')",
+        "url('/src/assets/images/main-background-car.png')",
     },
   },
 

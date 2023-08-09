@@ -21,66 +21,66 @@ const carsNameLists = [
 ];
 
 const carsImageLists = [
-  { imgUrl: 'src/assets/images/palisade.png', minPrice: '38,960,000' },
-  { imgUrl: 'src/assets/images/palisade.png', minPrice: '38,960,001' },
-  { imgUrl: 'src/assets/images/palisade.png', minPrice: '38,960,002' },
-  { imgUrl: 'src/assets/images/palisade.png', minPrice: '38,960,003' },
+  { imgUrl: '/src/assets/images/palisade.png', minPrice: '38,960,000' },
+  { imgUrl: '/src/assets/images/palisade.png', minPrice: '38,960,001' },
+  { imgUrl: '/src/assets/images/palisade.png', minPrice: '38,960,002' },
+  { imgUrl: '/src/assets/images/palisade.png', minPrice: '38,960,003' },
 ];
 
 const mainOptionLists = [
   [
     {
-      imgUrl: 'src/assets/icons/main-navigation-option.svg',
+      imgUrl: '/src/assets/icons/main-navigation-option.svg',
       description: '12.3인치 내비게이션',
     },
     {
-      imgUrl: 'src/assets/icons/main-navigation-option.svg',
+      imgUrl: '/src/assets/icons/main-navigation-option.svg',
       description: '12.4인치 내비게이션',
     },
     {
-      imgUrl: 'src/assets/icons/main-navigation-option.svg',
+      imgUrl: '/src/assets/icons/main-navigation-option.svg',
       description: '12.5인치 내비게이션',
     },
   ],
   [
     {
-      imgUrl: 'src/assets/icons/main-navigation-option.svg',
+      imgUrl: '/src/assets/icons/main-navigation-option.svg',
       description: '12.6인치 내비게이션',
     },
     {
-      imgUrl: 'src/assets/icons/main-navigation-option.svg',
+      imgUrl: '/src/assets/icons/main-navigation-option.svg',
       description: '12.7인치 내비게이션',
     },
     {
-      imgUrl: 'src/assets/icons/main-navigation-option.svg',
+      imgUrl: '/src/assets/icons/main-navigation-option.svg',
       description: '12.8인치 내비게이션',
     },
   ],
   [
     {
-      imgUrl: 'src/assets/icons/main-navigation-option.svg',
+      imgUrl: '/src/assets/icons/main-navigation-option.svg',
       description: '12.9인치 내비게이션',
     },
     {
-      imgUrl: 'src/assets/icons/main-navigation-option.svg',
+      imgUrl: '/src/assets/icons/main-navigation-option.svg',
       description: '12.0인치 내비게이션',
     },
     {
-      imgUrl: 'src/assets/icons/main-navigation-option.svg',
+      imgUrl: '/src/assets/icons/main-navigation-option.svg',
       description: '12.1인치 내비게이션',
     },
   ],
   [
     {
-      imgUrl: 'src/assets/icons/main-navigation-option.svg',
+      imgUrl: '/src/assets/icons/main-navigation-option.svg',
       description: '12.2인치 내비게이션',
     },
     {
-      imgUrl: 'src/assets/icons/main-navigation-option.svg',
+      imgUrl: '/src/assets/icons/main-navigation-option.svg',
       description: '13.3인치 내비게이션',
     },
     {
-      imgUrl: 'src/assets/icons/main-navigation-option.svg',
+      imgUrl: '/src/assets/icons/main-navigation-option.svg',
       description: '14.3인치 내비게이션',
     },
   ],
@@ -132,25 +132,25 @@ const outsideColorLists = [
 const insideColorLists = [
   [
     {
-      url: 'src/assets/images/black-leather.png',
+      url: '/src/assets/images/black-leather.png',
       description: '인조가죽(블랙)',
     },
   ],
   [
     {
-      url: 'src/assets/images/black-leather.png',
+      url: '/src/assets/images/black-leather.png',
       description: '인조가죽(블랙)2',
     },
   ],
   [
     {
-      url: 'src/assets/images/black-leather.png',
+      url: '/src/assets/images/black-leather.png',
       description: '인조가죽(블랙)45',
     },
   ],
   [
     {
-      url: 'src/assets/images/black-leather.png',
+      url: '/src/assets/images/black-leather.png',
       description: '인조가죽(블랙)4',
     },
   ],
@@ -161,28 +161,28 @@ const basicOptionLists = [
     {
       name: '8단 자동변속기',
       categoryId: 0,
-      imgUrl: 'src/assets/images/8-auto-changer.png',
+      imgUrl: '/src/assets/images/8-auto-changer.png',
     },
   ],
   [
     {
       name: '8단 자동변속기',
       categoryId: 1,
-      imgUrl: 'src/assets/images/8-auto-changer.png',
+      imgUrl: '/src/assets/images/8-auto-changer.png',
     },
   ],
   [
     {
       name: '8단 자동변속기',
       categoryId: 2,
-      imgUrl: 'src/assets/images/8-auto-changer.png',
+      imgUrl: '/src/assets/images/8-auto-changer.png',
     },
   ],
   [
     {
       name: '8단 자동변속기',
       categoryId: 3,
-      imgUrl: 'src/assets/images/8-auto-changer.png',
+      imgUrl: '/src/assets/images/8-auto-changer.png',
     },
   ],
 ];
