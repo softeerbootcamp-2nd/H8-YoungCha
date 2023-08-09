@@ -18,10 +18,12 @@ import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentTrimSelectBinding
 import com.youngcha.ohmycarset.enums.TrimType
 import com.youngcha.ohmycarset.model.TrimCategory
+import com.youngcha.ohmycarset.model.dialog.TextDialog
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelectAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeExteriorColorAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeInteriorColorAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeOptionAdapter
+import com.youngcha.ohmycarset.ui.customview.TextDialogView
 import com.youngcha.ohmycarset.ui.listener.CustomScrollChangeListener
 import com.youngcha.ohmycarset.util.MILLISECONDS_PER_INCH
 import com.youngcha.ohmycarset.util.decorator.GridSpacingItemDecoration

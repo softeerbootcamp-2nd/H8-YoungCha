@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.youngcha.ohmycarset.ui.customview.SwipeDialogView" />
+            type="com.youngcha.ohmycarset.ui.customview.TextDialogView" />
 
         <variable
             name="text_dialog"
@@ -14,8 +14,9 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="319dp"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dialog_background">
 
         <TextView
             android:id="@+id/tv_title"
@@ -66,10 +67,12 @@
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="22dp"
             android:background="@drawable/dialog_text_box"
             android:padding="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toBottomOf="@id/tv_explain">
 
@@ -80,9 +83,22 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/hyundai_sans_head_kr_regular"
                 android:text="@{text_dialog.subExplain}"
-                android:textColor="@color/cool_grey_004" />
+                android:textColor="@color/cool_grey_004"
+                android:lineSpacingExtra="8dp"/>
 
         </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/ib_dialog_exit"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/ic_close"
+            android:backgroundTint="@color/cool_grey_003"
+            android:onClick="@{() -> handler.onExitClicked()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
