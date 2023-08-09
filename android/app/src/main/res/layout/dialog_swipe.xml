@@ -21,9 +21,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vp_container"
-        app:tabBackground="@drawable/dialog_image_swipe_tab_default_dot"
+        app:tabBackground="@drawable/dialog_swipe_tab_default_dot"
         app:tabGravity="center"
-        app:tabIndicator="@drawable/dialog_image_swipe_tab_default_dot"
+        app:tabIndicator="@drawable/dialog_swipe_tab_default_dot"
         app:tabIndicatorColor="@color/white"
         app:tabIndicatorGravity="stretch" />
 
