@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.MakeCarSelfModeFragment">
 
-    <com.youngcha.ohmycarset.ui.customview.HeaderToolBar
+    <com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
         android:id="@+id/htb_header_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

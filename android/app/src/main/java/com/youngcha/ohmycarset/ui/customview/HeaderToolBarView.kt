@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 
-class HeaderToolBar(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
+class HeaderToolBarView(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
 
     var listener: OnHeaderToolbarClickListener? = null
 

@@ -78,7 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.youngcha.ohmycarset.ui.customview.HyundaiMainColorButton
+    <com.youngcha.ohmycarset.ui.customview.HyundaiMainColorButtonView
         android:id="@+id/btn_trim_selected"
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -91,7 +91,7 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <com.youngcha.ohmycarset.ui.customview.HeaderToolBar
+    <com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
         android:id="@+id/htb_header_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"

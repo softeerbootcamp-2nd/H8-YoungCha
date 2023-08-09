@@ -7,7 +7,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.youngcha.ohmycarset.R
 
-class HyundaiMainColorButton @JvmOverloads constructor(
+class HyundaiMainColorButtonView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : AppCompatButton(context, attrs, defStyleAttr) {
 
