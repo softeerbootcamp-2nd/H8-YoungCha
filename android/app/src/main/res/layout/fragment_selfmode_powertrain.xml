@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="powertrain"
+            type="com.youngcha.ohmycarset.model.PowerTrain" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_powertrain"
+            android:layout_width="0dp"
+            android:layout_height="370dp"
+            android:layout_marginBottom="61dp"
+            app:layout_constraintBottom_toTopOf="@+id/cl_option1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:testImageSource="@{powertrain.imageURL}" />
+
+        <TextView
+            android:id="@+id/tv_powertrain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/hyundai_sans_head_kr_otf_bold"
+            android:text="@string/power_train"
+            android:textColor="@color/cool_grey_black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/cl_option1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_powertrain" />
+
+        <TextView
+            android:id="@+id/tv_select_script"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            android:text="@string/select"
+            android:textColor="@color/cool_grey_black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_powertrain"
+            app:layout_constraintStart_toEndOf="@id/tv_powertrain"
+            app:layout_constraintTop_toTopOf="@id/tv_powertrain" />
+
+        <include
+            android:id="@+id/cl_option1"
+            layout="@layout/component_select_button"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="33dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cl_option2"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <include
+            android:id="@+id/cl_option2"
+            layout="@layout/component_select_button"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/cl_option1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cl_option1"
+            app:layout_constraintTop_toTopOf="@+id/cl_option1" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
