@@ -7,7 +7,7 @@ interface DataType {
 }
 
 interface BasicOptionBoxProps {
-  datas: DataType[][];
+  basicOptionLists: DataType[][];
 }
 
 const BasicOptions = [
@@ -24,7 +24,7 @@ const BasicOptions = [
 
 const TITLE = '기본 포함 품목';
 
-function BasicOptionBox({ datas }: BasicOptionBoxProps) {
+function BasicOptionBox({ basicOptionLists }: BasicOptionBoxProps) {
   return (
     <div className="flex flex-col gap-16px max-w-7xl">
       <h3 className="font-medium text-center text-grey-black py-8px">
@@ -44,12 +44,12 @@ function BasicOptionBox({ datas }: BasicOptionBoxProps) {
           })}
         </div>
         <OptionLayout>
-          {datas.map((data, index) => (
+          {basicOptionLists.map((opation, index) => (
             <ul
               className="flex flex-col w-full gap-24px"
-              key={data[0].categoryId + index}
+              key={opation[0].categoryId + index}
             >
-              {data.map(({ name, categoryId, imgUrl }) => (
+              {opation.map(({ name, categoryId, imgUrl }) => (
                 <li className="flex items-center gap-15px" key={categoryId}>
                   <img
                     src={imgUrl}

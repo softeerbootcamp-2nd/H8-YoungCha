@@ -27,7 +27,7 @@ const carsImageLists = [
   { imgUrl: 'src/assets/images/palisade.png', minPrice: '38,960,003' },
 ];
 
-const MainOptionLists = [
+const mainOptionLists = [
   [
     {
       imgUrl: 'src/assets/icons/main-navigation-option.svg',
@@ -220,14 +220,14 @@ function Home() {
       </div>
 
       <div className="w-full mb-400px">
-        <CarsNameListBox datas={carsNameLists} />
+        <CarsNameListBox carsNameLists={carsNameLists} />
         <div className="flex flex-col m-auto max-w-7xl pt-32px gap-60px px-128px">
-          <CarsImageBox datas={carsImageLists} />
+          <CarsImageBox carsImageLists={carsImageLists} />
           <div className="flex flex-col gap-48px">
-            <MainOptionBox datas={MainOptionLists} />
-            <OutsideColorBox datas={outsideColorLists} />
-            <InsideColorBox datas={insideColorLists} />
-            <BasicOptionBox datas={basicOptionLists} />
+            <MainOptionBox mainOptionLists={mainOptionLists} />
+            <OutsideColorBox outsideColorLists={outsideColorLists} />
+            <InsideColorBox insideColorLists={insideColorLists} />
+            <BasicOptionBox basicOptionLists={basicOptionLists} />
             <MakingCarButtonsBox />
             <GuideModeButton />
           </div>

@@ -6,17 +6,20 @@ interface DataType {
   description: string;
 }
 interface OutsideColorBoxProps {
-  datas: DataType[][];
+  outsideColorLists: DataType[][];
 }
 
 const TITLE = '외장 색상';
 
-function OutsideColorBox({ datas }: OutsideColorBoxProps) {
+function OutsideColorBox({ outsideColorLists }: OutsideColorBoxProps) {
   return (
     <OptionLayout title={TITLE}>
-      {datas.map((data) => (
-        <ul className="flex flex-col w-full gap-24px" key={data[0].description}>
-          {data.map(({ code, description }) => (
+      {outsideColorLists.map((outsideColor) => (
+        <ul
+          className="flex flex-col w-full gap-24px"
+          key={outsideColor[0].description}
+        >
+          {outsideColor.map(({ code, description }) => (
             <li className="flex items-center gap-15px" key={description}>
               <Icon.MainOutsideColor code={code} />
               <p className="body2 text-grey-004">{description}</p>

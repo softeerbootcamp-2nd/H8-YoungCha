@@ -6,12 +6,12 @@ interface DataType {
   isBest?: boolean;
 }
 interface CarsNameListBoxProps {
-  datas: DataType[];
+  carsNameLists: DataType[];
 }
 
 const TITLE = '모델 한 눈에 비교하기';
 
-function CarsNameListBox({ datas }: CarsNameListBoxProps) {
+function CarsNameListBox({ carsNameLists }: CarsNameListBoxProps) {
   return (
     <>
       <div className="flex items-center justify-center bg-grey-001 h-180px">
@@ -22,7 +22,7 @@ function CarsNameListBox({ datas }: CarsNameListBoxProps) {
 
       <div className="flex items-center justify-center bg-grey-001 py-[36px]">
         <OptionLayout>
-          {datas.map(({ name, description, isBest }) => (
+          {carsNameLists.map(({ name, description, isBest }) => (
             <li
               className="relative flex flex-col items-center w-full gap-16px"
               key={name}
