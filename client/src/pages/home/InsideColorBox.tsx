@@ -1,6 +1,9 @@
 import OptionLayout from './OptionLayout';
 
-type DataType = { url: string; description: string };
+interface DataType {
+  url: string;
+  description: string;
+}
 interface OutsideColorBoxProps {
   datas: DataType[][];
 }

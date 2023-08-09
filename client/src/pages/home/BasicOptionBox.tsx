@@ -1,10 +1,10 @@
 import OptionLayout from './OptionLayout';
 
-type DataType = {
+interface DataType {
   name: string;
   categoryId: number;
   imgUrl: string;
-};
+}
 
 interface BasicOptionBoxProps {
   datas: DataType[][];

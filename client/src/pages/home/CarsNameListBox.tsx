@@ -1,6 +1,10 @@
 import OptionLayout from './OptionLayout';
 
-type DataType = { name: string; description: string; isBest?: boolean };
+interface DataType {
+  name: string;
+  description: string;
+  isBest?: boolean;
+}
 interface CarsNameListBoxProps {
   datas: DataType[];
 }

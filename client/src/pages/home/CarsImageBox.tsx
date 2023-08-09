@@ -1,4 +1,7 @@
-type DataType = { imgUrl: string; minPrice: string };
+interface DataType {
+  imgUrl: string;
+  minPrice: string;
+}
 interface CarsImageBoxProps {
   datas: DataType[];
 }

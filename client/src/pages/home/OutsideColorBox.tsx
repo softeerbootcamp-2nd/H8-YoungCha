@@ -1,7 +1,10 @@
 import * as Icon from '../../assets/icons';
 import OptionLayout from './OptionLayout';
 
-type DataType = { code: string; description: string };
+interface DataType {
+  code: string;
+  description: string;
+}
 interface OutsideColorBoxProps {
   datas: DataType[][];
 }
