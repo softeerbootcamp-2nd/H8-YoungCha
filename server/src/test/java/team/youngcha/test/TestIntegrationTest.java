@@ -1,8 +1,5 @@
 package team.youngcha.test;
 
-import team.youngcha.IntegrationTestBase;
-import team.youngcha.common.dto.ErrorResponse;
-import team.youngcha.common.dto.SuccessResponse;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
@@ -12,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import team.youngcha.IntegrationTestBase;
+import team.youngcha.common.dto.ErrorResponse;
+import team.youngcha.common.dto.SuccessResponse;
 
 class TestIntegrationTest extends IntegrationTestBase {
 

@@ -25,6 +25,10 @@ dependencies {
     //swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.15'
 
+    //lombok
+    implementation 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
