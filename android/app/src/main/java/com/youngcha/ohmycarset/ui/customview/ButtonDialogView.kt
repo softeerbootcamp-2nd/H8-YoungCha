@@ -8,14 +8,13 @@ import androidx.databinding.DataBindingUtil
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.DialogButtonBinding
 import com.youngcha.ohmycarset.model.dialog.ButtonDialog
-import com.youngcha.ohmycarset.ui.interfaces.OnButtonDialogCallback
 
 class ButtonDialogView(context: Context, private val buttonDialogData: ButtonDialog): Dialog(context, R.style.TransparentDialog) {
 
-    private var callback: OnButtonDialogCallback? = null
+    private var buttonClickListener: ((String) -> Unit)? = null
 
-    fun setButtonDialogCallback(callback: OnButtonDialogCallback) {
-        this.callback = callback
+    fun setOnButtonClickListener(listener: (String) -> Unit) {
+        buttonClickListener = listener
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,12 +32,12 @@ class ButtonDialogView(context: Context, private val buttonDialogData: ButtonDia
         binding.buttonDialog = buttonDialogData
 
         binding.btnLeft.setOnClickListener {
-            callback?.onButtonClicked(buttonDialogData.btnText1)
+            buttonClickListener?.invoke(buttonDialogData.btnText1)
             dismiss()
         }
 
         binding.btnRight.setOnClickListener {
-            callback?.onButtonClicked(buttonDialogData.btnText2)
+            buttonClickListener?.invoke(buttonDialogData.btnText2)
             dismiss()
         }
     }
