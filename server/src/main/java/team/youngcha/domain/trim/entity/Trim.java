@@ -1,8 +1,13 @@
 package team.youngcha.domain.trim.entity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Trim {
 
     private Long id;
@@ -13,14 +18,4 @@ public class Trim {
     private int price;
     private String description;
     private Long carId;
-
-    public Trim(String name, String backgroundImgUrl, String carImgUrl, String hashTag, int price, String description, Long carId) {
-        this.name = name;
-        this.backgroundImgUrl = backgroundImgUrl;
-        this.carImgUrl = carImgUrl;
-        this.hashTag = hashTag;
-        this.price = price;
-        this.description = description;
-        this.carId = carId;
-    }
 }
