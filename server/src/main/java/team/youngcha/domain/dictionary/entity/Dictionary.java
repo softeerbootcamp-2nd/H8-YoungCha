@@ -1,4 +1,4 @@
-package team.youngcha.domain.dictionary;
+package team.youngcha.domain.dictionary.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
