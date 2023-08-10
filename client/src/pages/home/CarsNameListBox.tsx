@@ -11,12 +11,16 @@ function CarsNameListBox({ trims }: CarsNameListBoxProps) {
   return (
     <>
       <div className="flex items-center justify-center bg-grey-001 h-180px">
-        <h2 className="font-hsans-head text-40px font-medium leading-52px tracking-[-1.6px] text-grey-black">
+        <h2
+          className={`font-hsans-head text-40px font-medium leading-52px tracking-[-1.6px] text-grey-black `}
+        >
           {TITLE}
         </h2>
       </div>
 
-      <div className="flex items-center justify-center bg-grey-001 py-[36px]">
+      <div
+        className={`w-full flex items-center justify-center bg-grey-001 py-[36px] sticky top-60px`}
+      >
         <OptionLayout>
           {trims.map(({ name, description, isBest }, index) => (
             <li
