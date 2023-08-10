@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `options_image`
     FOREIGN KEY (`options_id`) REFERENCES `options` (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `detail`
+CREATE TABLE IF NOT EXISTS `options_detail`
 (
     `id`          bigint        NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name`        varchar(100)  NULL,
