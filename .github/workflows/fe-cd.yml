@@ -1,9 +1,12 @@
 name: fe-cd
 
 on:
+  pull_request:
+    branches:
+      - "dev/fe"
   push:
     branches:
-      - dev/fe
+      - "dev/fe"
     paths: 'client/**'
 
 defaults:
