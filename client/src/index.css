@@ -49,10 +49,22 @@
 
 @layer utilities {
   .glassmorph {
-    @apply from-white/20 to-white/0 backdrop-blur-[6px]
-    before:content-[''] before:absolute before:p-2px before:inset-0 before:rounded-6px drop-shadow-[0_10px_16px_rgba(0,0,0,0.2)];
+    border-radius: 6px;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    backdrop-filter: blur(6px);
   }
+
   .glassmorph::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: 6px;
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.2);
     background: linear-gradient(
       320deg,
       rgba(255, 255, 255, 1) 0%,
