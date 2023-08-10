@@ -1,5 +1,6 @@
 package team.youngcha.common.exception;
 
+import org.springframework.web.bind.MissingPathVariableException;
 import team.youngcha.common.dto.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,14 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    // @PathVariable 오류
+    @ExceptionHandler(MissingPathVariableException.class)
+    public ResponseEntity<ErrorResponse> handleMissingPathVariableException(MissingPathVariableException e) {
+        logger.error("MissingPathVariableException : {}", e.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse("잘못된 경로 변수입니다.", e.getMessage());
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
 
     // @RequestParam 오류
     @ExceptionHandler(MissingServletRequestParameterException.class)
