@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TrimCard from './index';
+import MakingModeButton, {
+  MakingModeButtonProps,
+} from '@/components/MakingModeButton';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
-const meta: Meta<typeof TrimCard> = {
-  component: TrimCard,
-  argTypes: {},
+const meta: Meta<typeof MakingModeButton> = {
+  component: MakingModeButton,
+
   parameters: {
     layout: 'centered',
   },
@@ -13,7 +15,7 @@ const meta: Meta<typeof TrimCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof TrimCard>;
+type Story = StoryObj<typeof MakingModeButton>;
 
 export const Default: Story = {
   args: {
@@ -21,20 +23,24 @@ export const Default: Story = {
     hashtag: '#베스트셀러',
     minPrice: 10000,
     description: '모두가 선택한 베스트셀러',
-    mainOptions: [
-      {
-        imgUrl: 'src/assets/mock/TrimCard/option1.svg',
-        description: '20인치\n 알로이 휠',
-      },
-      {
-        imgUrl: 'src/assets/mock/TrimCard/option2.svg',
-        description: '서라운드 뷰\n 모니터',
-      },
-      {
-        imgUrl: 'src/assets/mock/TrimCard/option3.svg',
-        description: '클러스터\n (12.3인치 컬러 LCD)',
-      },
-    ],
+    children: (
+      <MakingModeButton.MainOptionList
+        mainOptions={[
+          {
+            imgUrl: 'src/assets/mock/TrimCard/option1.svg',
+            description: '20인치\n 알로이 휠',
+          },
+          {
+            imgUrl: 'src/assets/mock/TrimCard/option2.svg',
+            description: '서라운드 뷰\n 모니터',
+          },
+          {
+            imgUrl: 'src/assets/mock/TrimCard/option3.svg',
+            description: '클러스터\n (12.3인치 컬러 LCD)',
+          },
+        ]}
+      />
+    ),
   },
 };
 
@@ -44,6 +50,17 @@ export const GuideMode: Story = {
     hashtag: '#나만을 위한 팰리세이드',
     minPrice: 38000000,
     description: '나에게 딱 맞는 구성으로',
-    guide: true,
+    children: <MakingModeButton.GuideModeDetailList />,
+  },
+};
+
+export const Both: Story = {
+  render: () => {
+    return (
+      <div className="flex gap-24px">
+        <MakingModeButton {...(Default.args as MakingModeButtonProps)} />
+        <MakingModeButton {...(GuideMode.args as MakingModeButtonProps)} />
+      </div>
+    );
   },
 };
