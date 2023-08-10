@@ -1,6 +1,9 @@
 name: fe-cd
 
 on:
+  pull_request:
+    branches:
+      - "dev/fe"
   push:
     branches:
       - "dev/fe"
@@ -41,6 +44,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
+          cache-dependency-path: ./client/pnpm-lock.yml
 
       - name: Install dependaecies
         run: pnpm install
