@@ -31,13 +31,15 @@ class ButtonDialogView(context: Context, private val buttonDialogData: ButtonDia
 
         binding.buttonDialog = buttonDialogData
 
-        binding.btnLeft.setOnClickListener {
-            buttonClickListener?.invoke(buttonDialogData.btnText1)
+        binding.layoutDialogHorizontalButton.buttonHorizontal = buttonDialogData.buttonHorizontal
+
+        binding.layoutDialogHorizontalButton.btnLeft.setOnClickListener {
+            buttonClickListener?.invoke(buttonDialogData.buttonHorizontal.btnText1)
             dismiss()
         }
 
-        binding.btnRight.setOnClickListener {
-            buttonClickListener?.invoke(buttonDialogData.btnText2)
+        binding.layoutDialogHorizontalButton.btnRight.setOnClickListener {
+            buttonClickListener?.invoke(buttonDialogData.buttonHorizontal.btnText2)
             dismiss()
         }
     }
