@@ -1,27 +1,26 @@
 package team.youngcha.domain.sell.entity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Sell {
 
-    @Id
     private Long id;
-
+    private Long trimId;
+    private Long engineId;
+    private Long bodyTypeId;
+    private Long drivingSystemId;
+    private Long exteriorColorId;
+    private Long interiorColorId;
+    private Long wheelId;
     private int age;
-
     private int gender;
-
-    @Column("create_date")
     private LocalDateTime createDate;
-
-    public Sell(int age, int gender, LocalDateTime createDate) {
-        this.age = age;
-        this.gender = gender;
-        this.createDate = createDate;
-    }
 }

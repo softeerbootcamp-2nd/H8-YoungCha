@@ -1,17 +1,17 @@
 package team.youngcha.domain.trim.entity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class TrimOption {
 
-    @Id
     private Long id;
-
     private int type;
-
-    public TrimOption(int type) {
-        this.type = type;
-    }
+    private Long trimId;
+    private Long optionId;
 }

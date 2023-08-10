@@ -1,11 +1,16 @@
 package team.youngcha.domain.sell.entity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class SellSelectiveOption {
 
-    @Id
     private Long id;
+    private Long sellId;
+    private Long optionId;
 }

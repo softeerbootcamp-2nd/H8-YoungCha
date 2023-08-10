@@ -1,23 +1,17 @@
 package team.youngcha.domain.option.entity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class OptionImage {
 
-    @Id
     private Long id;
-
-    @Column("img_url")
     private String imgUrl;
-
-    @Column("img_type")
     private int imgType;
-
-    public OptionImage(String imgUrl, int imgType) {
-        this.imgUrl = imgUrl;
-        this.imgType = imgType;
-    }
+    private Long optionId;
 }

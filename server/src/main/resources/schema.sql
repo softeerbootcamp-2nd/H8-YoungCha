@@ -2,26 +2,14 @@ CREATE TABLE IF NOT EXISTS `dictionary`
 (
     `id`          bigint        NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `word`        varchar(50)   NOT NULL,
-    `description` text  NOT NULL,
+    `description` text          NOT NULL,
     `img_url`     varchar(2083) NULL
 );
 
 CREATE TABLE IF NOT EXISTS `car`
 (
-    `id`      bigint        NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `name`    varchar(100)  NOT NULL,
-    `img_url` varchar(2083) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS `trim`
-(
-    `id`      bigint        NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `name`    varchar(50)   NOT NULL,
-    `img_url` varchar(2083) NOT NULL,
-    `hashtag` varchar(50)   NULL,
-    `price`   int           NOT NULL,
-    `car_id`  bigint        NOT NULL,
-    FOREIGN KEY (`car_id`) REFERENCES `car` (`id`)
+    `id`   bigint       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` varchar(100) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `trim`
