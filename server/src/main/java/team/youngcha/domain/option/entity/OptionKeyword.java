@@ -1,9 +1,16 @@
 package team.youngcha.domain.option.entity;
 
-import org.springframework.data.annotation.Id;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class OptionKeyword {
 
-    @Id
     private Long id;
+    private Long optionId;
+    private Long keywordId;
 }

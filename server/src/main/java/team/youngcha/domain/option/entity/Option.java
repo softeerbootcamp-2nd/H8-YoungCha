@@ -1,23 +1,18 @@
 package team.youngcha.domain.option.entity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Option {
 
-    @Id
     private Long id;
-
     private String name;
-
     private int price;
-
     private String feedback;
-
-    public Option(String name, int price, String feedback) {
-        this.name = name;
-        this.price = price;
-        this.feedback = feedback;
-    }
+    private Long categoryId;
 }

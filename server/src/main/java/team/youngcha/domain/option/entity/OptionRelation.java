@@ -1,11 +1,16 @@
 package team.youngcha.domain.option.entity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class OptionRelation {
 
-    @Id
-    Long id;
+    private Long id;
+    private Long parentId;
+    private Long childId;
 }

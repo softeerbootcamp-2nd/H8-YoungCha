@@ -1,8 +1,9 @@
 CREATE TABLE IF NOT EXISTS `dictionary`
 (
-    `id`          bigint      NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `word`        varchar(50) NOT NULL,
-    `description` text        NOT NULL
+    `id`          bigint        NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `word`        varchar(50)   NOT NULL,
+    `description` text          NOT NULL,
+    `img_url`     varchar(2083) NULL
 );
 
 CREATE TABLE IF NOT EXISTS `car`

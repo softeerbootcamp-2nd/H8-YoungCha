@@ -1,9 +1,16 @@
 package team.youngcha.domain.option.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import team.youngcha.domain.option.entity.OptionDetail;
 
 @Repository
-public interface OptionDetailRepository extends CrudRepository<OptionDetail, Long> {
+@RequiredArgsConstructor
+public class OptionDetailRepository {
+
+    private final JdbcTemplate jdbcTemplate;
+    private final RowMapper<OptionDetail> optionDetailRowMapper = BeanPropertyRowMapper.newInstance(OptionDetail.class);
 }

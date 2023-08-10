@@ -1,35 +1,21 @@
 package team.youngcha.domain.trim.entity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Trim {
 
-    @Id
     private Long id;
-
     private String name;
-
-    @Column("background_img_url")
     private String backgroundImgUrl;
-
-    @Column("car_img_url")
     private String carImgUrl;
-
     private String hashTag;
-
     private int price;
-
     private String description;
-
-    public Trim(String name, String backgroundImgUrl, String carImgUrl, String hashTag, int price, String description) {
-        this.name = name;
-        this.backgroundImgUrl = backgroundImgUrl;
-        this.carImgUrl = carImgUrl;
-        this.hashTag = hashTag;
-        this.price = price;
-        this.description = description;
-    }
+    private Long carId;
 }

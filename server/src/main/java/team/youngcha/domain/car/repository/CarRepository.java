@@ -1,9 +1,16 @@
 package team.youngcha.domain.car.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import team.youngcha.domain.car.entity.Car;
 
 @Repository
-public interface CarRepository extends CrudRepository<Car, Long> {
+@RequiredArgsConstructor
+public class CarRepository {
+
+    private final JdbcTemplate jdbcTemplate;
+    private final RowMapper<Car> carRowMapper = BeanPropertyRowMapper.newInstance(Car.class);
 }
