@@ -11,7 +11,7 @@ function MainOptionList({ mainOptions }: MainOptionListProps) {
       <h4 className="title5 pb-26px">{TRIM_MAIN_OPTION}</h4>
       <ul className="flex items-center gap-30px">
         {mainOptions.map((option, index) => (
-          <Fragment key={`MainOption${index}`}>
+          <Fragment key={`MainOption-${index}`}>
             {index !== 0 && <li className="bg-white w-1px h-40px"></li>}
             <MainOption {...option} />
           </Fragment>
