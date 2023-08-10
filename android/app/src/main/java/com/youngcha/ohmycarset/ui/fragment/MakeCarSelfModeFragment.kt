@@ -10,7 +10,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.youngcha.ohmycarset.databinding.FragmentMakeCarSelfModeBinding
 import com.youngcha.ohmycarset.enums.AdditionalTab
-import com.youngcha.ohmycarset.enums.CarOption
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 
 class MakeCarSelfModeFragment : Fragment() {
@@ -37,8 +36,8 @@ class MakeCarSelfModeFragment : Fragment() {
 
     private fun observeViewModel() {
         carViewModel.selectedCar.observe(viewLifecycleOwner) { car ->
-            car.mainOptions[0].keys.forEachIndexed { index, carOption ->
-                val tabName = "${String.format("%02d", index + 1)} ${carOption.displayName}"
+            car.mainOptions[0].keys.forEachIndexed { index, carOptionKey ->
+                val tabName = "${String.format("%02d", index + 1)} $carOptionKey"
                 binding.makeCarTabLayout.addTab(binding.makeCarTabLayout.newTab().setText(tabName))
             }
 
@@ -49,11 +48,6 @@ class MakeCarSelfModeFragment : Fragment() {
                 binding.makeCarTabLayout.addTab(binding.makeCarTabLayout.newTab().setText(tabName))
             }
         }
-    }
-
-    private fun getTabName(carOption: CarOption): String {
-        val index = carOption.ordinal + 1
-        return String.format("%02d %s", index, carOption.displayName)
     }
 
     private fun setupTabSelectionListener() {
