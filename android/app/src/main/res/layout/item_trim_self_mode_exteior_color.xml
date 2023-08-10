@@ -24,7 +24,7 @@
             android:layout_height="21dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/btn_mainstyle"
+            android:background="@drawable/btn_main_style"
             app:isVisibleForRankZero="@{rank}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginBottom="13dp"
-            android:background="@drawable/btn_mainstyle"
+            android:background="@drawable/btn_main_style"
             android:text="@string/on_boarding_page2_btn_next"
             android:textColor="@color/white"
             android:textSize="14sp"
