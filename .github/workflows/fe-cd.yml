@@ -1,22 +1,19 @@
 name: fe-cd
 
 on:
-  pull_request:
-    branches:
-      - "dev/fe"
   push:
     branches:
       - "dev/fe"
     paths: 'client/**'
 
-defaults:
-  run:
-    working-directory: client
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
+  
+    defaults:
+      run:
+        working-directory: ./client
+    
     env:
       CI: false
 
