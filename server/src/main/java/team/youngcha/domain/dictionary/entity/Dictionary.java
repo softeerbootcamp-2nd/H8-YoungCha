@@ -1,18 +1,17 @@
 package team.youngcha.domain.dictionary.entity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Dictionary {
 
     private Long id;
     private String word;
     private String description;
     private String imgUrl;
-
-    public Dictionary(String word, String description, String imgUrl) {
-        this.word = word;
-        this.description = description;
-        this.imgUrl = imgUrl;
-    }
 }
