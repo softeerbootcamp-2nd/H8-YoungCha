@@ -8,4 +8,10 @@ public class TrimOption {
 
     @Id
     private Long id;
+
+    private int type;
+
+    public TrimOption(int type) {
+        this.type = type;
+    }
 }

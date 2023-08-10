@@ -10,4 +10,8 @@ public class Keyword {
     private Long id;
 
     private String name;
+
+    public Keyword(String name) {
+        this.name = name;
+    }
 }

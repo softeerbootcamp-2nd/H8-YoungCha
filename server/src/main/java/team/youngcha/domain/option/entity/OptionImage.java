@@ -15,4 +15,9 @@ public class OptionImage {
 
     @Column("img_type")
     private int imgType;
+
+    public OptionImage(String imgUrl, int imgType) {
+        this.imgUrl = imgUrl;
+        this.imgType = imgType;
+    }
 }

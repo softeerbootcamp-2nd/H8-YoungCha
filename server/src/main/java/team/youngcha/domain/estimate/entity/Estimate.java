@@ -19,4 +19,10 @@ public class Estimate {
 
     @Column("create_date")
     private LocalDateTime createDate;
+
+    public Estimate(int ageRange, int gender, LocalDateTime createDate) {
+        this.ageRange = ageRange;
+        this.gender = gender;
+        this.createDate = createDate;
+    }
 }

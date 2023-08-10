@@ -18,4 +18,10 @@ public class Sell {
 
     @Column("create_date")
     private LocalDateTime createDate;
+
+    public Sell(int age, int gender, LocalDateTime createDate) {
+        this.age = age;
+        this.gender = gender;
+        this.createDate = createDate;
+    }
 }

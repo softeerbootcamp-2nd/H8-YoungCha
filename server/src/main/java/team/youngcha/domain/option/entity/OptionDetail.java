@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
 @Getter
-public class Detail {
+public class OptionDetail {
 
     @Id
     private Long id;
@@ -16,4 +16,10 @@ public class Detail {
 
     @Column("img_url")
     private String imgUrl;
+
+    public OptionDetail(String name, String description, String imgUrl) {
+        this.name = name;
+        this.description = description;
+        this.imgUrl = imgUrl;
+    }
 }

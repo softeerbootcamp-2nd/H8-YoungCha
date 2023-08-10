@@ -23,4 +23,13 @@ public class Trim {
     private int price;
 
     private String description;
+
+    public Trim(String name, String backgroundImgUrl, String carImgUrl, String hashTag, int price, String description) {
+        this.name = name;
+        this.backgroundImgUrl = backgroundImgUrl;
+        this.carImgUrl = carImgUrl;
+        this.hashTag = hashTag;
+        this.price = price;
+        this.description = description;
+    }
 }
