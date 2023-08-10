@@ -6,7 +6,7 @@ function GuideModeDetailList() {
       {GUIDE_MODE_DETAIL.map(({ title, detail }, index) => {
         return (
           <li key={`GuideModeDetail-${index}`} className="flex gap-12px">
-            <div className="text-center rounded-full bg-main-blue w-20px h-20px body3">
+            <div className="flex items-center justify-center rounded-full bg-main-blue w-20px h-20px body3">
               {index + 1}
             </div>
             <div>
