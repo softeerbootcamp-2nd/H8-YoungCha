@@ -1,17 +1,18 @@
 package team.youngcha.domain.trim.entity;
 
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
 
 @Getter
 public class TrimOption {
 
-    @Id
     private Long id;
-
     private int type;
+    private Long trimId;
+    private Long optionId;
 
-    public TrimOption(int type) {
+    public TrimOption(int type, Long trimId, Long optionId) {
         this.type = type;
+        this.trimId = trimId;
+        this.optionId = optionId;
     }
 }

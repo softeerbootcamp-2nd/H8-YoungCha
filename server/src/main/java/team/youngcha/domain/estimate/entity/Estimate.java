@@ -1,26 +1,32 @@
 package team.youngcha.domain.estimate.entity;
 
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
 
 import java.time.LocalDateTime;
 
 @Getter
 public class Estimate {
 
-    @Id
     private Long id;
-
-    @Column("age_range")
+    private Long trimId;
+    private Long engineId;
+    private Long bodyTypeId;
+    private Long drivingSystemId;
+    private Long exteriorColorId;
+    private Long InteriorColorId;
+    private Long wheelId;
     private int ageRange;
-
     private int gender;
-
-    @Column("create_date")
     private LocalDateTime createDate;
 
-    public Estimate(int ageRange, int gender, LocalDateTime createDate) {
+    public Estimate(Long trimId, Long engineId, Long bodyTypeId, Long drivingSystemId, Long exteriorColorId, Long interiorColorId, Long wheelId, int ageRange, int gender, LocalDateTime createDate) {
+        this.trimId = trimId;
+        this.engineId = engineId;
+        this.bodyTypeId = bodyTypeId;
+        this.drivingSystemId = drivingSystemId;
+        this.exteriorColorId = exteriorColorId;
+        InteriorColorId = interiorColorId;
+        this.wheelId = wheelId;
         this.ageRange = ageRange;
         this.gender = gender;
         this.createDate = createDate;

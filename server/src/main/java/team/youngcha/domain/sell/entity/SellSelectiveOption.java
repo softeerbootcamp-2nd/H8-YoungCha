@@ -1,11 +1,16 @@
 package team.youngcha.domain.sell.entity;
 
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
 
 @Getter
 public class SellSelectiveOption {
 
-    @Id
     private Long id;
+    private Long sellId;
+    private Long optionId;
+
+    public SellSelectiveOption(Long sellId, Long optionId) {
+        this.sellId = sellId;
+        this.optionId = optionId;
+    }
 }

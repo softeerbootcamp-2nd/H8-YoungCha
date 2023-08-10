@@ -1,9 +1,16 @@
 package team.youngcha.domain.dictionary.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import team.youngcha.domain.dictionary.entity.Dictionary;
 
 @Repository
-public interface DictionaryRepository extends CrudRepository<Dictionary, Long> {
+@RequiredArgsConstructor
+public class DictionaryRepository {
+
+    private final JdbcTemplate jdbcTemplate;
+    private final RowMapper<Dictionary> dictionaryRowMapper = BeanPropertyRowMapper.newInstance(Dictionary.class);
 }

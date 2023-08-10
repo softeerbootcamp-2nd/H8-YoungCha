@@ -1,9 +1,16 @@
 package team.youngcha.domain.category.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import team.youngcha.domain.category.entity.Category;
 
 @Repository
-public interface CategoryRepository extends CrudRepository<Category, Long> {
+@RequiredArgsConstructor
+public class CategoryRepository {
+
+    private final JdbcTemplate jdbcTemplate;
+    private final RowMapper<Category> categoryRowMapper = BeanPropertyRowMapper.newInstance(Category.class);
 }

@@ -1,11 +1,16 @@
 package team.youngcha.domain.estimate.entity;
 
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
 
 @Getter
 public class EstimateSelectiveOption {
 
-    @Id
     private Long id;
+    private Long estimateId;
+    private Long optionId;
+
+    public EstimateSelectiveOption(Long estimateId, Long optionId) {
+        this.estimateId = estimateId;
+        this.optionId = optionId;
+    }
 }
