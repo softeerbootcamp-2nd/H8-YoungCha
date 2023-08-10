@@ -14,7 +14,7 @@ public class Trim {
     private String name;
     private String backgroundImgUrl;
     private String carImgUrl;
-    private String hashTag;
+    private String hashtag;
     private int price;
     private String description;
     private Long carId;
