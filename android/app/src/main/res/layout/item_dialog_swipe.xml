@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="swipeDialog"
+            name="swipe_dialog"
             type="com.youngcha.ohmycarset.model.dialog.SwipeDialog" />
     </data>
 
@@ -27,7 +27,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:testImageSource="@{swipeDialog.img}" />
+                app:testImageSource="@{swipe_dialog.img}" />
 
             <TextView
                 android:id="@+id/tv_option_title"
@@ -37,7 +37,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/hyundai_sans_head_kr_regular"
-                android:text="@{swipeDialog.title}"
+                android:text="@{swipe_dialog.title}"
                 android:textColor="@color/cool_grey_003"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/hyundai_sans_head_kr_medium"
-                android:text="@{swipeDialog.subTitle}"
+                android:text="@{swipe_dialog.subTitle}"
                 android:textColor="@color/cool_grey_black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/tv_option_title"
@@ -75,7 +75,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="50dp"
                 android:fontFamily="@font/hyundai_sans_head_kr_regular"
-                android:text="@{swipeDialog.explain}"
+                android:text="@{swipe_dialog.explain}"
                 android:textColor="@color/cool_grey_004"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@id/tv_option_title"

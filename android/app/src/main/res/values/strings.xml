@@ -76,5 +76,15 @@
     <string name="next">다음</string>
     <string name="prev">이전</string>
 
+    <string name="self_mode_info">가장 일반적으로 많은 사람들이 선택한\n
+인기있는 옵션들을 보며 내 취향에 맞게 자유롭게\n
+옵션을 선택할 수 있어요.</string>
+
+    <string name="guide_mode_info">내 상황과 성향에 맞는 옵션들을 추천받아\n
+나에게 딱 맞는 옵션들로 구성된 차량 견적을\n
+받아볼 수 있어요.
+    </string>
+
+    <string name="current_processing">현재 진행중</string>
 
 </resources>
