@@ -1,0 +1,62 @@
+name: fe-cd
+
+on:
+  push:
+    branches:
+      - dev/fe
+    paths: 'client/**'
+
+defaults:
+  run:
+    working-directory: client
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      CI: false
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Check Node version
+        run: node -v
+
+      - name: Set environment variables
+        run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env.production
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install dependaecies
+        run: pnpm install
+
+      - name: Build project
+        run: pnpm run build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+        run: |
+          aws s3 cp --recursive --region ap-northeast-2 dist s3://youngcha.team
