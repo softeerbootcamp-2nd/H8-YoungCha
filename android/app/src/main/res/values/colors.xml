@@ -12,4 +12,6 @@
     <color name="cool_grey_002">#FFD1D9E3</color>
     <color name="cool_grey_001">#FFEDF2FA</color>
     <color name="trim_self_mode_option_txt_color">#FF212121</color>
+    <color name="active_blue">#FF4CA7CE</color>
+    <color name="sky_blue">#FFB0C9E3</color>
 </resources>

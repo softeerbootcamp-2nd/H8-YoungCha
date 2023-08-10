@@ -11,10 +11,15 @@ import com.youngcha.ohmycarset.model.dialog.ButtonDialog
 
 class ButtonDialogView(context: Context, private val buttonDialogData: ButtonDialog): Dialog(context, R.style.TransparentDialog) {
 
-    private var buttonClickListener: ((String) -> Unit)? = null
+    private var horizontalButtonClickListener: ((String) -> Unit)? = null
+    private var verticalButtonClickListener: ((String) -> Unit)? = null
 
-    fun setOnButtonClickListener(listener: (String) -> Unit) {
-        buttonClickListener = listener
+    fun setOnHorizontalButtonClickListener(listener: (String) -> Unit) {
+        horizontalButtonClickListener = listener
+    }
+
+    fun setOnVerticalButtonClickListener(listener: (String) -> Unit) {
+        verticalButtonClickListener = listener
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,14 +35,27 @@ class ButtonDialogView(context: Context, private val buttonDialogData: ButtonDia
         setContentView(binding.root)
 
         binding.buttonDialog = buttonDialogData
+        binding.layoutDialogVerticalButton.buttonVertical = buttonDialogData.buttonVertical
 
-        binding.btnLeft.setOnClickListener {
-            buttonClickListener?.invoke(buttonDialogData.btnText1)
+        binding.layoutDialogHorizontalButton.buttonHorizontal = buttonDialogData.buttonHorizontal
+
+        binding.layoutDialogHorizontalButton.btnLeft.setOnClickListener {
+            horizontalButtonClickListener?.invoke(buttonDialogData.buttonHorizontal.btnText1)
             dismiss()
         }
 
-        binding.btnRight.setOnClickListener {
-            buttonClickListener?.invoke(buttonDialogData.btnText2)
+        binding.layoutDialogHorizontalButton.btnRight.setOnClickListener {
+            horizontalButtonClickListener?.invoke(buttonDialogData.buttonHorizontal.btnText2)
+            dismiss()
+        }
+
+        binding.layoutDialogVerticalButton.vSelfMode.setOnClickListener{
+            verticalButtonClickListener?.invoke("SelfMode")
+            dismiss()
+        }
+
+        binding.layoutDialogVerticalButton.vGuideMode.setOnClickListener {
+            verticalButtonClickListener?.invoke("GuideMode")
             dismiss()
         }
     }
