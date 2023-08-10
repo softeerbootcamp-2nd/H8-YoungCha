@@ -19,7 +19,7 @@ function CarsNameListBox({ trims }: CarsNameListBoxProps) {
       </div>
 
       <div
-        className={`w-full flex items-center justify-center bg-grey-001 py-[36px] sticky top-60px`}
+        className={`flex items-center justify-center bg-grey-001 py-[36px] sticky top-60px`}
       >
         <OptionLayout>
           {trims.map(({ name, description, isBest }, index) => (

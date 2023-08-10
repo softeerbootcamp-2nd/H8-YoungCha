@@ -5,7 +5,6 @@ interface TrimCarsBoxProps {
   trims: TrimType[];
 }
 function TrimCarsBox({ trims }: TrimCarsBoxProps) {
-  console.log(trims);
   return (
     <div className="flex justify-between gap-16px">
       <MakingModeButton
