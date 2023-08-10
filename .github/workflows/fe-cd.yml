@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev/fe
+      - feat/#94-frontend-cd
     paths: 'client/**'
 
 defaults:
