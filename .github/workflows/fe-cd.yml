@@ -10,7 +10,7 @@ on:
     paths: 'client/**'
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
   
     defaults:
@@ -22,7 +22,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [18.x]
 
     steps:
       - name: Checkout source code
@@ -44,7 +44,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
-          cache-dependency-path: ./client/pnpm-lock.yml
+          cache-dependency-path: './client'
 
       - name: Install dependaecies
         run: pnpm install
@@ -52,11 +52,6 @@ jobs:
       - name: Build project
         run: pnpm run build
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
