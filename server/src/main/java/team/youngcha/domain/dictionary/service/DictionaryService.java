@@ -2,7 +2,7 @@ package team.youngcha.domain.dictionary.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import team.youngcha.domain.dictionary.Dictionary;
+import team.youngcha.domain.dictionary.entity.Dictionary;
 import team.youngcha.domain.dictionary.dto.FindDictionaryResponse;
 import team.youngcha.domain.dictionary.repository.DictionaryRepository;
 
