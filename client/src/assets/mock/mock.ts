@@ -1,5 +1,21 @@
 // TODO: 실제 데이터로 변경
-export interface Trim {
+
+export interface MainOptionType {
+  imgUrl: string;
+  description: string;
+}
+
+export interface ExteriorColorType {
+  code: string;
+  name: string;
+}
+
+export interface InternalColorType {
+  url: string;
+  name: string;
+}
+
+export interface TrimType {
   id: number;
   name: string;
   backgroundImgUrl: string;
@@ -8,21 +24,12 @@ export interface Trim {
   description: string;
   isBest: boolean;
   minPrice: number;
-  mainOptions: {
-    imgUrl: string;
-    description: string;
-  }[];
-  exteriorColor: {
-    code: string;
-    name: string;
-  }[];
-  internalColor: {
-    url: string;
-    name: string;
-  }[];
+  mainOptions: MainOptionType[];
+  exteriorColor: ExteriorColorType[];
+  internalColor: InternalColorType[];
 }
 
-export const mockLeblanc: Trim = {
+export const mockLeblanc: TrimType = {
   id: 1,
   name: 'LeBlanc',
   backgroundImgUrl: '/mock/TrimCard/leblanc.png',
@@ -75,7 +82,7 @@ export const mockLeblanc: Trim = {
   ],
 };
 
-export const mockTrims: Trim[] = [
+export const mockTrims: TrimType[] = [
   mockLeblanc,
   mockLeblanc,
   mockLeblanc,
