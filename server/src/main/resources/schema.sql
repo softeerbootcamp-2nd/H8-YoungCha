@@ -24,6 +24,18 @@ CREATE TABLE IF NOT EXISTS `trim`
     FOREIGN KEY (`car_id`) REFERENCES `car` (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `trim`
+(
+    `id`                 bigint        NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name`               varchar(50)   NOT NULL,
+    `car_img_url`        varchar(2083) NOT NULL,
+    `background_img_url` varchar(2083) NOT NULL,
+    `hashtag`            varchar(50)   NULL,
+    `price`              int           NOT NULL,
+    `car_id`             bigint        NOT NULL,
+    FOREIGN KEY (`car_id`) REFERENCES `car` (`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `category`
 (
     `id`   bigint       NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -132,11 +144,11 @@ CREATE TABLE IF NOT EXISTS `options_image`
     FOREIGN KEY (`options_id`) REFERENCES `options` (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `detail`
+CREATE TABLE IF NOT EXISTS `options_detail`
 (
     `id`          bigint        NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name`        varchar(100)  NULL,
-    `description` text  NOT NULL,
+    `description` text          NOT NULL,
     `img_url`     varchar(2083) NULL,
     `options_id`  bigint        NOT NULL,
     FOREIGN KEY (`options_id`) REFERENCES `options` (`id`)
@@ -160,4 +172,3 @@ CREATE TABLE IF NOT EXISTS `options_relation`
     FOREIGN KEY (`parent_id`) REFERENCES `options` (`id`),
     FOREIGN KEY (`child_id`) REFERENCES `options` (`id`)
 );
-

@@ -3,7 +3,7 @@ package team.youngcha.domain.dictionary.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.youngcha.domain.dictionary.Dictionary;
+import team.youngcha.domain.dictionary.entity.Dictionary;
 
 @Getter
 @NoArgsConstructor

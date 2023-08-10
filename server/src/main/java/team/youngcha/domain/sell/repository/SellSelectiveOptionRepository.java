@@ -2,8 +2,8 @@ package team.youngcha.domain.sell.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import team.youngcha.domain.sell.entity.Sell;
+import team.youngcha.domain.sell.entity.SellSelectiveOption;
 
 @Repository
-public interface SellRepository extends CrudRepository<Sell, Long> {
+public interface SellSelectiveOptionRepository extends CrudRepository<SellSelectiveOption, Long> {
 }
