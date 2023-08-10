@@ -29,6 +29,20 @@ export interface TrimType {
   internalColor: InternalColorType[];
 }
 
+export interface BasicOptionType {
+  first: boolean;
+  last: boolean;
+  totalElements: number;
+  totalPages: number;
+  contents: [
+    {
+      name: string;
+      categoryId: number;
+      imgUrl: string;
+    },
+  ];
+}
+
 export const mockLeblanc: TrimType = {
   id: 1,
   name: 'LeBlanc',
@@ -89,18 +103,16 @@ export const mockTrims: TrimType[] = [
   mockLeblanc,
 ];
 
-export const mockBasicOptions = {
-  data: {
-    first: true,
-    last: false,
-    totalElements: 1,
-    totalPages: 1,
-    contents: [
-      {
-        name: '8단 자동변속기',
-        categoryId: 1,
-        imgUrl: '/src/assets/mock/images/8-auto-changer.png',
-      },
-    ],
-  },
+export const mockBasicOptions: BasicOptionType = {
+  first: true,
+  last: false,
+  totalElements: 1,
+  totalPages: 1,
+  contents: [
+    {
+      name: '8단 자동변속기',
+      categoryId: 1,
+      imgUrl: '/src/assets/mock/images/8-auto-changer.png',
+    },
+  ],
 };

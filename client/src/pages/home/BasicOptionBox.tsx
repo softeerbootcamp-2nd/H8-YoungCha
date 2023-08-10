@@ -1,13 +1,8 @@
+import { BasicOptionType } from '@/assets/mock/mock';
 import OptionLayout from './OptionLayout';
 
-interface DataType {
-  name: string;
-  categoryId: number;
-  imgUrl: string;
-}
-
 interface BasicOptionBoxProps {
-  basicOptionLists: DataType[][];
+  basicOptionLists: BasicOptionType[];
 }
 
 const BasicOptions = [
@@ -44,13 +39,16 @@ function BasicOptionBox({ basicOptionLists }: BasicOptionBoxProps) {
           })}
         </div>
         <OptionLayout>
-          {basicOptionLists.map((opation, index) => (
+          {basicOptionLists.map(({ contents }, index) => (
             <ul
               className="flex flex-col w-full gap-24px"
-              key={opation[0].categoryId + index}
+              key={`basic-option-${index}`}
             >
-              {opation.map(({ name, categoryId, imgUrl }) => (
-                <li className="flex items-center gap-15px" key={categoryId}>
+              {contents.map(({ name, imgUrl }, index) => (
+                <li
+                  className="flex items-center gap-15px"
+                  key={`basic-option-content-${index}`}
+                >
                   <img
                     src={imgUrl}
                     alt={name}

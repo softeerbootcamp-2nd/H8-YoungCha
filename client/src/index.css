@@ -49,7 +49,7 @@
 
 @layer utilities {
   .glassmorph {
-    @apply bg-gradient-to-r from-white/20 to-white/0 backdrop-blur-[6px]
+    @apply from-white/20 to-white/0 backdrop-blur-[6px]
     before:content-[''] before:absolute before:p-2px before:inset-0 before:rounded-6px drop-shadow-[0_10px_16px_rgba(0,0,0,0.2)];
   }
   .glassmorph::before {
