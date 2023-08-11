@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import team.youngcha.domain.option.entity.OptionDetail;
+import team.youngcha.domain.option.entity.Spec;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,6 +46,10 @@ class OptionDetailRepositoryTest {
                 "values (3, '가솔린1', '가솔린 설명1', '가솔린 img1', 2)");
         jdbcTemplate.update("insert into options_detail (id, name, description, img_url, options_id) " +
                 "values (4, 'mock', 'mock', 'mock', 3)");
+        jdbcTemplate.update("insert into spec (id, name, description, options_detail_id) " +
+                "values (1, '최고출력', '3800 rpm', 2)");
+        jdbcTemplate.update("insert into spec (id, name, description, options_detail_id) " +
+                "values (2, '최대토크', '2750 rpm', 2)");
     }
 
     @Test
@@ -53,7 +59,7 @@ class OptionDetailRepositoryTest {
         List<Long> optionsIds = List.of(1L, 2L);
 
         //when
-        List<OptionDetail> optionDetails = optionDetailRepository.findByContainOptionIds(optionsIds);
+        List<OptionDetail> optionDetails = optionDetailRepository.findWithSpecsByContainOptionIds(optionsIds);
 
         //then
         OptionDetail optionDetail1 = OptionDetail.builder()
@@ -61,6 +67,20 @@ class OptionDetailRepositoryTest {
                 .description("디젤 설명1")
                 .imgUrl("디젤 img1")
                 .optionId(1L)
+                .specs(new ArrayList<>())
+                .build();
+
+        Spec spec1 = Spec.builder()
+                .id(1L)
+                .name("최고출력")
+                .description("3800 rpm")
+                .optionDetailId(2L)
+                .build();
+        Spec spec2 = Spec.builder()
+                .id(2L)
+                .name("최대토크")
+                .description("2750 rpm")
+                .optionDetailId(2L)
                 .build();
 
         OptionDetail optionDetail2 = OptionDetail.builder()
@@ -68,6 +88,7 @@ class OptionDetailRepositoryTest {
                 .description("디젤 설명2")
                 .imgUrl("디젤 img2")
                 .optionId(1L)
+                .specs(List.of(spec1, spec2))
                 .build();
 
         OptionDetail optionDetail3 = OptionDetail.builder()
@@ -75,8 +96,10 @@ class OptionDetailRepositoryTest {
                 .description("가솔린 설명1")
                 .imgUrl("가솔린 img1")
                 .optionId(2L)
+                .specs(new ArrayList<>())
                 .build();
 
+        assertThat(optionDetails.size()).isEqualTo(3);
         assertThat(optionDetails).usingRecursiveComparison()
                 .ignoringCollectionOrder()
                 .isEqualTo(List.of(optionDetail1, optionDetail2, optionDetail3));
