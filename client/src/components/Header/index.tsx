@@ -10,7 +10,7 @@ function Header() {
   useEffect(() => {
     document.addEventListener('scroll', () => {
       if (window.scrollY === 0) setBackgroundColor('');
-      if (window.scrollY > 0) setBackgroundColor('bg-grey-001');
+      else if (window.scrollY > 0) setBackgroundColor('bg-grey-001');
     });
     return () => {
       document.removeEventListener('scroll', () => {});
