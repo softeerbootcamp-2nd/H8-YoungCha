@@ -143,6 +143,15 @@ CREATE TABLE IF NOT EXISTS `options_detail`
     FOREIGN KEY (`options_id`) REFERENCES `options` (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `spec`
+(
+    `id`                bigint       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name`              varchar(50)  NOT NULL,
+    `description`       varchar(100) NOT NULL,
+    `options_detail_id` bigint       NOT NULL,
+    FOREIGN KEY (`options_detail_id`) REFERENCES `options` (`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `trim_options`
 (
     `id`         bigint  NOT NULL AUTO_INCREMENT PRIMARY KEY,
