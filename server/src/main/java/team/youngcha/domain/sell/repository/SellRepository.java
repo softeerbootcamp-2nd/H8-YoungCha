@@ -22,10 +22,10 @@ public class SellRepository {
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Sell> sellRowMapper = new SellRowMapper();
 
-    public Map<Long, Long> countPowerTrainByContainPowerTrainIds(List<Long> powerTrainIds) {
+    public Map<Long, Long> countPowerTrainByTrimIdAndContainPowerTrainIds(Long trimId, List<Long> powerTrainIds) {
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
 
-        List<Map<String, Object>> results = querySellCounts(namedParameterJdbcTemplate, powerTrainIds);
+        List<Map<String, Object>> results = querySellCounts(namedParameterJdbcTemplate, trimId, powerTrainIds);
 
         return results.stream()
                 .collect(Collectors.toMap(
@@ -34,13 +34,14 @@ public class SellRepository {
                 ));
     }
 
-    private List<Map<String, Object>> querySellCounts(NamedParameterJdbcTemplate namedParameterJdbcTemplate, List<Long> powerTrainIds) {
+    private List<Map<String, Object>> querySellCounts(NamedParameterJdbcTemplate namedParameterJdbcTemplate, Long trimId, List<Long> powerTrainIds) {
         MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("trimId", trimId);
         params.addValue("powerTrainIds", powerTrainIds);
 
         return namedParameterJdbcTemplate.queryForList(
                 "select sell.engine_id, COUNT(*) as count from sell " +
-                        "where sell.engine_id in (:powerTrainIds) " +
+                        "where sell.engine_id in (:powerTrainIds) and sell.trim_id in (:trimId)" +
                         "group by sell.engine_id",
                 params);
     }
