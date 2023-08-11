@@ -1,4 +1,4 @@
-interface SelectProps {
+interface SelectButtonProps {
   children: React.ReactNode;
   size?: 'default' | 'md' | 'lg';
   type: 'default' | 'active' | 'IconActive';
@@ -17,7 +17,12 @@ const selectColor = {
   IconActive: 'bg-white text-grey-black border-2px border-main-blue',
 };
 
-function Select({ children, size = 'default', type, onClick }: SelectProps) {
+function SelectButton({
+  children,
+  size = 'default',
+  type,
+  onClick,
+}: SelectButtonProps) {
   return (
     <button
       className={`flex items-center justify-between font-medium  rounded-6px body2 px-20px ${selectColor[type]} ${selectSize[size]}`}
@@ -28,4 +33,4 @@ function Select({ children, size = 'default', type, onClick }: SelectProps) {
   );
 }
 
-export default Select;
+export default SelectButton;

@@ -1,4 +1,4 @@
-function CheckInactive() {
+function InactiveCheck() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,4 +15,4 @@ function CheckInactive() {
   );
 }
 
-export default CheckInactive;
+export default InactiveCheck;
