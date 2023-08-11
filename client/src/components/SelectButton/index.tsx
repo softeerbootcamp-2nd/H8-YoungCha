@@ -9,6 +9,7 @@ const selectSize = {
   default: 'py-6px',
   md: 'w-166px h-60px py-20px',
   lg: 'w-343px h-60px py-20px',
+  full: 'w-full h-60px py-20px',
 };
 
 const selectColor = {
@@ -23,11 +24,9 @@ function SelectButton({
   type,
   onClick,
 }: SelectButtonProps) {
+  const style = `flex items-center justify-between font-medium  rounded-6px body2 px-20px ${selectColor[type]} ${selectSize[size]}`;
   return (
-    <button
-      className={`flex items-center justify-between font-medium  rounded-6px body2 px-20px ${selectColor[type]} ${selectSize[size]}`}
-      onClick={onClick}
-    >
+    <button className={style} onClick={onClick}>
       {children}
     </button>
   );
