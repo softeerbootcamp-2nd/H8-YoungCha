@@ -18,25 +18,29 @@ function Header() {
   }, []);
   return (
     <div
-      className={`flex justify-between  px-128px py-32px fixed z-100 w-full mx-auto left-0 right-0 ${backgroundColor} duration-500 z-10`}
+      className={`${backgroundColor} z-10 duration-500 fixed z-100 w-full  left-0 right-0`}
     >
-      <div className="flex text-center">
-        <HyundaiLogoButton />
-        <div>
-          <span>|</span>
+      <div
+        className={`flex justify-between px-128px  max-w-7xl py-32px mx-auto`}
+      >
+        <div className="flex text-center">
+          <HyundaiLogoButton />
+          <div>
+            <span>|</span>
+          </div>
+          <div>
+            <span className="font-medium pl-20px title3">
+              {TEXT_MAKING_MY_CAR}
+            </span>
+          </div>
         </div>
-        <div>
-          <span className="font-medium pl-20px title3">
-            {TEXT_MAKING_MY_CAR}
-          </span>
+        <div className="flex gap-20px">
+          <DictionaryToggleButton />
+          <div>
+            <span>|</span>
+          </div>
+          <ModelChangeButton />
         </div>
-      </div>
-      <div className="flex gap-20px">
-        <DictionaryToggleButton />
-        <div>
-          <span>|</span>
-        </div>
-        <ModelChangeButton />
       </div>
     </div>
   );
