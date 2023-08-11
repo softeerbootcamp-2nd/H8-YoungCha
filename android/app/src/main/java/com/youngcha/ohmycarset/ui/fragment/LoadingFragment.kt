@@ -111,5 +111,6 @@ class LoadingFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         imageAnimationCoroutine?.cancel()
+        imageAndTextAnimationCoroutine?.cancel()
     }
 }
