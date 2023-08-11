@@ -2,8 +2,7 @@ name: fe-cd
 
 on:
   push:
-    branches:
-      - "dev/fe"
+    branches: ["main", "dev/fe"]
     paths: 'client/**'
 
 jobs:
