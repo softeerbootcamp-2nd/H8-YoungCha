@@ -1,11 +1,13 @@
 interface SelectButtonProps {
   children: React.ReactNode;
   size?: 'default' | 'md' | 'lg';
-  type: 'default' | 'active' | 'IconActive';
+  type: 'default' | 'active' | 'iconActive';
   onClick?: () => void;
 }
 
-const selectSize = {
+type SelectSize = 'default' | 'md' | 'lg' | 'full';
+
+const selectSize: Record<SelectSize, string> = {
   default: 'py-6px',
   md: 'w-166px h-60px py-20px',
   lg: 'w-343px h-60px py-20px',
@@ -15,7 +17,7 @@ const selectSize = {
 const selectColor = {
   default: 'bg-grey-001 text-grey-003',
   active: 'bg-main-blue text-white ',
-  IconActive: 'bg-white text-grey-black border-2px border-main-blue',
+  iconActive: 'bg-white text-grey-black border-2px border-main-blue',
 };
 
 function SelectButton({
