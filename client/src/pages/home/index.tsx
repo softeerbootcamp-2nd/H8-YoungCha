@@ -22,8 +22,8 @@ function Home() {
     mockBasicOptions,
   ];
   return (
-    <div>
-      <div className="flex justify-center w-full h-screen bg-center bg-cover pt-85px bg-main-background-image">
+    <div className="h-screen overflow-scroll snap-y snap-mandatory">
+      <div className="flex justify-center w-full h-screen bg-center bg-cover pt-85px bg-main-background-image snap-start">
         <div className="flex flex-col justify-between px-128px max-w-7xl py-16px">
           <div>
             <p className="text-white text-24px font-hsans-head tracking-[-0.96px] leading-[31.2px]">
@@ -52,18 +52,19 @@ function Home() {
           </div>
         </div>
       </div>
-
-      <div className="w-full mb-400px">
-        <CarsNameListBox trims={mockTrims} />
-        <div className="flex flex-col m-auto max-w-7xl pt-32px gap-60px px-128px">
-          <CarsImageBox trims={mockTrims} />
-          <div className="flex flex-col gap-48px">
-            <MainOptionBox trims={mockTrims} />
-            <ExteriorColorBox trims={mockTrims} />
-            <InternalColorBox trims={mockTrims} />
-            <BasicOptionBox basicOptionLists={basicOptionLists} />
-            <MakingCarButtonsBox />
-            <GuideModeButton />
+      <div className="h-screen overflow-scroll snap-start ">
+        <div className="w-full mb-400px">
+          <CarsNameListBox trims={mockTrims} />
+          <div className="flex flex-col m-auto max-w-7xl pt-32px gap-60px px-128px">
+            <CarsImageBox trims={mockTrims} />
+            <div className="flex flex-col gap-48px">
+              <MainOptionBox trims={mockTrims} />
+              <ExteriorColorBox trims={mockTrims} />
+              <InternalColorBox trims={mockTrims} />
+              <BasicOptionBox basicOptionLists={basicOptionLists} />
+              <MakingCarButtonsBox />
+              <GuideModeButton />
+            </div>
           </div>
         </div>
       </div>
