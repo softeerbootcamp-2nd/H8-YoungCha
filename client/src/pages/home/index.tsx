@@ -36,8 +36,8 @@ function Home() {
 
           <div>
             <TrimCarsBox trims={mockTrims} />
-            <div>
-              <p className="text-center text-white opacity-60 title mt-24px">
+            <div className="flex flex-col items-center">
+              <p className="text-white opacity-60 title mt-24px">
                 {TEXT_MAIN_DETAIL_COMPARE}
               </p>
 
