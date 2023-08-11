@@ -1,13 +1,9 @@
 package team.youngcha.domain.option.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class OptionDetail {
 
     private Long id;
@@ -15,4 +11,13 @@ public class OptionDetail {
     private String description;
     private String imgUrl;
     private Long optionId;
+
+    @Builder
+    public OptionDetail(Long id, String name, String description, String imgUrl, Long optionId) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.imgUrl = imgUrl;
+        this.optionId = optionId;
+    }
 }
