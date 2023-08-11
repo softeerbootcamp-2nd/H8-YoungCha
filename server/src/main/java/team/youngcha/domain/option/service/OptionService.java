@@ -32,7 +32,7 @@ public class OptionService {
     private final OptionDetailRepository optionDetailRepository;
 
     public List<FindSelfOptionResponse> findSelfPowerTrains(Long trimId) {
-        trimRepository.findById(trimId).orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "존재하지 않는 트림입니다."));
+        trimRepository.findById(trimId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
         List<Option> powerTrains = optionRepository.findPowerTrainsByTrimIdAndType(trimId, OptionType.OPTIONAL);
 
         List<Long> powerTrainIds = powerTrains.stream().map(Option::getId).collect(Collectors.toList());
