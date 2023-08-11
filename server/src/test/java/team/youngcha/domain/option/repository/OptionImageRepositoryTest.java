@@ -26,24 +26,18 @@ class OptionImageRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        jdbcTemplate.update("insert into category (id, name) values (1, '파워 트레인')");
-        jdbcTemplate.update("insert into category (id, name) values (2, '바디 타입')");
+        jdbcTemplate.update("insert into category (id, name) values (1, '파워 트레인'), " +
+                "(2, '바디 타입')");
         jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (1,'디젤', 1000, '좋아요', 1)");
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (2,'가솔린', 2000, '추천', 1)");
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (3,'mock1', 0, 'mock1', 1)");
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (4,'mock2', 0, 'mock2', 2)");
+                "values (1,'디젤', 1000, '좋아요', 1), " +
+                "(2,'가솔린', 2000, '추천', 1), " +
+                "(3,'mock1', 0, 'mock1', 1), " +
+                "(4,'mock2', 0, 'mock2', 2)");
         jdbcTemplate.update("insert into options_image (id, img_url, img_type, options_id) " +
-                "values (1, '디젤 img1', 0, 1)");
-        jdbcTemplate.update("insert into options_image (id, img_url, img_type, options_id) " +
-                "values (2, '디젤 img2', 1, 1)");
-        jdbcTemplate.update("insert into options_image (id, img_url, img_type, options_id) " +
-                "values (3, '가솔린 img1', 0, 2)");
-        jdbcTemplate.update("insert into options_image (id, img_url, img_type, options_id) " +
-                "values (4, 'mock', 0, 3)");
+                "values (1, '디젤 img1', 0, 1)," +
+                "(2, '디젤 img2', 1, 1), " +
+                "(3, '가솔린 img1', 0, 2), " +
+                "(4, 'mock', 0, 3)");
     }
 
     @Test

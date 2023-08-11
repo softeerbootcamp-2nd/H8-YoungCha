@@ -29,24 +29,18 @@ class OptionRepositoryTest {
     void setUp() {
         jdbcTemplate.update("insert into car (id, name) values (1,'car')");
         jdbcTemplate.update("insert into trim (id, name, img_url, background_img_url, hashtag, price, description, car_id)" +
-                " values (1, 'Le Blanc', 'Le_Blanc_img.jpg', 'Le_Blanc_back', '#베스트셀러', 10000000, '베스트셀러', 1)");
-        jdbcTemplate.update("insert into trim (id, name, img_url, background_img_url, hashtag, price, description, car_id)" +
-                " values (2, 'Exclusive', 'Exclusive_img.jpg', 'Exclusive_back', '#기본', 9000000, '기본', 1)");
+                " values (1, 'Le Blanc', 'Le_Blanc_img.jpg', 'Le_Blanc_back', '#베스트셀러', 10000000, '베스트셀러', 1)," +
+                "(2, 'Exclusive', 'Exclusive_img.jpg', 'Exclusive_back', '#기본', 9000000, '기본', 1)");
         jdbcTemplate.update("insert into category (id, name) values (1, '파워 트레인')");
         jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (1,'디젤', 1000, '좋아요', 1)");
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (2,'가솔린', 2000, '추천', 1)");
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (3,'mock', 0, 'mock', 1)");
+                "values (1,'디젤', 1000, '좋아요', 1)," +
+                "(2,'가솔린', 2000, '추천', 1)," +
+                "(3,'mock', 0, 'mock', 1)");
         jdbcTemplate.update("insert into trim_options (id, type, trim_id, options_id) " +
-                "values (1, " + OptionType.OPTIONAL.getType() + ", 1, 1)");
-        jdbcTemplate.update("insert into trim_options (id, type, trim_id, options_id) " +
-                "values (2, " + OptionType.OPTIONAL.getType() + ", 1, 2)");
-        jdbcTemplate.update("insert into trim_options (id, type, trim_id, options_id) " +
-                "values (3, " + OptionType.BASIC.getType() + ", 1, 2)");
-        jdbcTemplate.update("insert into trim_options (id, type, trim_id, options_id) " +
-                "values (4, " + OptionType.OPTIONAL.getType() + ", 2, 2)");
+                "values (1, " + OptionType.OPTIONAL.getType() + ", 1, 1)," +
+                "(2," + OptionType.OPTIONAL.getType() + ", 1, 2)," +
+                "(3, " + OptionType.BASIC.getType() + ", 1, 2)," +
+                "(4, " + OptionType.OPTIONAL.getType() + ", 2, 2)");
     }
 
     @Test

@@ -28,28 +28,22 @@ class OptionDetailRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        jdbcTemplate.update("insert into category (id, name) values (1, '파워 트레인')");
-        jdbcTemplate.update("insert into category (id, name) values (2, '바디 타입')");
+        jdbcTemplate.update("insert into category (id, name) " +
+                "values (1, '파워 트레인'), " +
+                "(2, '바디 타입')");
         jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (1,'디젤', 1000, '좋아요', 1)");
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (2,'가솔린', 2000, '추천', 1)");
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (3,'mock1', 0, 'mock1', 1)");
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (4,'mock2', 0, 'mock2', 2)");
+                "values (1,'디젤', 1000, '좋아요', 1), " +
+                "(2,'가솔린', 2000, '추천', 1), " +
+                "(3,'mock1', 0, 'mock1', 1), " +
+                "(4,'mock2', 0, 'mock2', 2)");
         jdbcTemplate.update("insert into options_detail (id, name, description, img_url, options_id) " +
-                "values (1, '디젤1', '디젤 설명1', '디젤 img1', 1)");
-        jdbcTemplate.update("insert into options_detail (id, name, description, img_url, options_id) " +
-                "values (2, '디젤2', '디젤 설명2', '디젤 img2', 1)");
-        jdbcTemplate.update("insert into options_detail (id, name, description, img_url, options_id) " +
-                "values (3, '가솔린1', '가솔린 설명1', '가솔린 img1', 2)");
-        jdbcTemplate.update("insert into options_detail (id, name, description, img_url, options_id) " +
-                "values (4, 'mock', 'mock', 'mock', 3)");
+                "values (1, '디젤1', '디젤 설명1', '디젤 img1', 1), " +
+                "(2, '디젤2', '디젤 설명2', '디젤 img2', 1), " +
+                "(3, '가솔린1', '가솔린 설명1', '가솔린 img1', 2), " +
+                "(4, 'mock', 'mock', 'mock', 3)");
         jdbcTemplate.update("insert into spec (id, name, description, options_detail_id) " +
-                "values (1, '최고출력', '3800 rpm', 2)");
-        jdbcTemplate.update("insert into spec (id, name, description, options_detail_id) " +
-                "values (2, '최대토크', '2750 rpm', 2)");
+                "values (1, '최고출력', '3800 rpm', 2)," +
+                "(2, '최대토크', '2750 rpm', 2)");
     }
 
     @Test
