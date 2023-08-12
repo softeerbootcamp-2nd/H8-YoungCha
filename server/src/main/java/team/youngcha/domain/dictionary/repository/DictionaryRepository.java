@@ -24,10 +24,12 @@ public class DictionaryRepository {
     private static class DictionaryRowMapper implements RowMapper<Dictionary> {
         @Override
         public Dictionary mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            return new Dictionary(resultSet.getLong("id"),
-                    resultSet.getString("word"),
-                    resultSet.getString("description"),
-                    resultSet.getString("img_url"));
+            return Dictionary.builder()
+                    .id(resultSet.getLong("id"))
+                    .word(resultSet.getString("word"))
+                    .description(resultSet.getString("description"))
+                    .imgUrl(resultSet.getString("img_url"))
+                    .build();
         }
     }
 }
