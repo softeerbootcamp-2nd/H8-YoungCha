@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ class SellRepositoryTest {
     @Autowired
     SellRepositoryTest(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.sellRepository = new SellRepository(jdbcTemplate);
+        this.sellRepository = new SellRepository(new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource()));
     }
 
     @BeforeEach

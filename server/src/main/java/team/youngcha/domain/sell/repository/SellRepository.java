@@ -19,12 +19,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SellRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final RowMapper<Sell> sellRowMapper = new SellRowMapper();
 
     public Map<Long, Long> countPowerTrainByTrimIdAndContainPowerTrainIds(Long trimId, List<Long> powerTrainIds) {
-        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
-
         List<Map<String, Object>> results = querySellCounts(namedParameterJdbcTemplate, trimId, powerTrainIds);
 
         return results.stream()
