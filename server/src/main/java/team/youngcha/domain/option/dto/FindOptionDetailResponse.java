@@ -3,6 +3,7 @@ package team.youngcha.domain.option.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.youngcha.domain.option.entity.OptionDetail;
@@ -35,5 +36,13 @@ public class FindOptionDetailResponse {
         this.specs = optionDetail.getSpecs().stream()
                 .map(FindSpecResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    @Builder
+    public FindOptionDetailResponse(String name, String description, String imgUrl, List<FindSpecResponse> specs) {
+        this.name = name;
+        this.description = description;
+        this.imgUrl = imgUrl;
+        this.specs = specs;
     }
 }

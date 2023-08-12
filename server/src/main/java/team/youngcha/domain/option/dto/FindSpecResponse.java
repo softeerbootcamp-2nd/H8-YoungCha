@@ -2,6 +2,7 @@ package team.youngcha.domain.option.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.youngcha.domain.option.entity.Spec;
@@ -20,5 +21,11 @@ public class FindSpecResponse {
     public FindSpecResponse(Spec spec) {
         this.name = spec.getName();
         this.description = spec.getDescription();
+    }
+
+    @Builder
+    public FindSpecResponse(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 }

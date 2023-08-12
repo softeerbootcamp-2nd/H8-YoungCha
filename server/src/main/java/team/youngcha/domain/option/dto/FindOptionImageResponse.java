@@ -1,9 +1,7 @@
 package team.youngcha.domain.option.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import team.youngcha.domain.option.entity.OptionImage;
 
 @Getter
@@ -20,5 +18,11 @@ public class FindOptionImageResponse {
     public FindOptionImageResponse(OptionImage optionImage) {
         this.imgUrl = optionImage.getImgUrl();
         this.imgType = optionImage.getImgType();
+    }
+
+    @Builder
+    public FindOptionImageResponse(String imgUrl, int imgType) {
+        this.imgUrl = imgUrl;
+        this.imgType = imgType;
     }
 }
