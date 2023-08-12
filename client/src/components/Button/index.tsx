@@ -3,7 +3,7 @@ import { HTMLAttributes } from 'react';
 type ColorType = 'main-blue' | 'white' | 'grey';
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
   color?: ColorType;
   onClick?: () => void;
 }
