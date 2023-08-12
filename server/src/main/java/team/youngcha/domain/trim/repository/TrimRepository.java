@@ -26,15 +26,16 @@ public class TrimRepository {
     private static class TrimRowMapper implements RowMapper<Trim> {
         @Override
         public Trim mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            return new Trim(resultSet.getLong("id"),
-                    resultSet.getString("name"),
-                    resultSet.getString("background_img_url"),
-                    resultSet.getString("car_img_url"),
-                    resultSet.getString("hashtag"),
-                    resultSet.getInt("price"),
-                    resultSet.getString("description"),
-                    resultSet.getLong("car_id")
-            );
+            return Trim.builder()
+                    .id(resultSet.getLong("id"))
+                    .name(resultSet.getString("name"))
+                    .imgUrl(resultSet.getString("img_url"))
+                    .backgroundImgUrl(resultSet.getString("background_img_url"))
+                    .hashtag(resultSet.getString("hashtag"))
+                    .price(resultSet.getInt("price"))
+                    .description(resultSet.getString("description"))
+                    .carId(resultSet.getLong("car_id"))
+                    .build();
         }
     }
 }
