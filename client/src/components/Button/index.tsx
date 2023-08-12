@@ -1,5 +1,7 @@
+import { HTMLAttributes } from 'react';
+
 type ColorType = 'main-blue' | 'white' | 'grey';
-interface ButtonProps {
+interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   color?: ColorType;
@@ -12,6 +14,7 @@ const buttonSize = {
   md: 'w-140px h-50px',
   lg: 'w-150px h-46px',
   xl: 'w-244px h-57px',
+  full: 'w-full h-full',
 };
 
 const buttonColor = {
@@ -25,11 +28,12 @@ function Button({
   size = 'md',
   color = 'main-blue',
   onClick,
+  ...restProps
 }: ButtonProps) {
   const className = `flex justify-center items-center rounded-[6px] ${buttonSize[size]} ${buttonColor[color]}`;
 
   return (
-    <button className={className} onClick={onClick}>
+    <button className={className} onClick={onClick} {...restProps}>
       {children}
     </button>
   );
