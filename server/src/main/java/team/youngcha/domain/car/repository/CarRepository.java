@@ -1,6 +1,7 @@
 package team.youngcha.domain.car.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,6 +21,16 @@ public class CarRepository {
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Car> carRowMapper = BeanPropertyRowMapper.newInstance(Car.class);
     private final RowMapper<CarDetailsDto> carDetailsDtoRowMapper = BeanPropertyRowMapper.newInstance(CarDetailsDto.class);
+
+    public Car findById(Long carId) {
+        String sql = "SELECT * FROM car WHERE id = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(sql, carRowMapper, carId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 
     public List<CarDetailsDto> findDetails(Long carId) {
         String sql =
@@ -59,7 +70,6 @@ public class CarRepository {
                 TrimOptionType.MAIN.getValue(),
                 CategoryName.EXTERIOR_COLOR.getValue(),
                 CategoryName.INTERIOR_COLOR.getValue(),
-                OptionImageType.SUB.getValue()
-                );
+                OptionImageType.SUB.getValue());
     }
 }
