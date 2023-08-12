@@ -3,6 +3,7 @@ import { HTMLAttributes, PropsWithChildren } from 'react';
 interface SelectButtonProps extends HTMLAttributes<HTMLButtonElement> {
   size?: 'default' | 'md' | 'lg';
   type: 'default' | 'active' | 'iconActive';
+  flex?: 'center' | 'between';
   onClick?: () => void;
 }
 
@@ -21,14 +22,20 @@ const selectColor = {
   iconActive: 'bg-white text-grey-black border-2px border-main-blue',
 };
 
+const selectFlex = {
+  center: 'justify-center',
+  between: 'justify-between',
+};
+
 function SelectButton({
   children,
   size = 'default',
   type,
+  flex = 'between',
   onClick,
   ...restProps
 }: PropsWithChildren<SelectButtonProps>) {
-  const style = `flex items-center justify-between font-medium  rounded-6px body2 px-20px ${selectColor[type]} ${selectSize[size]}`;
+  const style = `flex items-center ${selectFlex[flex]} font-medium  rounded-6px body2 px-20px ${selectColor[type]} ${selectSize[size]}`;
   return (
     <button className={style} onClick={onClick} {...restProps}>
       {children}
