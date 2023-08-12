@@ -1,7 +1,7 @@
 import App from '@/App';
 import Home from '@/pages/home';
-import PrepareGuide from '@/pages/prepare-guide';
 import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
+import Guide from '@/pages/guide';
 
 const router = createBrowserRouter([
   {
@@ -23,19 +23,19 @@ const router = createBrowserRouter([
             children: [
               {
                 path: 'age',
-                element: <PrepareGuide path="age" />,
+                element: <Guide path="age" />,
               },
               {
                 path: 'gender',
-                element: <PrepareGuide path="gender" />,
+                element: <Guide path="gender" />,
               },
               {
                 path: 'keyword',
-                element: <PrepareGuide path="keyword" />,
+                element: <Guide path="keyword" />,
               },
               {
-                path: 'compelete',
-                element: <div>compelete</div>,
+                path: 'complete',
+                element: <Guide path="complete" />,
               },
             ],
           },
