@@ -60,7 +60,6 @@ public class SellRepository {
                     .wheelId(resultSet.getLong("wheel_id"))
                     .age(resultSet.getInt("age"))
                     .gender(resultSet.getInt("gender"))
-                    .createDate(resultSet.getObject("create_data", LocalDateTime.class))
                     .build();
         }
     }
