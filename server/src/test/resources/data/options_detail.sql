@@ -25,7 +25,7 @@ INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (
 INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (23, null, '-', 'https://www.hyundai.com/contents/spec/LX24/20inchwheel.jpg', 17);
 INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (24, '알콘(alcon) 단조 브레이크', '-', 'https://www.hyundai.com/contents/spec/LX24/alconbreak.jpg', 18);
 INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (25, '20인치 블랙톤 전면 가공 휠', '-', 'https://www.hyundai.com/contents/spec/LX24/20inchwheel.jpg', 18);
-INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (26, null, '강력한 토크와 탁월한 효율로 여유있는 파워와 높은 연비를 제공하는 디젤엔진입니다.<br>최고출력 : 202마력<br>최대토크 : 45.0kgf·m', 'https://www.hyundai.com/contents/spec/LX24/dieselengine2.2.jpg', 1);
+INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (26, null, '강력한 토크와 탁월한 효율로 여유있는 파워와 높은 연비를 제공하는 디젤엔진입니다.', 'https://www.hyundai.com/contents/spec/LX24/dieselengine2.2.jpg', 1);
 INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (27, null, '전달 효율 증대로 전 엔진 동급 최고의 연비를 구현함은 물론, 최적의 변속 성능으로 드라이빙 감성까지 향상시켜줍니다.', 'https://www.hyundai.com/contents/spec/LX24/8at.jpg', 31);
 INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (28, null, '신호 대기 상황이거나 정차 중일 때 차의 엔진을 일시 정지하여 연비를 향상시키고, 배출가스 발생을 억제하는 시스템입니다.', 'https://www.hyundai.com/contents/spec/LX24/isg.jpg', 32);
 INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (29, null, 'COMFORT, ECO, SPORT, SMART 4가지 드라이브 모드를 지원하여 운전자의 니즈에 따른 다양한 주행 모드를 선택할 수 있습니다. 각 주행모드의 상태는 클러스터와 AVN을 통해 확인 가능합니다.', 'https://www.hyundai.com/contents/spec/LX24/drivemode.jpg', 33);
@@ -156,9 +156,7 @@ INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (
 INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (106, null, '뒷좌석 동승자가 취침 시, 뒷좌석 스피커가 모두 음소거가 되고 운전석 스피커로만 음원이 출력되어, 뒷좌석을 조용한 공간으로 활용할 수 있습니다.', 'https://www.hyundai.com/contents/spec/LX24/rearsleep.jpg', 110);
 INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (107, null, '차량 내부 공간의 음향 특성에 맞게 세심하게 조정된 8개의 스피커를 통하여 기본에 충실한 사운드를 감상할 수 있습니다.', 'https://www.hyundai.com/contents/spec/LX24/audiosystem.jpg', 111);
 INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (108, null, 'MP3, USB 저장 장치 또는 iPod 등 외부 음향 기기(또는 음악/동영상 등 미디어 파일 저장 장치)를 차량에 연결하여 차량 스피커를 통하여 음악을 듣거나 차량 오디오 또는 인포테인먼트 시스템으로 재생할 수 있는 편의 장치 입니다.', 'https://www.hyundai.com/contents/spec/LX24/multiusb.jpg', 112);
-INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (109, null, '고효율의 3.8 가솔린 엔진으로 다이내믹한 주행 성능은 물론, 정속성까지 선사합니다.<br>
-최고출력 : 295마력<br>
-최대토크 : 36.2kgf·m', 'https://www.hyundai.com/contents/spec/LX24/gasoline3.8.jpg', 2);
+INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (109, null, '고효율의 3.8 가솔린 엔진으로 다이내믹한 주행 성능은 물론, 정속성까지 선사합니다.', 'https://www.hyundai.com/contents/spec/LX24/gasoline3.8.jpg', 2);
 INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (110, null, '시시각각 변하는 주행환경에 맞춰 전 / 후 구동력을 능동적으로 배분함으로써 드라이빙의 즐거움을 선사합니다.', 'https://www.hyundai.com/contents/spec/LX24/htrac.jpg', 113);
 INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (111, null, '도로 여건에 따라 SNOW / MUD / SAND 주행모드를 선택할 수 있습니다. 각 주행 모드의 상태는 클러스터를 통해 확인가능합니다.', 'https://www.hyundai.com/contents/spec/LX24/tractionmode.jpg', 114);
 INSERT INTO options_detail (id, name, description, img_url, options_id) VALUES (112, null, '가파른 경사길에서 사용자가 원하는 일정한 속도로 안전하게 주행 가능합니다.<br>* 버튼 선택 후 속도 제어가 가능합니다.(전진 : 4~40km/h / 후진 : 2.5km/h)', 'https://www.hyundai.com/contents/spec/LX24/dbc.jpg', 115);
