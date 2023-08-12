@@ -1,11 +1,14 @@
 package team.youngcha.domain.option.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import team.youngcha.domain.option.entity.OptionImage;
 
 @Getter
 @Schema(description = "옵션 사진")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FindOptionImageResponse {
 
     @Schema(description = "사진 주소")

@@ -1,12 +1,13 @@
 package team.youngcha.domain.dictionary.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.youngcha.domain.dictionary.entity.Dictionary;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Schema(description = "백카사전 데이터")
 public class FindDictionaryResponse {
 
