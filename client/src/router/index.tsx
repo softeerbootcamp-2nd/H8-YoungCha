@@ -1,5 +1,6 @@
 import App from '@/App';
 import Home from '@/pages/home';
+import PrepareGuide from '@/pages/prepare-guide';
 import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -22,15 +23,15 @@ const router = createBrowserRouter([
             children: [
               {
                 path: 'age',
-                element: <div>age</div>,
+                element: <PrepareGuide path="age" />,
               },
               {
                 path: 'gender',
-                element: <div>gender</div>,
+                element: <PrepareGuide path="gender" />,
               },
               {
                 path: 'keyword',
-                element: <div>keyword</div>,
+                element: <PrepareGuide path="keyword" />,
               },
               {
                 path: 'compelete',
