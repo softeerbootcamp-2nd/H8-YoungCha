@@ -16,10 +16,11 @@ CREATE TABLE IF NOT EXISTS `trim`
 (
     `id`                 bigint        NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name`               varchar(50)   NOT NULL,
-    `car_img_url`        varchar(2083) NOT NULL,
+    `img_url`            varchar(2083) NOT NULL,
     `background_img_url` varchar(2083) NOT NULL,
-    `hashtag`            varchar(50)   NULL,
+    `hashtag`            varchar(50)   NOT NULL,
     `price`              int           NOT NULL,
+    `description`        varchar(50)   NULL,
     `car_id`             bigint        NOT NULL,
     FOREIGN KEY (`car_id`) REFERENCES `car` (`id`)
 );
