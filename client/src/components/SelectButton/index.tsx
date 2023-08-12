@@ -28,7 +28,7 @@ function SelectButton({
   onClick,
   ...restProps
 }: PropsWithChildren<SelectButtonProps>) {
-  const style = `flex items-center font-medium  rounded-6px body2 px-20px ${selectColor[type]} ${selectSize[size]}`;
+  const style = `flex justify-between items-center font-medium  rounded-6px body2 px-20px ${selectColor[type]} ${selectSize[size]}`;
   return (
     <button className={style} onClick={onClick} {...restProps}>
       {children}
