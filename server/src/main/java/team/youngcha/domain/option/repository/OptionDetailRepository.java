@@ -22,15 +22,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OptionDetailRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final RowMapper<OptionDetail> optionDetailRowMapper = new OptionDetailRowMapper();
     private final ResultSetExtractor<List<OptionDetail>> optionDetailResultSetExtractor = new OptionDetailResultSetExtractor();
 
     public List<OptionDetail> findWithSpecsByContainOptionIds(List<Long> optionIds) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("optionIds", optionIds);
-
-        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
 
         return namedParameterJdbcTemplate.query(
                 "select od.id as id, od.name as name, od.description as description, od.img_url as img_url, od.options_id as options_id, " +

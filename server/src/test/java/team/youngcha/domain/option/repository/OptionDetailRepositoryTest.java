@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import team.youngcha.domain.option.entity.OptionDetail;
 import team.youngcha.domain.option.entity.Spec;
 
@@ -23,7 +24,7 @@ class OptionDetailRepositoryTest {
     @Autowired
     OptionDetailRepositoryTest(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.optionDetailRepository = new OptionDetailRepository(jdbcTemplate);
+        this.optionDetailRepository = new OptionDetailRepository(new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource()));
     }
 
     @BeforeEach
