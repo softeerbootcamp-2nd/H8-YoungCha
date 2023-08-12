@@ -12,7 +12,7 @@ function TrimCarsBox({ trims }: TrimCarsBoxProps) {
         hashtag="#나만을 위한 팰리세이드"
         minPrice={38000000}
         description="나에게 딱 맞는 구성으로"
-        to="making/guide/1"
+        to="guide/age"
       >
         <MakingModeButton.GuideModeDetailList />
       </MakingModeButton>
