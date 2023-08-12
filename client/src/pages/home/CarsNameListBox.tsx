@@ -1,11 +1,10 @@
 import { TrimType } from '@/assets/mock/mock';
 import OptionLayout from './OptionLayout';
+import { TITLE } from './constant';
 
 interface CarsNameListBoxProps {
   trims: TrimType[];
 }
-
-const TITLE = '모델 한 눈에 비교하기';
 
 function CarsNameListBox({ trims }: CarsNameListBoxProps) {
   return (
@@ -14,7 +13,7 @@ function CarsNameListBox({ trims }: CarsNameListBoxProps) {
         <h2
           className={`font-hsans-head text-40px font-medium leading-52px tracking-[-1.6px] text-grey-black `}
         >
-          {TITLE}
+          {TITLE.CAR_NAME_LIST}
         </h2>
       </div>
 

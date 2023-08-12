@@ -1,16 +1,15 @@
 import { TrimType } from '@/assets/mock/mock';
 import * as Icon from '../../assets/icons';
 import OptionLayout from './OptionLayout';
+import { TITLE } from './constant';
 
 interface ExteriorColorBoxProps {
   trims: TrimType[];
 }
 
-const TITLE = '외장 색상';
-
 function ExteriorColorBox({ trims }: ExteriorColorBoxProps) {
   return (
-    <OptionLayout title={TITLE}>
+    <OptionLayout title={TITLE.EXTERIR_COLOR}>
       {trims.map(({ exteriorColor }, index) => (
         <ul
           className="flex flex-col w-full gap-24px"
