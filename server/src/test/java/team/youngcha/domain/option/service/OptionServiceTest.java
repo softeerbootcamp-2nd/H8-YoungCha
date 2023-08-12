@@ -80,7 +80,7 @@ class OptionServiceTest {
     }
 
     @Test
-    @DisplayName("power train을 self mode로 조회한다.")
+    @DisplayName("power train을 self mode로 판매량 내림차순 조회한다.")
     void findPowerTrainSelf() {
         Long trimId = 1L;
         List<Option> options = createOptions(3, 1L, 1L);
@@ -114,7 +114,7 @@ class OptionServiceTest {
         FindSelfOptionResponse expected3 = new FindSelfOptionResponse(options.get(2), 67, List.of(), optionDetails.subList(2, 3));
         assertThat(powerTrainResponses).hasSize(3);
         assertThat(powerTrainResponses).usingRecursiveComparison()
-                .isEqualTo(List.of(expected1, expected2, expected3));
+                .isEqualTo(List.of(expected3, expected2, expected1));
     }
 
     @Test

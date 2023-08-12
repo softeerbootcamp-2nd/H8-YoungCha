@@ -15,10 +15,7 @@ import team.youngcha.domain.option.repository.OptionRepository;
 import team.youngcha.domain.sell.repository.SellRepository;
 import team.youngcha.domain.trim.repository.TrimRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,12 +37,7 @@ public class OptionService {
         Map<Long, List<OptionImage>> powerTrainImagesGroup = getOptionImagesGroup(powerTrainIds);
         Map<Long, List<OptionDetail>> powerTrainDetailsGroup = getOptionDetailGroup(powerTrainIds);
 
-        return powerTrains.stream()
-                .map(powerTrain -> new FindSelfOptionResponse(powerTrain,
-                        sellRatio.get(powerTrain.getId()),
-                        powerTrainImagesGroup.getOrDefault(powerTrain.getId(), new ArrayList<>()),
-                        powerTrainDetailsGroup.getOrDefault(powerTrain.getId(), new ArrayList<>()))).
-                collect(Collectors.toList());
+        return getSortedSelfOptionResponses(powerTrains, sellRatio, powerTrainImagesGroup, powerTrainDetailsGroup);
     }
 
     private Map<Long, Integer> getSellRatio(Long trimId, List<Long> optionsIds) {
@@ -77,5 +69,17 @@ public class OptionService {
         for (Long engineId : optionIds) {
             counts.putIfAbsent(engineId, 0L);
         }
+    }
+
+    private List<FindSelfOptionResponse> getSortedSelfOptionResponses(List<Option> powerTrains, Map<Long, Integer> sellRatio,
+                                                                      Map<Long, List<OptionImage>> powerTrainImagesGroup,
+                                                                      Map<Long, List<OptionDetail>> powerTrainDetailsGroup) {
+        return powerTrains.stream()
+                .map(powerTrain -> new FindSelfOptionResponse(powerTrain,
+                        sellRatio.get(powerTrain.getId()),
+                        powerTrainImagesGroup.getOrDefault(powerTrain.getId(), new ArrayList<>()),
+                        powerTrainDetailsGroup.getOrDefault(powerTrain.getId(), new ArrayList<>())))
+                .sorted(Comparator.comparingDouble(response -> -response.getRate()))
+                .collect(Collectors.toList());
     }
 }
