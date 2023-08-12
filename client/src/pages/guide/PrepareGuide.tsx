@@ -1,4 +1,3 @@
-import SelectButton from '@/components/SelectButton';
 import StepBox from './StepBox';
 import TitleBox from './TitleBox';
 import AgeSelectButtonsBox from './SelectButtonsBox/AgeSelectButtonsBox';
@@ -7,6 +6,7 @@ import KeywordSelectButtonsBox from './SelectButtonsBox/KeywordSelectButtonsBox'
 import { Link } from 'react-router-dom';
 import { PathType } from './type';
 import { step } from './constant';
+import Button from '@/components/Button';
 
 interface PrepareGuideProps {
   path: Exclude<PathType, 'complete'>;
@@ -26,9 +26,9 @@ function PrepareGuide({ path }: PrepareGuideProps) {
         <TitleBox path={path} />
         {path === 'keyword' && (
           <Link to="/model/LX06/guide/complete">
-            <SelectButton type="active" size="lg" flex="center">
-              선택 완료
-            </SelectButton>
+            <div className="w-297px h-59px">
+              <Button size="full">선택 완료</Button>
+            </div>
           </Link>
         )}
       </div>
