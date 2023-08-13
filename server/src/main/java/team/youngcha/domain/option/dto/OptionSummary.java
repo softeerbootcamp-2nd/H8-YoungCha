@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
-@Schema(description = "색상 옵션")
-public class ColorOption {
+@Schema(description = "옵션 개요")
+public class OptionSummary {
 
     @Schema(description = "옵션 이름")
     String name;
@@ -13,7 +13,7 @@ public class ColorOption {
     @Schema(description = "옵션 이미지 주소")
     String imgUrl;
 
-    public ColorOption(String name, String imgUrl) {
+    public OptionSummary(String name, String imgUrl) {
         this.name = name;
         this.imgUrl = imgUrl;
     }

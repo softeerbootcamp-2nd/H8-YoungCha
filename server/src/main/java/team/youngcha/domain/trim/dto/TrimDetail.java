@@ -3,8 +3,7 @@ package team.youngcha.domain.trim.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
-import team.youngcha.domain.option.dto.ColorOption;
-import team.youngcha.domain.option.dto.MainOption;
+import team.youngcha.domain.option.dto.OptionSummary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +37,13 @@ public class TrimDetail {
     private final int price;
 
     @Schema(description = "핵심 옵션")
-    private final List<MainOption> mainOptions;
+    private final List<OptionSummary> mainOptions;
 
     @Schema(description = "외장 색상 옵션")
-    private final List<ColorOption> exteriorColors;
+    private final List<OptionSummary> exteriorColors;
 
     @Schema(description = "내장 색상 옵션")
-    private final List<ColorOption> interiorColors;
+    private final List<OptionSummary> interiorColors;
 
     @Builder
     public TrimDetail(Long id, String name, String backgroundImgUrl, String imgUrl, String hashTag, String description, boolean best, int price) {

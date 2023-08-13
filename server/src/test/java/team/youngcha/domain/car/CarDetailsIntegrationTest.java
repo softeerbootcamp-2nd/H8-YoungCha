@@ -11,8 +11,7 @@ import org.springframework.test.context.jdbc.Sql;
 import team.youngcha.IntegrationTestBase;
 import team.youngcha.common.dto.SuccessResponse;
 import team.youngcha.domain.car.dto.FindCarDetailsResponse;
-import team.youngcha.domain.option.dto.ColorOption;
-import team.youngcha.domain.option.dto.MainOption;
+import team.youngcha.domain.option.dto.OptionSummary;
 import team.youngcha.domain.trim.dto.TrimDetail;
 
 @Sql({"classpath:data/car_details.sql"})
@@ -43,19 +42,19 @@ public class CarDetailsIntegrationTest extends IntegrationTestBase {
                 0);
 
 
-        expectedLeblancTrimDetail.getMainOptions().add(new MainOption("내비게이션 기반 스마트 크루즈 컨트롤 (안전구간, 곡선로)", "cruise-control.jpg"));
-        expectedLeblancTrimDetail.getMainOptions().add(new MainOption("베젤리스 인사이드 미러", "inside-mirror.jpg"));
-        expectedLeblancTrimDetail.getMainOptions().add(new MainOption("12.3인치 내비게이션(블루링크, 폰 프로젝션, 현대 카페이)", "12-3-navigation.png"));
+        expectedLeblancTrimDetail.getMainOptions().add(new OptionSummary("내비게이션 기반 스마트 크루즈 컨트롤 (안전구간, 곡선로)", "cruise-control.jpg"));
+        expectedLeblancTrimDetail.getMainOptions().add(new OptionSummary("베젤리스 인사이드 미러", "inside-mirror.jpg"));
+        expectedLeblancTrimDetail.getMainOptions().add(new OptionSummary("12.3인치 내비게이션(블루링크, 폰 프로젝션, 현대 카페이)", "12-3-navigation.png"));
 
-        expectedLeblancTrimDetail.getExteriorColors().add(new ColorOption("어비스 블랙펄", "black-pearl.png"));
-        expectedLeblancTrimDetail.getExteriorColors().add(new ColorOption("쉬머링 실버 메탈릭", "silver-metalic.png"));
-        expectedLeblancTrimDetail.getExteriorColors().add(new ColorOption("문라이트 블루 펄", "blue-pearl.png"));
-        expectedLeblancTrimDetail.getExteriorColors().add(new ColorOption("가이아 브라운 펄", "brown-pearl.png"));
-        expectedLeblancTrimDetail.getExteriorColors().add(new ColorOption("그라파이트 그레이 메탈릭", "gray-metalic.png"));
-        expectedLeblancTrimDetail.getExteriorColors().add(new ColorOption("크리미 화이트 펄", "white-pearl.png"));
+        expectedLeblancTrimDetail.getExteriorColors().add(new OptionSummary("어비스 블랙펄", "black-pearl.png"));
+        expectedLeblancTrimDetail.getExteriorColors().add(new OptionSummary("쉬머링 실버 메탈릭", "silver-metalic.png"));
+        expectedLeblancTrimDetail.getExteriorColors().add(new OptionSummary("문라이트 블루 펄", "blue-pearl.png"));
+        expectedLeblancTrimDetail.getExteriorColors().add(new OptionSummary("가이아 브라운 펄", "brown-pearl.png"));
+        expectedLeblancTrimDetail.getExteriorColors().add(new OptionSummary("그라파이트 그레이 메탈릭", "gray-metalic.png"));
+        expectedLeblancTrimDetail.getExteriorColors().add(new OptionSummary("크리미 화이트 펄", "white-pearl.png"));
 
-        expectedLeblancTrimDetail.getInteriorColors().add(new ColorOption("퀄팅천연(블랙)", "qualting-black.png"));
-        expectedLeblancTrimDetail.getInteriorColors().add(new ColorOption("쿨그레이", "cool-gray"));
+        expectedLeblancTrimDetail.getInteriorColors().add(new OptionSummary("퀄팅천연(블랙)", "qualting-black.png"));
+        expectedLeblancTrimDetail.getInteriorColors().add(new OptionSummary("쿨그레이", "cool-gray"));
 
 
         //when
