@@ -6,11 +6,11 @@ import team.youngcha.domain.trim.dto.TrimDetail;
 import java.util.List;
 
 @Getter
-public class CarDetailsResponse {
+public class FindCarDetailsResponse {
     private final String model;
     private final List<TrimDetail> trims;
 
-    public CarDetailsResponse(String model, List<TrimDetail> trims) {
+    public FindCarDetailsResponse(String model, List<TrimDetail> trims) {
         this.model = model;
         this.trims = trims;
     }

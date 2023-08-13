@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
 import team.youngcha.IntegrationTestBase;
 import team.youngcha.common.dto.SuccessResponse;
-import team.youngcha.domain.car.dto.CarDetailsResponse;
+import team.youngcha.domain.car.dto.FindCarDetailsResponse;
 import team.youngcha.domain.option.dto.ColorOption;
 import team.youngcha.domain.option.dto.MainOption;
 import team.youngcha.domain.trim.dto.TrimDetail;
@@ -69,7 +69,7 @@ public class CarDetailsIntegrationTest extends IntegrationTestBase {
                 .extract();
 
         //then
-        SuccessResponse<CarDetailsResponse> successResponse = response.body().as(new TypeRef<>() {
+        SuccessResponse<FindCarDetailsResponse> successResponse = response.body().as(new TypeRef<>() {
         });
 
         softAssertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());

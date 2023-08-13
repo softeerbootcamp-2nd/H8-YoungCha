@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import team.youngcha.common.exception.CustomException;
 import team.youngcha.domain.car.dto.CarDetailsDto;
-import team.youngcha.domain.car.dto.CarDetailsResponse;
+import team.youngcha.domain.car.dto.FindCarDetailsResponse;
 import team.youngcha.domain.car.entity.Car;
 import team.youngcha.domain.car.repository.CarRepository;
 import team.youngcha.domain.trim.dto.TrimDetail;
@@ -20,7 +20,7 @@ public class CarService {
     private final CarRepository carRepository;
     private final TrimService trimService;
 
-    public CarDetailsResponse findDetails(Long carId) {
+    public FindCarDetailsResponse findDetails(Long carId) {
         Car car = carRepository.findById(carId);
         if (car == null) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "자동차 ID 조회 실패", "존재하지 자동차 ID 입니다.");
@@ -33,7 +33,7 @@ public class CarService {
 
         List<TrimDetail> trimDetails = trimService.extractTrimDetailsFromCarDetailsDtos(carDetailsDtos);
 
-        return new CarDetailsResponse(car.getName(), trimDetails);
+        return new FindCarDetailsResponse(car.getName(), trimDetails);
     }
 
 }

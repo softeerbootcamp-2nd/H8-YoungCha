@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import team.youngcha.common.exception.CustomException;
 import team.youngcha.domain.car.dto.CarDetailsDto;
-import team.youngcha.domain.car.dto.CarDetailsResponse;
+import team.youngcha.domain.car.dto.FindCarDetailsResponse;
 import team.youngcha.domain.car.entity.Car;
 import team.youngcha.domain.car.repository.CarRepository;
 import team.youngcha.domain.trim.dto.TrimDetail;
@@ -92,12 +92,12 @@ class CarServiceTest {
                 .thenReturn(trimDetails);
 
         //when
-        CarDetailsResponse carDetailsResponse = carService.findDetails(car.getId());
+        FindCarDetailsResponse findCarDetailsResponse = carService.findDetails(car.getId());
 
         //then
-        assertThat(carDetailsResponse).isNotNull();
-        assertThat(carDetailsResponse.getModel()).isEqualTo(car.getName());
-        assertThat(carDetailsResponse.getTrims().size()).isEqualTo(2);
+        assertThat(findCarDetailsResponse).isNotNull();
+        assertThat(findCarDetailsResponse.getModel()).isEqualTo(car.getName());
+        assertThat(findCarDetailsResponse.getTrims().size()).isEqualTo(2);
     }
 
 }
