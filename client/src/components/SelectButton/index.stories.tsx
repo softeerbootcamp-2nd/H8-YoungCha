@@ -23,7 +23,7 @@ export const Default: Story = {
 export const Size: Story = {
   render: () => (
     <>
-      <SelectButton type="IconActive" size="md">
+      <SelectButton type="iconActive" size="md">
         <span>이름 입력</span>
         <Icon.CheckActive />
       </SelectButton>
@@ -34,7 +34,7 @@ export const Size: Story = {
       </SelectButton>
       <br />
       <br />
-      <SelectButton type="IconActive" size="lg">
+      <SelectButton type="iconActive" size="lg">
         <span>연령이나 성별 입력</span>
         <Icon.CheckActive />
       </SelectButton>
