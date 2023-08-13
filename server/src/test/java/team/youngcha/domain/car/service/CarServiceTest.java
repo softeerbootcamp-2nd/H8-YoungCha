@@ -13,7 +13,7 @@ import team.youngcha.domain.car.dto.CarDetailsDto;
 import team.youngcha.domain.car.dto.CarDetailsResponse;
 import team.youngcha.domain.car.entity.Car;
 import team.youngcha.domain.car.repository.CarRepository;
-import team.youngcha.domain.trim.dto.TrimDetails;
+import team.youngcha.domain.trim.dto.TrimDetail;
 import team.youngcha.domain.trim.service.TrimService;
 
 import java.util.ArrayList;
@@ -78,9 +78,9 @@ class CarServiceTest {
         List<CarDetailsDto> carDetailsDtos = new ArrayList<>();
         carDetailsDtos.add(Mockito.mock(CarDetailsDto.class));
 
-        List<TrimDetails> trimDetails = new ArrayList<>(Arrays.asList(
-                Mockito.mock(TrimDetails.class),
-                Mockito.mock(TrimDetails.class)));
+        List<TrimDetail> trimDetails = new ArrayList<>(Arrays.asList(
+                Mockito.mock(TrimDetail.class),
+                Mockito.mock(TrimDetail.class)));
 
         Mockito.when(carRepository.findById(any(Long.class)))
                 .thenReturn(car);

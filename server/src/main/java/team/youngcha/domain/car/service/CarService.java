@@ -8,7 +8,7 @@ import team.youngcha.domain.car.dto.CarDetailsDto;
 import team.youngcha.domain.car.dto.CarDetailsResponse;
 import team.youngcha.domain.car.entity.Car;
 import team.youngcha.domain.car.repository.CarRepository;
-import team.youngcha.domain.trim.dto.TrimDetails;
+import team.youngcha.domain.trim.dto.TrimDetail;
 import team.youngcha.domain.trim.service.TrimService;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class CarService {
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "자동차 상세정보 조회 실패", "해당 자동차의 상세정보가 존재하지 않습니다.");
         }
 
-        List<TrimDetails> trimDetails = trimService.extractTrimDetailsFromCarDetailsDtos(carDetailsDtos);
+        List<TrimDetail> trimDetails = trimService.extractTrimDetailsFromCarDetailsDtos(carDetailsDtos);
 
         return new CarDetailsResponse(car.getName(), trimDetails);
     }

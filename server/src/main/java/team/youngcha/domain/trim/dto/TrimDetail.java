@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class TrimDetails {
+public class TrimDetail {
     private Long id;
     private String name;
     private String backgroundImgUrl;
@@ -23,7 +23,7 @@ public class TrimDetails {
     private List<ColorOption> interiorColors;
 
     @Builder
-    public TrimDetails(Long id, String name, String backgroundImgUrl, String imgUrl, String hashTag, String description, int price) {
+    public TrimDetail(Long id, String name, String backgroundImgUrl, String imgUrl, String hashTag, String description, int price) {
         this.id = id;
         this.name = name;
         this.backgroundImgUrl = backgroundImgUrl;
