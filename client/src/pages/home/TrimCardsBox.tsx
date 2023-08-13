@@ -1,11 +1,11 @@
 import { TrimType } from '@/assets/mock/mock';
 import MakingModeButton from '@/components/MakingModeButton';
 
-interface TrimCarsBoxProps {
+interface TrimCardsBoxProps {
   trims: TrimType[];
 }
 
-function TrimCarsBox({ trims }: TrimCarsBoxProps) {
+function TrimCardsBox({ trims }: TrimCardsBoxProps) {
   return (
     <div className="flex justify-between gap-16px">
       <MakingModeButton
@@ -37,4 +37,4 @@ function TrimCarsBox({ trims }: TrimCarsBoxProps) {
   );
 }
 
-export default TrimCarsBox;
+export default TrimCardsBox;

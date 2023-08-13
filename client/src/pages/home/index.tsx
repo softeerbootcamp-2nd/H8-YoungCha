@@ -6,7 +6,7 @@ import CarsNameListBox from './CarsNameListBox';
 import GuideModeButton from './GuideModeButton';
 import MainOptionBox from './MainOptionBox';
 import MakingCarButtonsBox from './MakingCarButtonsBox';
-import TrimCarsBox from './TrimCardsBox';
+import TrimCardsBox from './TrimCardsBox';
 import InternalColorBox from './InternalColorBox';
 import ExteriorColorBox from './ExteriorColorBox';
 import { TEXT } from './constant';
@@ -32,7 +32,7 @@ function Home() {
           </div>
 
           <div>
-            <TrimCarsBox trims={mockTrims} />
+            <TrimCardsBox trims={mockTrims} />
             <div className="flex flex-col items-center">
               <p className="text-white opacity-60 title mt-24px">
                 {TEXT.MAIN_DETAIL_COMPARE}
