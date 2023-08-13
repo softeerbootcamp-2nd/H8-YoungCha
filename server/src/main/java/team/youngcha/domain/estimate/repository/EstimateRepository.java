@@ -1,13 +1,12 @@
 package team.youngcha.domain.estimate.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import team.youngcha.domain.estimate.entity.Estimate;
+import team.youngcha.domain.option.dto.GuideInfo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,10 +19,12 @@ import java.util.stream.Collectors;
 public class EstimateRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final RowMapper<Estimate> estimateRowMapper = BeanPropertyRowMapper.newInstance(Estimate.class);
+    private final RowMapper<Estimate> estimateRowMapper = new EstimateRowMapper();
 
-    public Map<Long, Long> countPowerTrainByTrimIdAndContainPowerTrainIds(Long trimId, List<Long> powerTrainIds) {
-        List<Map<String, Object>> results = querySellCounts(namedParameterJdbcTemplate, trimId, powerTrainIds);
+    public Map<Long, Long> countPowerTrainsSimilarityUsers(Long trimId, List<Long> powerTrainIds,
+                                                           GuideInfo guideInfo) {
+        List<Map<String, Object>> results = queryCountSimilarityUser(namedParameterJdbcTemplate,
+                trimId, powerTrainIds, guideInfo);
 
         return results.stream()
                 .collect(Collectors.toMap(
@@ -32,16 +33,25 @@ public class EstimateRepository {
                 ));
     }
 
-    private List<Map<String, Object>> querySellCounts(NamedParameterJdbcTemplate namedParameterJdbcTemplate, Long trimId, List<Long> powerTrainIds) {
+    private List<Map<String, Object>> queryCountSimilarityUser(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+                                                               Long trimId, List<Long> powerTrainIds, GuideInfo guideInfo) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
         params.addValue("powerTrainIds", powerTrainIds);
+        params.addValue("gender", guideInfo.getGender().getType());
+        params.addValue("ageRange", guideInfo.getAgeRange().getRange());
+        params.addValue("keywords", guideInfo.getKeywordIds());
 
         return namedParameterJdbcTemplate.queryForList(
-                "select sell.engine_id, COUNT(*) as count from sell " +
-                        "where sell.engine_id in (:powerTrainIds) and sell.trim_id in (:trimId)" +
-                        "group by sell.engine_id",
-                params);
+                "select estimate.engine_id, COUNT(*) as count from estimate " +
+                        "where estimate.engine_id in (:powerTrainIds) " +
+                        "and estimate.trim_id = (:trimId) " +
+                        "and estimate.gender = (:gender) " +
+                        "and estimate.age_range = (:ageRange) " +
+                        "and estimate.keyword1_id in (:keywords) " +
+                        "and estimate.keyword2_id in (:keywords) " +
+                        "and estimate.keyword3_id in (:keywords) " +
+                        "group by estimate.engine_id", params);
     }
 
     private static class EstimateRowMapper implements RowMapper<Estimate> {
