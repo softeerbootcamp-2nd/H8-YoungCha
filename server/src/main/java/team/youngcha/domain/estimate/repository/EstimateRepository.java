@@ -39,14 +39,15 @@ public class EstimateRepository {
         params.addValue("keywordId", keywordId);
         params.addValue("powerTrainId", powerTrainId);
 
+        // sum(트림 + 옵션 + 키워드 포함) * 100 / sum(트림 + 옵션) -> 반올림
         return namedParameterJdbcTemplate.queryForObject("select " +
-                        "sum(case when " +
+                        "round(sum(case when " +
                         "e.trim_id = (:trimId) and e.engine_id = (:powerTrainId) " +
                         "and (e.keyword1_id = (:keywordId) or e.keyword2_id = (:keywordId) or e.keyword3_id = (:keywordId))" +
-                        "then 1 else 0 end)" +
+                        "then 1 else 0 end) * 100" +
                         "/ sum(case when " +
                         "e.trim_id = (:trimId) and e.engine_id = (:powerTrainId) " +
-                        "then 1 else 0 end) " +
+                        "then 1 else 0 end))" +
                         "from estimate as e",
                 params, Integer.class);
     }
