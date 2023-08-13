@@ -51,7 +51,9 @@ class EstimateRepositoryTest {
                 "(10, 2, 2, 1, 1, 1, 1, 1, 1, 2, 3, 3, 0, '2023-01-01 12:12:12')," +
                 "(11, 2, 2, 1, 1, 1, 1, 1, 1, 2, 3, 4, 0, '2023-01-01 12:12:12')," +
                 "(12, 2, 3, 1, 1, 1, 1, 1, 1, 2, 3, 2, 0, '2023-01-01 12:12:12')," +
-                "(13, 2, 2, 1, 1, 1, 1, 1, 1, 2, 4, 2, 0, '2023-01-01 12:12:12')");
+                "(13, 2, 2, 1, 1, 1, 1, 1, 1, 2, 4, 2, 0, '2023-01-01 12:12:12')," +
+                "(14, 2, 1, 1, 1, 1, 1, 1, 1, 2, 4, 2, 0, '2023-01-01 12:12:12')," +
+                "(15, 2, 1, 1, 1, 1, 1, 1, 1, 4, 5, 2, 0, '2023-01-01 12:12:12')");
     }
 
     @Test
@@ -75,6 +77,17 @@ class EstimateRepositoryTest {
     }
 
     @Test
+    @DisplayName("트림 내에서, '키워드+옵션아이디가 겹치는 수/키워드만 겹치는 수'(비율)를 계산한다.")
     void calculateRate() {
+        //given
+        Long trimId = 2L;
+        Long optionId = 1L;
+        Long keywordId = 4L;
+
+        //when
+        Integer rate = estimateRepository.calculateRate(trimId, optionId, keywordId);
+
+        //then
+        assertThat(rate).isEqualTo(Math.round((float) 2 / 6 * 100));
     }
 }
