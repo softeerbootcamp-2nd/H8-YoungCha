@@ -43,6 +43,7 @@ public class TrimService {
                 .backgroundImgUrl(dto.getTrimBackgroundImgUrl())
                 .imgUrl(dto.getTrimImgUrl())
                 .hashTag(dto.getTrimHashTag())
+                .best(dto.getIsBestTrim())
                 .price(dto.getTrimPrice())
                 .description(dto.getTrimDescription())
                 .build();

@@ -1,5 +1,6 @@
 package team.youngcha.domain.trim.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import team.youngcha.domain.option.dto.ColorOption;
@@ -12,26 +13,26 @@ import java.util.List;
 public class TrimDetail {
     private final Long id;
     private final String name;
-    private final String backgroundImgUrl;
     private final String imgUrl;
+    private final String backgroundImgUrl;
     private final String hashTag;
     private final String description;
-    private final boolean isBest;
+    private final boolean best;
     private final int price;
     private final List<MainOption> mainOptions;
     private final List<ColorOption> exteriorColors;
     private final List<ColorOption> interiorColors;
 
     @Builder
-    public TrimDetail(Long id, String name, String backgroundImgUrl, String imgUrl, String hashTag, String description, int price) {
+    public TrimDetail(Long id, String name, String backgroundImgUrl, String imgUrl, String hashTag, String description, int best, int price) {
         this.id = id;
         this.name = name;
         this.backgroundImgUrl = backgroundImgUrl;
         this.imgUrl = imgUrl;
         this.hashTag = hashTag;
         this.description = description;
+        this.best = (best == 1);
         this.price = price;
-        this.isBest = false;
         this.mainOptions = new ArrayList<>();
         this.exteriorColors = new ArrayList<>();
         this.interiorColors = new ArrayList<>();
