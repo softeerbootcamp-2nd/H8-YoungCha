@@ -1,6 +1,5 @@
 package team.youngcha.domain.trim.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import team.youngcha.domain.option.dto.ColorOption;
