@@ -11,4 +11,9 @@ public class Car {
 
     private Long id;
     private String name;
+
+    public Car(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
