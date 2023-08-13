@@ -10,6 +10,7 @@ import team.youngcha.domain.keyword.entity.Keyword;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -18,6 +19,15 @@ public class KeywordRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final RowMapper<Keyword> keywordRowMapper = BeanPropertyRowMapper.newInstance(Keyword.class);
+
+    public Optional<Keyword> findById(Long id) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", id);
+
+        List<Keyword> keywords = namedParameterJdbcTemplate.query("select id from keyword " +
+                "where keyword.id = (:id)", params, keywordRowMapper);
+        return keywords.stream().findAny();
+    }
 
     public Map<Long, List<Keyword>> findByContainOptionIdsAndGroupKeywords(List<Long> optionIds) {
         MapSqlParameterSource params = new MapSqlParameterSource();
@@ -38,9 +48,9 @@ public class KeywordRepository {
                 .collect(Collectors.groupingBy(
                         map -> (Long) map.get("options_id"),
                         Collectors.mapping(map -> Keyword.builder()
-                                .id((Long) map.get("id"))
-                                .name((String) map.get("name"))
-                                .build(), Collectors.toList())
+                                        .id((Long) map.get("id"))
+                                        .name((String) map.get("name")).build(),
+                                Collectors.toList())
                 ));
     }
 }
