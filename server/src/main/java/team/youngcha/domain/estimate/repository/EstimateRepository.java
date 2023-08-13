@@ -33,6 +33,24 @@ public class EstimateRepository {
                 ));
     }
 
+    public Integer calculateRate(Long trimId, Long powerTrainId, Long keywordId) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("trimId", trimId);
+        params.addValue("keywordId", keywordId);
+        params.addValue("powerTrainId", powerTrainId);
+
+        return namedParameterJdbcTemplate.queryForObject("select " +
+                        "sum(case when " +
+                        "e.trim_id = (:trimId) and e.engine_id = (:powerTrainId) " +
+                        "and (e.keyword1_id = (:keywordId) or e.keyword2_id = (:keywordId) or e.keyword3_id = (:keywordId))" +
+                        "then 1 else 0 end)" +
+                        "/ sum(case when " +
+                        "e.trim_id = (:trimId) and e.engine_id = (:powerTrainId) " +
+                        "then 1 else 0 end) " +
+                        "from estimate as e",
+                params, Integer.class);
+    }
+
     private List<Map<String, Object>> queryCountSimilarityUser(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                                                                Long trimId, List<Long> powerTrainIds, GuideInfo guideInfo) {
         MapSqlParameterSource params = new MapSqlParameterSource();
