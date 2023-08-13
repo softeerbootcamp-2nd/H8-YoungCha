@@ -23,14 +23,14 @@ public class TrimDetail {
     private final List<ColorOption> interiorColors;
 
     @Builder
-    public TrimDetail(Long id, String name, String backgroundImgUrl, String imgUrl, String hashTag, String description, int best, int price) {
+    public TrimDetail(Long id, String name, String backgroundImgUrl, String imgUrl, String hashTag, String description, boolean best, int price) {
         this.id = id;
         this.name = name;
         this.backgroundImgUrl = backgroundImgUrl;
         this.imgUrl = imgUrl;
         this.hashTag = hashTag;
         this.description = description;
-        this.best = (best == 1);
+        this.best = best;
         this.price = price;
         this.mainOptions = new ArrayList<>();
         this.exteriorColors = new ArrayList<>();

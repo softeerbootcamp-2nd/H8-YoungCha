@@ -161,11 +161,3 @@ CREATE TABLE IF NOT EXISTS `options_relation`
     FOREIGN KEY (`parent_id`) REFERENCES `options` (`id`),
     FOREIGN KEY (`child_id`) REFERENCES `options` (`id`)
 );
-
-CREATE TABLE IF NOT EXISTS `best_trim` (
-   `id` bigint	NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   `car_id` bigint     NOT NULL,
-   `trim_id` bigint	NOT NULL,
-   FOREIGN KEY (`car_id`) REFERENCES `car` (`id`),
-   FOREIGN KEY (`trim_id`) REFERENCES `trim` (`id`)
-);

@@ -23,9 +23,8 @@ public class CarDetailsDto {
     private String optionCategoryName;
     private Integer optionImgType;
     private String optionImgUrl;
-    private int isBestTrim;
 
-    public CarDetailsDto(Long carId, String carName, Long trimId, String trimName, String trimImgUrl, String trimBackgroundImgUrl, String trimHashTag, Integer trimPrice, String trimDescription, Integer trimOptionType, String optionName, String optionCategoryName, Integer optionImgType, String optionImgUrl, int isBestTrim) {
+    public CarDetailsDto(Long carId, String carName, Long trimId, String trimName, String trimImgUrl, String trimBackgroundImgUrl, String trimHashTag, Integer trimPrice, String trimDescription, Integer trimOptionType, String optionName, String optionCategoryName, Integer optionImgType, String optionImgUrl) {
         this.carId = carId;
         this.carName = carName;
         this.trimId = trimId;
@@ -40,6 +39,5 @@ public class CarDetailsDto {
         this.optionCategoryName = optionCategoryName;
         this.optionImgType = optionImgType;
         this.optionImgUrl = optionImgUrl;
-        this.isBestTrim = isBestTrim;
     }
 }

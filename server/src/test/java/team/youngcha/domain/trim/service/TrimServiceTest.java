@@ -25,13 +25,13 @@ class TrimServiceTest {
     void extractTrimDetailsFromCarDetailsDtos() {
         //given
         ArrayList<CarDetailsDto> carDetailsDtos = new ArrayList<>();
-        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 2L, "Le Blanc (르블랑)", "leblancImg.png", "leblancBgImg.png", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 2, "베젤리스 인사이드 미러", "내관", 1, "insidemirror_s.jpg", 1));
-        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 2L, "Le Blanc (르블랑)", "leblancImg.png", "leblancBgImg.png", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 2, "내비게이션 기반 스마트 크루즈 컨트롤 (안전구간, 곡선로)", "지능형 안전기술", 1, "ncss_s.jpg", 1));
-        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 2L, "Le Blanc (르블랑)", "leblancImg.png", "leblancBgImg.png", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 2, "12.3인치 내비게이션(블루링크, 폰 프로젝션, 현대 카페이)", "멀티미디어", 1, "12.3navi_s.jpg", 1));
-        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 2L, "Le Blanc (르블랑)", "leblancImg.png", "leblancBgImg.png", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 1, "쿨그레이 ", "내장 색상", 1, "colorchip-interior.png", 1));
-        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 2L, "Le Blanc (르블랑)", "leblancImg.png", "leblancBgImg.png", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 1, "크리미 화이트 펄", "외장 색상", 1, "colorchip-exterior.png", 1));
-        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 2L, "Le Blanc (르블랑)", "leblancImg.png", "leblancBgImg.png", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 1, "그라파이트 그레이 메탈릭", "외장 색상", 1, "colorchip-exterior.png", 1));
-        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 5L, "Guide Mode", "guideModeImg.png", "guideModeBgImg.png", null, 38960000, null, null, null, null, null, null, 0));
+        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 2L, "Le Blanc (르블랑)", "leblancImg.png", "leblancBgImg.png", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 2, "베젤리스 인사이드 미러", "내관", 1, "insidemirror_s.jpg"));
+        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 2L, "Le Blanc (르블랑)", "leblancImg.png", "leblancBgImg.png", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 2, "내비게이션 기반 스마트 크루즈 컨트롤 (안전구간, 곡선로)", "지능형 안전기술", 1, "ncss_s.jpg"));
+        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 2L, "Le Blanc (르블랑)", "leblancImg.png", "leblancBgImg.png", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 2, "12.3인치 내비게이션(블루링크, 폰 프로젝션, 현대 카페이)", "멀티미디어", 1, "12.3navi_s.jpg"));
+        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 2L, "Le Blanc (르블랑)", "leblancImg.png", "leblancBgImg.png", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 1, "쿨그레이 ", "내장 색상", 1, "colorchip-interior.png"));
+        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 2L, "Le Blanc (르블랑)", "leblancImg.png", "leblancBgImg.png", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 1, "크리미 화이트 펄", "외장 색상", 1, "colorchip-exterior.png"));
+        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 2L, "Le Blanc (르블랑)", "leblancImg.png", "leblancBgImg.png", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 1, "그라파이트 그레이 메탈릭", "외장 색상", 1, "colorchip-exterior.png"));
+        carDetailsDtos.add(new CarDetailsDto(1L, "펠리세이드", 5L, "Guide Mode", "guideModeImg.png", "guideModeBgImg.png", null, 38960000, null, null, null, null, null, null));
 
         //when
         List<TrimDetail> trimDetails = trimService.extractTrimDetailsFromCarDetailsDtos(carDetailsDtos);

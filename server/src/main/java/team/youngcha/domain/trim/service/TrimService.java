@@ -37,16 +37,25 @@ public class TrimService {
     }
 
     private TrimDetail createTrimDetail(CarDetailsDto dto) {
+        boolean best = isBestTrim(dto);
+
         return TrimDetail.builder()
                 .id(dto.getTrimId())
                 .name(dto.getTrimName())
                 .backgroundImgUrl(dto.getTrimBackgroundImgUrl())
                 .imgUrl(dto.getTrimImgUrl())
                 .hashTag(dto.getTrimHashTag())
-                .best(dto.getIsBestTrim())
+                .best(best)
                 .price(dto.getTrimPrice())
                 .description(dto.getTrimDescription())
                 .build();
+    }
+
+    private boolean isBestTrim(CarDetailsDto dto) {
+        if(dto.getCarName().equals("펠리세이드") && dto.getTrimName().equals("Le Blanc (르블랑)")) {
+            return true;
+        }
+        return false;
     }
 
     private void addTrimOptionToTrimDetail(TrimDetail trimDetail, CarDetailsDto dto) {

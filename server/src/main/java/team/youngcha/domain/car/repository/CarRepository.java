@@ -50,11 +50,9 @@ public class CarRepository {
                             "options.name AS optionName, " +
                             "category.name AS optionCategoryName, " +
                             "options_image.img_url AS optionImgUrl, " +
-                            "options_image.img_type AS optionImgType, " +
-                            "IF(best_trim.trim_id IS NOT NULL, 1, 0) AS isBestTrim " +
+                            "options_image.img_type AS optionImgType " +
                         "FROM car " +
                             "JOIN trim ON trim.car_id = car.id " +
-                            "LEFT JOIN best_trim ON trim.id = best_trim.trim_id " +
                             "LEFT JOIN (SELECT * FROM trim_options WHERE NOT type = ?) trim_options ON trim.id = trim_options.trim_id " +
                             "LEFT JOIN options ON trim_options.options_id = options.id " +
                             "LEFT JOIN category ON options.category_id = category.id " +
