@@ -1,22 +1,18 @@
+import Button from '@/components/Button';
 import OptionLayout from './OptionLayout';
-
-const MAKING_MY_CAR_TITLE = '내 차 만들기';
+import { Link } from 'react-router-dom';
+import { TITLE } from './constant';
 
 function MakingCarButtonsBox() {
   return (
     <OptionLayout>
-      <li className="flex items-center justify-center text-white w-140px h-50px bg-main-blue rounded-6px">
-        {MAKING_MY_CAR_TITLE}
-      </li>
-      <li className="flex items-center justify-center text-white w-140px h-50px bg-main-blue rounded-6px">
-        {MAKING_MY_CAR_TITLE}
-      </li>
-      <li className="flex items-center justify-center text-white w-140px h-50px bg-main-blue rounded-6px">
-        {MAKING_MY_CAR_TITLE}
-      </li>
-      <li className="flex items-center justify-center text-white w-140px h-50px bg-main-blue rounded-6px">
-        {MAKING_MY_CAR_TITLE}
-      </li>
+      {Array.from({ length: 4 }).map((_, index) => (
+        <Link to="/model/LX06/making/self/1" key={index}>
+          <Button size="md" color="main-blue">
+            {TITLE.MAKING_MY_CAR}
+          </Button>
+        </Link>
+      ))}
     </OptionLayout>
   );
 }

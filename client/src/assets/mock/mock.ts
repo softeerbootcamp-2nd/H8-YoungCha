@@ -29,27 +29,41 @@ export interface TrimType {
   internalColor: InternalColorType[];
 }
 
+export interface BasicOptionType {
+  first: boolean;
+  last: boolean;
+  totalElements: number;
+  totalPages: number;
+  contents: [
+    {
+      name: string;
+      categoryId: number;
+      imgUrl: string;
+    },
+  ];
+}
+
 export const mockLeblanc: TrimType = {
   id: 1,
   name: 'LeBlanc',
-  backgroundImgUrl: '/mock/TrimCard/leblanc.png',
-  imgUrl: '/mock/TrimCard/leblanc.png',
+  backgroundImgUrl: '/src/assets/mock/images/main-background-car.png',
+  imgUrl: '/src/assets/mock/images/palisade.png',
   hashtag: '#베스트셀러',
   description: '모두가 선택한 베스트셀러',
   isBest: true,
-  minPrice: 10000,
+  minPrice: 10000000,
   mainOptions: [
     {
-      imgUrl: 'src/assets/mock/TrimCard/option1.svg',
+      imgUrl: '/src/assets/mock/icons/main-navigation-option.svg',
       description: '20인치\n 알로이 휠',
     },
     {
-      imgUrl: 'src/assets/mock/TrimCard/option2.svg',
-      description: '서라운드 뷰\n 모니터',
+      imgUrl: '/src/assets/mock/icons/main-navigation-option.svg',
+      description: '20인치\n 알로이 휠',
     },
     {
-      imgUrl: 'src/assets/mock/TrimCard/option3.svg',
-      description: '클러스터\n (12.3인치 컬러 LCD)',
+      imgUrl: '/src/assets/mock/icons/main-navigation-option.svg',
+      description: '20인치\n 알로이 휠',
     },
   ],
   exteriorColor: [
@@ -68,15 +82,15 @@ export const mockLeblanc: TrimType = {
   ],
   internalColor: [
     {
-      url: 'src/mock/TrimCard/leblanc.png',
+      url: '/src/assets/mock/images/black-leather.png',
       name: '블랙',
     },
     {
-      url: 'src/mock/TrimCard/leblanc.png',
+      url: '/src/assets/mock/images/black-leather.png',
       name: '블랙',
     },
     {
-      url: 'src/mock/TrimCard/leblanc.png',
+      url: '/src/assets/mock/images/black-leather.png',
       name: '블랙',
     },
   ],
@@ -88,3 +102,17 @@ export const mockTrims: TrimType[] = [
   mockLeblanc,
   mockLeblanc,
 ];
+
+export const mockBasicOptions: BasicOptionType = {
+  first: true,
+  last: false,
+  totalElements: 1,
+  totalPages: 1,
+  contents: [
+    {
+      name: '8단 자동변속기',
+      categoryId: 1,
+      imgUrl: '/src/assets/mock/images/8-auto-changer.png',
+    },
+  ],
+};

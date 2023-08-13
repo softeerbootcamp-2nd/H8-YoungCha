@@ -1,19 +1,24 @@
+import { TrimType } from '@/assets/mock/mock';
 import OptionLayout from './OptionLayout';
+import { TITLE } from './constant';
 
-type DataType = { imgUrl: string; description: string };
 interface MainOptionBoxProps {
-  datas: DataType[][];
+  trims: TrimType[];
 }
 
-const TITLE = '핵심 옵션';
-
-function MainOptionBox({ datas }: MainOptionBoxProps) {
+function MainOptionBox({ trims }: MainOptionBoxProps) {
   return (
-    <OptionLayout title={TITLE}>
-      {datas.map((data) => (
-        <ul className="flex flex-col w-full gap-8px" key={data[0].description}>
-          {data.map(({ imgUrl, description }) => (
-            <li className="flex items-center gap-8px" key={description}>
+    <OptionLayout title={TITLE.MAIN_OPTION}>
+      {trims.map(({ mainOptions }, index) => (
+        <ul
+          className="flex flex-col w-full gap-8px"
+          key={`main-option-${index}`}
+        >
+          {mainOptions.map(({ imgUrl, description }, index) => (
+            <li
+              className="flex items-center gap-8px"
+              key={`main-option-imgae-${index}`}
+            >
               <img src={imgUrl} alt="description" className="w-80px h-60px" />
               <p className="body3 text-grey-004">{description}</p>
             </li>
