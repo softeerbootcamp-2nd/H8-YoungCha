@@ -7,8 +7,8 @@ import java.util.List;
 
 @Getter
 public class CarDetailsResponse {
-    private String model;
-    private List<TrimDetail> trims;
+    private final String model;
+    private final List<TrimDetail> trims;
 
     public CarDetailsResponse(String model, List<TrimDetail> trims) {
         this.model = model;

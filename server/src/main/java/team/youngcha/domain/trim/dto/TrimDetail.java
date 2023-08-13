@@ -10,17 +10,17 @@ import java.util.List;
 
 @Getter
 public class TrimDetail {
-    private Long id;
-    private String name;
-    private String backgroundImgUrl;
-    private String imgUrl;
-    private String hashTag;
-    private String description;
-    private boolean isBest;
-    private int price;
-    private List<MainOption> mainOptions;
-    private List<ColorOption> exteriorColors;
-    private List<ColorOption> interiorColors;
+    private final Long id;
+    private final String name;
+    private final String backgroundImgUrl;
+    private final String imgUrl;
+    private final String hashTag;
+    private final String description;
+    private final boolean isBest;
+    private final int price;
+    private final List<MainOption> mainOptions;
+    private final List<ColorOption> exteriorColors;
+    private final List<ColorOption> interiorColors;
 
     @Builder
     public TrimDetail(Long id, String name, String backgroundImgUrl, String imgUrl, String hashTag, String description, int price) {
