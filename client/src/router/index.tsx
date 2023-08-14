@@ -2,6 +2,7 @@ import App from '@/App';
 import Home from '@/pages/home';
 import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
 import Guide from '@/pages/guide';
+import Making from '@/pages/making';
 
 const router = createBrowserRouter([
   {
@@ -45,9 +46,9 @@ const router = createBrowserRouter([
             children: [
               {
                 path: 'self/:step',
-                element: <div>self</div>,
+                element: <Making path="self" />,
               },
-              { path: 'guide/:step', element: <div>guide</div> },
+              { path: 'guide/:step', element: <Making path="self" /> },
             ],
           },
         ],
