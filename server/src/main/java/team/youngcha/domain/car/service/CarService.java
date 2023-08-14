@@ -23,12 +23,12 @@ public class CarService {
     public FindCarDetailsResponse findDetails(Long carId) {
         Car car = carRepository.findById(carId);
         if (car == null) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "자동차 ID 조회 실패", "존재하지 자동차 ID 입니다.");
+            throw new CustomException(HttpStatus.NOT_FOUND, "자동차 ID 조회 실패", "존재하지 자동차 ID 입니다.");
         }
 
         List<CarDetailsDto> carDetailsDtos = carRepository.findDetails(car.getId());
         if (carDetailsDtos.isEmpty()) {
-            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "자동차 상세정보 조회 실패", "해당 자동차의 상세정보가 존재하지 않습니다.");
+            throw new CustomException(HttpStatus.NOT_FOUND, "자동차 상세정보 조회 실패", "해당 자동차의 상세정보가 존재하지 않습니다.");
         }
 
         List<TrimDetail> trimDetails = trimService.extractTrimDetailsFromCarDetailsDtos(carDetailsDtos);

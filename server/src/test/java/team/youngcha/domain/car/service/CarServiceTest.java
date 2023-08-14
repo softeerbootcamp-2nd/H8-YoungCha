@@ -38,7 +38,7 @@ class CarServiceTest {
     CarService carService;
 
     @Test
-    @DisplayName("존재하지 않는 자동차 ID로 상세정보 조회 시, 400 BAD REQUEST 예외가 발생한다")
+    @DisplayName("존재하지 않는 자동차 ID로 상세정보 조회 시, 404 NOT FOUND 예외가 발생한다")
     void findDetailsWithInvalidId() {
         //given
         Mockito.when(carRepository.findById(any(Long.class))).thenReturn(null);
@@ -47,12 +47,12 @@ class CarServiceTest {
         CustomException customException = assertThrows(CustomException.class, () -> carService.findDetails(1L));
 
         //then
-        assertThat(customException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(customException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(customException.getMessage()).isEqualTo("자동차 ID 조회 실패");
     }
 
     @Test
-    @DisplayName("자동차의 상세정보가 없는 경우, 500 INTERNAL SERVER ERROR 예외가 발생한다")
+    @DisplayName("자동차의 상세정보가 없는 경우, 404 NOT FOUND 예외가 발생한다")
     void findDetailsNoResult() {
         //given
         Mockito.when(carRepository.findById(any(Long.class)))
@@ -65,7 +65,7 @@ class CarServiceTest {
         CustomException customException = assertThrows(CustomException.class, () -> carService.findDetails(1L));
 
         //then
-        assertThat(customException.getHttpStatus()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+        assertThat(customException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(customException.getMessage()).isEqualTo("자동차 상세정보 조회 실패");
     }
 
