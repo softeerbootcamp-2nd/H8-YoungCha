@@ -91,4 +91,27 @@
     <string name="loading_color">도색하는 중...</string>
     <string name="loading_option">옵션 장착 중...</string>
 
+    <string name="estimate_done">나만의 팰리세이드\n견적 준비 완료!</string>
+    <string name="selected_trim">선택된 트림</string>
+    <string name="trim_name">팰리세이드 Le Blanc (르블랑)</string>
+    <string name="estimate_sub_script">준비된 견적을 바로 확인하거나\n옵션을 차례로 살펴보며 변경할 수 있어요.</string>
+    <string name="estimate_skip">완성된 견적을 바로 볼게요</string>
+    <string name="estimate_next">옵션을 하나씩 살펴볼래요</string>
+
+    <string name="age_step">만나서 반가워요!</string>
+    <string name="age_main_text">연령대를</string>
+    <string name="preliminaries_select">선택해주세요</string>
+    <string name="age_sub">비슷한 나이대의 사람들이 선호하는 컬러를 알려드려요.</string>
+    <string name="preliminaries_next">선택완료</string>
+    <string name="gender_step">금방 끝나요!</string>
+    <string name="gender_main_test">성별을</string>
+    <string name="gender_sub">더 자세하게 추천해줄 수 있어요.</string>
+    <string name="keyword_step">이제 마지막이에요!</string>
+    <string name="keyword_main_text">키워드를 중요한 순서로 3개</string>
+    <string name="keyword_sub">나의 관심사와 취향을 반영해 더 자세하게 추천해줄 수 있어요.</string>
+    <string name="strength">내 차는 이런 부분에서 강했으면 좋겠어요</string>
+    <string name="important">나는 차를 탈 때 이런게 중요해요</string>
+    <string name="use">나는 차를 이렇게 활용하고 싶어요</string>
+
+
 </resources>
