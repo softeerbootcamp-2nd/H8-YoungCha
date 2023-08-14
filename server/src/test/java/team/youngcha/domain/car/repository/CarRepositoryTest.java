@@ -9,9 +9,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 import team.youngcha.domain.car.entity.Car;
 
 @JdbcTest
+@Sql({"classpath:data/car_details.sql"})
 @ExtendWith(SoftAssertionsExtension.class)
 class CarRepositoryTest {
 
@@ -32,8 +34,7 @@ class CarRepositoryTest {
     void findByValidId() {
         //given
         Long carId = 1L;
-        String carName = "팰리세이드";
-        jdbcTemplate.update("INSERT INTO car (id, name) VALUES (?, ?)", carId, carName);
+        String carName = "펠리세이드";
 
         //when
         Car car = carRepository.findById(carId);
@@ -56,4 +57,5 @@ class CarRepositoryTest {
         //then
         softAssertions.assertThat(car).isNull();
     }
+
 }
