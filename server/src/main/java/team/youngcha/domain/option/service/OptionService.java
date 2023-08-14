@@ -178,7 +178,7 @@ public class OptionService {
         return powerTrains.stream()
                 .map(powerTrain -> {
                     Integer ratio = similarityUsersRatio.get(powerTrain.getId());
-                    boolean isSelected = keywordRateGroup.getOrDefault(powerTrain.getId(), new ArrayList<>()).isEmpty();
+                    boolean isSelected = !keywordRateGroup.getOrDefault(powerTrain.getId(), new ArrayList<>()).isEmpty();
                     return new FindGuideOptionResponse(
                             powerTrain,
                             isSelected,
