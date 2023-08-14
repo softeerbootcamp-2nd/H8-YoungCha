@@ -16,7 +16,7 @@ function StepCircle({ isActive, step, size }: StepCircleProps) {
       className={`${circleSize} ${bgColor} rounded-full flex justify-center items-center`}
     >
       <span
-        className={`font-normal text-white font-hsans-head text-20px leading-28px ${fontSize}`}
+        className={`font-normal text-white font-hsans-head leading-28px ${fontSize}`}
       >
         {step}
       </span>
