@@ -55,19 +55,18 @@ public class TrimService {
     }
 
     private void addTrimOptionToTrimDetail(TrimDetail trimDetail, CarDetails dto) {
+        OptionSummary option = new OptionSummary(dto.getOptionName(), dto.getOptionImgUrl());
+
         if (dto.getTrimOptionType().equals(TrimOptionType.MAIN.getValue())) {
-            OptionSummary mainOption = new OptionSummary(dto.getOptionName(), dto.getOptionImgUrl());
-            trimDetail.getMainOptions().add(mainOption);
+            trimDetail.getMainOptions().add(option);
             return;
         }
         if (dto.getOptionCategoryName().equals(CategoryName.EXTERIOR_COLOR.getValue())) {
-            OptionSummary exteriorOptionSummary = new OptionSummary(dto.getOptionName(), dto.getOptionImgUrl());
-            trimDetail.getExteriorColors().add(exteriorOptionSummary);
+            trimDetail.getExteriorColors().add(option);
             return;
         }
         if (dto.getOptionCategoryName().equals(CategoryName.INTERIOR_COLOR.getValue())) {
-            OptionSummary interiorOptionSummary = new OptionSummary(dto.getOptionName(), dto.getOptionImgUrl());
-            trimDetail.getInteriorColors().add(interiorOptionSummary);
+            trimDetail.getInteriorColors().add(option);
         }
     }
 
