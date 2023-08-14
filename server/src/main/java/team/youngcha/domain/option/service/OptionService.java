@@ -44,10 +44,10 @@ public class OptionService {
 
         List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
         Map<Long, Integer> sellRatio = getSellRatio(trimId, optionsIds, category);
-        Map<Long, List<OptionImage>> powerTrainImagesGroup = getOptionImagesGroup(optionsIds);
-        Map<Long, List<OptionDetail>> powerTrainDetailsGroup = getOptionDetailGroup(optionsIds);
+        Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
+        Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsIds);
 
-        return getSortedSelfOptionResponses(options, sellRatio, powerTrainImagesGroup, powerTrainDetailsGroup);
+        return getSortedSelfOptionResponses(options, sellRatio, optionImagesGroup, optionDetailsGroup);
     }
 
     public List<FindGuideOptionResponse> findGuidePowerTrains(Long trimId, GuideInfo guideInfo) {
@@ -74,10 +74,10 @@ public class OptionService {
     }
 
     private Map<Long, Integer> getSellRatio(Long trimId, List<Long> optionsIds, SelectiveCategory category) {
-        Map<Long, Long> powerTrainCounts = sellRepository
+        Map<Long, Long> optionCounts = sellRepository
                 .countOptionsByTrimIdAndContainOptionsIds(trimId, optionsIds, category);
-        addMissingOptionIds(powerTrainCounts, optionsIds);
-        return calculateOptionRatios(powerTrainCounts);
+        addMissingOptionIds(optionCounts, optionsIds);
+        return calculateOptionRatios(optionCounts);
     }
 
     private Map<Long, Integer> getSimilarityUsersRatio(Long trimId, List<Long> optionsIds, GuideInfo guideInfo) {
@@ -116,14 +116,14 @@ public class OptionService {
         }
     }
 
-    private List<FindSelfOptionResponse> getSortedSelfOptionResponses(List<Option> powerTrains, Map<Long, Integer> sellRatio,
-                                                                      Map<Long, List<OptionImage>> powerTrainImagesGroup,
-                                                                      Map<Long, List<OptionDetail>> powerTrainDetailsGroup) {
-        return powerTrains.stream()
-                .map(powerTrain -> new FindSelfOptionResponse(powerTrain,
-                        sellRatio.get(powerTrain.getId()),
-                        powerTrainImagesGroup.getOrDefault(powerTrain.getId(), new ArrayList<>()),
-                        powerTrainDetailsGroup.getOrDefault(powerTrain.getId(), new ArrayList<>())))
+    private List<FindSelfOptionResponse> getSortedSelfOptionResponses(List<Option> options, Map<Long, Integer> sellRatio,
+                                                                      Map<Long, List<OptionImage>> optionImagesGroup,
+                                                                      Map<Long, List<OptionDetail>> optionDetailsGroup) {
+        return options.stream()
+                .map(option -> new FindSelfOptionResponse(option,
+                        sellRatio.get(option.getId()),
+                        optionImagesGroup.getOrDefault(option.getId(), new ArrayList<>()),
+                        optionDetailsGroup.getOrDefault(option.getId(), new ArrayList<>())))
                 .sorted(Comparator.comparingDouble(response -> -response.getRate()))
                 .collect(Collectors.toList());
     }
