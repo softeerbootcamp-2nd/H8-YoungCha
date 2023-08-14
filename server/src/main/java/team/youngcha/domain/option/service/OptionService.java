@@ -66,31 +66,9 @@ public class OptionService {
         Map<Long, List<Keyword>> powerTrainIdKeywordGroup = keywordRepository
                 .findByContainOptionIdsAndGroupKeywords(powerTrainIds);
 
-        for (Long keywordId : guideInfo.getKeywordIds()) {
-            // 사용자 키워드 우선순위 순으로 옵션이 해당 키워드를 갖는지 확인
-            List<Long> optionIds = new ArrayList<>();
-            for (Map.Entry<Long, List<Keyword>> entry : powerTrainIdKeywordGroup.entrySet()) {
-                // 옵션의 키워드에 사용자가 선택한 키워드가 있는 판별
-                boolean containId = entry.getValue().stream()
-                        .anyMatch(keyword -> keyword.getId().equals(keywordId));
-                if (!containId) continue;
-                optionIds.add(entry.getKey());
-            }
-            if (optionIds.size() != 1) {
-                continue;
-            }
-            // 겹치는 키워드가 없으면 비율을 조회 후 반환
-            Integer rate = estimateRepository.calculateRate(trimId, optionIds.get(0), keywordId);
-            Keyword keyword = keywordRepository.findById(keywordId)
-                    .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "키워드를 찾을 수 없습니다."));
-            KeywordRate keywordRate = new KeywordRate(rate, keyword.getName());
-            Map<Long, List<KeywordRate>> keywordRateGroup = new HashMap<>();
-            keywordRateGroup.put(optionIds.get(0), List.of(keywordRate));
-            return getSortedGuideOptionResponses(powerTrains, similarityUsersRatio, keywordRateGroup,
-                    powerTrainImagesGroup, powerTrainDetailsGroup);
-        }
-        // 모두 키워드가 없으면 유사 사용자 비율
-        return getSortedGuideOptionResponses(powerTrains, similarityUsersRatio, new HashMap<>(),
+        Map<Long, List<KeywordRate>> keywordRateGroup = findKeywordRateGroup(guideInfo, powerTrainIdKeywordGroup, trimId);
+
+        return getSortedGuideOptionResponses(powerTrains, similarityUsersRatio, keywordRateGroup,
                 powerTrainImagesGroup, powerTrainDetailsGroup);
     }
 
@@ -147,6 +125,34 @@ public class OptionService {
                         powerTrainDetailsGroup.getOrDefault(powerTrain.getId(), new ArrayList<>())))
                 .sorted(Comparator.comparingDouble(response -> -response.getRate()))
                 .collect(Collectors.toList());
+    }
+
+    private Map<Long, List<KeywordRate>> findKeywordRateGroup(GuideInfo guideInfo,
+                                                              Map<Long, List<Keyword>> powerTrainIdKeywordGroup,
+                                                              Long trimId) {
+        Map<Long, List<KeywordRate>> keywordRateGroup = new HashMap<>();
+
+        for (Long keywordId : guideInfo.getKeywordIds()) {
+            // 사용자 키워드 우선순위 순으로 옵션이 해당 키워드를 갖는지 확인
+            List<Long> optionIdsWithKeyword = powerTrainIdKeywordGroup.entrySet().stream()
+                    .filter(entry -> entry.getValue().stream()
+                            .anyMatch(keyword -> keyword.getId().equals(keywordId)))
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+
+            // 겹치는 키워드가 없으면 비율을 조회 후 반환
+            if (optionIdsWithKeyword.size() == 1) {
+                Long selectedOptionId = optionIdsWithKeyword.get(0);
+                Integer rate = estimateRepository.calculateRate(trimId, selectedOptionId, keywordId);
+                System.out.println(keywordId);
+                Keyword keyword = keywordRepository.findById(keywordId)
+                        .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "키워드를 찾을 수 없습니다."));
+                KeywordRate keywordRate = new KeywordRate(rate, keyword.getName());
+                keywordRateGroup.put(selectedOptionId, List.of(keywordRate));
+                return keywordRateGroup;
+            }
+        }
+        return keywordRateGroup;
     }
 
     private List<FindGuideOptionResponse> getSortedGuideOptionResponses(List<Option> powerTrains,
