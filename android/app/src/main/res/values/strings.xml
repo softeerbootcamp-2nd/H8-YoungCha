@@ -87,5 +87,9 @@
 
     <string name="current_processing">현재 진행중</string>
     <string name="please_select">을 선택해주세요.</string>
+    <string name="loading_main_text">나만의 팰리세이드가\n만들어지고 있어요!</string>
+    <string name="loading_engine">엔진 장착 중...</string>
+    <string name="loading_color">도색하는 중...</string>
+    <string name="loading_option">옵션 장착 중...</string>
 
 </resources>
