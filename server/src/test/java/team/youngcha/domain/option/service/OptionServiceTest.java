@@ -185,17 +185,7 @@ class OptionServiceTest {
             groupKeyword.put(1L, List.of(new Keyword(1L, "효율"), new Keyword(2L, "안전")));
             groupKeyword.put(2L, List.of(new Keyword(3L, "주행력")));
 
-            given(trimRepository.findById(trimId)).willReturn(Optional.of(mock(Trim.class)));
-            given(optionRepository.findPowerTrainsByTrimIdAndType(trimId, OptionType.OPTIONAL))
-                    .willReturn(List.of(diesel, gasoline));
-            given(optionImageRepository.findByContainOptionIds(optionIds))
-                    .willReturn(optionImages);
-            given(optionDetailRepository.findWithSpecsByContainOptionIds(optionIds))
-                    .willReturn(optionDetails);
-            given(estimateRepository.countPowerTrainsSimilarityUsers(trimId, optionIds, guideInfo))
-                    .willReturn(powerTrainCounts);
-            given(keywordRepository.findByContainOptionIdsAndGroupKeywords(optionIds))
-                    .willReturn(groupKeyword);
+            mockedTrim(optionIds, optionImages, optionDetails, guideInfo, powerTrainCounts, groupKeyword);
             given(estimateRepository.calculateRate(trimId, 1L, 1L))
                     .willReturn(50);
             given(keywordRepository.findById(1L))
@@ -219,7 +209,7 @@ class OptionServiceTest {
                     .tags(List.of())
                     .images(List.of(new FindOptionImageResponse(optionImages.get(2))))
                     .details(List.of(new FindOptionDetailResponse(optionDetails.get(1)),
-                                    new FindOptionDetailResponse(optionDetails.get(2))))
+                            new FindOptionDetailResponse(optionDetails.get(2))))
                     .build();
             assertThat(guideOptionResponses).usingRecursiveComparison()
                     .isEqualTo(List.of(expected1, expected2));
@@ -250,17 +240,7 @@ class OptionServiceTest {
 
             int rate = 50;
 
-            given(trimRepository.findById(trimId)).willReturn(Optional.of(mock(Trim.class)));
-            given(optionRepository.findPowerTrainsByTrimIdAndType(trimId, OptionType.OPTIONAL))
-                    .willReturn(List.of(diesel, gasoline));
-            given(optionImageRepository.findByContainOptionIds(optionIds))
-                    .willReturn(optionImages);
-            given(optionDetailRepository.findWithSpecsByContainOptionIds(optionIds))
-                    .willReturn(optionDetails);
-            given(estimateRepository.countPowerTrainsSimilarityUsers(trimId, optionIds, guideInfo))
-                    .willReturn(powerTrainCounts);
-            given(keywordRepository.findByContainOptionIdsAndGroupKeywords(optionIds))
-                    .willReturn(groupKeyword);
+            mockedTrim(optionIds, optionImages, optionDetails, guideInfo, powerTrainCounts, groupKeyword);
             given(estimateRepository.calculateRate(trimId, 2L, 2L))
                     .willReturn(rate);
             given(keywordRepository.findById(2L))
@@ -313,17 +293,7 @@ class OptionServiceTest {
             groupKeyword.put(1L, List.of(new Keyword(4L, "효율"), new Keyword(5L, "주행력")));
             groupKeyword.put(2L, List.of(new Keyword(6L, "안전"), new Keyword(7L, "효율")));
 
-            given(trimRepository.findById(trimId)).willReturn(Optional.of(mock(Trim.class)));
-            given(optionRepository.findPowerTrainsByTrimIdAndType(trimId, OptionType.OPTIONAL))
-                    .willReturn(List.of(diesel, gasoline));
-            given(optionImageRepository.findByContainOptionIds(optionIds))
-                    .willReturn(optionImages);
-            given(optionDetailRepository.findWithSpecsByContainOptionIds(optionIds))
-                    .willReturn(optionDetails);
-            given(estimateRepository.countPowerTrainsSimilarityUsers(trimId, optionIds, guideInfo))
-                    .willReturn(powerTrainCounts);
-            given(keywordRepository.findByContainOptionIdsAndGroupKeywords(optionIds))
-                    .willReturn(groupKeyword);
+            mockedTrim(optionIds, optionImages, optionDetails, guideInfo, powerTrainCounts, groupKeyword);
 
             //when
             List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuidePowerTrains(trimId, guideInfo);
@@ -349,5 +319,20 @@ class OptionServiceTest {
                     .isEqualTo(List.of(expected2, expected1));
         }
 
+        private void mockedTrim(List<Long> optionIds, List<OptionImage> optionImages,
+                                List<OptionDetail> optionDetails, GuideInfo guideInfo,
+                                Map<Long, Long> powerTrainCounts, Map<Long, List<Keyword>> groupKeyword) {
+            given(trimRepository.findById(trimId)).willReturn(Optional.of(mock(Trim.class)));
+            given(optionRepository.findPowerTrainsByTrimIdAndType(trimId, OptionType.OPTIONAL))
+                    .willReturn(List.of(diesel, gasoline));
+            given(optionImageRepository.findByContainOptionIds(optionIds))
+                    .willReturn(optionImages);
+            given(optionDetailRepository.findWithSpecsByContainOptionIds(optionIds))
+                    .willReturn(optionDetails);
+            given(estimateRepository.countPowerTrainsSimilarityUsers(trimId, optionIds, guideInfo))
+                    .willReturn(powerTrainCounts);
+            given(keywordRepository.findByContainOptionIdsAndGroupKeywords(optionIds))
+                    .willReturn(groupKeyword);
+        }
     }
 }
