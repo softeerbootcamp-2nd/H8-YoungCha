@@ -20,7 +20,7 @@ public class IntegrationTestBase {
     public SoftAssertions softAssertions;
 
     @BeforeEach
-    void setUp() {
+    void setPort() {
         RestAssured.port = port;
     }
 }
