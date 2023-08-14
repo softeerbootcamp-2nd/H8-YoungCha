@@ -49,7 +49,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="w-full mb-400px">
+      <div className="w-full pb-400px">
         <CarsNameListBox trims={mockTrims} />
         <div className="flex flex-col m-auto max-w-7xl pt-32px gap-60px px-128px">
           <CarsImageBox trims={mockTrims} />
