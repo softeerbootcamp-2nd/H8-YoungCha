@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import team.youngcha.common.exception.CustomException;
 import team.youngcha.common.enums.AgeRange;
 import team.youngcha.common.enums.Gender;
+import team.youngcha.domain.category.enums.CategoryName;
 import team.youngcha.domain.estimate.repository.EstimateRepository;
 import team.youngcha.domain.keyword.dto.KeywordRate;
 import team.youngcha.domain.keyword.entity.Keyword;
@@ -112,7 +113,7 @@ class OptionServiceTest {
 
             given(trimRepository.findById(trimId))
                     .willReturn(Optional.of(mock(Trim.class)));
-            given(optionRepository.findPowerTrainsByTrimIdAndType(trimId, OptionType.OPTIONAL))
+            given(optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, CategoryName.POWER_TRAIN))
                     .willReturn(options);
             given(sellRepository.countPowerTrainByTrimIdAndContainPowerTrainIds(eq(trimId), anyList()))
                     .willReturn(powerTrainCounts);
@@ -122,7 +123,7 @@ class OptionServiceTest {
                     .willReturn(optionDetails);
 
             //when
-            List<FindSelfOptionResponse> powerTrainResponses = optionService.findSelfPowerTrains(trimId);
+            List<FindSelfOptionResponse> powerTrainResponses = optionService.findSelfOptions(trimId, CategoryName.POWER_TRAIN);
 
             //then
             FindSelfOptionResponse expected1 = new FindSelfOptionResponse(options.get(0), 0, optionImages.subList(0, 2), optionDetails.subList(0, 1));
@@ -140,7 +141,7 @@ class OptionServiceTest {
             given(trimRepository.findById(trimId)).willReturn(Optional.empty());
 
             //when
-            Throwable throwable = catchThrowable(() -> optionService.findSelfPowerTrains(trimId));
+            Throwable throwable = catchThrowable(() -> optionService.findSelfOptions(trimId, CategoryName.POWER_TRAIN));
 
             //then
             assertThat(throwable).isInstanceOf(CustomException.class);
@@ -323,7 +324,7 @@ class OptionServiceTest {
                                 List<OptionDetail> optionDetails, GuideInfo guideInfo,
                                 Map<Long, Long> powerTrainCounts, Map<Long, List<Keyword>> groupKeyword) {
             given(trimRepository.findById(trimId)).willReturn(Optional.of(mock(Trim.class)));
-            given(optionRepository.findPowerTrainsByTrimIdAndType(trimId, OptionType.OPTIONAL))
+            given(optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, CategoryName.POWER_TRAIN))
                     .willReturn(List.of(diesel, gasoline));
             given(optionImageRepository.findByContainOptionIds(optionIds))
                     .willReturn(optionImages);

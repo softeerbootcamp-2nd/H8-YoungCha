@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import team.youngcha.common.exception.CustomException;
+import team.youngcha.domain.category.enums.CategoryName;
 import team.youngcha.domain.estimate.repository.EstimateRepository;
 import team.youngcha.domain.keyword.dto.KeywordRate;
 import team.youngcha.domain.keyword.entity.Keyword;
@@ -36,23 +37,23 @@ public class OptionService {
     private final OptionImageRepository optionImageRepository;
     private final OptionDetailRepository optionDetailRepository;
 
-    public List<FindSelfOptionResponse> findSelfPowerTrains(Long trimId) {
+    public List<FindSelfOptionResponse> findSelfOptions(Long trimId, CategoryName name) {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
-        List<Option> powerTrains = optionRepository.findPowerTrainsByTrimIdAndType(trimId, OptionType.OPTIONAL);
+        List<Option> options = optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, name);
 
-        List<Long> powerTrainIds = powerTrains.stream().map(Option::getId).collect(Collectors.toList());
+        List<Long> powerTrainIds = options.stream().map(Option::getId).collect(Collectors.toList());
         Map<Long, Integer> sellRatio = getSellRatio(trimId, powerTrainIds);
         Map<Long, List<OptionImage>> powerTrainImagesGroup = getOptionImagesGroup(powerTrainIds);
         Map<Long, List<OptionDetail>> powerTrainDetailsGroup = getOptionDetailGroup(powerTrainIds);
 
-        return getSortedSelfOptionResponses(powerTrains, sellRatio, powerTrainImagesGroup, powerTrainDetailsGroup);
+        return getSortedSelfOptionResponses(options, sellRatio, powerTrainImagesGroup, powerTrainDetailsGroup);
     }
 
     public List<FindGuideOptionResponse> findGuidePowerTrains(Long trimId, GuideInfo guideInfo) {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
-        List<Option> powerTrains = optionRepository.findPowerTrainsByTrimIdAndType(trimId, OptionType.OPTIONAL);
+        List<Option> powerTrains = optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, CategoryName.POWER_TRAIN);
 
         List<Long> powerTrainIds = powerTrains.stream().map(Option::getId).collect(Collectors.toList());
 

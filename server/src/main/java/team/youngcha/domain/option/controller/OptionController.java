@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import team.youngcha.common.dto.SuccessResponse;
 import team.youngcha.common.enums.AgeRange;
 import team.youngcha.common.enums.Gender;
+import team.youngcha.domain.category.enums.CategoryName;
 import team.youngcha.domain.option.dto.FindGuideOptionResponse;
 import team.youngcha.domain.option.dto.FindSelfOptionResponse;
 import team.youngcha.domain.option.dto.GuideInfo;
@@ -29,7 +30,7 @@ public class OptionController {
     public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfPowerTrains(
             @PathVariable Long trimId
     ) {
-        List<FindSelfOptionResponse> findSelfOptionResponses = optionService.findSelfPowerTrains(trimId);
+        List<FindSelfOptionResponse> findSelfOptionResponses = optionService.findSelfOptions(trimId, CategoryName.POWER_TRAIN);
         SuccessResponse<List<FindSelfOptionResponse>> successResponse =
                 new SuccessResponse<>(findSelfOptionResponses);
         return ResponseEntity.ok(successResponse);

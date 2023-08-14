@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import team.youngcha.domain.category.enums.CategoryName;
 import team.youngcha.domain.option.entity.Option;
 import team.youngcha.domain.option.entity.OptionType;
 
@@ -50,7 +51,7 @@ class OptionRepositoryTest {
         Long trimId = 1L;
 
         //when
-        List<Option> powerTrains = optionRepository.findPowerTrainsByTrimIdAndType(trimId, OptionType.OPTIONAL);
+        List<Option> powerTrains = optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, CategoryName.POWER_TRAIN);
 
         //then
         Option diesel = Option.builder()
