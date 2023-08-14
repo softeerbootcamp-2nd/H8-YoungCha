@@ -184,7 +184,7 @@ public class OptionService {
         if (!keywordRateGroup.isEmpty()) {
             return !keywordRateGroup.getOrDefault(powerTrainId, Collections.emptyList()).isEmpty();
         }
-        // 겹치는 키워드가 없다.
+        // 겹치는 키워드가 없으면 유사 사용자 비율이 높은 옵션을 선택
         boolean isMaxRate = ratio.equals(Collections.max(similarityUsersRatio.values()));
         if (isMaxRate) {
             similarityUsersRatio.put(powerTrainId, Integer.MAX_VALUE);
