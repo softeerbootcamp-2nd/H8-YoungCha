@@ -181,10 +181,14 @@ public class OptionService {
                                        Map<Long, Integer> similarityUsersRatio,
                                        Long powerTrainId,
                                        Integer ratio) {
-        if (keywordRateGroup.isEmpty()) {
-            return ratio.equals(Collections.max(similarityUsersRatio.values()));
-        } else {
+        if (!keywordRateGroup.isEmpty()) {
             return !keywordRateGroup.getOrDefault(powerTrainId, Collections.emptyList()).isEmpty();
         }
+        // 겹치는 키워드가 없다.
+        boolean isMaxRate = ratio.equals(Collections.max(similarityUsersRatio.values()));
+        if (isMaxRate) {
+            similarityUsersRatio.put(powerTrainId, Integer.MAX_VALUE);
+        }
+        return isMaxRate;
     }
 }
