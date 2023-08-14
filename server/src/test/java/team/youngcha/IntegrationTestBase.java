@@ -8,9 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SoftAssertionsExtension.class)
+@DirtiesContext
 public class IntegrationTestBase {
 
     @LocalServerPort
@@ -20,7 +22,7 @@ public class IntegrationTestBase {
     public SoftAssertions softAssertions;
 
     @BeforeEach
-    void setUp() {
+    void setPort() {
         RestAssured.port = port;
     }
 }

@@ -1,0 +1,12 @@
+INSERT INTO keyword (id, name) VALUES (1, '주행력');
+INSERT INTO keyword (id, name) VALUES (2, '소음');
+INSERT INTO keyword (id, name) VALUES (3, '효율');
+INSERT INTO keyword (id, name) VALUES (4, '파워');
+INSERT INTO keyword (id, name) VALUES (5, '디자인');
+INSERT INTO keyword (id, name) VALUES (6, '차량 보호');
+INSERT INTO keyword (id, name) VALUES (7, '온도 조절');
+INSERT INTO keyword (id, name) VALUES (8, '건강');
+INSERT INTO keyword (id, name) VALUES (9, '신기술');
+INSERT INTO keyword (id, name) VALUES (10, '안전');
+INSERT INTO keyword (id, name) VALUES (11, '차박');
+INSERT INTO keyword (id, name) VALUES (12, '가족 여행');

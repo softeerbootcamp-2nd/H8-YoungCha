@@ -1,15 +1,11 @@
 package team.youngcha.domain.sell.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Sell {
 
     private Long id;
@@ -23,4 +19,21 @@ public class Sell {
     private int age;
     private int gender;
     private LocalDateTime createDate;
+
+    @Builder
+    public Sell(Long id, Long trimId, Long engineId, Long bodyTypeId,
+                Long drivingSystemId, Long exteriorColorId, Long interiorColorId,
+                Long wheelId, int age, int gender, LocalDateTime createDate) {
+        this.id = id;
+        this.trimId = trimId;
+        this.engineId = engineId;
+        this.bodyTypeId = bodyTypeId;
+        this.drivingSystemId = drivingSystemId;
+        this.exteriorColorId = exteriorColorId;
+        this.interiorColorId = interiorColorId;
+        this.wheelId = wheelId;
+        this.age = age;
+        this.gender = gender;
+        this.createDate = createDate;
+    }
 }
