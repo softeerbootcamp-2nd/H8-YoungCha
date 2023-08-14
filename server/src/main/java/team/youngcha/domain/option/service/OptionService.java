@@ -144,7 +144,6 @@ public class OptionService {
             if (optionIdsWithKeyword.size() == 1) {
                 Long selectedOptionId = optionIdsWithKeyword.get(0);
                 Integer rate = estimateRepository.calculateRate(trimId, selectedOptionId, keywordId);
-                System.out.println(keywordId);
                 Keyword keyword = keywordRepository.findById(keywordId)
                         .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "키워드를 찾을 수 없습니다."));
                 KeywordRate keywordRate = new KeywordRate(rate, keyword.getName());
@@ -160,31 +159,10 @@ public class OptionService {
                                                                         Map<Long, List<KeywordRate>> keywordRateGroup,
                                                                         Map<Long, List<OptionImage>> powerTrainImagesGroup,
                                                                         Map<Long, List<OptionDetail>> powerTrainDetailsGroup) {
-        if (keywordRateGroup.isEmpty()) {
-            return powerTrains.stream()
-                    .map(powerTrain -> {
-                        Integer ratio = similarityUsersRatio.get(powerTrain.getId());
-                        boolean isMaxRatio = ratio.equals(Collections.max(similarityUsersRatio.values()));
-                        if (isMaxRatio) { // 최대값이 하나만 되도록 해서 isChecked가 여러개 되는 것을 방지
-                            similarityUsersRatio.put(powerTrain.getId(), Integer.MAX_VALUE);
-                        }
-                        return new FindGuideOptionResponse(
-                                powerTrain,
-                                isMaxRatio,
-                                ratio,
-                                keywordRateGroup.getOrDefault(powerTrain.getId(), new ArrayList<>()),
-                                powerTrainImagesGroup.getOrDefault(powerTrain.getId(), new ArrayList<>()),
-                                powerTrainDetailsGroup.getOrDefault(powerTrain.getId(), new ArrayList<>())
-                        );
-                    })
-                    .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> -response.getRate()) // 비율 내림차순
-                            .thenComparing((FindGuideOptionResponse response) -> response.isChecked() ? 0 : 1)) // true가 맨 처음
-                    .collect(Collectors.toList());
-        }
         return powerTrains.stream()
                 .map(powerTrain -> {
                     Integer ratio = similarityUsersRatio.get(powerTrain.getId());
-                    boolean isSelected = !keywordRateGroup.getOrDefault(powerTrain.getId(), new ArrayList<>()).isEmpty();
+                    boolean isSelected = determineSelection(keywordRateGroup, similarityUsersRatio, powerTrain.getId(), ratio);
                     return new FindGuideOptionResponse(
                             powerTrain,
                             isSelected,
@@ -197,5 +175,16 @@ public class OptionService {
                 .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> -response.getRate()) // 비율 내림차순
                         .thenComparing((FindGuideOptionResponse response) -> response.isChecked() ? 0 : 1)) // true가 맨 처음
                 .collect(Collectors.toList());
+    }
+
+    private boolean determineSelection(Map<Long, List<KeywordRate>> keywordRateGroup,
+                                       Map<Long, Integer> similarityUsersRatio,
+                                       Long powerTrainId,
+                                       Integer ratio) {
+        if (keywordRateGroup.isEmpty()) {
+            return ratio.equals(Collections.max(similarityUsersRatio.values()));
+        } else {
+            return !keywordRateGroup.getOrDefault(powerTrainId, Collections.emptyList()).isEmpty();
+        }
     }
 }
