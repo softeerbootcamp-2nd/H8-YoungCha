@@ -39,7 +39,7 @@ public class CarDetailsIntegrationTest extends IntegrationTestBase {
                 "나만을 위한 팰리세이드",
                 null,
                 false,
-                0);
+                38960000);
 
 
         expectedLeblancTrimDetail.getMainOptions().add(new OptionSummary("내비게이션 기반 스마트 크루즈 컨트롤 (안전구간, 곡선로)", "cruise-control.jpg"));
