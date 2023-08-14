@@ -1,7 +1,6 @@
 package team.youngcha.domain.sell.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -10,7 +9,6 @@ import team.youngcha.domain.sell.entity.Sell;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,14 +30,15 @@ public class SellRepository {
                 ));
     }
 
-    private List<Map<String, Object>> querySellCounts(NamedParameterJdbcTemplate namedParameterJdbcTemplate, Long trimId, List<Long> powerTrainIds) {
+    private List<Map<String, Object>> querySellCounts(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+                                                      Long trimId, List<Long> powerTrainIds) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
         params.addValue("powerTrainIds", powerTrainIds);
 
         return namedParameterJdbcTemplate.queryForList(
                 "select sell.engine_id, COUNT(*) as count from sell " +
-                        "where sell.engine_id in (:powerTrainIds) and sell.trim_id in (:trimId)" +
+                        "where sell.engine_id in (:powerTrainIds) and sell.trim_id = (:trimId)" +
                         "group by sell.engine_id",
                 params);
     }
