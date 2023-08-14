@@ -1,13 +1,18 @@
 package com.youngcha.ohmycarset.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.youngcha.ohmycarset.R
@@ -32,6 +37,9 @@ class CarCustomizationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCarCustomizationBinding.inflate(inflater, container, false)
+        val bottomSheetView = layoutInflater.inflate(R.layout.layout_bottom_sheet, null)
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog.setContentView(bottomSheetView)
 
         return binding.root
     }
@@ -54,8 +62,6 @@ class CarCustomizationFragment : Fragment() {
             observeViewModel()
         }
 
-        val bottomSheet = BottomSheet()
-        bottomSheet.show(childFragmentManager, bottomSheet.tag)
     }
 
     private fun attachTabLayoutMediator() {
