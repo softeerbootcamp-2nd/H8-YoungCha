@@ -1,4 +1,4 @@
-INSERT INTO car (id, name) VALUES (1, '펠리세이드');
+INSERT INTO car (id, name) VALUES (1, '팰리세이드');
 
 INSERT INTO trim (id, name, img_url, background_img_url, hashtag, price, description, car_id) VALUES (2, 'Le Blanc (르블랑)', 'leblancImgUrl', 'leblancBgImgUrl', '베스트셀러', 40440000, '모두가 선택한 베스트셀러', 1);
 INSERT INTO trim (id, name, img_url, background_img_url, hashtag, price, description, car_id) VALUES (5, 'Guide Mode', 'guideModeImgUrl', 'guideModeBgImgUrl', '나만을 위한 팰리세이드', 0, null, 1);

@@ -51,7 +51,7 @@ public class TrimService {
     }
 
     private boolean isBestTrim(CarDetails dto) {
-        return dto.getCarName().equals("펠리세이드") && dto.getTrimName().equals("Le Blanc (르블랑)");
+        return dto.getCarName().equals("팰리세이드") && dto.getTrimName().equals("Le Blanc (르블랑)");
     }
 
     private void addTrimOptionToTrimDetail(TrimDetail trimDetail, CarDetails dto) {
