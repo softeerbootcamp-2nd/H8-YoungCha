@@ -1,13 +1,15 @@
 package team.youngcha.domain.keyword.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import team.youngcha.domain.keyword.entity.Keyword;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -18,15 +20,20 @@ import java.util.stream.Collectors;
 public class KeywordRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final RowMapper<Keyword> keywordRowMapper = BeanPropertyRowMapper.newInstance(Keyword.class);
+    private final RowMapper<Keyword> keywordRowMapper = new KeywordRowMapper();
 
     public Optional<Keyword> findById(Long id) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", id);
 
-        List<Keyword> keywords = namedParameterJdbcTemplate.query("select id from keyword " +
-                "where keyword.id = (:id)", params, keywordRowMapper);
-        return keywords.stream().findAny();
+        try {
+            Keyword keyword = namedParameterJdbcTemplate.queryForObject(
+                    "select * from keyword where id = :id",
+                    params, keywordRowMapper);
+            return Optional.ofNullable(keyword);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     public Map<Long, List<Keyword>> findByContainOptionIdsAndGroupKeywords(List<Long> optionIds) {
@@ -52,5 +59,15 @@ public class KeywordRepository {
                                         .name((String) map.get("name")).build(),
                                 Collectors.toList())
                 ));
+    }
+
+    private static class KeywordRowMapper implements RowMapper<Keyword> {
+        @Override
+        public Keyword mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            return Keyword.builder()
+                    .id(resultSet.getLong("id"))
+                    .name(resultSet.getString("name"))
+                    .build();
+        }
     }
 }
