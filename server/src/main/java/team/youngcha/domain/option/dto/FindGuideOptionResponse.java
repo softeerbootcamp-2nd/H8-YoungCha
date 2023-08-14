@@ -41,10 +41,12 @@ public class FindGuideOptionResponse {
     }
 
     @Builder
-    public FindGuideOptionResponse(boolean isChecked, int rate, String name, List<KeywordRate> tags,
+    public FindGuideOptionResponse(Long id, boolean isChecked, int rate, int price, String name, List<KeywordRate> tags,
                                    List<FindOptionDetailResponse> details, List<FindOptionImageResponse> images) {
+        this.id = id;
         this.isChecked = isChecked;
         this.rate = rate;
+        this.price = price;
         this.name = name;
         this.tags = tags;
         this.details = details;
