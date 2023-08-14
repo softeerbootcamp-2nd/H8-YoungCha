@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <!--테스트용-->
+
         <variable
-            name="powertrain"
-            type="com.youngcha.ohmycarset.model.PowerTrain" />
+            name="option_info"
+            type="com.youngcha.ohmycarset.model.car.OptionInfo" />
+
+        <variable
+            name="is_visible"
+            type="Integer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +24,7 @@
             android:id="@+id/v_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/btn_unselect_style" />
+            android:background="@{is_visible == 1 ? @drawable/btn_select_style : @drawable/btn_unselect_style}" />
 
         <ImageView
             android:id="@+id/iv_check"
@@ -27,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="17dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/ic_check_off"
+            android:src="@{is_visible == 1 ? @drawable/ic_check_on : @drawable/ic_check_off}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,8 +58,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/hyundai_sans_head_kr_regular"
-            android:text="@{powertrain.rate}"
-            android:textColor="@color/cool_grey_003"
+            android:text="@{option_info.rate}"
+            android:textColor="@{is_visible == 1 ? @color/main_hyundai_blue :@color/cool_grey_003}"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@id/tv_price"
             app:layout_constraintTop_toBottomOf="@id/iv_check" />
@@ -65,8 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/hyundai_sans_head_kr_otf_medium"
-            android:text="@{powertrain.name}"
-            android:textColor="@color/cool_grey_003"
+            android:text="@{option_info.name}"
+            android:textColor="@{is_visible == 1 ? @color/cool_grey_black :@color/cool_grey_003}"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@id/tv_price"
             app:layout_constraintTop_toBottomOf="@id/tv_rate" />
@@ -78,8 +83,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="@font/hyundai_sans_head_kr_regular"
-            android:text="@{powertrain.price}"
-            android:textColor="@color/cool_grey_003"
+            android:text="@{option_info.price}"
+            android:textColor="@{is_visible == 1 ? @color/cool_grey_black :@color/cool_grey_003}"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

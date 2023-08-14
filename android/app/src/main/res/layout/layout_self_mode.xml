@@ -226,6 +226,8 @@
             app:tabIndicatorGravity="stretch"
             app:tabIndicatorHeight="0dp"
             app:tabMode="scrollable"
+            app:tabPaddingEnd="4dp"
+            app:tabPaddingStart="4dp"
             app:tabRippleColor="@null"
             app:tabSelectedTextColor="@color/white" />
 
