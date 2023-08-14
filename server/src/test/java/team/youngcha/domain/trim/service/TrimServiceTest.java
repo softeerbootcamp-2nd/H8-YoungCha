@@ -6,19 +6,22 @@ import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 import team.youngcha.domain.car.dto.CarDetails;
 import team.youngcha.domain.trim.dto.TrimDetail;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@ExtendWith(SoftAssertionsExtension.class)
+@ExtendWith({SoftAssertionsExtension.class, MockitoExtension.class})
 class TrimServiceTest {
 
     @InjectSoftAssertions
     SoftAssertions softAssertions;
 
-    TrimService trimService = new TrimService();
+    @InjectMocks
+    TrimService trimService;
 
     @Test
     @DisplayName("자동차 상세정보로부터 트림별 상세정보 목록을 추출할 수 있어야 한다")
