@@ -2,6 +2,8 @@ package team.youngcha.common.type;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum AgeRange {
 
@@ -11,5 +13,11 @@ public enum AgeRange {
 
     AgeRange(int range) {
         this.range = range;
+    }
+
+    public static AgeRange of(int range) {
+        return Arrays.stream(AgeRange.values())
+                .filter(gender -> gender.getRange() == range)
+                .findAny().orElseThrow(() -> new IllegalArgumentException("일치하는 age가 없습니다."));
     }
 }
