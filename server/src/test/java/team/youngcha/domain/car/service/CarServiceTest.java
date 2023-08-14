@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import team.youngcha.common.exception.CustomException;
-import team.youngcha.domain.car.dto.CarDetailsDto;
+import team.youngcha.domain.car.dto.CarDetails;
 import team.youngcha.domain.car.dto.FindCarDetailsResponse;
 import team.youngcha.domain.car.entity.Car;
 import team.youngcha.domain.car.repository.CarRepository;
@@ -75,8 +75,8 @@ class CarServiceTest {
         //given
         Car car = new Car(1L, "팰리세이드");
 
-        List<CarDetailsDto> carDetailsDtos = new ArrayList<>();
-        carDetailsDtos.add(Mockito.mock(CarDetailsDto.class));
+        List<CarDetails> carDetails = new ArrayList<>();
+        carDetails.add(Mockito.mock(CarDetails.class));
 
         List<TrimDetail> trimDetails = new ArrayList<>(Arrays.asList(
                 Mockito.mock(TrimDetail.class),
@@ -86,7 +86,7 @@ class CarServiceTest {
                 .thenReturn(car);
 
         Mockito.when(carRepository.findDetails(any(Long.class)))
-                .thenReturn(carDetailsDtos);
+                .thenReturn(carDetails);
 
         Mockito.when(trimService.extractTrimDetailsFromCarDetailsDtos(anyList()))
                 .thenReturn(trimDetails);

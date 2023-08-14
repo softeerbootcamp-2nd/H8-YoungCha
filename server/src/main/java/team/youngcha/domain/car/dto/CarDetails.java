@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class CarDetailsDto {
+public class CarDetails {
 
     private Long carId;
     private String carName;
@@ -24,7 +24,7 @@ public class CarDetailsDto {
     private Integer optionImgType;
     private String optionImgUrl;
 
-    public CarDetailsDto(Long carId, String carName, Long trimId, String trimName, String trimImgUrl, String trimBackgroundImgUrl, String trimHashTag, Integer trimPrice, String trimDescription, Integer trimOptionType, String optionName, String optionCategoryName, Integer optionImgType, String optionImgUrl) {
+    public CarDetails(Long carId, String carName, Long trimId, String trimName, String trimImgUrl, String trimBackgroundImgUrl, String trimHashTag, Integer trimPrice, String trimDescription, Integer trimOptionType, String optionName, String optionCategoryName, Integer optionImgType, String optionImgUrl) {
         this.carId = carId;
         this.carName = carName;
         this.trimId = trimId;

@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import team.youngcha.domain.car.dto.CarDetailsDto;
+import team.youngcha.domain.car.dto.CarDetails;
 import team.youngcha.domain.car.entity.Car;
 import team.youngcha.domain.category.enums.CategoryName;
 import team.youngcha.domain.option.enums.OptionImageType;
@@ -20,7 +20,7 @@ public class CarRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Car> carRowMapper = BeanPropertyRowMapper.newInstance(Car.class);
-    private final RowMapper<CarDetailsDto> carDetailsDtoRowMapper = BeanPropertyRowMapper.newInstance(CarDetailsDto.class);
+    private final RowMapper<CarDetails> carDetailsDtoRowMapper = BeanPropertyRowMapper.newInstance(CarDetails.class);
 
     public Car findById(Long carId) {
         String sql = "SELECT * FROM car WHERE id = ?";
@@ -32,7 +32,7 @@ public class CarRepository {
         }
     }
 
-    public List<CarDetailsDto> findDetails(Long carId) {
+    public List<CarDetails> findDetails(Long carId) {
         String sql =
                 "SELECT * " +
                 "FROM (" +

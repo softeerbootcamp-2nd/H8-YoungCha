@@ -1,7 +1,7 @@
 package team.youngcha.domain.trim.service;
 
 import org.springframework.stereotype.Service;
-import team.youngcha.domain.car.dto.CarDetailsDto;
+import team.youngcha.domain.car.dto.CarDetails;
 import team.youngcha.domain.category.enums.CategoryName;
 import team.youngcha.domain.option.dto.OptionSummary;
 import team.youngcha.domain.trim.dto.TrimDetail;
@@ -14,10 +14,10 @@ import java.util.List;
 @Service
 public class TrimService {
 
-    public List<TrimDetail> extractTrimDetailsFromCarDetailsDtos(List<CarDetailsDto> carDetailsDtos) {
+    public List<TrimDetail> extractTrimDetailsFromCarDetailsDtos(List<CarDetails> carDetails) {
         HashMap<Long, TrimDetail> trimDetailMap = new HashMap<>();
 
-        for (CarDetailsDto dto : carDetailsDtos) {
+        for (CarDetails dto : carDetails) {
             TrimDetail trimDetail = trimDetailMap.get(dto.getTrimId());
             if (trimDetail == null) {
                 TrimDetail newTrimDetail = createTrimDetail(dto);
@@ -35,7 +35,7 @@ public class TrimService {
         return new ArrayList<>(trimDetailMap.values());
     }
 
-    private TrimDetail createTrimDetail(CarDetailsDto dto) {
+    private TrimDetail createTrimDetail(CarDetails dto) {
         boolean best = isBestTrim(dto);
 
         return TrimDetail.builder()
@@ -50,14 +50,14 @@ public class TrimService {
                 .build();
     }
 
-    private boolean isBestTrim(CarDetailsDto dto) {
+    private boolean isBestTrim(CarDetails dto) {
         if(dto.getCarName().equals("펠리세이드") && dto.getTrimName().equals("Le Blanc (르블랑)")) {
             return true;
         }
         return false;
     }
 
-    private void addTrimOptionToTrimDetail(TrimDetail trimDetail, CarDetailsDto dto) {
+    private void addTrimOptionToTrimDetail(TrimDetail trimDetail, CarDetails dto) {
         if (dto.getTrimOptionType().equals(TrimOptionType.MAIN.getValue())) {
             OptionSummary mainOption = new OptionSummary(dto.getOptionName(), dto.getOptionImgUrl());
             trimDetail.getMainOptions().add(mainOption);
