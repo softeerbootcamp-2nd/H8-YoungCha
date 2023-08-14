@@ -16,6 +16,7 @@ import com.youngcha.ohmycarset.enums.AdditionalTab
 import com.youngcha.ohmycarset.model.car.Car
 import com.youngcha.ohmycarset.model.car.OptionInfo
 import com.youngcha.ohmycarset.ui.adapter.viewpager.CarOptionPagerAdapter
+import com.youngcha.ohmycarset.ui.customview.BottomSheet
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 
@@ -52,6 +53,9 @@ class CarCustomizationFragment : Fragment() {
             setupSubTabs()
             observeViewModel()
         }
+
+        val bottomSheet = BottomSheet()
+        bottomSheet.show(childFragmentManager, bottomSheet.tag)
     }
 
     private fun attachTabLayoutMediator() {
