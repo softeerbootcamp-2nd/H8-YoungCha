@@ -1,11 +1,13 @@
 import { HTMLAttributes } from 'react';
+import {
+  LOADING_CIRCLE_CIRCUMFERENCE,
+  LOADING_CIRCLE_RADIUS,
+} from '@/pages/making/loading/constant.ts';
 
 interface LoadingCircleProps extends HTMLAttributes<HTMLDivElement> {
   isInit: boolean;
 }
 
-const RADIUS = 84;
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 function LoadingCircle({ children, isInit }: LoadingCircleProps) {
   const ratio = isInit ? 1 : 0;
   return (
@@ -23,7 +25,7 @@ function LoadingCircle({ children, isInit }: LoadingCircleProps) {
           <circle
             cx={90}
             cy={90}
-            r={RADIUS}
+            r={LOADING_CIRCLE_RADIUS}
             stroke="currentColor"
             strokeWidth={6}
             strokeLinecap="round"
@@ -33,13 +35,13 @@ function LoadingCircle({ children, isInit }: LoadingCircleProps) {
           <circle
             cx={90}
             cy={90}
-            r={RADIUS}
+            r={LOADING_CIRCLE_RADIUS}
             stroke="currentColor"
             strokeWidth={7}
             strokeLinecap="round"
-            strokeDashoffset={CIRCUMFERENCE * 0.25}
-            strokeDasharray={`${CIRCUMFERENCE * ratio}, ${
-              CIRCUMFERENCE * (1 - ratio)
+            strokeDashoffset={LOADING_CIRCLE_CIRCUMFERENCE * 0.25}
+            strokeDasharray={`${LOADING_CIRCLE_CIRCUMFERENCE * ratio}, ${
+              LOADING_CIRCLE_CIRCUMFERENCE * (1 - ratio)
             }`}
             className="transition-all duration-[3s] ease-in text-main-blue"
             fill="none"
