@@ -196,7 +196,7 @@ class OptionServiceTest {
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
-                    .id(1L).isChecked(true)
+                    .id(1L).checked(true)
                     .rate(100).name("디젤").price(1000)
                     .tags(List.of(new KeywordRate(50, "효율")))
                     .images(List.of(new FindOptionImageResponse(optionImages.get(0)),
@@ -204,7 +204,7 @@ class OptionServiceTest {
                     .details(List.of(new FindOptionDetailResponse(optionDetails.get(0))))
                     .build();
             FindGuideOptionResponse expected2 = FindGuideOptionResponse.builder()
-                    .id(2L).isChecked(false)
+                    .id(2L).checked(false)
                     .rate(0).name("가솔린").price(2000)
                     .tags(List.of())
                     .images(List.of(new FindOptionImageResponse(optionImages.get(2))))
@@ -251,7 +251,7 @@ class OptionServiceTest {
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
-                    .id(1L).isChecked(false)
+                    .id(1L).checked(false)
                     .rate(0).name("디젤").price(1000)
                     .tags(List.of())
                     .images(List.of(new FindOptionImageResponse(optionImages.get(0)),
@@ -259,7 +259,7 @@ class OptionServiceTest {
                     .details(List.of(new FindOptionDetailResponse(optionDetails.get(0))))
                     .build();
             FindGuideOptionResponse expected2 = FindGuideOptionResponse.builder()
-                    .id(2L).isChecked(true)
+                    .id(2L).checked(true)
                     .rate(100).name("가솔린").price(2000)
                     .tags(List.of(new KeywordRate(rate, "안전")))
                     .images(List.of(new FindOptionImageResponse(optionImages.get(2))))
@@ -300,7 +300,7 @@ class OptionServiceTest {
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
-                    .id(1L).isChecked(false)
+                    .id(1L).checked(false)
                     .rate(0).name("디젤").price(1000)
                     .tags(List.of())
                     .images(List.of(new FindOptionImageResponse(optionImages.get(0)),
@@ -308,7 +308,7 @@ class OptionServiceTest {
                     .details(List.of(new FindOptionDetailResponse(optionDetails.get(0))))
                     .build();
             FindGuideOptionResponse expected2 = FindGuideOptionResponse.builder()
-                    .id(2L).isChecked(true)
+                    .id(2L).checked(true)
                     .rate(100).name("가솔린").price(2000)
                     .tags(List.of())
                     .images(List.of(new FindOptionImageResponse(optionImages.get(2))))

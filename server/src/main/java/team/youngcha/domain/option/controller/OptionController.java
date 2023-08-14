@@ -46,9 +46,9 @@ public class OptionController {
             @RequestParam(name = "age") AgeRange ageRange,
             @Schema(description = "1순위 키워드")
             @RequestParam Long keyword1Id,
-            @Schema(description = "1순위 키워드")
+            @Schema(description = "2순위 키워드")
             @RequestParam Long keyword2Id,
-            @Schema(description = "1순위 키워드")
+            @Schema(description = "3순위 키워드")
             @RequestParam Long keyword3Id
     ) {
         GuideInfo guideInfo = new GuideInfo(gender, ageRange, List.of(keyword1Id, keyword2Id, keyword3Id));
