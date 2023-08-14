@@ -18,13 +18,7 @@ public class TrimService {
         HashMap<Long, TrimDetail> trimDetailMap = new HashMap<>();
 
         for (CarDetails dto : carDetails) {
-            TrimDetail trimDetail = trimDetailMap.get(dto.getTrimId());
-            if (trimDetail == null) {
-                TrimDetail newTrimDetail = createTrimDetail(dto);
-                trimDetailMap.put(newTrimDetail.getId(), newTrimDetail);
-                trimDetail = newTrimDetail;
-            }
-
+            TrimDetail trimDetail = trimDetailMap.computeIfAbsent(dto.getTrimId(), id -> createTrimDetail(dto));
             if (dto.getTrimName().equals("Guide Mode")) {
                 continue;
             }
