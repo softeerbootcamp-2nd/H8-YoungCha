@@ -43,7 +43,7 @@ public class OptionService {
         List<Option> options = optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, category);
 
         List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
-        Map<Long, Integer> sellRatio = getSellRatio(trimId, optionsIds);
+        Map<Long, Integer> sellRatio = getSellRatio(trimId, optionsIds, category);
         Map<Long, List<OptionImage>> powerTrainImagesGroup = getOptionImagesGroup(optionsIds);
         Map<Long, List<OptionDetail>> powerTrainDetailsGroup = getOptionDetailGroup(optionsIds);
 
@@ -73,9 +73,9 @@ public class OptionService {
                 powerTrainImagesGroup, powerTrainDetailsGroup);
     }
 
-    private Map<Long, Integer> getSellRatio(Long trimId, List<Long> optionsIds) {
+    private Map<Long, Integer> getSellRatio(Long trimId, List<Long> optionsIds, SelectiveCategory category) {
         Map<Long, Long> powerTrainCounts = sellRepository
-                .countPowerTrainByTrimIdAndContainPowerTrainIds(trimId, optionsIds);
+                .countOptionsByTrimIdAndContainOptionsIds(trimId, optionsIds, category);
         addMissingOptionIds(powerTrainCounts, optionsIds);
         return calculateOptionRatios(powerTrainCounts);
     }

@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import team.youngcha.common.enums.AgeRange;
 import team.youngcha.common.enums.Gender;
 import team.youngcha.common.exception.CustomException;
-import team.youngcha.domain.category.enums.CategoryName;
 import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.estimate.repository.EstimateRepository;
 import team.youngcha.domain.keyword.dto.KeywordRate;
@@ -117,7 +116,8 @@ class OptionServiceTest {
             given(optionRepository.
                     findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, SelectiveCategory.POWER_TRAIN))
                     .willReturn(options);
-            given(sellRepository.countPowerTrainByTrimIdAndContainPowerTrainIds(eq(trimId), anyList()))
+            given(sellRepository.
+                    countOptionsByTrimIdAndContainOptionsIds(eq(trimId), anyList(), eq(SelectiveCategory.POWER_TRAIN)))
                     .willReturn(powerTrainCounts);
             given(optionImageRepository.findByContainOptionIds(anyList()))
                     .willReturn(optionImages);

@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum SelectiveCategory {
-    POWER_TRAIN("파워 트레인", "power_train"),
+    POWER_TRAIN("파워 트레인", "engine"),
     DRIVING_SYSTEM("구동 방식", "driving_system"),
     BODY_TYPE("바디 타입", "body_type"),
     EXTERIOR_COLOR("외장 색상", "exterior_color"),
