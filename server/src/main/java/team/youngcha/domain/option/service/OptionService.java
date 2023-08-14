@@ -143,7 +143,7 @@ public class OptionService {
             // 겹치는 키워드가 없으면 비율을 조회 후 반환
             if (optionIdsWithKeyword.size() == 1) {
                 Long selectedOptionId = optionIdsWithKeyword.get(0);
-                Integer rate = estimateRepository.calculateRate(trimId, selectedOptionId, keywordId);
+                int rate = estimateRepository.calculateRate(trimId, selectedOptionId, keywordId);
                 Keyword keyword = keywordRepository.findById(keywordId)
                         .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "키워드를 찾을 수 없습니다."));
                 KeywordRate keywordRate = new KeywordRate(rate, keyword.getName());
