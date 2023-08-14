@@ -1,33 +1,34 @@
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (1, 1, 3);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (2, 1, 4);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (3, 2, 2);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (4, 3, 3);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (5, 4, 1);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (6, 6, 11);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (7, 16, 5);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (8, 17, 5);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (9, 18, 5);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (10, 18, 10);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (11, 18, 1);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (12, 19, 10);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (13, 19, 9);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (14, 19, 1);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (15, 20, 10);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (16, 20, 9);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (17, 21, 10);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (18, 21, 6);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (19, 21, 7);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (20, 21, 9);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (21, 21, 12);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (22, 21, 11);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (23, 22, 7);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (24, 22, 12);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (25, 23, 7);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (26, 24, 6);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (27, 25, 6);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (28, 26, 5);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (29, 27, 11);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (30, 28, 6);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (31, 28, 11);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (32, 29, 8);
-INSERT INTO options_keyword (id, options_id, keyword_id) VALUES (33, 30, 10);
+INSERT INTO options_keyword (id, options_id, keyword_id)
+VALUES (1, 1, 3),
+       (2, 1, 4),
+       (3, 2, 2),
+       (4, 3, 3),
+       (5, 4, 1),
+       (6, 6, 11),
+       (7, 16, 5),
+       (8, 17, 5),
+       (9, 18, 5),
+       (10, 18, 10),
+       (11, 18, 1),
+       (12, 19, 10),
+       (13, 19, 9),
+       (14, 19, 1),
+       (15, 20, 10),
+       (16, 20, 9),
+       (17, 21, 10),
+       (18, 21, 6),
+       (19, 21, 7),
+       (20, 21, 9),
+       (21, 21, 12),
+       (22, 21, 11),
+       (23, 22, 7),
+       (24, 22, 12),
+       (25, 23, 7),
+       (26, 24, 6),
+       (27, 25, 6),
+       (28, 26, 5),
+       (29, 27, 11),
+       (30, 28, 6),
+       (31, 28, 11),
+       (32, 29, 8),
+       (33, 30, 10);
