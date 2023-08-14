@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="size_150dp">150dp</dimen>
+    <dimen name="size_12dp">12dp</dimen>
     <dimen name="item_spacing">12dp</dimen>
 </resources>

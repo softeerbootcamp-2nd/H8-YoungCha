@@ -51,9 +51,9 @@
 
     <fragment
         android:id="@+id/makeCarSelfModeFragment"
-        android:name="com.youngcha.ohmycarset.ui.fragment.MakeCarSelfModeFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.CarCustomizationFragment"
         android:label="fragment_make_car_self_mode"
-        tools:layout="@layout/fragment_make_car_self_mode">
+        tools:layout="@layout/fragment_car_customization">
 
     </fragment>
 </navigation>

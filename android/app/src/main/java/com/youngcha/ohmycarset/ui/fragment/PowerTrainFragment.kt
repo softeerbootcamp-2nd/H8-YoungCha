@@ -41,11 +41,11 @@ class PowerTrainFragment : Fragment(), ComponentClick {
     }
 
     private fun observeViewModel() {
-        viewModel.powerTrainData.observe(viewLifecycleOwner) { powertrain ->
-            binding.powertrain = powertrain
-            binding.clOption1.powertrain = powertrain
-            binding.clOption2.powertrain = powertrain
-        }
+//        viewModel.powerTrainData.observe(viewLifecycleOwner) { powertrain ->
+//            binding.powertrain = powertrain
+//            binding.clOption1.powertrain = powertrain
+//            binding.clOption2.powertrain = powertrain
+//        }
     }
 
     private fun setupOptionClickListener(view: View, componentType: Int) {
