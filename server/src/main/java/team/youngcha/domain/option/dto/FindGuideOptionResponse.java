@@ -1,5 +1,6 @@
 package team.youngcha.domain.option.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,15 +15,31 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Schema(description = "가이드 모드 조회 응답")
 public class FindGuideOptionResponse {
 
+    @Schema(description = "옵션 아이디")
     private Long id;
+
+    @Schema(description = "추천 유무")
     private boolean isChecked;
+
+    @Schema(description = "유사 사용자 선택 비율")
     private int rate;
+
+    @Schema(description = "추가 가격")
     private int price;
+
+    @Schema(description = "이름")
     private String name;
+
+    @Schema(description = "태그")
     private List<KeywordRate> tags;
+
+    @Schema(description = "상세 설명")
     private List<FindOptionDetailResponse> details;
+
+    @Schema(description = "사진 정보")
     private List<FindOptionImageResponse> images;
 
     public FindGuideOptionResponse(Option option, boolean isChecked, int rate, List<KeywordRate> tags, List<OptionImage> optionImages, List<OptionDetail> optionDetails) {
