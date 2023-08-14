@@ -4,8 +4,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.youngcha.common.type.AgeRange;
-import team.youngcha.common.type.Gender;
+import team.youngcha.common.enums.AgeRange;
+import team.youngcha.common.enums.Gender;
 
 import java.util.List;
 

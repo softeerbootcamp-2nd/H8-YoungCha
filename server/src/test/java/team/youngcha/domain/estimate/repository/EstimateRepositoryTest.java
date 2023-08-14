@@ -8,8 +8,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
-import team.youngcha.common.type.AgeRange;
-import team.youngcha.common.type.Gender;
+import team.youngcha.common.enums.AgeRange;
+import team.youngcha.common.enums.Gender;
 import team.youngcha.domain.option.dto.GuideInfo;
 
 import java.util.List;

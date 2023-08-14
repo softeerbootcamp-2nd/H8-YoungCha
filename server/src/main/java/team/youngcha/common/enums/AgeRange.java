@@ -1,4 +1,4 @@
-package team.youngcha.common.type;
+package team.youngcha.common.enums;
 
 import lombok.Getter;
 

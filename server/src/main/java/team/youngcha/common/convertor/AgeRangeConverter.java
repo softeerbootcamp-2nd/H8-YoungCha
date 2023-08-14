@@ -1,7 +1,7 @@
 package team.youngcha.common.convertor;
 
 import org.springframework.core.convert.converter.Converter;
-import team.youngcha.common.type.AgeRange;
+import team.youngcha.common.enums.AgeRange;
 
 public class AgeRangeConverter implements Converter<String, AgeRange> {
     @Override

@@ -14,8 +14,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import team.youngcha.IntegrationTestBase;
 import team.youngcha.common.dto.SuccessResponse;
-import team.youngcha.common.type.AgeRange;
-import team.youngcha.common.type.Gender;
+import team.youngcha.common.enums.AgeRange;
+import team.youngcha.common.enums.Gender;
 import team.youngcha.domain.keyword.dto.KeywordRate;
 import team.youngcha.domain.option.dto.*;
 
