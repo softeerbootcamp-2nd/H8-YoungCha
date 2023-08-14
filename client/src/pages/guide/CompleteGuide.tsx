@@ -1,6 +1,5 @@
 import Button from '@/components/Button';
-
-const TITLE = '나만의 팰리세이드 견적 준비 완료!';
+import { TEXT } from './constant';
 
 function CompleteGuide() {
   return (
@@ -13,7 +12,7 @@ function CompleteGuide() {
       />
 
       <h1 className="font-hsans-head text-32px font-medium leading-[44.8px] tracking-[-1.28px]">
-        {TITLE}
+        {TEXT.TITLE.complete}
       </h1>
       <div className="w-300px h-86px rounded-6px bg-[#F8F8F8] flex flex-col gap-4px justify-center items-center">
         <span className="body2 text-[#737373]">선택된 트림</span>

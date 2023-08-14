@@ -10,6 +10,7 @@ export const TEXT = {
     age: '만나서 반가워요!',
     gender: '금방 끝나요!',
     keyword: '이제 마지막이에요!',
+    complete: '나만의 팰리세이드 견적 준비 완료!',
   },
   SUB_TITLE: {
     age: '연령대를 선택해 주세요.',
