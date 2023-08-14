@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="option_info"
+            type="com.youngcha.ohmycarset.model.car.OptionInfo" />
+
+        <variable
+            name="is_visible"
+            type="int" />
+
+        <variable
+            name="is_view_pager"
+            type="boolean" />
+
+        <import type="com.youngcha.ohmycarset.enums.ImageType" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_btn"
+        customLayoutHeight="@{is_view_pager ? -1f : @dimen/size_150dp}"
+        customMarginBottom="@{is_view_pager ? 0f : @dimen/size_12dp}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/v_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@{is_visible == 1 ? @drawable/btn_select_style : @drawable/btn_unselect_style}" />
+
+        <ImageView
+            android:id="@+id/iv_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="20dp"
+            android:src="@{is_visible == 1 ? @drawable/ic_check_on : @drawable/ic_check_off}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="19dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/tag_style"
+            android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            android:textAlignment="center"
+            android:textColor="@color/main_hyundai_blue"
+            android:textSize="10sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/iv_check"
+            app:layout_constraintStart_toEndOf="@id/iv_check"
+            app:layout_constraintTop_toTopOf="@id/iv_check"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tv_rate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/hyundai_sans_head_kr_regular"
+            android:text="@{option_info.rate}"
+            android:textColor="@{is_visible == 1 ? @color/main_hyundai_blue :@color/cool_grey_003}"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/tv_price"
+            app:layout_constraintTop_toBottomOf="@id/iv_check" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/hyundai_sans_head_kr_otf_medium"
+            android:text="@{option_info.name}"
+            android:textColor="@{is_visible == 1 ? @color/cool_grey_black :@color/cool_grey_003}"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@id/tv_price"
+            app:layout_constraintTop_toBottomOf="@id/tv_rate" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/hyundai_sans_head_kr_regular"
+            android:text="@{option_info.price}"
+            android:textColor="@{is_visible == 1 ? @color/cool_grey_black :@color/cool_grey_003}"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_interior"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="20dp"
+            android:scaleType="fitXY"
+            android:visibility="@{option_info.image.type == ImageType.RECTANGLE ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:optionImage="@{option_info.image.type == ImageType.RECTANGLE ? option_info.image.source : -1}" />
+
+        <com.youngcha.ohmycarset.ui.customview.CircleView
+            android:id="@+id/cv_exterior"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="28dp"
+            android:visibility="@{option_info.image.type == ImageType.CIRCLE ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/v_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:optionImage_circle="@{option_info.image.type == ImageType.CIRCLE ? option_info.image.source : 0}" />
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:layout_marginEnd="25dp"
+            android:visibility="@{option_info.image.type == ImageType.ICON ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintEnd_toEndOf="@+id/v_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:optionImage="@{option_info.image.type == ImageType.ICON ? option_info.image.source : -1}" />
+
+        <ImageButton
+            android:id="@+id/ib_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="21dp"
+            android:background="@drawable/ic_group"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

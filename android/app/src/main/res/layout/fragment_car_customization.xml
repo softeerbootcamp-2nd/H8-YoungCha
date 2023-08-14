@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.MakeCarSelfModeFragment">
+    tools:context=".ui.fragment.CarCustomizationFragment">
 
     <com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
         android:id="@+id/htb_header_toolbar"
