@@ -13,6 +13,7 @@ import team.youngcha.domain.option.enums.OptionImageType;
 import team.youngcha.domain.trim.enums.TrimOptionType;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -22,13 +23,14 @@ public class CarRepository {
     private final RowMapper<Car> carRowMapper = BeanPropertyRowMapper.newInstance(Car.class);
     private final RowMapper<CarDetails> carDetailsDtoRowMapper = BeanPropertyRowMapper.newInstance(CarDetails.class);
 
-    public Car findById(Long carId) {
+    public Optional<Car> findById(Long carId) {
         String sql = "SELECT * FROM car WHERE id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, carRowMapper, carId);
+            Car car = jdbcTemplate.queryForObject(sql, carRowMapper, carId);
+            return Optional.ofNullable(car);
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            return Optional.empty();
         }
     }
 

@@ -16,6 +16,7 @@ import team.youngcha.domain.car.entity.Car;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @JdbcTest
 @Sql({"classpath:data/car_details.sql"})
@@ -42,7 +43,7 @@ class CarRepositoryTest {
         String carName = "팰리세이드";
 
         //when
-        Car car = carRepository.findById(carId);
+        Car car = carRepository.findById(carId).orElseThrow();
 
         //then
         softAssertions.assertThat(car).isNotNull();
@@ -51,16 +52,16 @@ class CarRepositoryTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 자동차 id로 조회 시 null을 반환한다")
+    @DisplayName("존재하지 않는 자동차 id로 조회 시 optional-null을 반환한다")
     void findByInvalidId() {
         //given
         Long invalidCarId = 200L;
 
         //when
-        Car car = carRepository.findById(invalidCarId);
+        Optional<Car> optionalCar = carRepository.findById(invalidCarId);
 
         //then
-        softAssertions.assertThat(car).isNull();
+        softAssertions.assertThat(optionalCar.isEmpty()).isTrue();
     }
 
     @Test

@@ -21,10 +21,8 @@ public class CarService {
     private final TrimService trimService;
 
     public FindCarDetailsResponse findDetails(Long carId) {
-        Car car = carRepository.findById(carId);
-        if (car == null) {
-            throw new CustomException(HttpStatus.NOT_FOUND, "자동차 ID 조회 실패", "존재하지 자동차 ID 입니다.");
-        }
+        Car car = carRepository.findById(carId).orElseThrow(() ->
+                new CustomException(HttpStatus.NOT_FOUND, "자동차 ID 조회 실패", "존재하지 자동차 ID 입니다."));
 
         List<CarDetails> carDetails = carRepository.findDetails(car.getId());
         if (carDetails.isEmpty()) {

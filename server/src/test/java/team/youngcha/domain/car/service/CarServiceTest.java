@@ -19,6 +19,7 @@ import team.youngcha.domain.trim.service.TrimService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,7 +42,7 @@ class CarServiceTest {
     @DisplayName("존재하지 않는 자동차 ID로 상세정보 조회 시, 404 NOT FOUND 예외가 발생한다")
     void findDetailsWithInvalidId() {
         //given
-        Mockito.when(carRepository.findById(any(Long.class))).thenReturn(null);
+        Mockito.when(carRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
         //when
         CustomException customException = assertThrows(CustomException.class, () -> carService.findDetails(1L));
@@ -56,7 +57,7 @@ class CarServiceTest {
     void findDetailsNoResult() {
         //given
         Mockito.when(carRepository.findById(any(Long.class)))
-                .thenReturn(Mockito.mock(Car.class));
+                .thenReturn(Optional.of(Mockito.mock(Car.class)));
 
         Mockito.when(carRepository.findDetails(any(Long.class)))
                 .thenReturn(new ArrayList<>());
@@ -83,7 +84,7 @@ class CarServiceTest {
                 Mockito.mock(TrimDetail.class)));
 
         Mockito.when(carRepository.findById(any(Long.class)))
-                .thenReturn(car);
+                .thenReturn(Optional.of(car));
 
         Mockito.when(carRepository.findDetails(any(Long.class)))
                 .thenReturn(carDetails);
