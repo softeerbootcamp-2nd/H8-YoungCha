@@ -75,7 +75,7 @@ public class TrimService {
         }
     }
 
-    public FindTrimDefaultOptionsResponse findPaginatedDefaultOptions(Long trimId, int categoryId, int page, int size) {
+    public FindTrimDefaultOptionsResponse findPaginatedDefaultOptions(Long trimId, Long categoryId, int page, int size) {
         if (size < 1) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "페이지 크기 오류", "페이지의 크기가 1보다 작습니다.");
         }

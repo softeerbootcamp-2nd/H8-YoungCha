@@ -17,7 +17,7 @@ public class TrimController {
     @GetMapping("/{id}/default-components")
     public ResponseEntity<SuccessResponse<FindTrimDefaultOptionsResponse>> findTrimDefaultOptions(
             @PathVariable Long id,
-            @RequestParam int categoryId,
+            @RequestParam Long categoryId,
             @RequestParam int page,
             @RequestParam int size
     ) {
