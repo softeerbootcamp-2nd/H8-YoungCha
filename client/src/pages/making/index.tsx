@@ -16,24 +16,21 @@ const TITLE = [
   '옵션',
 ];
 
-const PULL_IMAGE_PAGE = [1, 2, 4];
-
 function Making({ path }: MakingProps) {
   const { step, id } = useParams() as { step: string; id: string };
   const currentStep = Number(step);
-
-  const paddingSize = PULL_IMAGE_PAGE.includes(currentStep)
-    ? 'px-128px'
-    : 'pr-128px';
 
   return (
     <div className="flex flex-col w-full h-screen pt-85px">
       <ProgressBar step={currentStep} path={path} id={id} />
       <div
-        className={`m-auto max-w-7xl ${paddingSize} flex justify-between items-center w-full flex-1`}
+        className={`m-auto max-w-7xl pr-128px flex justify-between items-center w-full flex-1 gap-60px`}
       >
-        <div className="flex items-center justify-center ">
-          <img src="/src/assets/mock/images/palisade.png" alt="palisade" />
+        <div className="flex w-full h-full">
+          <img
+            src="https://www.hyundai.com/contents/spec/LX24/gasoline3.8.jpg"
+            alt="palisade"
+          />
         </div>
         <div className="flex flex-col justify-center h-full w-375px gap-30px">
           <div className="flex gap-12px">
