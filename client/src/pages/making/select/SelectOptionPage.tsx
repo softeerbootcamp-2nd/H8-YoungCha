@@ -12,15 +12,15 @@ function SelectOptionPage({ path }: SelectOptionPageProps) {
 
   return (
     <div
-      className={`m-auto max-w-7xl pr-128px flex justify-between items-center w-full flex-1 gap-60px`}
+      className={`m-auto max-w-7xl pr-128px flex justify-between items-center w-full  flex-1 gap-60px`}
     >
-      <div className="flex w-full h-full">
+      <div className="flex w-full">
         <img
           src="https://www.hyundai.com/contents/spec/LX24/gasoline3.8.jpg"
           alt="palisade"
         />
       </div>
-      <div className="flex flex-col justify-center h-full w-375px gap-30px">
+      <div className="flex flex-col justify-center w-375px gap-30px">
         <div className="flex gap-12px">
           <h1 className="font-hsans-head text-24px tracking-[-0.96px]">
             <strong className="font-medium">

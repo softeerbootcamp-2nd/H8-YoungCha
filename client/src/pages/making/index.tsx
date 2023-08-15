@@ -13,7 +13,7 @@ function MakingPage({ path }: MakingPageProps) {
   const currentStep = Number(step);
 
   return (
-    <div className="flex flex-col w-full h-screen pt-85px">
+    <div className="flex flex-col w-full h-full">
       <ProgressBar step={currentStep} path={path} id={id} />
       {currentStep < LAST_STEP ? (
         <SelectOptionPage path={path} />
