@@ -64,7 +64,7 @@ function CompleteOptionPage() {
   const [selectedColorType, setSelectedColorType] =
     useState<ColorType>('exterior');
   const activeColor = 'text-white bg-main-blue';
-  const inactiveColor = 'text-main-blue bg-[#F2F2F2]';
+  const inactiveColor = 'text-main-blue bg-grey-001';
 
   return (
     <div className="flex flex-col items-center w-full m-auto mt-60px gap-60px max-w-7xl px-128px pb-70px">
@@ -98,7 +98,7 @@ function CompleteOptionPage() {
           <span className="title3 text-grey-black">견적 요약</span>
           <div className="flex items-center gap-14px">
             <span className="title4 text-grey-black">차량 총 견적 금액</span>
-            <span className="font-hsans-head text-34px font-medium leading-[44.2px] tracking-[-1.02px] text-[#36383C]">
+            <span className="font-hsans-head text-34px font-medium leading-[44.2px] tracking-[-1.02px] text-grey-black">
               47,270,000원
             </span>
           </div>

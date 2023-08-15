@@ -30,7 +30,7 @@ function DetailOption({ type }: DetailOptionProps) {
         <span className="text-grey-black font-hsans-head text-22px font-medium leading-[28.6px] tracking-[-0.66px]">
           트림
         </span>
-        <span className="text-[#36383C] font-hsans-head text-24px font-medium leading-[31.2px] tracking-[-0.72px]">
+        <span className="text-grey-black font-hsans-head text-24px font-medium leading-[31.2px] tracking-[-0.72px]">
           43,460,000원
         </span>
       </div>
