@@ -1,15 +1,14 @@
 import { TrimType } from '@/assets/mock/mock';
 import OptionLayout from './OptionLayout';
+import { TITLE } from './constant';
 
 interface MainOptionBoxProps {
   trims: TrimType[];
 }
 
-const TITLE = '핵심 옵션';
-
 function MainOptionBox({ trims }: MainOptionBoxProps) {
   return (
-    <OptionLayout title={TITLE}>
+    <OptionLayout title={TITLE.MAIN_OPTION}>
       {trims.map(({ mainOptions }, index) => (
         <ul
           className="flex flex-col w-full gap-8px"

@@ -1,15 +1,14 @@
 import { TrimType } from '@/assets/mock/mock';
 import OptionLayout from './OptionLayout';
+import { TITLE } from './constant';
 
 interface InternalColorBoxProps {
   trims: TrimType[];
 }
 
-const TITLE = '내장 색상';
-
 function InternalColorBox({ trims }: InternalColorBoxProps) {
   return (
-    <OptionLayout title={TITLE}>
+    <OptionLayout title={TITLE.INTERNAL_COLOR}>
       {trims.map(({ internalColor }, index) => (
         <ul
           className="flex flex-col w-full gap-24px"

@@ -1,10 +1,11 @@
 import { TrimType } from '@/assets/mock/mock';
 import MakingModeButton from '@/components/MakingModeButton';
 
-interface TrimCarsBoxProps {
+interface TrimCardsBoxProps {
   trims: TrimType[];
 }
-function TrimCarsBox({ trims }: TrimCarsBoxProps) {
+
+function TrimCardsBox({ trims }: TrimCardsBoxProps) {
   return (
     <div className="flex justify-between gap-16px">
       <MakingModeButton
@@ -16,37 +17,24 @@ function TrimCarsBox({ trims }: TrimCarsBoxProps) {
       >
         <MakingModeButton.GuideModeDetailList />
       </MakingModeButton>
-      {trims.map(({ name, hashtag, minPrice, description }, index) => {
-        return (
-          <MakingModeButton
-            name={name}
-            hashtag={hashtag}
-            minPrice={minPrice}
-            description={description}
-            to="making/self/1"
-            key={`making-mode-button-${index}`}
-          >
-            <MakingModeButton.MainOptionList
-              mainOptions={[
-                {
-                  imgUrl: '/src/assets/mock/TrimCard/option1.svg',
-                  description: '20인치\n 알로이 휠',
-                },
-                {
-                  imgUrl: '/src/assets/mock/TrimCard/option2.svg',
-                  description: '서라운드 뷰\n 모니터',
-                },
-                {
-                  imgUrl: '/src/assets/mock/TrimCard/option3.svg',
-                  description: '클러스터\n (12.3인치 컬러 LCD)',
-                },
-              ]}
-            />
-          </MakingModeButton>
-        );
-      })}
+      {trims.map(
+        ({ name, hashtag, minPrice, description, mainOptions }, index) => {
+          return (
+            <MakingModeButton
+              name={name}
+              hashtag={hashtag}
+              minPrice={minPrice}
+              description={description}
+              to="making/self/1"
+              key={`making-mode-button-${index}`}
+            >
+              <MakingModeButton.MainOptionList mainOptions={mainOptions} />
+            </MakingModeButton>
+          );
+        }
+      )}
     </div>
   );
 }
 
-export default TrimCarsBox;
+export default TrimCardsBox;

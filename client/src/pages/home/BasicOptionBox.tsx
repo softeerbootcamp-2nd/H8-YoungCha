@@ -6,13 +6,11 @@ import Button from '@/components/Button';
 import { MoreViewArrow } from '@/assets/icons';
 import { BasicOptionFilterType } from '@/types';
 import { BasicOptions } from '@/constant';
+import { TITLE } from './constant';
 
 interface BasicOptionBoxProps {
   basicOptionLists: BasicOptionType[];
 }
-
-const TITLE = '기본 포함 품목';
-
 function BasicOptionBox({ basicOptionLists }: BasicOptionBoxProps) {
   const [selectedOption, setSelectedOption] =
     useState<BasicOptionFilterType>('전체');
@@ -24,7 +22,7 @@ function BasicOptionBox({ basicOptionLists }: BasicOptionBoxProps) {
   return (
     <div className="flex flex-col gap-16px max-w-7xl">
       <h3 className="font-medium text-center text-grey-black py-8px">
-        {TITLE}
+        {TITLE.BASIC_OPTION}
       </h3>
       <div className="flex flex-col items-center gap-32px">
         <div className="flex justify-center gap-8px">
