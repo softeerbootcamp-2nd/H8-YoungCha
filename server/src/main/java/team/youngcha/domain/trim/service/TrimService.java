@@ -108,6 +108,7 @@ public class TrimService {
         }
 
         return FindTrimDefaultOptionsResponse.builder()
+                .trimId(trimId)
                 .first(isFirstPage)
                 .last(isLastPage)
                 .totalElements(totalElements)

@@ -228,7 +228,7 @@ class TrimServiceTest {
             int targetPage = 1;
 
             FindTrimDefaultOptionsResponse expectedResponse =
-                    new FindTrimDefaultOptionsResponse(true, false, totalElements, totalPages, defaultOptionSummaries);
+                    new FindTrimDefaultOptionsResponse(1L, true, false, totalElements, totalPages, defaultOptionSummaries);
 
             when(trimRepository.findById(anyLong())).thenReturn(Optional.of(Mockito.mock(Trim.class)));
             when(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).thenReturn(totalElements);
@@ -252,7 +252,7 @@ class TrimServiceTest {
             int targetPage = totalPages - 1;
 
             FindTrimDefaultOptionsResponse expectedResponse =
-                    new FindTrimDefaultOptionsResponse(false, false, totalElements, totalPages, defaultOptionSummaries);
+                    new FindTrimDefaultOptionsResponse(1L, false, false, totalElements, totalPages, defaultOptionSummaries);
 
             when(trimRepository.findById(anyLong())).thenReturn(Optional.of(Mockito.mock(Trim.class)));
             when(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).thenReturn(totalElements);
@@ -276,7 +276,7 @@ class TrimServiceTest {
             int targetPage = totalPages;
 
             FindTrimDefaultOptionsResponse expectedResponse =
-                    new FindTrimDefaultOptionsResponse(false, true, totalElements, totalPages, defaultOptionSummaries);
+                    new FindTrimDefaultOptionsResponse(1L, false, true, totalElements, totalPages, defaultOptionSummaries);
 
             when(trimRepository.findById(anyLong())).thenReturn(Optional.of(Mockito.mock(Trim.class)));
             when(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).thenReturn(totalElements);

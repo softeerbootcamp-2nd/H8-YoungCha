@@ -9,14 +9,16 @@ import java.util.List;
 @Getter
 public class FindTrimDefaultOptionsResponse {
 
+    private final Long trimId;
     private final boolean first;
     private final boolean last;
     private final int totalElements;
     private final int totalPages;
-    final List<DefaultOptionSummary> contents;
+    private final List<DefaultOptionSummary> contents;
 
     @Builder
-    public FindTrimDefaultOptionsResponse(boolean first, boolean last, int totalElements, int totalPages, List<DefaultOptionSummary> contents) {
+    public FindTrimDefaultOptionsResponse(Long trimId, boolean first, boolean last, int totalElements, int totalPages, List<DefaultOptionSummary> contents) {
+        this.trimId = trimId;
         this.first = first;
         this.last = last;
         this.totalElements = totalElements;

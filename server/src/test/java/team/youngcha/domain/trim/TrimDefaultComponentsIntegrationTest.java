@@ -39,7 +39,8 @@ class TrimDefaultComponentsIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    int categoryId = 1;
+    Long trimId = 2L;
+    Long categoryId = 1L;
     int pageSize = 3;
     int totalElements = 7;
     int totalPages = 3;
@@ -64,9 +65,10 @@ class TrimDefaultComponentsIntegrationTest extends IntegrationTestBase {
                 .param("categoryId", categoryId)
                 .param("size", pageSize)
                 .param("page", targetPage)
+                .pathParam("id", trimId)
 
                 .when()
-                .get("/trims/2/default-components")
+                .get("/trims/{id}/default-components")
 
                 .then().log().all()
                 .extract();
@@ -79,6 +81,7 @@ class TrimDefaultComponentsIntegrationTest extends IntegrationTestBase {
 
         FindTrimDefaultOptionsResponse responseBodyData = successResponse.getData();
 
+        softAssertions.assertThat(responseBodyData.getTrimId()).isEqualTo(trimId);
         softAssertions.assertThat(responseBodyData.isFirst()).isTrue();
         softAssertions.assertThat(responseBodyData.isLast()).isFalse();
         softAssertions.assertThat(responseBodyData.getTotalElements()).isEqualTo(totalElements);
@@ -101,9 +104,10 @@ class TrimDefaultComponentsIntegrationTest extends IntegrationTestBase {
                 .param("categoryId", categoryId)
                 .param("size", pageSize)
                 .param("page", targetPage)
+                .pathParam("id", trimId)
 
                 .when()
-                .get("/trims/2/default-components")
+                .get("/trims/{id}/default-components")
 
                 .then().log().all()
                 .extract();
@@ -117,6 +121,7 @@ class TrimDefaultComponentsIntegrationTest extends IntegrationTestBase {
 
         FindTrimDefaultOptionsResponse responseBodyData = successResponse.getData();
 
+        softAssertions.assertThat(responseBodyData.getTrimId()).isEqualTo(trimId);
         softAssertions.assertThat(responseBodyData.isFirst()).isFalse();
         softAssertions.assertThat(responseBodyData.isLast()).isFalse();
         softAssertions.assertThat(responseBodyData.getTotalElements()).isEqualTo(totalElements);
@@ -138,9 +143,10 @@ class TrimDefaultComponentsIntegrationTest extends IntegrationTestBase {
                 .param("categoryId", categoryId)
                 .param("size", pageSize)
                 .param("page", targetPage)
+                .pathParam("id", trimId)
 
                 .when()
-                .get("/trims/2/default-components")
+                .get("/trims/{id}/default-components")
 
                 .then().log().all()
                 .extract();
@@ -154,6 +160,7 @@ class TrimDefaultComponentsIntegrationTest extends IntegrationTestBase {
 
         FindTrimDefaultOptionsResponse responseBodyData = successResponse.getData();
 
+        softAssertions.assertThat(responseBodyData.getTrimId()).isEqualTo(trimId);
         softAssertions.assertThat(responseBodyData.isFirst()).isFalse();
         softAssertions.assertThat(responseBodyData.isLast()).isTrue();
         softAssertions.assertThat(responseBodyData.getTotalElements()).isEqualTo(totalElements);
