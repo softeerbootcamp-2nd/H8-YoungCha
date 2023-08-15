@@ -8,6 +8,7 @@ import MainOutsideColor from './main-outside-color';
 import CheckInactive from './select-check-inactive';
 import CheckActive from './select-check';
 import Spanner from './Spanner';
+import MoreViewArrow from './more-view-arrow';
 
 export {
   HyundaiLogo,
@@ -20,4 +21,5 @@ export {
   CheckInactive,
   CheckActive,
   Spanner,
+  MoreViewArrow,
 };
