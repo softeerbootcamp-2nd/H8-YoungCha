@@ -5,6 +5,61 @@ import DetailOption from './DetailOption';
 import { CAR_COLOR, COMPLETE_OPTION_PAGE_TITLE } from '../constant';
 import { ColorType } from '../type';
 
+// interface OptionDataType {
+//   name: string;
+//   imgUrl: string;
+//   price: number;
+// }
+
+// type KeyType =
+//   | 'trim'
+//   | 'power-train'
+//   | 'driving-system'
+//   | 'body-type'
+//   | 'exterior-color'
+//   | 'interior-color'
+//   | 'wheel'
+//   | 'selected-options';
+
+// type UserSelectedOptionDataType = {
+//   [key in Exclude<KeyType, 'selected-options'>]: OptionDataType;
+// } & {
+//   'selected-options': OptionDataType[];
+// };
+
+// const userSelectedOptionData: UserSelectedOptionDataType = {
+//   'trim': { name: 'Le Blanc', imgUrl: '', price: 1000000 },
+//   'power-train': { name: '디젤 2.2', imgUrl: '', price: 1000000 },
+//   'driving-system': { name: '2WD', imgUrl: '', price: 1000000 },
+//   'body-type': { name: '7인승', imgUrl: '', price: 1000000 },
+//   'exterior-color': { name: '크리미 화이트 펄', imgUrl: '', price: 1000000 },
+//   'interior-color': { name: '퀼팅천연 (블랙)', imgUrl: '', price: 1000000 },
+//   'wheel': { name: '20인치', imgUrl: '', price: 1000000 },
+//   'selected-options': [
+//     { name: '컴포트 2', imgUrl: '', price: 1000000 },
+//     { name: '현대 스마트 센스 1', imgUrl: '', price: 1000000 },
+//     { name: '주차 보조 시스템 2', imgUrl: '', price: 1000000 },
+//   ],
+// };
+// const estimationList = [
+//   {
+//     title: `팰리세이드 ${userSelectedOptionData['trim'].name}`,
+//     list: ['power-train', 'driving-system', 'body-type'],
+//   },
+//   {
+//     title: `색상`,
+//     list: ['exterior-color', 'interior-color'],
+//   },
+//   {
+//     title: `휠`,
+//     list: ['wheel'],
+//   },
+//   {
+//     title: `옵션`,
+//     list: ['selected-options'],
+//   },
+// ];
+
 function CompleteOptionPage() {
   const [selectedColorType, setSelectedColorType] =
     useState<ColorType>('exterior');
@@ -13,27 +68,29 @@ function CompleteOptionPage() {
 
   return (
     <div className="flex flex-col items-center w-full m-auto mt-60px gap-60px max-w-7xl px-128px pb-70px">
-      <h1 className="whitespace-pre-line text-34px font-medium leading-[47.6px] tracking-[-1.36px] font-hsans-head text-grey-black text-center">
-        {COMPLETE_OPTION_PAGE_TITLE}
-      </h1>
-      <img
-        src="/src/assets/mock/images/palisade.png"
-        alt="palisade"
-        width={600}
-        height={320}
-      />
-      <div className="flex">
-        {CAR_COLOR.map(({ text, type }) => (
-          <button
-            className={`${
-              selectedColorType === type ? activeColor : inactiveColor
-            } py-8px px-32px title4`}
-            key={type}
-            onClick={() => setSelectedColorType(type)}
-          >
-            {text}
-          </button>
-        ))}
+      <div className="flex flex-col items-center w-full">
+        <h1 className="whitespace-pre-line text-34px font-medium leading-[47.6px] tracking-[-1.36px] font-hsans-head text-grey-black text-center">
+          {COMPLETE_OPTION_PAGE_TITLE}
+        </h1>
+        <img
+          src="/src/assets/mock/images/palisade.png"
+          alt="palisade"
+          width={400}
+          height={200}
+        />
+        <div className="flex">
+          {CAR_COLOR.map(({ text, type }) => (
+            <button
+              className={`${
+                selectedColorType === type ? activeColor : inactiveColor
+              } py-8px px-32px title4`}
+              key={type}
+              onClick={() => setSelectedColorType(type)}
+            >
+              {text}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="w-full">
