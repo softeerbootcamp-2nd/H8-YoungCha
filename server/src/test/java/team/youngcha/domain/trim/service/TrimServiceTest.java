@@ -104,14 +104,16 @@ class TrimServiceTest {
     @DisplayName("트림 기본 품목 조회")
     class FindDefaultOptions {
 
+        Long trimId = 2L;
+        Long categoryId = 1L;
         int pageSize = 10;
         int totalElements = 60;
         int totalPages = 6;
 
         ArrayList<DefaultOptionSummary> defaultOptionSummaries = new ArrayList<>(Arrays.asList(
-                new DefaultOptionSummary("옵션1", 1L, "이미지주소1"),
-                new DefaultOptionSummary("옵션2", 1L, "이미지주소2"),
-                new DefaultOptionSummary("옵션3", 1L, "이미지주소3")));
+                new DefaultOptionSummary("옵션1", trimId, "이미지주소1"),
+                new DefaultOptionSummary("옵션2", trimId, "이미지주소2"),
+                new DefaultOptionSummary("옵션3", trimId, "이미지주소3")));
 
         @Test
         @DisplayName("트림 기본 품목 조회 시, 페이지의 크기가 1 미만이면 BAD REQUEST 예외가 발생한다")
@@ -122,10 +124,10 @@ class TrimServiceTest {
 
             //when
             CustomException customExceptionZero = assertThrows(CustomException.class, () ->
-                    trimService.findPaginatedDefaultOptions(2L, 1L, 1, pageSizeZero));
+                    trimService.findPaginatedDefaultOptions(trimId, categoryId, 1, pageSizeZero));
 
             CustomException customExceptionNegative = assertThrows(CustomException.class, () ->
-                    trimService.findPaginatedDefaultOptions(2L, 1L, 1, pageSizeNegative));
+                    trimService.findPaginatedDefaultOptions(trimId, categoryId, 1, pageSizeNegative));
 
             //then
             softAssertions.assertThat(customExceptionZero.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -143,10 +145,10 @@ class TrimServiceTest {
 
             //when
             CustomException customExceptionZero = assertThrows(CustomException.class, () ->
-                    trimService.findPaginatedDefaultOptions(2L, 1L, pageNumberZero, 5));
+                    trimService.findPaginatedDefaultOptions(trimId, categoryId, pageNumberZero, 5));
 
             CustomException customExceptionNegative = assertThrows(CustomException.class, () ->
-                    trimService.findPaginatedDefaultOptions(2L, 1L, pageNumberNegative, 5));
+                    trimService.findPaginatedDefaultOptions(trimId, categoryId, pageNumberNegative, 5));
 
             //then
             softAssertions.assertThat(customExceptionZero.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -164,7 +166,7 @@ class TrimServiceTest {
 
             //when
             CustomException customException = assertThrows(CustomException.class, () ->
-                    trimService.findPaginatedDefaultOptions(notFoundTrimId, 1L, 1, 5));
+                    trimService.findPaginatedDefaultOptions(notFoundTrimId, categoryId, 1, 5));
 
             //then
             softAssertions.assertThat(customException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -180,7 +182,7 @@ class TrimServiceTest {
 
             //when
             CustomException customException = assertThrows(CustomException.class, () ->
-                    trimService.findPaginatedDefaultOptions(1L, 1L, 1, 5));
+                    trimService.findPaginatedDefaultOptions(trimId, categoryId, 1, 5));
 
             //then
             softAssertions.assertThat(customException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -196,7 +198,7 @@ class TrimServiceTest {
 
             //when
             CustomException customException = assertThrows(CustomException.class, () ->
-                    trimService.findPaginatedDefaultOptions(1L, 1L, totalPages + 1, pageSize));
+                    trimService.findPaginatedDefaultOptions(trimId, categoryId, totalPages + 1, pageSize));
 
             //then
             softAssertions.assertThat(customException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -214,7 +216,7 @@ class TrimServiceTest {
 
             //when
             CustomException customException = assertThrows(CustomException.class, () ->
-                    trimService.findPaginatedDefaultOptions(1L, 1L, totalPages, pageSize));
+                    trimService.findPaginatedDefaultOptions(trimId, categoryId, totalPages, pageSize));
 
             //then
             softAssertions.assertThat(customException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -228,7 +230,7 @@ class TrimServiceTest {
             int targetPage = 1;
 
             FindTrimDefaultOptionsResponse expectedResponse =
-                    new FindTrimDefaultOptionsResponse(1L, true, false, totalElements, totalPages, defaultOptionSummaries);
+                    new FindTrimDefaultOptionsResponse(trimId, true, false, totalElements, totalPages, defaultOptionSummaries);
 
             when(trimRepository.findById(anyLong())).thenReturn(Optional.of(Mockito.mock(Trim.class)));
             when(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).thenReturn(totalElements);
@@ -236,7 +238,7 @@ class TrimServiceTest {
                     .thenReturn(defaultOptionSummaries);
 
             //when
-            FindTrimDefaultOptionsResponse actualResponse = trimService.findPaginatedDefaultOptions(1L, 1L, targetPage, pageSize);
+            FindTrimDefaultOptionsResponse actualResponse = trimService.findPaginatedDefaultOptions(trimId, categoryId, targetPage, pageSize);
 
             //then
             softAssertions.assertThat(actualResponse)
@@ -252,7 +254,7 @@ class TrimServiceTest {
             int targetPage = totalPages - 1;
 
             FindTrimDefaultOptionsResponse expectedResponse =
-                    new FindTrimDefaultOptionsResponse(1L, false, false, totalElements, totalPages, defaultOptionSummaries);
+                    new FindTrimDefaultOptionsResponse(trimId, false, false, totalElements, totalPages, defaultOptionSummaries);
 
             when(trimRepository.findById(anyLong())).thenReturn(Optional.of(Mockito.mock(Trim.class)));
             when(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).thenReturn(totalElements);
@@ -260,7 +262,7 @@ class TrimServiceTest {
                     .thenReturn(defaultOptionSummaries);
 
             //when
-            FindTrimDefaultOptionsResponse actualResponse = trimService.findPaginatedDefaultOptions(1L, 1L, targetPage, pageSize);
+            FindTrimDefaultOptionsResponse actualResponse = trimService.findPaginatedDefaultOptions(trimId, categoryId, targetPage, pageSize);
 
             //then
             softAssertions.assertThat(actualResponse)
@@ -276,7 +278,7 @@ class TrimServiceTest {
             int targetPage = totalPages;
 
             FindTrimDefaultOptionsResponse expectedResponse =
-                    new FindTrimDefaultOptionsResponse(1L, false, true, totalElements, totalPages, defaultOptionSummaries);
+                    new FindTrimDefaultOptionsResponse(trimId, false, true, totalElements, totalPages, defaultOptionSummaries);
 
             when(trimRepository.findById(anyLong())).thenReturn(Optional.of(Mockito.mock(Trim.class)));
             when(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).thenReturn(totalElements);
@@ -284,7 +286,7 @@ class TrimServiceTest {
                     .thenReturn(defaultOptionSummaries);
 
             //when
-            FindTrimDefaultOptionsResponse actualResponse = trimService.findPaginatedDefaultOptions(1L, 1L, targetPage, pageSize);
+            FindTrimDefaultOptionsResponse actualResponse = trimService.findPaginatedDefaultOptions(trimId, categoryId, targetPage, pageSize);
 
             //then
             softAssertions.assertThat(actualResponse)
