@@ -1,25 +1,27 @@
 import SelectButton from '@/components/SelectButton';
 import { BasicOptions, SelectOptions } from '@/constant';
-import { BasicOptionFilterType } from '@/types';
+import { BasicOptionFilterType, SelectOptionFilterType } from '@/types';
 import { useState } from 'react';
 
+type DetailOptionType =
+  | 'trim'
+  | 'power-train'
+  | 'driving-system'
+  | 'body-type'
+  | 'exteriorColor'
+  | 'internalColor'
+  | 'basic-option'
+  | 'selected-option';
+
 interface DetailOptionProps {
-  type:
-    | 'trim'
-    | 'power-train'
-    | 'driving-system'
-    | 'body-type'
-    | 'exteriorColor'
-    | 'internalColor'
-    | 'basic-option'
-    | 'selected-option';
+  type: DetailOptionType;
 }
 
 function DetailOption({ type }: DetailOptionProps) {
   const [selectedBasicOptionFilter, setSelectedBasicOptionFilter] =
     useState<BasicOptionFilterType>('전체');
   const [selectedSelectOptionFilter, setSelectedSelectOptionFilter] =
-    useState('전체');
+    useState<SelectOptionFilterType>('전체');
 
   return (
     <div className="flex flex-col w-full h-250px gap-14px">

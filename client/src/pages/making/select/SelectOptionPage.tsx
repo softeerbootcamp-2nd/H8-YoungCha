@@ -1,22 +1,15 @@
 import Button from '@/components/Button';
 import { Link, useParams } from 'react-router-dom';
+import { OPTION_ORDER } from '../constant';
 
 interface SelectOptionPageProps {
   path: 'self' | 'guide';
 }
-const TITLE = [
-  '파워트레인',
-  '구동 방식',
-  '바디 타입',
-  '외장 색상',
-  '내장 색상',
-  '휠',
-  '옵션',
-];
 
 function SelectOptionPage({ path }: SelectOptionPageProps) {
   const { step, id } = useParams() as { step: string; id: string };
   const currentStep = Number(step);
+
   return (
     <div
       className={`m-auto max-w-7xl pr-128px flex justify-between items-center w-full flex-1 gap-60px`}
@@ -30,8 +23,10 @@ function SelectOptionPage({ path }: SelectOptionPageProps) {
       <div className="flex flex-col justify-center h-full w-375px gap-30px">
         <div className="flex gap-12px">
           <h1 className="font-hsans-head text-24px tracking-[-0.96px]">
-            <strong className="font-medium">{TITLE[currentStep - 1]}</strong>을
-            선택해주세요.
+            <strong className="font-medium">
+              {OPTION_ORDER[currentStep - 1]}
+            </strong>
+            을 선택해주세요.
           </h1>
         </div>
         <div>

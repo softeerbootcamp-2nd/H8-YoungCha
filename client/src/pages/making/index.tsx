@@ -2,14 +2,13 @@ import { useParams } from 'react-router-dom';
 import CompleteOptionPage from './complete/CompleteOptionPage';
 import SelectOptionPage from './select/SelectOptionPage';
 import ProgressBar from '@/components/ProgressBar';
+import { LAST_STEP } from './constant';
 
-interface MakingProps {
+interface MakingPageProps {
   path: 'self' | 'guide';
 }
 
-const LAST_STEP = 8;
-
-function Making({ path }: MakingProps) {
+function MakingPage({ path }: MakingPageProps) {
   const { step, id } = useParams() as { step: string; id: string };
   const currentStep = Number(step);
 
@@ -25,4 +24,4 @@ function Making({ path }: MakingProps) {
   );
 }
 
-export default Making;
+export default MakingPage;

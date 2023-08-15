@@ -1,13 +1,13 @@
 import Button from '@/components/Button';
 import SummaryOptionsBox from './SummaryOptionsBox';
 import DetailOption from './DetailOption';
+import { COMPLETE_OPTION_PAGE_TITLE } from '../constant';
 
-const TITLE = '나를 위한 팰리세이드가\n완성되었어요!';
 function CompleteOptionPage() {
   return (
-    <div className="flex flex-col items-center w-full m-auto mt-60px gap-60px max-w-7xl px-128px">
+    <div className="flex flex-col items-center w-full m-auto mt-60px gap-60px max-w-7xl px-128px pb-70px">
       <h1 className="whitespace-pre-line text-34px font-medium leading-[47.6px] tracking-[-1.36px] font-hsans-head text-grey-black text-center">
-        {TITLE}
+        {COMPLETE_OPTION_PAGE_TITLE}
       </h1>
       <img
         src="/src/assets/mock/images/palisade.png"
