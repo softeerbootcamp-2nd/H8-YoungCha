@@ -1,36 +1,15 @@
+import { useState } from 'react';
 import { BasicOptionType } from '@/assets/mock/mock';
 import OptionLayout from './OptionLayout';
 import SelectButton from '@/components/SelectButton';
-import { useState } from 'react';
 import Button from '@/components/Button';
 import { MoreViewArrow } from '@/assets/icons';
+import { BasicOptionFilterType } from '@/types';
+import { BasicOptions } from '@/constant';
 
 interface BasicOptionBoxProps {
   basicOptionLists: BasicOptionType[];
 }
-
-type BasicOptionFilterType =
-  | '전체'
-  | '성능'
-  | '지능형 안전기술'
-  | '안전'
-  | '외관'
-  | '내장'
-  | '시트'
-  | '편의'
-  | '멀티미디어';
-
-const BasicOptions: Array<BasicOptionFilterType> = [
-  '전체',
-  '성능',
-  '지능형 안전기술',
-  '안전',
-  '외관',
-  '내장',
-  '시트',
-  '편의',
-  '멀티미디어',
-];
 
 const TITLE = '기본 포함 품목';
 
