@@ -7,9 +7,11 @@ import java.util.Arrays;
 @Getter
 public enum AgeRange {
 
-    AGE_20(2), AGE_30(3), AGE_40(4), AGE_50(5), AGE_60(6), AGE_70_OR_MORE(7);
+    AGE_20(2), AGE_30(3),
+    AGE_40(4), AGE_50(5),
+    AGE_60(6), AGE_70_OR_MORE(7);
 
-    private int range;
+    private final int range;
 
     AgeRange(int range) {
         this.range = range;
@@ -17,7 +19,7 @@ public enum AgeRange {
 
     public static AgeRange of(int range) {
         return Arrays.stream(AgeRange.values())
-                .filter(gender -> gender.getRange() == range)
+                .filter(ageRange -> ageRange.getRange() == range)
                 .findAny().orElseThrow(() -> new IllegalArgumentException("일치하는 age가 없습니다."));
     }
 }

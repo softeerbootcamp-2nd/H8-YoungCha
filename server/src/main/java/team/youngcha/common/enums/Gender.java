@@ -8,7 +8,7 @@ import java.util.Arrays;
 public enum Gender {
     MALE(0), FEMALE(1), NONE(2);
 
-    private int type;
+    private final int type;
 
     Gender(int type) {
         this.type = type;
