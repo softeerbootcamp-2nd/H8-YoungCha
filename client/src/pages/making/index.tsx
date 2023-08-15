@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import CompleteOptionPage from './complete/CompleteOptionPage';
-import SelectOptionPage from './SelectOptionPage';
+import SelectOptionPage from './select/SelectOptionPage';
 import ProgressBar from '@/components/ProgressBar';
 
 interface MakingProps {
