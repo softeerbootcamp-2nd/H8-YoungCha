@@ -7,7 +7,7 @@ spring:
   sql:
     init:
       mode: always
-
+  origin: http://localhost:8080
 logging:
   level:
     org:

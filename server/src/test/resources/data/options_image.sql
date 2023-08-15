@@ -1,121 +1,122 @@
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (1, 'https://www.hyundai.com/contents/spec/LX24/dieselengine2.2.jpg', 0, 1);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (2, 'https://www.hyundai.com/contents/spec/LX24/gasoline3.8.jpg', 0, 2);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (3, 'https://www.hyundai.com/contents/spec/guide/lx_2wd_s.jpg', 0, 3);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (4, 'https://www.hyundai.com/contents/spec/guide/lx_htrac_s.jpg', 0, 4);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (5, 'https://www.hyundai.com/contents/spec/guide/lx_htrac_s.jpg', 0, 5);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (6, 'https://www.hyundai.com/contents/spec/guide/lx_8seats_s.jpg', 0, 6);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (7, 'https://www.hyundai.com/contents/vr360/LX06/interior/I49/img-interior.png', 0, 13);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (8, 'https://www.hyundai.com/contents/vr360/LX06/interior/I49/colorchip-interior.png', 1, 13);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (9, 'https://www.hyundai.com/contents/vr360/LX06/interior/YJY/img-interior.png', 0, 14);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (10, 'https://www.hyundai.com/contents/vr360/LX06/interior/YJY/colorchip-interior.png', 1, 14);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (11, 'https://www.hyundai.com/contents/spec/LX24/20alloywheel.jpg', 0, 15);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (12, 'https://www.hyundai.com/static/images/logo-npp.png', 2, 15);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (13, 'https://www.hyundai.com/contents/spec/LX24/20_darkwheel.jpg', 0, 16);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (14, 'https://www.hyundai.com/static/images/logo-npp.png', 2, 16);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (15, 'https://www.hyundai.com/contents/spec/LX24/20inchwheel.jpg', 0, 17);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (16, 'https://www.hyundai.com/static/images/logo-npp.png', 2, 17);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (17, 'https://www.hyundai.com/contents/spec/LX24/20inchwheel.jpg', 0, 18);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (18, 'https://www.hyundai.com/static/images/logo-npp.png', 2, 18);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (19, 'https://www.hyundai.com/contents/spec/LX24/fca2.jpg', 0, 19);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (20, 'https://www.hyundai.com/contents/spec/LX24/pca.jpg', 0, 20);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (21, 'https://www.hyundai.com/contents/spec/LX24/roa.jpg', 0, 21);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (22, 'https://www.hyundai.com/contents/spec/LX24/2_cooling.jpg', 0, 22);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (23, 'https://www.hyundai.com/contents/spec/LX24/kneewarmer.jpg', 0, 23);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (24, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 23);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (25, 'https://www.hyundai.com/contents/spec/LX24/carprotector.jpg', 0, 24);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (26, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 24);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (27, 'https://www.hyundai.com/contents/spec/LX24/sidestep.jpg', 0, 25);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (28, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 25);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (29, 'https://www.hyundai.com/contents/spec/LX24/dualmufflerpackage.jpg', 0, 26);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (30, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 26);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (31, 'https://www.hyundai.com/contents/spec/LX24/dualwidesunroof.jpg', 0, 27);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (32, 'https://www.hyundai.com/contents/spec/LX24/luggageprotectmat.jpg', 0, 28);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (33, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 28);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (34, 'https://www.hyundai.com/contents/spec/LX24/builtinaircleaner.jpg', 0, 29);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (35, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 29);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (36, 'https://www.hyundai.com/contents/spec/LX24/builtincam.jpg', 0, 30);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (37, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 30);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (38, 'https://www.hyundai.com/contents/spec/LX24/8at_s.jpg', 1, 31);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (39, 'https://www.hyundai.com/contents/spec/LX24/isg_s.jpg', 1, 32);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (40, 'https://www.hyundai.com/contents/spec/LX24/drivemode_s.jpg', 1, 33);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (41, 'https://www.hyundai.com/contents/spec/LX24/rmdps_s.jpg', 1, 34);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (42, 'https://www.hyundai.com/contents/spec/LX24/sbw_s.jpg', 1, 35);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (43, 'https://www.hyundai.com/contents/spec/LX24/hba_s.jpg', 1, 36);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (44, 'https://www.hyundai.com/contents/spec/LX24/vibsteeringwheel_s.jpg', 1, 37);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (45, 'https://www.hyundai.com/contents/spec/LX24/scc_s.jpg', 1, 38);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (46, 'https://www.hyundai.com/contents/spec/LX24/ncss_s.jpg', 1, 39);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (47, 'https://www.hyundai.com/contents/spec/LX24/hda_s.jpg', 1, 40);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (48, 'https://www.hyundai.com/contents/spec/LX24/lfa_s.jpg', 1, 41);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (49, 'https://www.hyundai.com/contents/spec/LX24/fca_s.jpg', 1, 42);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (50, 'https://www.hyundai.com/contents/spec/LX24/lka_s.jpg', 1, 43);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (51, 'https://www.hyundai.com/contents/spec/LX24/daw_s.jpg', 1, 44);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (52, 'https://www.hyundai.com/contents/spec/LX24/bcw_s.jpg', 1, 45);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (53, 'https://www.hyundai.com/contents/spec/LX24/bca_s.jpg', 1, 46);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (54, 'https://www.hyundai.com/contents/spec/LX24/sea_s.jpg', 1, 47);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (55, 'https://www.hyundai.com/contents/spec/LX24/rcca_s.jpg', 1, 48);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (56, 'https://www.hyundai.com/contents/spec/LX24/10airbag_s.jpg', 1, 49);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (57, 'https://www.hyundai.com/contents/spec/LX24/isofix_s.jpg', 1, 50);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (58, 'https://www.hyundai.com/contents/spec/LX24/atcc_s.jpg', 1, 51);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (59, 'https://www.hyundai.com/contents/spec/LX24/mcbs_s.jpg', 1, 52);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (60, 'https://www.hyundai.com/contents/spec/LX24/darkchromegrill_s.jpg', 1, 53);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (61, 'https://www.hyundai.com/contents/spec/LX24/leddrl_s.jpg', 1, 54);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (62, 'https://www.hyundai.com/contents/spec/LX24/ledpositioninglamp_s.jpg', 1, 55);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (63, 'https://www.hyundai.com/contents/spec/LX24/ledsignallight_s.jpg', 1, 56);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (64, 'https://www.hyundai.com/contents/spec/LX24/fullheadlamp_s.jpg', 1, 57);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (65, 'https://www.hyundai.com/contents/spec/LX24/outsidemirror_s.jpg', 1, 58);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (66, 'https://www.hyundai.com/contents/spec/LX24/laminatedwindow_s.jpg', 1, 59);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (67, 'https://www.hyundai.com/contents/spec/LX24/doorpocketlighting_s.jpg', 1, 60);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (68, 'https://www.hyundai.com/contents/spec/LX24/singlemuffler_s.jpg', 1, 61);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (69, 'https://www.hyundai.com/contents/spec/LX24/ledrearcombilamp_s.jpg', 1, 62);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (70, 'https://www.hyundai.com/contents/spec/LX24/ledstoplamp_s.jpg', 1, 63);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (71, 'https://www.hyundai.com/contents/spec/LX24/rearguidelamp_s.jpg', 1, 64);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (72, 'https://www.hyundai.com/contents/spec/LX24/rearspoiler_s.jpg', 1, 65);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (73, 'https://www.hyundai.com/contents/spec/LX24/dlomolding_s.jpg', 1, 66);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (74, 'https://www.hyundai.com/contents/spec/LX24/roofrack_s.jpg', 1, 67);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (75, 'https://www.hyundai.com/contents/spec/LX24/metalpaintplate_s.jpg', 1, 68);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (76, 'https://www.hyundai.com/contents/spec/LX24/frontdoorwindow_s.jpg', 1, 70);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (77, 'https://www.hyundai.com/contents/spec/LX24/insidemirror_s.jpg', 1, 71);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (78, 'https://www.hyundai.com/contents/spec/LX24/ledlamp_s.jpg', 1, 72);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (79, 'https://www.hyundai.com/contents/spec/LX24/leathersteeringwheel_s.jpg', 1, 73);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (80, 'https://www.hyundai.com/contents/spec/LX24/12.3cluster_s.jpg', 1, 74);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (81, 'https://www.hyundai.com/contents/spec/LX24/leatherwrapping_s.jpg', 1, 75);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (82, 'https://www.hyundai.com/contents/spec/LX24/doorarmrest_s.jpg', 1, 76);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (83, 'https://www.hyundai.com/contents/spec/LX24/frontheated_s.jpg', 1, 77);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (84, 'https://www.hyundai.com/contents/spec/LX24/2_heated_s.jpg', 1, 78);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (85, 'https://www.hyundai.com/contents/spec/LX24/fold_dive_s.jpg', 1, 79);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (86, 'https://www.hyundai.com/contents/spec/LX24/64folding_s.jpg', 1, 80);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (87, 'https://www.hyundai.com/contents/spec/LX24/realleather_s.jpg', 1, 81);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (88, 'https://www.hyundai.com/contents/spec/LX24/10_driverseat_s.jpg', 1, 82);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (89, 'https://www.hyundai.com/contents/spec/LX24/10_passengerseat_s.jpg', 1, 83);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (90, 'https://www.hyundai.com/contents/spec/LX24/smartkey_s.jpg', 1, 84);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (91, 'https://www.hyundai.com/contents/spec/LX24/epb_s.jpg', 1, 85);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (92, 'https://www.hyundai.com/contents/spec/LX24/paddleshift_s.jpg', 1, 86);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (93, 'https://www.hyundai.com/contents/spec/LX24/3_fullautoair_s.jpg', 1, 87);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (94, 'https://www.hyundai.com/contents/spec/LX24/airsensor_s.jpg', 1, 88);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (95, 'https://www.hyundai.com/contents/spec/LX24/airfilter_s.jpg', 1, 89);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (96, 'https://www.hyundai.com/contents/spec/LX24/uvprotectglass_s.jpg', 1, 90);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (97, 'https://www.hyundai.com/contents/spec/LX24/autodefog_s.jpg', 1, 91);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (98, 'https://www.hyundai.com/contents/spec/LX24/rainsensor_s.jpg', 1, 92);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (99, 'https://www.hyundai.com/contents/spec/LX24/driver_hvac_s.jpg', 1, 93);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (100, 'https://www.hyundai.com/contents/spec/LX24/usbcharger_s.jpg', 1, 94);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (101, 'https://www.hyundai.com/contents/spec/LX24/poweroutlet_s.jpg', 1, 95);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (102, 'https://www.hyundai.com/contents/spec/LX24/safetypowerwindow_s.jpg', 1, 96);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (103, 'https://www.hyundai.com/contents/spec/LX24/rearmonitor_s.jpg', 1, 97);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (104, 'https://www.hyundai.com/contents/spec/LX24/roofairvent_s.jpg', 1, 98);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (105, 'https://www.hyundai.com/contents/spec/LX24/autolightcontrol_s.jpg', 1, 99);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (106, 'https://www.hyundai.com/contents/spec/LX24/smartkeyremote_s.jpg', 1, 100);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (107, 'https://www.hyundai.com/contents/spec/LX24/pdw_s.jpg', 1, 101);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (108, 'https://www.hyundai.com/contents/spec/LX24/autosteering_s.jpg', 1, 102);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (109, 'https://www.hyundai.com/contents/spec/LX24/wirelesscharging_s.jpg', 1, 103);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (110, 'https://www.hyundai.com/contents/spec/LX24/powertailgate_s.jpg', 1, 104);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (111, 'https://www.hyundai.com/contents/spec/LX24/svm_s.jpg', 1, 105);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (112, 'https://www.hyundai.com/contents/spec/LX24/bvm_s.jpg', 1, 106);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (113, 'https://www.hyundai.com/contents/spec/LX24/12.3navi_s.jpg', 1, 107);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (114, 'https://www.hyundai.com/contents/spec/LX24/hipass_s.jpg', 1, 108);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (115, 'https://www.hyundai.com/contents/spec/LX24/reartalking_s.jpg', 1, 109);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (116, 'https://www.hyundai.com/contents/spec/LX24/rearsleep_s.jpg', 1, 110);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (117, 'https://www.hyundai.com/contents/spec/LX24/audiosystem_s.jpg', 1, 111);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (118, 'https://www.hyundai.com/contents/spec/LX24/multiusb_s.jpg', 1, 112);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (119, 'https://www.hyundai.com/contents/spec/LX24/htrac_s.jpg', 1, 113);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (120, 'https://www.hyundai.com/contents/spec/LX24/tractionmode_s.jpg', 1, 114);
-INSERT INTO options_image (id, img_url, img_type, options_id) VALUES (121, 'https://www.hyundai.com/contents/spec/LX24/dbc_s.jpg', 1, 115);
+INSERT INTO options_image (id, img_url, img_type, options_id)
+VALUES (1, 'https://www.hyundai.com/contents/spec/LX24/dieselengine2.2.jpg', 0, 1),
+       (2, 'https://www.hyundai.com/contents/spec/LX24/gasoline3.8.jpg', 0, 2),
+       (3, 'https://www.hyundai.com/contents/spec/guide/lx_2wd_s.jpg', 0, 3),
+       (4, 'https://www.hyundai.com/contents/spec/guide/lx_htrac_s.jpg', 0, 4),
+       (5, 'https://www.hyundai.com/contents/spec/guide/lx_htrac_s.jpg', 0, 5),
+       (6, 'https://www.hyundai.com/contents/spec/guide/lx_8seats_s.jpg', 0, 6),
+       (7, 'https://www.hyundai.com/contents/vr360/LX06/interior/I49/img-interior.png', 0, 13),
+       (8, 'https://www.hyundai.com/contents/vr360/LX06/interior/I49/colorchip-interior.png', 1, 13),
+       (9, 'https://www.hyundai.com/contents/vr360/LX06/interior/YJY/img-interior.png', 0, 14),
+       (10, 'https://www.hyundai.com/contents/vr360/LX06/interior/YJY/colorchip-interior.png', 1, 14),
+       (11, 'https://www.hyundai.com/contents/spec/LX24/20alloywheel.jpg', 0, 15),
+       (12, 'https://www.hyundai.com/static/images/logo-npp.png', 2, 15),
+       (13, 'https://www.hyundai.com/contents/spec/LX24/20_darkwheel.jpg', 0, 16),
+       (14, 'https://www.hyundai.com/static/images/logo-npp.png', 2, 16),
+       (15, 'https://www.hyundai.com/contents/spec/LX24/20inchwheel.jpg', 0, 17),
+       (16, 'https://www.hyundai.com/static/images/logo-npp.png', 2, 17),
+       (17, 'https://www.hyundai.com/contents/spec/LX24/20inchwheel.jpg', 0, 18),
+       (18, 'https://www.hyundai.com/static/images/logo-npp.png', 2, 18),
+       (19, 'https://www.hyundai.com/contents/spec/LX24/fca2.jpg', 0, 19),
+       (20, 'https://www.hyundai.com/contents/spec/LX24/pca.jpg', 0, 20),
+       (21, 'https://www.hyundai.com/contents/spec/LX24/roa.jpg', 0, 21),
+       (22, 'https://www.hyundai.com/contents/spec/LX24/2_cooling.jpg', 0, 22),
+       (23, 'https://www.hyundai.com/contents/spec/LX24/kneewarmer.jpg', 0, 23),
+       (24, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 23),
+       (25, 'https://www.hyundai.com/contents/spec/LX24/carprotector.jpg', 0, 24),
+       (26, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 24),
+       (27, 'https://www.hyundai.com/contents/spec/LX24/sidestep.jpg', 0, 25),
+       (28, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 25),
+       (29, 'https://www.hyundai.com/contents/spec/LX24/dualmufflerpackage.jpg', 0, 26),
+       (30, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 26),
+       (31, 'https://www.hyundai.com/contents/spec/LX24/dualwidesunroof.jpg', 0, 27),
+       (32, 'https://www.hyundai.com/contents/spec/LX24/luggageprotectmat.jpg', 0, 28),
+       (33, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 28),
+       (34, 'https://www.hyundai.com/contents/spec/LX24/builtinaircleaner.jpg', 0, 29),
+       (35, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 29),
+       (36, 'https://www.hyundai.com/contents/spec/LX24/builtincam.jpg', 0, 30),
+       (37, 'https://www.hyundai.com/static/images/logo-hga.png', 2, 30),
+       (38, 'https://www.hyundai.com/contents/spec/LX24/8at_s.jpg', 1, 31),
+       (39, 'https://www.hyundai.com/contents/spec/LX24/isg_s.jpg', 1, 32),
+       (40, 'https://www.hyundai.com/contents/spec/LX24/drivemode_s.jpg', 1, 33),
+       (41, 'https://www.hyundai.com/contents/spec/LX24/rmdps_s.jpg', 1, 34),
+       (42, 'https://www.hyundai.com/contents/spec/LX24/sbw_s.jpg', 1, 35),
+       (43, 'https://www.hyundai.com/contents/spec/LX24/hba_s.jpg', 1, 36),
+       (44, 'https://www.hyundai.com/contents/spec/LX24/vibsteeringwheel_s.jpg', 1, 37),
+       (45, 'https://www.hyundai.com/contents/spec/LX24/scc_s.jpg', 1, 38),
+       (46, 'https://www.hyundai.com/contents/spec/LX24/ncss_s.jpg', 1, 39),
+       (47, 'https://www.hyundai.com/contents/spec/LX24/hda_s.jpg', 1, 40),
+       (48, 'https://www.hyundai.com/contents/spec/LX24/lfa_s.jpg', 1, 41),
+       (49, 'https://www.hyundai.com/contents/spec/LX24/fca_s.jpg', 1, 42),
+       (50, 'https://www.hyundai.com/contents/spec/LX24/lka_s.jpg', 1, 43),
+       (51, 'https://www.hyundai.com/contents/spec/LX24/daw_s.jpg', 1, 44),
+       (52, 'https://www.hyundai.com/contents/spec/LX24/bcw_s.jpg', 1, 45),
+       (53, 'https://www.hyundai.com/contents/spec/LX24/bca_s.jpg', 1, 46),
+       (54, 'https://www.hyundai.com/contents/spec/LX24/sea_s.jpg', 1, 47),
+       (55, 'https://www.hyundai.com/contents/spec/LX24/rcca_s.jpg', 1, 48),
+       (56, 'https://www.hyundai.com/contents/spec/LX24/10airbag_s.jpg', 1, 49),
+       (57, 'https://www.hyundai.com/contents/spec/LX24/isofix_s.jpg', 1, 50),
+       (58, 'https://www.hyundai.com/contents/spec/LX24/atcc_s.jpg', 1, 51),
+       (59, 'https://www.hyundai.com/contents/spec/LX24/mcbs_s.jpg', 1, 52),
+       (60, 'https://www.hyundai.com/contents/spec/LX24/darkchromegrill_s.jpg', 1, 53),
+       (61, 'https://www.hyundai.com/contents/spec/LX24/leddrl_s.jpg', 1, 54),
+       (62, 'https://www.hyundai.com/contents/spec/LX24/ledpositioninglamp_s.jpg', 1, 55),
+       (63, 'https://www.hyundai.com/contents/spec/LX24/ledsignallight_s.jpg', 1, 56),
+       (64, 'https://www.hyundai.com/contents/spec/LX24/fullheadlamp_s.jpg', 1, 57),
+       (65, 'https://www.hyundai.com/contents/spec/LX24/outsidemirror_s.jpg', 1, 58),
+       (66, 'https://www.hyundai.com/contents/spec/LX24/laminatedwindow_s.jpg', 1, 59),
+       (67, 'https://www.hyundai.com/contents/spec/LX24/doorpocketlighting_s.jpg', 1, 60),
+       (68, 'https://www.hyundai.com/contents/spec/LX24/singlemuffler_s.jpg', 1, 61),
+       (69, 'https://www.hyundai.com/contents/spec/LX24/ledrearcombilamp_s.jpg', 1, 62),
+       (70, 'https://www.hyundai.com/contents/spec/LX24/ledstoplamp_s.jpg', 1, 63),
+       (71, 'https://www.hyundai.com/contents/spec/LX24/rearguidelamp_s.jpg', 1, 64),
+       (72, 'https://www.hyundai.com/contents/spec/LX24/rearspoiler_s.jpg', 1, 65),
+       (73, 'https://www.hyundai.com/contents/spec/LX24/dlomolding_s.jpg', 1, 66),
+       (74, 'https://www.hyundai.com/contents/spec/LX24/roofrack_s.jpg', 1, 67),
+       (75, 'https://www.hyundai.com/contents/spec/LX24/metalpaintplate_s.jpg', 1, 68),
+       (76, 'https://www.hyundai.com/contents/spec/LX24/frontdoorwindow_s.jpg', 1, 70),
+       (77, 'https://www.hyundai.com/contents/spec/LX24/insidemirror_s.jpg', 1, 71),
+       (78, 'https://www.hyundai.com/contents/spec/LX24/ledlamp_s.jpg', 1, 72),
+       (79, 'https://www.hyundai.com/contents/spec/LX24/leathersteeringwheel_s.jpg', 1, 73),
+       (80, 'https://www.hyundai.com/contents/spec/LX24/12.3cluster_s.jpg', 1, 74),
+       (81, 'https://www.hyundai.com/contents/spec/LX24/leatherwrapping_s.jpg', 1, 75),
+       (82, 'https://www.hyundai.com/contents/spec/LX24/doorarmrest_s.jpg', 1, 76),
+       (83, 'https://www.hyundai.com/contents/spec/LX24/frontheated_s.jpg', 1, 77),
+       (84, 'https://www.hyundai.com/contents/spec/LX24/2_heated_s.jpg', 1, 78),
+       (85, 'https://www.hyundai.com/contents/spec/LX24/fold_dive_s.jpg', 1, 79),
+       (86, 'https://www.hyundai.com/contents/spec/LX24/64folding_s.jpg', 1, 80),
+       (87, 'https://www.hyundai.com/contents/spec/LX24/realleather_s.jpg', 1, 81),
+       (88, 'https://www.hyundai.com/contents/spec/LX24/10_driverseat_s.jpg', 1, 82),
+       (89, 'https://www.hyundai.com/contents/spec/LX24/10_passengerseat_s.jpg', 1, 83),
+       (90, 'https://www.hyundai.com/contents/spec/LX24/smartkey_s.jpg', 1, 84),
+       (91, 'https://www.hyundai.com/contents/spec/LX24/epb_s.jpg', 1, 85),
+       (92, 'https://www.hyundai.com/contents/spec/LX24/paddleshift_s.jpg', 1, 86),
+       (93, 'https://www.hyundai.com/contents/spec/LX24/3_fullautoair_s.jpg', 1, 87),
+       (94, 'https://www.hyundai.com/contents/spec/LX24/airsensor_s.jpg', 1, 88),
+       (95, 'https://www.hyundai.com/contents/spec/LX24/airfilter_s.jpg', 1, 89),
+       (96, 'https://www.hyundai.com/contents/spec/LX24/uvprotectglass_s.jpg', 1, 90),
+       (97, 'https://www.hyundai.com/contents/spec/LX24/autodefog_s.jpg', 1, 91),
+       (98, 'https://www.hyundai.com/contents/spec/LX24/rainsensor_s.jpg', 1, 92),
+       (99, 'https://www.hyundai.com/contents/spec/LX24/driver_hvac_s.jpg', 1, 93),
+       (100, 'https://www.hyundai.com/contents/spec/LX24/usbcharger_s.jpg', 1, 94),
+       (101, 'https://www.hyundai.com/contents/spec/LX24/poweroutlet_s.jpg', 1, 95),
+       (102, 'https://www.hyundai.com/contents/spec/LX24/safetypowerwindow_s.jpg', 1, 96),
+       (103, 'https://www.hyundai.com/contents/spec/LX24/rearmonitor_s.jpg', 1, 97),
+       (104, 'https://www.hyundai.com/contents/spec/LX24/roofairvent_s.jpg', 1, 98),
+       (105, 'https://www.hyundai.com/contents/spec/LX24/autolightcontrol_s.jpg', 1, 99),
+       (106, 'https://www.hyundai.com/contents/spec/LX24/smartkeyremote_s.jpg', 1, 100),
+       (107, 'https://www.hyundai.com/contents/spec/LX24/pdw_s.jpg', 1, 101),
+       (108, 'https://www.hyundai.com/contents/spec/LX24/autosteering_s.jpg', 1, 102),
+       (109, 'https://www.hyundai.com/contents/spec/LX24/wirelesscharging_s.jpg', 1, 103),
+       (110, 'https://www.hyundai.com/contents/spec/LX24/powertailgate_s.jpg', 1, 104),
+       (111, 'https://www.hyundai.com/contents/spec/LX24/svm_s.jpg', 1, 105),
+       (112, 'https://www.hyundai.com/contents/spec/LX24/bvm_s.jpg', 1, 106),
+       (113, 'https://www.hyundai.com/contents/spec/LX24/12.3navi_s.jpg', 1, 107),
+       (114, 'https://www.hyundai.com/contents/spec/LX24/hipass_s.jpg', 1, 108),
+       (115, 'https://www.hyundai.com/contents/spec/LX24/reartalking_s.jpg', 1, 109),
+       (116, 'https://www.hyundai.com/contents/spec/LX24/rearsleep_s.jpg', 1, 110),
+       (117, 'https://www.hyundai.com/contents/spec/LX24/audiosystem_s.jpg', 1, 111),
+       (118, 'https://www.hyundai.com/contents/spec/LX24/multiusb_s.jpg', 1, 112),
+       (119, 'https://www.hyundai.com/contents/spec/LX24/htrac_s.jpg', 1, 113),
+       (120, 'https://www.hyundai.com/contents/spec/LX24/tractionmode_s.jpg', 1, 114),
+       (121, 'https://www.hyundai.com/contents/spec/LX24/dbc_s.jpg', 1, 115);

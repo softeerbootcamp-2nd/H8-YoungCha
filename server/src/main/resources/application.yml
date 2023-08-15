@@ -15,6 +15,7 @@ spring:
     init:
       mode: always
       continue-on-error: true
+  origin: http://localhost:8080
 logging:
   level:
     org:
@@ -42,6 +43,7 @@ spring:
     url: ${MYSQL_URL}
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
+  origin: https://api.youngcha.team
 logging:
   level:
     org:

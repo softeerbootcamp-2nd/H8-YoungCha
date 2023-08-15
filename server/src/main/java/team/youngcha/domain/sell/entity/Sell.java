@@ -1,6 +1,9 @@
 package team.youngcha.domain.sell.entity;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +26,7 @@ public class Sell {
     @Builder
     public Sell(Long id, Long trimId, Long engineId, Long bodyTypeId,
                 Long drivingSystemId, Long exteriorColorId, Long interiorColorId,
-                Long wheelId, int age, int gender, LocalDateTime createDate) {
+                Long wheelId, int age, int gender) {
         this.id = id;
         this.trimId = trimId;
         this.engineId = engineId;
@@ -34,6 +37,6 @@ public class Sell {
         this.wheelId = wheelId;
         this.age = age;
         this.gender = gender;
-        this.createDate = createDate;
+        this.createDate = LocalDateTime.now();
     }
 }
