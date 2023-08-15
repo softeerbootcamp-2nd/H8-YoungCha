@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import team.youngcha.domain.car.dto.CarDetails;
 import team.youngcha.domain.car.entity.Car;
-import team.youngcha.domain.category.enums.CategoryName;
+import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.enums.OptionImageType;
 import team.youngcha.domain.trim.enums.TrimOptionType;
 
@@ -72,8 +72,8 @@ public class CarRepository {
                 OptionImageType.LOGO.getValue(),
                 carId,
                 TrimOptionType.MAIN.getValue(),
-                CategoryName.EXTERIOR_COLOR.getValue(),
-                CategoryName.INTERIOR_COLOR.getValue(),
+                SelectiveCategory.EXTERIOR_COLOR.getName(),
+                SelectiveCategory.INTERIOR_COLOR.getName(),
                 OptionImageType.SUB.getValue());
     }
 
