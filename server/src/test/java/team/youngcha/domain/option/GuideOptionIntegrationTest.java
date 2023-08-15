@@ -1,6 +1,5 @@
 package team.youngcha.domain.option;
 
-import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -64,14 +63,10 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
         params.put("keyword2Id", 2L);
         params.put("keyword3Id", 3L);
 
+        String url = "/car-make/2/guide/power-train";
+
         //when
-        ExtractableResponse<Response> response = RestAssured
-                .given().params(params)
-                .log().all()
-                .when()
-                .get("/car-make/2/guide/power-train")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = callEndpoint(url, params);
 
         //then
         SuccessResponse<List<FindGuideOptionResponse>> successResponse = response.body().as(new TypeRef<>() {

@@ -1,6 +1,5 @@
 package team.youngcha.domain.option;
 
-import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -39,18 +38,12 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
                 "(3, 2, 2, 1, 1, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(4, 2, 2, 1, 1, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')");
 
+        String url = "/car-make/2/self/power-train";
+
         //when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .when()
-                .get("/car-make/2/self/power-train")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = callEndpoint(url, null);
 
         //then
-        SuccessResponse<List<FindSelfOptionResponse>> successResponse = response.body().as(new TypeRef<>() {
-        });
-
         FindOptionImageResponse gasolineImage = FindOptionImageResponse.builder()
                 .imgUrl("https://www.hyundai.com/contents/spec/LX24/gasoline3.8.jpg")
                 .imgType(0).build();
@@ -89,11 +82,7 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
                 .images(List.of(dieselImage))
                 .details(List.of(dieselDetail)).build();
 
-        softAssertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        softAssertions.assertThat(successResponse.getData()).hasSize(2);
-        softAssertions.assertThat(successResponse.getData())
-                .usingRecursiveComparison()
-                .isEqualTo(List.of(optionResponse1, optionResponse2));
+        assertResponseAndExpected(response, List.of(optionResponse1, optionResponse2));
     }
 
     @Test
@@ -106,18 +95,12 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
                 "(3, 2, 1, 1, 3, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(4, 2, 1, 1, 4, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')");
 
+        String url = "/car-make/2/self/driving-system";
+
         //when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .when()
-                .get("/car-make/2/self/driving-system")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = callEndpoint(url, null);
 
         //then
-        SuccessResponse<List<FindSelfOptionResponse>> successResponse = response.body().as(new TypeRef<>() {
-        });
-
         FindOptionImageResponse wd2Image = FindOptionImageResponse.builder()
                 .imgUrl("https://www.hyundai.com/contents/spec/guide/lx_2wd_s.jpg")
                 .imgType(0).build();
@@ -145,11 +128,7 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
                 .images(List.of(wd4Image))
                 .details(List.of(wd4Detail)).build();
 
-        softAssertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        softAssertions.assertThat(successResponse.getData()).hasSize(2);
-        softAssertions.assertThat(successResponse.getData())
-                .usingRecursiveComparison()
-                .isEqualTo(List.of(optionResponse1, optionResponse2));
+        assertResponseAndExpected(response, List.of(optionResponse1, optionResponse2));
     }
 
     @Test
@@ -162,18 +141,12 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
                 "(3, 2, 1, 5, 1, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(4, 2, 1, 5, 1, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')");
 
+        String url = "/car-make/2/self/body-type";
+
         //when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .when()
-                .get("/car-make/2/self/body-type")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = callEndpoint(url, null);
 
         //then
-        SuccessResponse<List<FindSelfOptionResponse>> successResponse = response.body().as(new TypeRef<>() {
-        });
-
         FindOptionImageResponse seat7Image = FindOptionImageResponse.builder()
                 .imgUrl("https://www.hyundai.com/contents/spec/guide/lx_7seats_s.jpg")
                 .imgType(0).build();
@@ -192,18 +165,26 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
                 .specs(List.of()).build();
 
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
-                .id(5L).rate(75).price(0).name("7인승")
+                .id(5L).rate(75)
+                .price(0).name("7인승")
                 .images(List.of(seat7Image))
                 .details(List.of(seat7Detail)).build();
         FindSelfOptionResponse optionResponse2 = FindSelfOptionResponse.builder()
-                .id(6L).rate(25).price(0).name("8인승")
+                .id(6L).rate(25)
+                .price(0).name("8인승")
                 .images(List.of(seat8Image))
                 .details(List.of(seat8Detail)).build();
 
+        assertResponseAndExpected(response, List.of(optionResponse1, optionResponse2));
+    }
+
+    private void assertResponseAndExpected(ExtractableResponse<Response> response, List<FindSelfOptionResponse> expectedResponses) {
+        SuccessResponse<List<FindSelfOptionResponse>> successResponse = response.body().as(new TypeRef<>() {
+        });
         softAssertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        softAssertions.assertThat(successResponse.getData()).hasSize(2);
+        softAssertions.assertThat(successResponse.getData()).hasSize(expectedResponses.size());
         softAssertions.assertThat(successResponse.getData())
                 .usingRecursiveComparison()
-                .isEqualTo(List.of(optionResponse1, optionResponse2));
+                .isEqualTo(expectedResponses);
     }
 }
