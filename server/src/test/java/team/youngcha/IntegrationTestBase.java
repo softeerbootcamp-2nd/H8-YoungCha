@@ -49,8 +49,8 @@ public class IntegrationTestBase {
     }
 
     public ExtractableResponse<Response> callEndpoint(String endpoint,
-                                                       Map<String, Object> params) {
-        if(params == null){
+                                                      Map<String, Object> params) {
+        if (params == null) {
             params = new HashMap<>();
         }
 
