@@ -18,7 +18,7 @@ function Header() {
   }, []);
   return (
     <div
-      className={`${backgroundColor} z-10 duration-500 fixed z-100 w-full  left-0 right-0`}
+      className={`${backgroundColor} z-10 duration-500 fixed top-0 z-100 w-full`}
     >
       <div
         className={`flex justify-between px-128px  max-w-7xl py-32px mx-auto`}
