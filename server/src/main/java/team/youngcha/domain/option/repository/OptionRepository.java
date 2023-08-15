@@ -49,10 +49,15 @@ public class OptionRepository {
                 "JOIN (SELECT * FROM options WHERE category_id = ?) options ON trim_options.options_id = options.id " +
                 "WHERE trim.id = ?;";
 
-        return jdbcTemplate.queryForObject(sql, Integer.class,
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class,
                 OptionType.BASIC.getType(),
                 categoryId,
                 trimId);
+
+        if(count == null) {
+            return 0;
+        }
+        return count;
     }
 
     public List<DefaultOptionSummary> findPaginatedDefaultOptionsByTrimIdAndCategoryId(Long trimId, Long categoryId, int page, int size) {
@@ -68,10 +73,10 @@ public class OptionRepository {
                         "FROM trim " +
                             "JOIN (SELECT * FROM trim_options WHERE type = ?) trim_options ON trim.id = trim_options.trim_id " +
                             "JOIN (SELECT * FROM options WHERE category_id = ?) options ON trim_options.options_id = options.id " +
-                            "JOIN options_image ON options.id = options_image.options_id " +
+                            "LEFT JOIN options_image ON options.id = options_image.options_id " +
                         "WHERE trim.id = ?" +
-                        ") inner_table " +
-                "ORDER BY optionsId ASC LIMIT ? OFFSET ?";
+                        ") sub_table " +
+                "ORDER BY optionsId LIMIT ? OFFSET ?";
 
         return jdbcTemplate.query(sql, defaultOptionSummaryRowMapper,
                 TrimOptionType.DEFAULT.getValue(),
@@ -81,7 +86,7 @@ public class OptionRepository {
                 offset);
     }
 
-    private class DefaultOptionSummaryRowMapper implements RowMapper<DefaultOptionSummary> {
+    private static class DefaultOptionSummaryRowMapper implements RowMapper<DefaultOptionSummary> {
         @Override
         public DefaultOptionSummary mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             return new DefaultOptionSummary(
