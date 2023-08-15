@@ -1,4 +1,4 @@
-package team.youngcha.domain.keyword.entity;
+package team.youngcha.domain.keyword.dto;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Keyword {
+public class KeywordRate {
 
-    private Long id;
+    private int rate;
     private String name;
 
     @Builder
-    public Keyword(Long id, String name) {
-        this.id = id;
+    public KeywordRate(int rate, String name) {
+        this.rate = rate;
         this.name = name;
     }
 }
