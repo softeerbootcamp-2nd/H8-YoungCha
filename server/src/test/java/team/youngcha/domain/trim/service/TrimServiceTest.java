@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import team.youngcha.common.exception.CustomException;
@@ -29,7 +28,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith({SoftAssertionsExtension.class, MockitoExtension.class})
 class TrimServiceTest {
@@ -162,7 +162,8 @@ class TrimServiceTest {
         void nonExistentTrimId() {
             //given
             Long notFoundTrimId = -37L;
-            when(trimRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+            given(trimRepository.findById(anyLong())).willReturn(Optional.empty());
 
             //when
             CustomException customException = assertThrows(CustomException.class, () ->
@@ -177,8 +178,8 @@ class TrimServiceTest {
         @DisplayName("트림의 기본 품목이 존재하지 않으면, NOT FOUND 예외가 발생한다")
         void noDefaultOptions() {
             //given
-            when(trimRepository.findById(anyLong())).thenReturn(Optional.of(Mockito.mock(Trim.class)));
-            when(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).thenReturn(0);
+            given(trimRepository.findById(anyLong())).willReturn(Optional.of(mock(Trim.class)));
+            given(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).willReturn(0);
 
             //when
             CustomException customException = assertThrows(CustomException.class, () ->
@@ -193,8 +194,8 @@ class TrimServiceTest {
         @DisplayName("페이지 번호가 마지막 페이지 번호보다 크면, NOT FOUND 예외가 발생한다")
         void outRangedPageNumber() {
             //given
-            when(trimRepository.findById(anyLong())).thenReturn(Optional.of(Mockito.mock(Trim.class)));
-            when(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).thenReturn(totalElements);
+            given(trimRepository.findById(anyLong())).willReturn(Optional.of(mock(Trim.class)));
+            given(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).willReturn(totalElements);
 
             //when
             CustomException customException = assertThrows(CustomException.class, () ->
@@ -209,10 +210,10 @@ class TrimServiceTest {
         @DisplayName("페이지 조회 실패 시, NOT FOUND 예외가 발생한다")
         void failedRetrievingPage() {
             //given
-            when(trimRepository.findById(anyLong())).thenReturn(Optional.of(Mockito.mock(Trim.class)));
-            when(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).thenReturn(totalElements);
-            when(optionRepository.findPaginatedDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong(), anyInt(), anyInt()))
-                    .thenReturn(new ArrayList<>());
+            given(trimRepository.findById(anyLong())).willReturn(Optional.of(mock(Trim.class)));
+            given(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).willReturn(totalElements);
+            given(optionRepository.findPaginatedDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong(), anyInt(), anyInt()))
+                    .willReturn(new ArrayList<>());
 
             //when
             CustomException customException = assertThrows(CustomException.class, () ->
@@ -232,10 +233,10 @@ class TrimServiceTest {
             FindTrimDefaultOptionsResponse expectedResponse =
                     new FindTrimDefaultOptionsResponse(trimId, true, false, totalElements, totalPages, defaultOptionSummaries);
 
-            when(trimRepository.findById(anyLong())).thenReturn(Optional.of(Mockito.mock(Trim.class)));
-            when(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).thenReturn(totalElements);
-            when(optionRepository.findPaginatedDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong(), anyInt(), anyInt()))
-                    .thenReturn(defaultOptionSummaries);
+            given(trimRepository.findById(anyLong())).willReturn(Optional.of(mock(Trim.class)));
+            given(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).willReturn(totalElements);
+            given(optionRepository.findPaginatedDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong(), anyInt(), anyInt()))
+                    .willReturn(defaultOptionSummaries);
 
             //when
             FindTrimDefaultOptionsResponse actualResponse = trimService.findPaginatedDefaultOptions(trimId, categoryId, targetPage, pageSize);
@@ -256,10 +257,10 @@ class TrimServiceTest {
             FindTrimDefaultOptionsResponse expectedResponse =
                     new FindTrimDefaultOptionsResponse(trimId, false, false, totalElements, totalPages, defaultOptionSummaries);
 
-            when(trimRepository.findById(anyLong())).thenReturn(Optional.of(Mockito.mock(Trim.class)));
-            when(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).thenReturn(totalElements);
-            when(optionRepository.findPaginatedDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong(), anyInt(), anyInt()))
-                    .thenReturn(defaultOptionSummaries);
+            given(trimRepository.findById(anyLong())).willReturn(Optional.of(mock(Trim.class)));
+            given(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).willReturn(totalElements);
+            given(optionRepository.findPaginatedDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong(), anyInt(), anyInt()))
+                    .willReturn(defaultOptionSummaries);
 
             //when
             FindTrimDefaultOptionsResponse actualResponse = trimService.findPaginatedDefaultOptions(trimId, categoryId, targetPage, pageSize);
@@ -280,10 +281,10 @@ class TrimServiceTest {
             FindTrimDefaultOptionsResponse expectedResponse =
                     new FindTrimDefaultOptionsResponse(trimId, false, true, totalElements, totalPages, defaultOptionSummaries);
 
-            when(trimRepository.findById(anyLong())).thenReturn(Optional.of(Mockito.mock(Trim.class)));
-            when(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).thenReturn(totalElements);
-            when(optionRepository.findPaginatedDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong(), anyInt(), anyInt()))
-                    .thenReturn(defaultOptionSummaries);
+            given(trimRepository.findById(anyLong())).willReturn(Optional.of(mock(Trim.class)));
+            given(optionRepository.countDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong())).willReturn(totalElements);
+            given(optionRepository.findPaginatedDefaultOptionsByTrimIdAndCategoryId(anyLong(), anyLong(), anyInt(), anyInt()))
+                    .willReturn(defaultOptionSummaries);
 
             //when
             FindTrimDefaultOptionsResponse actualResponse = trimService.findPaginatedDefaultOptions(trimId, categoryId, targetPage, pageSize);

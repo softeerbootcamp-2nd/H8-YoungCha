@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import team.youngcha.common.exception.CustomException;
@@ -23,8 +22,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class CarServiceTest {
@@ -42,7 +43,7 @@ class CarServiceTest {
     @DisplayName("존재하지 않는 자동차 ID로 상세정보 조회 시, 404 NOT FOUND 예외가 발생한다")
     void findDetailsWithInvalidId() {
         //given
-        Mockito.when(carRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        given(carRepository.findById(anyLong())).willReturn(Optional.empty());
 
         //when
         CustomException customException = assertThrows(CustomException.class, () -> carService.findDetails(1L));
@@ -56,11 +57,8 @@ class CarServiceTest {
     @DisplayName("자동차의 상세정보가 없는 경우, 404 NOT FOUND 예외가 발생한다")
     void findDetailsNoResult() {
         //given
-        Mockito.when(carRepository.findById(any(Long.class)))
-                .thenReturn(Optional.of(Mockito.mock(Car.class)));
-
-        Mockito.when(carRepository.findDetails(any(Long.class)))
-                .thenReturn(new ArrayList<>());
+        given(carRepository.findById(anyLong())).willReturn(Optional.of(mock(Car.class)));
+        given(carRepository.findDetails(anyLong())).willReturn(new ArrayList<>());
 
         //when
         CustomException customException = assertThrows(CustomException.class, () -> carService.findDetails(1L));
@@ -77,20 +75,15 @@ class CarServiceTest {
         Car car = new Car(1L, "팰리세이드");
 
         List<CarDetails> carDetails = new ArrayList<>();
-        carDetails.add(Mockito.mock(CarDetails.class));
+        carDetails.add(mock(CarDetails.class));
 
         List<TrimDetail> trimDetails = new ArrayList<>(Arrays.asList(
-                Mockito.mock(TrimDetail.class),
-                Mockito.mock(TrimDetail.class)));
+                mock(TrimDetail.class),
+                mock(TrimDetail.class)));
 
-        Mockito.when(carRepository.findById(any(Long.class)))
-                .thenReturn(Optional.of(car));
-
-        Mockito.when(carRepository.findDetails(any(Long.class)))
-                .thenReturn(carDetails);
-
-        Mockito.when(trimService.extractTrimDetailsFromCarDetailsDtos(anyList()))
-                .thenReturn(trimDetails);
+        given(carRepository.findById(anyLong())).willReturn(Optional.of(car));
+        given(carRepository.findDetails(anyLong())).willReturn(carDetails);
+        given(trimService.extractTrimDetailsFromCarDetailsDtos(anyList())).willReturn(trimDetails);
 
         //when
         FindCarDetailsResponse findCarDetailsResponse = carService.findDetails(car.getId());
