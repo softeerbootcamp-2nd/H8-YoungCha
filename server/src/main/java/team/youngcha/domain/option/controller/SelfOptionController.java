@@ -46,7 +46,7 @@ public class SelfOptionController {
     }
 
     @Operation(summary = "내장 색상 셀프 모드 옵션 조회", description = "셀프 모드에서 내장 색상의 옵션을 판매량과 함께 조회합니다.")
-    @GetMapping("/interior-color?")
+    @GetMapping("/interior-color")
     public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfExteriorColor(
             @PathVariable Long trimId,
             @Schema(description = "외장 색상 아이디")
