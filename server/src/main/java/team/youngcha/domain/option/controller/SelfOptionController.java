@@ -42,7 +42,7 @@ public class SelfOptionController {
     public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfBodyType(
             @PathVariable Long trimId
     ) {
-        return findSelfOptions(trimId, SelectiveCategory.EXTERIOR_COLOR);
+        return findSelfOptions(trimId, SelectiveCategory.BODY_TYPE);
     }
 
     @Operation(summary = "내장 색상 셀프 모드 옵션 조회", description = "셀프 모드에서 내장 색상의 옵션을 판매량과 함께 조회합니다.")
