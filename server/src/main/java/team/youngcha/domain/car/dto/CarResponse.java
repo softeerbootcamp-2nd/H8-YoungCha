@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.youngcha.domain.car.entity.Car;
 
 @Schema(description = "자동차 모델 정보")
 @Getter
@@ -19,5 +20,10 @@ public class CarResponse {
     public CarResponse(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public CarResponse(Car car) {
+        this.id = car.getId();
+        this.name = car.getName();
     }
 }
