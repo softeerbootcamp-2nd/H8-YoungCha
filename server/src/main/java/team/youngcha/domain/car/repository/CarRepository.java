@@ -9,6 +9,7 @@ import team.youngcha.domain.car.entity.Car;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -27,6 +28,10 @@ public class CarRepository {
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
+    }
+
+    public List<Car> findAll() {
+        return jdbcTemplate.query("SELECT * FROM car", carRowMapper);
     }
 
     private static class CarRowMapper implements RowMapper<Car> {
