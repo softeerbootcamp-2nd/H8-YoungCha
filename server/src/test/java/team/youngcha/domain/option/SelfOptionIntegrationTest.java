@@ -75,10 +75,12 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
 
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
                 .id(2L).rate(75).price(0).name("가솔린 3.8")
+                .feedback("가솔린 엔진은 조용해요! 조용한 주행을 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(gasolineImage))
                 .details(List.of(gasolineDetail)).build();
         FindSelfOptionResponse optionResponse2 = FindSelfOptionResponse.builder()
                 .id(1L).rate(25).price(1480000).name("디젤 2.2")
+                .feedback("디젤 엔진은 효율이 좋아요! 효율을 중시한다면, 탁월한 선택입니다.")
                 .images(List.of(dieselImage))
                 .details(List.of(dieselDetail)).build();
 
@@ -121,10 +123,12 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
 
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
                 .id(3L).rate(50).price(0).name("2WD")
+                .feedback("2WD는 효율이 좋아요! 효율을 중시한다면, 탁월한 선택입니다.")
                 .images(List.of(wd2Image))
                 .details(List.of(wd2Detail)).build();
         FindSelfOptionResponse optionResponse2 = FindSelfOptionResponse.builder()
                 .id(4L).rate(50).price(2370000).name("4WD")
+                .feedback("4WD는 파워풀해요! 힘있는 주행을 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(wd4Image))
                 .details(List.of(wd4Detail)).build();
 
@@ -167,11 +171,13 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
                 .id(5L).rate(75)
                 .price(0).name("7인승")
+                .feedback("통로가 있어 쾌적해요! 쾌적함을 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(seat7Image))
                 .details(List.of(seat7Detail)).build();
         FindSelfOptionResponse optionResponse2 = FindSelfOptionResponse.builder()
                 .id(6L).rate(25)
                 .price(0).name("8인승")
+                .feedback("공간 활용을 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(seat8Image))
                 .details(List.of(seat8Detail)).build();
 
