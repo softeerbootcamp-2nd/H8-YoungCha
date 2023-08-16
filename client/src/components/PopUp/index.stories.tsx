@@ -16,10 +16,14 @@ export default meta;
 
 type Story = StoryObj<typeof PopUp>;
 
+function closePopUp(): void {
+  throw new Error('Function not implemented.');
+}
+
 export const ModelChange: Story = {
   args: {
     children: (
-      <div>
+      <PopUp onClose={closePopUp}>
         <PopUp.PopUpMain
           title={ModelChangePopUp.title}
           imgSrc={<ModelChangePopUp.ImgSrc />}
@@ -29,7 +33,7 @@ export const ModelChange: Story = {
           greyButtonContent={ModelChangePopUp.greyButtonContent}
           blueButtonContent={ModelChangePopUp.blueButtonContent}
         />
-      </div>
+      </PopUp>
     ),
   },
 };
@@ -37,7 +41,7 @@ export const ModelChange: Story = {
 export const PowerTrainChange: Story = {
   args: {
     children: (
-      <div>
+      <PopUp onClose={closePopUp}>
         <PopUp.PopUpMain
           title={ChangeToGasolinePopUp.title}
           imgSrc={<ChangeToGasolinePopUp.ImgSrc />}
@@ -50,7 +54,7 @@ export const PowerTrainChange: Story = {
           greyButtonContent={ChangeToGasolinePopUp.greyButtonContent}
           blueButtonContent={ChangeToGasolinePopUp.blueButtonContent}
         />
-      </div>
+      </PopUp>
     ),
   },
 };
@@ -58,7 +62,7 @@ export const PowerTrainChange: Story = {
 export const ModeChangeToGuide: Story = {
   args: {
     children: (
-      <div>
+      <PopUp onClose={closePopUp}>
         <PopUp.PopUpMain
           title={ModeChangePopUp.title}
           imgSrc={<ModeChangePopUp.ImgSrc />}
@@ -73,7 +77,7 @@ export const ModeChangeToGuide: Story = {
           mode={GuideModeCard.mode}
           description={GuideModeCard.description}
         />
-      </div>
+      </PopUp>
     ),
   },
 };
@@ -81,7 +85,7 @@ export const ModeChangeToGuide: Story = {
 export const ModeChangeToSelf: Story = {
   args: {
     children: (
-      <div>
+      <PopUp onClose={closePopUp}>
         <PopUp.PopUpMain
           title={ModeChangePopUp.title}
           imgSrc={<ModeChangePopUp.ImgSrc />}
@@ -96,7 +100,7 @@ export const ModeChangeToSelf: Story = {
           mode={GuideModeCard.mode}
           description={GuideModeCard.description}
         />
-      </div>
+      </PopUp>
     ),
   },
 };
