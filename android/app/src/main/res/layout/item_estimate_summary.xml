@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="compnent_name"
+            name="component_name"
             type="String" />
 
         <variable
@@ -21,13 +21,13 @@
 
         <TextView
             android:id="@+id/tv_component_name"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/hyundai_sans_text_kr_regular"
             android:gravity="start"
             android:textColor="@color/cool_grey_003"
             android:textSize="14sp"
-            android:text="@{compnent_name}"
+            android:text="@{component_name}"
             app:layout_constraintEnd_toStartOf="@id/tv_option_name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

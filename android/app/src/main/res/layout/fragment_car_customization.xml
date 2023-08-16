@@ -13,224 +13,219 @@
     </data>
 
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.fragment.CarCustomizationFragment">
+        android:layout_height="match_parent">
+
+        <com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
+            android:id="@+id/htb_header_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:modeChangeValid="1"
+            app:title="@string/self_mode_kr" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_main_option_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/htb_header_toolbar"
+            app:tabIndicator="@drawable/tab_indicator"
+            app:tabIndicatorColor="@color/main_hyundai_blue"
+            app:tabIndicatorFullWidth="true"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/main_hyundai_blue"
+            app:tabTextAppearance="@style/MyCustomTabText"
+            app:tabTextColor="@color/cool_grey_002" />
+
+        <ImageView
+            android:id="@+id/iv_main_img"
+            android:layout_width="match_parent"
+            android:layout_height="310dp"
+            android:visibility="@{viewModel.subOptionButtonVisible == 1? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
+            app:testImageResourceCar="@{viewModel.selectedCar}"
+            app:testImageResourceComponentName="@{viewModel.currentComponentName}" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/hyundai_sans_head_bold"
+            android:text="@{viewModel.currentComponentName}"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:customTopConstraint="@{viewModel.subOptionButtonVisible == 1 ? @id/iv_main_img : @id/tl_sub_option_tab}"
+            app:layout_constraintEnd_toStartOf="@id/tv_title_sub"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_main_img"
+            tools:text="파워 트레인" />
+
+        <TextView
+            android:id="@+id/tv_title_sub"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hyundai_sans_head_medium"
+            android:text="@string/select"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toStartOf="@id/ib_sub_option_change_view"
+            app:layout_constraintStart_toEndOf="@id/tv_title"
+            app:layout_constraintTop_toTopOf="@id/tv_title" />
+
+        <ImageButton
+            android:id="@+id/ib_sub_option_change_view"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="16dp"
+            android:background="@{viewModel.subOptionButtonVisible == 1 ? @drawable/ic_list : @drawable/ic_gallery}"
+            android:onClick="@{viewModel::onSubOptionChanged}"
+            android:visibility="@{viewModel.subOptionViewTypeChangeButton == 1 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title" />
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_bottom_two_button"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="33dp"
+            android:visibility="@{viewModel.horizontalButtonVisible == 1 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title">
 
-            <com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
-                android:id="@+id/htb_header_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
+            <com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
+                android:id="@+id/btn_component_option_1"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="5.5dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:customOnClickAction="@{viewModel::onComponentOption1Selected}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_component_option_2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:modeChangeValid="1"
-                app:title="@string/self_mode_kr" />
+                app:optionInfo="@{viewModel.getOption(viewModel.currentComponentName, 0)}"
+                app:visible="@{viewModel.componentOption1Visibility}" />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tl_main_option_tab"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/htb_header_toolbar"
-                app:tabIndicator="@drawable/tab_indicator"
-                app:tabIndicatorColor="@color/main_hyundai_blue"
-                app:tabIndicatorFullWidth="true"
-                app:tabMode="scrollable"
-                app:tabSelectedTextColor="@color/main_hyundai_blue"
-                app:tabTextAppearance="@style/MyCustomTabText"
-                app:tabTextColor="@color/cool_grey_002" />
-
-            <ImageView
-                android:id="@+id/iv_main_img"
-                android:layout_width="match_parent"
-                android:layout_height="310dp"
-                android:visibility="@{viewModel.subOptionVerticalButtonVisible == 1? View.VISIBLE : View.GONE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
-                app:testImageResourceCar="@{viewModel.selectedCar}"
-                app:testImageResourceComponentName="@{viewModel.currentComponentName}" />
-
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="25dp"
-                android:fontFamily="@font/hyundai_sans_head_bold"
-                android:text="@{viewModel.currentComponentName}"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                app:customTopConstraint="@{viewModel.subOptionVerticalButtonVisible == 1 ? @id/iv_main_img : @id/tl_sub_option_tab}"
-                app:layout_constraintEnd_toStartOf="@id/tv_title_sub"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_main_img"
-                tools:text="파워 트레인" />
-
-            <TextView
-                android:id="@+id/tv_title_sub"
+            <com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
+                android:id="@+id/btn_component_option_2"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/hyundai_sans_head_medium"
-                android:text="@string/select"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@id/tv_title"
-                app:layout_constraintEnd_toStartOf="@id/ib_sub_option_change_view"
-                app:layout_constraintStart_toEndOf="@id/tv_title"
-                app:layout_constraintTop_toTopOf="@id/tv_title" />
-
-            <ImageButton
-                android:id="@+id/ib_sub_option_change_view"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="16dp"
-                android:background="@{viewModel.subOptionVerticalButtonVisible == 1 ? @drawable/ic_list : @drawable/ic_gallery}"
-                android:onClick="@{viewModel::onSubOptionChanged}"
-                android:visibility="@{viewModel.subOptionChangeButton == 1 ? View.VISIBLE : View.GONE}"
-                app:layout_constraintBottom_toBottomOf="@id/tv_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_title" />
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_bottom_two_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="33dp"
-                android:visibility="@{viewModel.horizontalButtonVisible == 1 ? View.VISIBLE : View.GONE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_title">
-
-                <com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
-                    android:id="@+id/btn_component_option_1"
-                    android:layout_width="0dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="5.5dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:customOnClickAction="@{viewModel::onComponentOption1Selected}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btn_component_option_2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:optionInfo="@{viewModel.getOption(viewModel.currentComponentName, 0)}"
-                    app:visible="@{viewModel.componentOption1Visibility}" />
-
-                <com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
-                    android:id="@+id/btn_component_option_2"
-                    android:layout_width="0dp"
-                    android:layout_height="150dp"
-                    android:layout_marginStart="5.5dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:customOnClickAction="@{viewModel::onComponentOption2Selected}"
-                    app:layout_constraintBottom_toBottomOf="@+id/btn_component_option_1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/btn_component_option_1"
-                    app:layout_constraintTop_toTopOf="@+id/btn_component_option_1"
-                    app:optionInfo="@{viewModel.getOption(viewModel.currentComponentName, 1)}"
-                    app:visible="@{viewModel.componentOption2Visibility}" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_sub_option_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:visibility="@{viewModel.subOptionVerticalButtonVisible == 1 ? View.GONE : View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_title" />
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/vp_option_container"
-                android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="33dp"
-                android:visibility="@{(viewModel.swipeButtonVisible == 1 &amp;&amp; viewModel.subOptionVerticalButtonVisible == 1) ? View.VISIBLE : View.GONE}"
+                android:layout_marginStart="5.5dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:customOnClickAction="@{viewModel::onComponentOption2Selected}"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_component_option_1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_title" />
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tb_option_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
-                android:background="@null"
-                android:visibility="@{(viewModel.swipeButtonVisible == 1 &amp;&amp; viewModel.subOptionVerticalButtonVisible == 1) ? View.VISIBLE : View.GONE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vp_option_container"
-                app:tabBackground="@drawable/dialog_swipe_tab_default_dot"
-                app:tabGravity="center"
-                app:tabIndicator="@drawable/dialog_swipe_tab_default_dot"
-                app:tabIndicatorColor="@color/main_hyundai_blue"
-                app:tabIndicatorGravity="stretch"
-                app:tabIndicatorHeight="8dp"
-                app:tabPaddingEnd="8dp"
-                app:tabPaddingStart="8dp" />
-
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/button1"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="@drawable/style_hyundai_main_color_border"-->
-<!--                android:text="선택"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent" />-->
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tl_sub_option_tab"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginTop="8dp"
-                android:background="@null"
-                android:elevation="0dp"
-                android:visibility="@{(viewModel.subOptionChangeButton == 1 || viewModel.subOptionVerticalButtonVisible == 0)? View.VISIBLE : View.GONE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
-                app:tabIndicator="@null"
-                app:tabIndicatorAnimationMode="linear"
-                app:tabIndicatorColor="@null"
-                app:tabIndicatorGravity="stretch"
-                app:tabIndicatorHeight="0dp"
-                app:tabMode="scrollable"
-                app:tabPaddingEnd="4dp"
-                app:tabPaddingStart="4dp"
-                app:tabRippleColor="@null"
-                app:tabSelectedTextColor="@color/white" />
-
-            <include
-                android:id="@+id/bottom_sheet_layout"
-                layout="@layout/layout_bottom_sheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/btn_component_option_1"
+                app:layout_constraintTop_toTopOf="@+id/btn_component_option_1"
+                app:optionInfo="@{viewModel.getOption(viewModel.currentComponentName, 1)}"
+                app:visible="@{viewModel.componentOption2Visibility}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_sub_option_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="@{viewModel.subOptionButtonVisible == 1 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_option_container"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="33dp"
+            android:visibility="@{(viewModel.swipeButtonVisible == 1 &amp;&amp; viewModel.subOptionButtonVisible == 1) ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tb_option_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:background="@null"
+            android:visibility="@{(viewModel.swipeButtonVisible == 1 &amp;&amp; viewModel.subOptionButtonVisible == 1) ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vp_option_container"
+            app:tabBackground="@drawable/dialog_swipe_tab_default_dot"
+            app:tabGravity="center"
+            app:tabIndicator="@drawable/dialog_swipe_tab_default_dot"
+            app:tabIndicatorColor="@color/main_hyundai_blue"
+            app:tabIndicatorGravity="stretch"
+            app:tabIndicatorHeight="8dp"
+            app:tabPaddingEnd="8dp"
+            app:tabPaddingStart="8dp" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_sub_option_tab"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:background="@null"
+            android:elevation="0dp"
+            android:visibility="@{(viewModel.subOptionViewTypeChangeButton == 1 || viewModel.subOptionButtonVisible == 0)? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
+            app:tabIndicator="@null"
+            app:tabIndicatorAnimationMode="linear"
+            app:tabIndicatorColor="@null"
+            app:tabIndicatorGravity="stretch"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="scrollable"
+            app:tabPaddingEnd="4dp"
+            app:tabPaddingStart="4dp"
+            app:tabRippleColor="@null"
+            app:tabSelectedTextColor="@color/white" />
+
+        <include
+            android:id="@+id/bottom_sheet_layout"
+            layout="@layout/layout_bottom_sheet_estimate_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:viewModel="@{viewModel}"
+            app:layout_constraintBottom_toTopOf="@id/button1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="108dp"
+            android:background="@color/white"
+            android:text="선택"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

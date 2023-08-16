@@ -6,19 +6,21 @@
     <data>
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel" />
     </data>
 
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="500dp"
+        android:layout_gravity="bottom">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="16dp">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:paddingTop="32dp">
 
             <TextView
                 android:id="@+id/tv_estimate_summary_title"
@@ -48,7 +50,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_estimate_summary_title"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="46,030,000원" />
+                android:text="46,030,000원" />
 
             <View
                 android:id="@+id/v_main_option_view"
@@ -65,6 +67,7 @@
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/hyundai_sans_head_bold"
                 android:gravity="start"
+                android:text="@{viewModel.selectedCar.name}"
                 android:textColor="@color/cool_grey_black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/v_main_option_view"
@@ -99,6 +102,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_main_option_view"
+                app:myCarData="@{viewModel.myCar}"
+                app:viewType='@{"main"}'
                 tools:itemCount="5"
                 tools:listitem="@layout/item_estimate_summary" />
 
@@ -147,10 +152,13 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
+                android:maxHeight="200dp"
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_option_color_view"
+                app:myCarData="@{viewModel.myCar}"
+                app:viewType='@{"color"}'
                 tools:itemCount="5"
                 tools:listitem="@layout/item_estimate_summary" />
 
@@ -199,10 +207,13 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
+                android:maxHeight="200dp"
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_sub_option_view"
+                app:myCarData="@{viewModel.myCar}"
+                app:viewType='@{"sub"}'
                 tools:itemCount="5"
                 tools:listitem="@layout/item_estimate_summary" />
 
