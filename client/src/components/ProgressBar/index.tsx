@@ -1,8 +1,13 @@
-import { useState } from 'react';
 import ProgressItem from './ProgressItem';
 import SelectedBar from './SelectedBar';
 
-function ProgressBar() {
+interface ProgressBarProps {
+  step: number;
+  path: 'self' | 'guide';
+  id: string;
+}
+
+function ProgressBar({ step, path, id }: ProgressBarProps) {
   const progressItems = [
     '파워트레인',
     '구동 방식',
@@ -13,11 +18,6 @@ function ProgressBar() {
     '옵션 선택',
     '견적 내기',
   ];
-  const [selectedCategory, setSelectedCategory] = useState(0);
-
-  function handleCategoryClick(index: number) {
-    setSelectedCategory(index);
-  }
 
   function makeCategory() {
     return progressItems.map((item: string, index: number) => (
@@ -25,19 +25,19 @@ function ProgressBar() {
         key={index}
         itemIndex={index + 1}
         itemName={item}
-        isSelected={index === selectedCategory}
-        onClick={() => handleCategoryClick(index)}
+        isSelected={index + 1 === step}
+        url={`/model/${id}/making/${path}/${index + 1}`}
       />
     ));
   }
 
   return (
-    <nav className="min-w-1024px text-center h-26px title5">
+    <nav className="relative z-10 text-center min-w-1024px h-26px title5">
       <span className="relative mx-auto whitespace-nowrap">
         {makeCategory()}
-        <SelectedBar active={selectedCategory} />
+        <SelectedBar active={step - 1} />
       </span>
-      <div className="w-full h-0.5 absolute top-23px bg-grey-002" />
+      <div className="w-full h-0.5 absolute top-22px bg-grey-002" />
     </nav>
   );
 }

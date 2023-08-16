@@ -1,7 +1,9 @@
 import App from '@/App';
 import Home from '@/pages/home';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
+import Guide from '@/pages/guide';
+import Making from '@/pages/making';
 import FullScreenLayout from '@/components/layout/FullScreenLayout';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {
@@ -22,19 +24,19 @@ const router = createBrowserRouter([
             children: [
               {
                 path: 'age',
-                element: <div>age</div>,
+                element: <Guide path="age" />,
               },
               {
                 path: 'gender',
-                element: <div>gender</div>,
+                element: <Guide path="gender" />,
               },
               {
                 path: 'keyword',
-                element: <div>keyword</div>,
+                element: <Guide path="keyword" />,
               },
               {
-                path: 'compelete',
-                element: <div>compelete</div>,
+                path: 'complete',
+                element: <Guide path="complete" />,
               },
             ],
           },
@@ -44,9 +46,9 @@ const router = createBrowserRouter([
             children: [
               {
                 path: 'self/:step',
-                element: <div>self</div>,
+                element: <Making path="self" />,
               },
-              { path: 'guide/:step', element: <div>guide</div> },
+              { path: 'guide/:step', element: <Making path="self" /> },
             ],
           },
         ],

@@ -9,6 +9,7 @@ import CheckInactive from './select-check-inactive';
 import CheckActive from './select-check';
 import Spanner from './Spanner';
 import MoreViewArrow from './more-view-arrow';
+import InactiveRound from './prepare-guide/InactiveRound';
 
 export {
   HyundaiLogo,
@@ -22,4 +23,5 @@ export {
   CheckActive,
   Spanner,
   MoreViewArrow,
+  InactiveRound,
 };
