@@ -3,11 +3,12 @@ import { PropsWithChildren } from 'react';
 
 interface SummaryOptionsBoxProps {
   title: string;
-  price: string;
+  price: number;
 }
 function SummaryOptionsBox({
   title,
   price,
+  children,
 }: PropsWithChildren<SummaryOptionsBoxProps>) {
   return (
     <div>
@@ -16,13 +17,10 @@ function SummaryOptionsBox({
           {title}
         </span>
         <span className="text-grey-black font-hsans-head text-24px font-medium leading-[31.2px] tracking-[-0.72px]">
-          {`+${price}원`}
+          {`+${price.toLocaleString()}원`}
         </span>
       </div>
-      <div className="py-16px">
-        <SummaryOption type="파워트레인" name="디젤 2.2" price="2,123,000" />
-        <SummaryOption name="디젤 2.2" price="2,123,000" />
-      </div>
+      <div className="py-16px">{children}</div>
     </div>
   );
 }
