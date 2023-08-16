@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/layout_preliminaries_age"
+        layout="@layout/layout_preliminaries_age"/>
+
+    <include
+        android:id="@+id/layout_preliminaries_gender"
+        layout="@layout/layout_preliminaries_gender"/>
+
+    <include
+        android:id="@+id/layout_preliminaries_keyword"
+        layout="@layout/layout_preliminaries_keyword"/>
+
+    <include
+        android:id="@+id/layout_estimate_ready"
+        layout="@layout/layout_estimate_ready"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
