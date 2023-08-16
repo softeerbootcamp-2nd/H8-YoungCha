@@ -46,7 +46,7 @@ public class CarService {
                 .collect(Collectors.toList());
 
         if (carResponses.isEmpty()) {
-            throw new CustomException(HttpStatus.NOT_FOUND, "자동차 모델 목록 조회 실패");
+            throw new CustomException(HttpStatus.NOT_FOUND, "자동차 모델 목록 조회 실패", "조회 결과가 존재하지 않습니다.");
         }
 
         return new FindCarsResponse(carResponses);
