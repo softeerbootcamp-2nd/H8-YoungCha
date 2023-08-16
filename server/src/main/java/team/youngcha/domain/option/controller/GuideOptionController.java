@@ -15,7 +15,7 @@ import team.youngcha.domain.option.service.OptionService;
 
 import java.util.List;
 
-@Tag(name = "Option Guide", description = "옵션 가이드 모리 API")
+@Tag(name = "Option Guide", description = "옵션 가이드 API")
 @RestController
 @RequestMapping("/car-make/{trimId}/guide")
 @RequiredArgsConstructor
