@@ -13,11 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.util.FileCopyUtils;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,9 +34,6 @@ public class IntegrationTestBase {
     public SoftAssertions softAssertions;
 
     @Autowired
-    DataSource dataSource;
-
-    @Autowired
     public JdbcTemplate jdbcTemplate;
 
     @BeforeEach
@@ -43,9 +42,15 @@ public class IntegrationTestBase {
     }
 
     @AfterEach
-    void truncateDatabase() throws SQLException {
-        ScriptUtils.executeSqlScript(dataSource.getConnection(),
-                new ClassPathResource("/data/clear.sql"));
+    void truncateDatabase() {
+        Resource resource = new ClassPathResource("/data/clear.sql");
+        try {
+            String sqlScript = FileCopyUtils.copyToString(
+                    new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8));
+            jdbcTemplate.execute(sqlScript);
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading or executing SQL script: /data/clear.sql", e);
+        }
     }
 
     public ExtractableResponse<Response> callEndpoint(String endpoint,

@@ -4,40 +4,21 @@ import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.test.context.jdbc.Sql;
 import team.youngcha.IntegrationTestBase;
 import team.youngcha.common.dto.SuccessResponse;
 import team.youngcha.domain.option.dto.DefaultOptionSummary;
 import team.youngcha.domain.trim.dto.FindTrimDefaultOptionsResponse;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Sql({"classpath:data/car.sql", "classpath:data/category.sql", "classpath:data/options.sql", "classpath:data/trim.sql", "classpath:data/trim_options.sql", "classpath:data/options_image.sql"})
 @DisplayName("트림 기본 품목 옵션들을 페이지 단위로 조회한다")
 class TrimDefaultComponentsIntegrationTest extends IntegrationTestBase {
-
-    @BeforeAll
-    public static void setTestData(@Autowired DataSource dataSource) {
-        try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("data/car.sql"));
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("data/category.sql"));
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("data/options.sql"));
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("data/trim.sql"));
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("data/trim_options.sql"));
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("data/options_image.sql"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     Long trimId = 2L;
     Long categoryId = 1L;
