@@ -67,7 +67,7 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
                 }
 
                 currentSelectedOptions = viewModel.isSelectedOptions(subOptionName!!) ?: listOf()
-                notifyDataSetChanged()
+                notifyItemChanged(adapterPosition)
             }
         }
 
