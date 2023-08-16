@@ -119,4 +119,11 @@ VALUES (1, 'https://www.hyundai.com/contents/spec/LX24/dieselengine2.2.jpg', 0, 
        (118, 'https://www.hyundai.com/contents/spec/LX24/multiusb_s.jpg', 1, 112),
        (119, 'https://www.hyundai.com/contents/spec/LX24/htrac_s.jpg', 1, 113),
        (120, 'https://www.hyundai.com/contents/spec/LX24/tractionmode_s.jpg', 1, 114),
-       (121, 'https://www.hyundai.com/contents/spec/LX24/dbc_s.jpg', 1, 115);
+       (121, 'https://www.hyundai.com/contents/spec/LX24/dbc_s.jpg', 1, 115),
+       (122, 'https://www.hyundai.com/contents/vr360/LX06/exterior/A2B/colorchip-exterior.png', 1, 7),
+       (123, 'https://www.hyundai.com/contents/vr360/LX06/exterior/R2T/colorchip-exterior.png', 1, 8),
+       (124, 'https://www.hyundai.com/contents/vr360/LX06/exterior/UB7/colorchip-exterior.png', 1, 9),
+       (125, 'https://www.hyundai.com/contents/vr360/LX06/exterior/D2S/colorchip-exterior.png', 1, 10),
+       (126, 'https://www.hyundai.com/contents/vr360/LX06/exterior/P7V/colorchip-exterior.png', 1, 11),
+       (127, 'https://www.hyundai.com/contents/vr360/LX06/exterior/WC9/colorchip-exterior.png', 1, 12);
+
