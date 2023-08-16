@@ -17,11 +17,6 @@ public class CarResponse {
     @Schema(description = "모델명")
     private String name;
 
-    public CarResponse(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public CarResponse(Car car) {
         this.id = car.getId();
         this.name = car.getName();
