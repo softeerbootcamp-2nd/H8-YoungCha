@@ -264,6 +264,50 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
                 gaiaBrown, abyssBlack, graphiteGray, shimmeringSilver));
     }
 
+    @Test
+    @DisplayName("트림의 내장 색상 옵션을 셀프 모드로 조회한다.")
+    void findSelfInteriorColor() {
+        //given
+        jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
+                "values (1, 2, 1, 1, 1, 1, 13, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(2, 2, 1, 1, 1, 1, 14, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(3, 2, 1, 1, 1, 1, 13, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(4, 2, 1, 1, 1, 1, 14, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(5, 2, 1, 1, 1, 1, 13, 1, 50, 0, '2023-01-01 12:12:12')");
+
+        String url = "/car-make/2/self/interior-color?exteriorColorId=7";
+
+        //when
+        ExtractableResponse<Response> response = callEndpoint(url, null);
+
+        //then
+        FindOptionImageResponse blackBigImg = FindOptionImageResponse.builder()
+                .imgUrl("https://www.hyundai.com/contents/vr360/LX06/interior/I49/img-interior.png")
+                .imgType(0).build();
+        FindOptionImageResponse blackSmallImg = FindOptionImageResponse.builder()
+                .imgUrl("https://www.hyundai.com/contents/vr360/LX06/interior/I49/colorchip-interior.png")
+                .imgType(1).build();
+        FindSelfOptionResponse black = FindSelfOptionResponse.builder()
+                .id(13L).rate(60).price(0)
+                .name("퀄팅천연(블랙)")
+                .feedback("블랙 컬러는 클래식한 분위기에요! 클래식한 분위기를 원하신다면, 탁월한 선택입니다.")
+                .images(List.of(blackBigImg, blackSmallImg)).details(List.of()).build();
+
+        FindOptionImageResponse grayBigImg = FindOptionImageResponse.builder()
+                .imgUrl("https://www.hyundai.com/contents/vr360/LX06/interior/YJY/img-interior.png")
+                .imgType(0).build();
+        FindOptionImageResponse graySmallImg = FindOptionImageResponse.builder()
+                .imgUrl("https://www.hyundai.com/contents/vr360/LX06/interior/YJY/colorchip-interior.png")
+                .imgType(1).build();
+        FindSelfOptionResponse gray = FindSelfOptionResponse.builder()
+                .id(14L).rate(40).price(0)
+                .name("쿨그레이")
+                .feedback("쿨그레이는 환한 분위기에요! 환한 분위기를 원하신다면, 탁월한 선택입니다.")
+                .images(List.of(grayBigImg, graySmallImg)).details(List.of()).build();
+
+        assertResponseAndExpected(response, List.of(black, gray));
+    }
+
     private void assertResponseAndExpected(ExtractableResponse<Response> response, List<FindSelfOptionResponse> expectedResponses) {
         SuccessResponse<List<FindSelfOptionResponse>> successResponse = response.body().as(new TypeRef<>() {
         });
