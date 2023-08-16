@@ -12,8 +12,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentCarCustomizationBinding
-import com.youngcha.ohmycarset.enums.AdditionalTab
-import com.youngcha.ohmycarset.model.car.Car
 import com.youngcha.ohmycarset.model.car.OptionInfo
 import com.youngcha.ohmycarset.ui.adapter.viewpager.CarOptionPagerAdapter
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
@@ -31,7 +29,6 @@ class CarCustomizationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCarCustomizationBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -44,7 +41,6 @@ class CarCustomizationFragment : Fragment() {
         binding.apply {
             viewModel = carViewModel
             lifecycleOwner = this@CarCustomizationFragment
-
             vpOptionContainer.adapter = CarOptionPagerAdapter(carViewModel)
             attachTabLayoutMediator()
             setupRecyclerView()
@@ -188,7 +184,7 @@ class CarCustomizationFragment : Fragment() {
 
         val optionInfos = carViewModel.getOptionInfoByKey(tabName)
         if (optionInfos != null) {
-            if (carViewModel.subOptionVerticalButtonVisible.value == 0) {
+            if (carViewModel.subOptionButtonVisible.value == 0) {
                 displayOnRecyclerView(optionInfos, tabName)
             } else {
                 displayOnViewPager(optionInfos, tabName)

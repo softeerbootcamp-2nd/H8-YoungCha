@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel" />
+    </data>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_gravity="bottom">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:paddingTop="32dp">
+
+            <TextView
+                android:id="@+id/tv_estimate_summary_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/hyundai_sans_head_bold"
+                android:gravity="start"
+                android:text="@string/estimate_summary"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_total_price"
+                app:layout_constraintEnd_toStartOf="@id/tv_total_price"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_total_price" />
+
+            <TextView
+                android:id="@+id/tv_total_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/hyundai_sans_head_medium"
+                android:gravity="end"
+                android:textColor="@color/main_hyundai_blue"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_estimate_summary_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_estimate_summary_title"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="46,030,000원" />
+
+            <View
+                android:id="@+id/v_main_option_view"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginTop="36dp"
+                android:background="@color/cool_grey_001"
+                app:layout_constraintTop_toBottomOf="@id/tv_total_price" />
+
+            <TextView
+                android:id="@+id/tv_car_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/hyundai_sans_head_bold"
+                android:gravity="start"
+                android:text="@{viewModel.selectedCar.name}"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/v_main_option_view"
+                app:layout_constraintEnd_toStartOf="@id/tv_main_option_price"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/v_main_option_view"
+                tools:text="팰리세이드 르블랑" />
+
+            <TextView
+                android:id="@+id/tv_main_option_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/hyundai_sans_head_medium"
+                android:gravity="end"
+                android:textColor="@color/main_hyundai_blue"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/v_main_option_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_car_name"
+                app:layout_constraintTop_toTopOf="@id/v_main_option_view"
+                tools:text="43,460,000원" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_main_option"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_main_option_view"
+                app:myCarData="@{viewModel.myCar}"
+                app:viewType='@{"main"}'
+                tools:itemCount="5"
+                tools:listitem="@layout/item_estimate_summary" />
+
+            <View
+                android:id="@+id/v_option_color_view"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginTop="24dp"
+                android:background="@color/cool_grey_001"
+                app:layout_constraintTop_toBottomOf="@id/rv_main_option" />
+
+            <TextView
+                android:id="@+id/tv_color"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/hyundai_sans_head_bold"
+                android:gravity="start"
+                android:text="@string/color"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/v_option_color_view"
+                app:layout_constraintEnd_toStartOf="@id/tv_main_option_price"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/v_option_color_view" />
+
+            <TextView
+                android:id="@+id/tv_color_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/hyundai_sans_head_medium"
+                android:gravity="end"
+                android:textColor="@color/main_hyundai_blue"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/v_option_color_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_car_name"
+                app:layout_constraintTop_toTopOf="@id/v_option_color_view"
+                tools:text="43,460,000원" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_color_option"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:maxHeight="200dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_option_color_view"
+                app:myCarData="@{viewModel.myCar}"
+                app:viewType='@{"color"}'
+                tools:itemCount="5"
+                tools:listitem="@layout/item_estimate_summary" />
+
+            <View
+                android:id="@+id/v_sub_option_view"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginTop="24dp"
+                android:background="@color/cool_grey_001"
+                app:layout_constraintTop_toBottomOf="@id/rv_color_option" />
+
+            <TextView
+                android:id="@+id/tv_sub_option"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/hyundai_sans_head_bold"
+                android:gravity="start"
+                android:text="@string/sub_option"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/v_sub_option_view"
+                app:layout_constraintEnd_toStartOf="@id/tv_sub_option_price"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/v_sub_option_view" />
+
+            <TextView
+                android:id="@+id/tv_sub_option_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/hyundai_sans_head_medium"
+                android:gravity="end"
+                android:textColor="@color/main_hyundai_blue"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/v_sub_option_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_sub_option"
+                app:layout_constraintTop_toTopOf="@id/v_sub_option_view"
+                tools:text="123,123,123원" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_sub_option"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:maxHeight="200dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_sub_option_view"
+                app:myCarData="@{viewModel.myCar}"
+                app:viewType='@{"sub"}'
+                tools:itemCount="5"
+                tools:listitem="@layout/item_estimate_summary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

@@ -113,6 +113,9 @@
     <string name="strength">내 차는 이런 부분에서 강했으면 좋겠어요</string>
     <string name="important">나는 차를 탈 때 이런게 중요해요</string>
     <string name="use">나는 차를 이렇게 활용하고 싶어요</string>
+    <string name="estimate_summary">견적 요약</string>
+    <string name="color">색상</string>
+    <string name="sub_option">옵션</string>
 
 
 </resources>
