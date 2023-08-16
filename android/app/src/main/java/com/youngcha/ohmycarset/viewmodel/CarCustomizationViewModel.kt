@@ -28,7 +28,7 @@ class CarCustomizationViewModel : ViewModel() {
     private val _myCar = MutableLiveData<List<Map<String, List<OptionInfo>>>>()
     val myCar: LiveData<List<Map<String, List<OptionInfo>>>> = _myCar
 
-    private val _currentType = MutableLiveData<String>()
+    private val _currentType = MutableLiveData<String>("SelfMode")
     val currentType: LiveData<String> = _currentType
 
     /*
@@ -71,6 +71,10 @@ class CarCustomizationViewModel : ViewModel() {
                     ?.get(componentName) ?: emptyList()
             currentOptionList.value = optionList
         }
+    }
+
+    fun updateCurrentType(currentType: String) {
+        _currentType.value = currentType
     }
 
     fun updateTabInformation(car: Car) {

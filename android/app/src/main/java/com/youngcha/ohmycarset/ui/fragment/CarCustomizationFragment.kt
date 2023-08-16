@@ -64,21 +64,13 @@ class CarCustomizationFragment : Fragment() {
             }
 
             override fun onModeChangeClick() {
-                showSnackbar("Mode change clicked!")
                 val dialog = ButtonDialogView(requireContext(), ButtonDialog("Vertical", R.drawable.ic_change, "모델을 변경하시겠어요?", ButtonHorizontal(
-                    "", 1, "", ""), ButtonVertical("GuideMode")
+                    "", 1, "", ""), ButtonVertical(carViewModel.currentType.value!!)
                 )
                 )
 
                 dialog.setOnVerticalButtonClickListener { value ->
-                    when (value) {
-                        "SelfMode" -> {
-                            view?.let { it1 -> Snackbar.make(it1, "SelfMode", Snackbar.LENGTH_SHORT).show() }
-                        }
-                        "GuideMode" -> {
-                            view?.let { it1 -> Snackbar.make(it1, "GuideMode", Snackbar.LENGTH_SHORT).show() }
-                        }
-                    }
+                    carViewModel.updateCurrentType(value)
                 }
 
                 dialog.show()
