@@ -69,7 +69,7 @@ public class OptionRepository {
                 "options.category_id AS optionsCategoryId, " +
                 "options_image.img_url AS optionsImgUrl " +
                 "FROM trim " +
-                "JOIN trim_options ON trim.id = trim_options.trim_id AND trim_options.type = ?" +
+                "JOIN trim_options ON trim.id = trim_options.trim_id AND trim_options.type = ? " +
                 "JOIN options ON trim_options.options_id = options.id AND options.category_id = ? " +
                 "LEFT JOIN options_image ON options.id = options_image.options_id " +
                 "WHERE trim.id = ? " +
