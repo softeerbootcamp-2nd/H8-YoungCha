@@ -50,7 +50,7 @@ public class EstimateRepository {
                         "then 1 else 0 end))" +
                         "from estimate as e",
                 params, Integer.class);
-        if(rate == null){
+        if (rate == null) {
             return 0;
         }
         return rate;
