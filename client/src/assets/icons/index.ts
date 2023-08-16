@@ -7,6 +7,7 @@ import MainBelowArrow from './main-below-arrow';
 import MainOutsideColor from './main-outside-color';
 import CheckInactive from './select-check-inactive';
 import CheckActive from './select-check';
+import Spanner from './Spanner';
 import MoreViewArrow from './more-view-arrow';
 import InactiveRound from './prepare-guide/InactiveRound';
 
@@ -20,6 +21,7 @@ export {
   MainOutsideColor,
   CheckInactive,
   CheckActive,
+  Spanner,
   MoreViewArrow,
   InactiveRound,
 };
