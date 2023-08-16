@@ -244,7 +244,6 @@ class TrimServiceTest {
             //then
             softAssertions.assertThat(actualResponse)
                     .usingRecursiveComparison()
-                    .ignoringCollectionOrder()
                     .isEqualTo(expectedResponse);
         }
 
@@ -268,7 +267,6 @@ class TrimServiceTest {
             //then
             softAssertions.assertThat(actualResponse)
                     .usingRecursiveComparison()
-                    .ignoringCollectionOrder()
                     .isEqualTo(expectedResponse);
         }
 
@@ -292,7 +290,6 @@ class TrimServiceTest {
             //then
             softAssertions.assertThat(actualResponse)
                     .usingRecursiveComparison()
-                    .ignoringCollectionOrder()
                     .isEqualTo(expectedResponse);
         }
     }

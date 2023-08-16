@@ -52,7 +52,6 @@ public class OptionDefaultComponentsTest {
 
         //then
         Assertions.assertThat(actualDefaultOptionSummaries)
-                .usingRecursiveComparison()
                 .isEqualTo(expectedDefaultOptionSummaries.subList(0, 5));
     }
 
@@ -68,7 +67,6 @@ public class OptionDefaultComponentsTest {
 
         //then
         Assertions.assertThat(actualDefaultOptionSummaries)
-                .usingRecursiveComparison()
                 .isEqualTo(expectedDefaultOptionSummaries.subList(5, 7));
     }
 

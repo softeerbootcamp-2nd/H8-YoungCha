@@ -70,7 +70,6 @@ class TrimDefaultComponentsIntegrationTest extends IntegrationTestBase {
         softAssertions.assertThat(responseBodyData.getContents().size()).isEqualTo(pageSize);
         softAssertions.assertThat(responseBodyData.getContents())
                 .usingRecursiveComparison()
-                .ignoringCollectionOrder()
                 .isEqualTo(defaultOptionSummaries.subList(0, 3));
     }
 
@@ -110,7 +109,6 @@ class TrimDefaultComponentsIntegrationTest extends IntegrationTestBase {
         softAssertions.assertThat(responseBodyData.getContents().size()).isEqualTo(pageSize);
         softAssertions.assertThat(responseBodyData.getContents())
                 .usingRecursiveComparison()
-                .ignoringCollectionOrder()
                 .isEqualTo(defaultOptionSummaries.subList(3, 6));
     }
 
@@ -149,7 +147,6 @@ class TrimDefaultComponentsIntegrationTest extends IntegrationTestBase {
         softAssertions.assertThat(responseBodyData.getContents().size()).isEqualTo(1);
         softAssertions.assertThat(responseBodyData.getContents())
                 .usingRecursiveComparison()
-                .ignoringCollectionOrder()
                 .isEqualTo(defaultOptionSummaries.subList(6, 7));
     }
 }
