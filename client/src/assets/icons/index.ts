@@ -8,6 +8,10 @@ import MainOutsideColor from './main-outside-color';
 import CheckInactive from './select-check-inactive';
 import CheckActive from './select-check';
 import MoreViewArrow from './more-view-arrow';
+import CryingFaceIcon from './CryingFaceIcon';
+import ModeChangeIcon from './ModeChangeIcon';
+import ModelChangeIcon from './ModelChangeIcon';
+import RecommendationIcon from './RecommendationIcon';
 
 export {
   HyundaiLogo,
@@ -20,4 +24,8 @@ export {
   CheckInactive,
   CheckActive,
   MoreViewArrow,
+  CryingFaceIcon,
+  ModeChangeIcon,
+  ModelChangeIcon,
+  RecommendationIcon,
 };
