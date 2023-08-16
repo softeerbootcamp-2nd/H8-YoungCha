@@ -28,6 +28,9 @@ class CarCustomizationViewModel : ViewModel() {
     private val _myCar = MutableLiveData<List<Map<String, List<OptionInfo>>>>()
     val myCar: LiveData<List<Map<String, List<OptionInfo>>>> = _myCar
 
+    private val _currentType = MutableLiveData<String>()
+    val currentType: LiveData<String> = _currentType
+
     /*
     파워트레인, 구동 방식, 바디 타입등 선택할 수 있는 옵션이 2개이하라면 Horizontal Two Button 으로 선택 가능
     그 중 componentOption1Visibility는 왼쪽 버튼이 선택 됐을 경우 버튼 layout 변경 (ex: background....)
