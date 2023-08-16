@@ -11,8 +11,8 @@ public enum SelectiveCategory {
     INTERIOR_COLOR("내장 색상", "interior_color"),
     WHEEL("휠", "wheel");
 
-    private String name;
-    private String column;
+    private final String name;
+    private final String column;
 
     SelectiveCategory(String name, String column){
         this.name = name;

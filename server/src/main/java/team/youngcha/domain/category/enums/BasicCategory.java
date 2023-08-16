@@ -14,7 +14,7 @@ public enum BasicCategory {
     CONVENIENCE("편의"),
     MULTIMEDIA("멀티미디어");
 
-    private String name;
+    private final String name;
 
     BasicCategory(String name) {
         this.name = name;
