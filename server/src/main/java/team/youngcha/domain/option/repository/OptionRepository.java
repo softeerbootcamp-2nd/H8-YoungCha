@@ -22,11 +22,10 @@ public class OptionRepository {
     public List<Option> findOptionsByTrimIdAndType(Long trimId, OptionType type, SelectiveCategory name) {
 
         return jdbcTemplate.query("select * from options " +
-                        "join category on options.category_id = category.id " +
-                        "and category.name = '" + name.getName() + "' " +
+                        "join category on options.category_id = category.id and category.name = ? " +
                         "join trim_options on options.id = trim_options.options_id " +
                         "and trim_options.trim_id = ? and trim_options.type = ? ",
-                optionRowMapper, trimId, type.getType());
+                optionRowMapper, name.getName(), trimId, type.getType());
     }
 
     private static class OptionRowMapper implements RowMapper<Option> {
