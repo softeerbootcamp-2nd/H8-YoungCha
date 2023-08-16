@@ -70,6 +70,7 @@ class CarCustomizationFragment : Fragment() {
                 )
 
                 dialog.setOnVerticalButtonClickListener { value ->
+                    if (value == carViewModel.currentType.value!!) return@setOnVerticalButtonClickListener
                     carViewModel.updateCurrentType(value)
                 }
 
