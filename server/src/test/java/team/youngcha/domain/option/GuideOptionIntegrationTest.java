@@ -105,11 +105,13 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
         FindGuideOptionResponse optionResponse1 = FindGuideOptionResponse.builder()
                 .id(1L).rate(20).price(1480000)
                 .name("디젤 2.2").checked(false)
+                .feedback("디젤 엔진은 효율이 좋아요! 효율을 중시한다면, 탁월한 선택입니다.")
                 .tags(List.of())
                 .images(List.of(dieselImage))
                 .details(List.of(dieselDetail)).build();
         FindGuideOptionResponse optionResponse2 = FindGuideOptionResponse.builder()
                 .id(2L).rate(80).price(0)
+                .feedback("가솔린 엔진은 조용해요! 조용한 주행을 원하신다면, 탁월한 선택입니다.")
                 .name("가솔린 3.8").checked(true)
                 .tags(List.of(tag))
                 .images(List.of(gasolineImage))
