@@ -12,22 +12,19 @@ function ModeSelectCard({
   mode,
   description,
 }: ModeSelectCardProps) {
+  const borderColor =
+    mode === '셀프 모드'
+      ? 'border-main-blue mt-20px'
+      : 'border-sub-blue bg-sub-blue mt-12px';
+  const titleTextColor = mode === '셀프 모드' ? '' : 'text-white';
+  const tagTextColor = mode === '셀프 모드' ? 'opacity-50' : 'text-white';
+
   return (
     <div
-      className={`${
-        mode === '셀프 모드'
-          ? 'border-main-blue mt-20px'
-          : 'border-sub-blue bg-sub-blue mt-12px'
-      } rounded-6px w-301px h-116px border-1px pt-18px pb-24px pl-18px pr-10px m-4px`}
+      className={`${borderColor} rounded-6px w-301px h-116px border-1px pt-18px pb-24px pl-18px pr-10px m-4px`}
     >
       <div className="flex">
-        <span
-          className={`${
-            mode === '셀프 모드' ? '' : 'text-white'
-          } title5 font-medium`}
-        >
-          {mode}
-        </span>
+        <span className={`${titleTextColor} title5 font-medium`}>{mode}</span>
         {mode === '셀프 모드' && currentMode === 'self' && (
           <span className="text-main-blue text-10px font-medium rounded-2px bg-tag-skyblue py-2px px-5px ml-5px">
             {PROGRESSING_NOW}
@@ -40,11 +37,7 @@ function ModeSelectCard({
         )}
       </div>
       <div className="mt-10px flex flex-wrap">
-        <div
-          className={`${
-            mode === '셀프 모드' ? 'opacity-50' : 'text-white'
-          } body3`}
-        >
+        <div className={`${tagTextColor} body3`}>
           <p className="whitespace-pre-wrap">{description}</p>
         </div>
         <div className="absolute left-285px">
