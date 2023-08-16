@@ -11,6 +11,7 @@ import team.youngcha.common.exception.CustomException;
 import team.youngcha.domain.car.dto.CarDetails;
 import team.youngcha.domain.car.dto.FindCarDetailsResponse;
 import team.youngcha.domain.car.entity.Car;
+import team.youngcha.domain.car.repository.CarDetailsRepository;
 import team.youngcha.domain.car.repository.CarRepository;
 import team.youngcha.domain.trim.dto.TrimDetail;
 import team.youngcha.domain.trim.service.TrimService;
@@ -32,6 +33,9 @@ class CarServiceTest {
 
     @Mock
     CarRepository carRepository;
+
+    @Mock
+    CarDetailsRepository carDetailsRepository;
 
     @Mock
     TrimService trimService;
@@ -58,7 +62,7 @@ class CarServiceTest {
     void findDetailsNoResult() {
         //given
         given(carRepository.findById(anyLong())).willReturn(Optional.of(mock(Car.class)));
-        given(carRepository.findDetails(anyLong())).willReturn(new ArrayList<>());
+        given(carDetailsRepository.findDetails(anyLong())).willReturn(new ArrayList<>());
 
         //when
         CustomException customException = assertThrows(CustomException.class, () -> carService.findDetails(1L));
@@ -82,7 +86,7 @@ class CarServiceTest {
                 mock(TrimDetail.class)));
 
         given(carRepository.findById(anyLong())).willReturn(Optional.of(car));
-        given(carRepository.findDetails(anyLong())).willReturn(carDetails);
+        given(carDetailsRepository.findDetails(anyLong())).willReturn(carDetails);
         given(trimService.extractTrimDetailsFromCarDetailsDtos(anyList())).willReturn(trimDetails);
 
         //when
