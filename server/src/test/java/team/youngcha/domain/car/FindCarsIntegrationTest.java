@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.jdbc.Sql;
 import team.youngcha.IntegrationTestBase;
 import team.youngcha.common.dto.SuccessResponse;
 import team.youngcha.domain.car.dto.CarResponse;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Sql("classpath:data/car.sql")
 public class FindCarsIntegrationTest extends IntegrationTestBase {
 
     @Test
@@ -24,12 +26,7 @@ public class FindCarsIntegrationTest extends IntegrationTestBase {
         //given
         String url = "/cars";
 
-        jdbcTemplate.execute("INSERT INTO car VALUES " +
-                "(1, '팰리세이드'), " +
-                "(2, '아반떼'), " +
-                "(3, '소나타')");
-
-        List<CarResponse> carResponses = Stream.of(new Car(1L, "팰리세이드"), new Car(2L, "아반떼"), new Car(3L, "소나타"))
+        List<CarResponse> carResponses = Stream.of(new Car(1L, "팰리세이드"), new Car(2L, "넥쏘"), new Car(3L, "디올 뉴 싼타페"))
                 .map(CarResponse::new)
                 .collect(Collectors.toList());
 
