@@ -48,7 +48,7 @@ export const ChangeToSelfModePopUp = {
 export const ChangeToGasolinePopUp = {
   title: '[가솔린 3.8]으로 변경하시겠어요?',
   ImgSrc: Icon.ModelChangeIcon,
-  singleLine: "[듀얼 패키지 머플러]는 '디젤 2.2'만 선택 가능해요.",
+  description: "[듀얼 패키지 머플러]는 '디젤 2.2'만 선택 가능해요.",
   greyButtonContent: '안할래요',
   blueButtonContent: '변경할래요!',
 };

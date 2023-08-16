@@ -43,7 +43,7 @@ export const PowerTrainChange: Story = {
           imgSrc={<ChangeToGasolinePopUp.ImgSrc />}
         />
         <PopUp.CenteredDescription
-          description={ChangeToGasolinePopUp.singleLine}
+          description={ChangeToGasolinePopUp.description}
         />
         <PopUp.DualMufflerImg />
         <PopUp.PopUpButton
