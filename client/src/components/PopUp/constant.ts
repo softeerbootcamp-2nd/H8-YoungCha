@@ -1,5 +1,7 @@
 import * as Icon from '@/assets/icons';
 
+export const SELF_MODE = '셀프 모드';
+export const GUIDE_MODE = '가이드 모드';
 export const PROGRESSING_NOW = '현재 진행 중';
 
 export const ExitPopUp = {

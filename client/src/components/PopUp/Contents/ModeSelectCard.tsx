@@ -1,5 +1,5 @@
 import ChevronRight from '@/assets/icons/ChevronRight';
-import { PROGRESSING_NOW } from '../constant';
+import { SELF_MODE, GUIDE_MODE, PROGRESSING_NOW } from '../constant';
 
 interface ModeSelectCardProps {
   currentMode: string;
@@ -13,11 +13,11 @@ function ModeSelectCard({
   description,
 }: ModeSelectCardProps) {
   const borderColor =
-    mode === '셀프 모드'
+    mode === SELF_MODE
       ? 'border-main-blue mt-20px'
       : 'border-sub-blue bg-sub-blue mt-12px';
-  const titleTextColor = mode === '셀프 모드' ? '' : 'text-white';
-  const tagTextColor = mode === '셀프 모드' ? 'opacity-50' : 'text-white';
+  const titleTextColor = mode === SELF_MODE ? '' : 'text-white';
+  const tagTextColor = mode === SELF_MODE ? 'opacity-50' : 'text-white';
 
   return (
     <div
@@ -25,12 +25,12 @@ function ModeSelectCard({
     >
       <div className="flex">
         <span className={`${titleTextColor} title5 font-medium`}>{mode}</span>
-        {mode === '셀프 모드' && currentMode === 'self' && (
+        {mode === SELF_MODE && currentMode === 'self' && (
           <span className="text-main-blue text-10px font-medium rounded-2px bg-tag-skyblue py-2px px-5px ml-5px">
             {PROGRESSING_NOW}
           </span>
         )}
-        {mode === '가이드 모드' && currentMode === 'guide' && (
+        {mode === GUIDE_MODE && currentMode === 'guide' && (
           <span className="text-main-blue text-10px font-medium rounded-2px bg-tag-skyblue py-2px px-5px ml-5px opacity-80">
             {PROGRESSING_NOW}
           </span>
@@ -41,7 +41,7 @@ function ModeSelectCard({
           <p className="whitespace-pre-wrap">{description}</p>
         </div>
         <div className="absolute left-285px">
-          {mode === '셀프 모드' ? (
+          {mode === SELF_MODE ? (
             <ChevronRight size={24} />
           ) : (
             <ChevronRight size={24} color={'white'} />
