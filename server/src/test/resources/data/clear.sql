@@ -1,0 +1,16 @@
+DELETE FROM dictionary;
+DELETE FROM spec;
+DELETE FROM options_keyword;
+DELETE FROM options_detail;
+DELETE FROM options_relation;
+DELETE FROM options_image;
+DELETE FROM trim_options;
+DELETE FROM sell_selective_options;
+DELETE FROM estimate_selective_options;
+DELETE FROM sell;
+DELETE FROM estimate;
+DELETE FROM `options`;
+DELETE FROM keyword;
+DELETE FROM category;
+DELETE FROM `trim`;
+DELETE FROM car;

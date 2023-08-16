@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import team.youngcha.domain.category.enums.SelectiveCategory;
 
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,8 @@ class SellRepositoryTest {
         List<Long> optionIds = List.of(1L, 2L);
 
         //when
-        Map<Long, Long> counts = sellRepository.countPowerTrainByTrimIdAndContainPowerTrainIds(trimId, optionIds);
+        Map<Long, Long> counts = sellRepository.
+                countOptionsByTrimIdAndContainOptionsIds(trimId, optionIds, SelectiveCategory.POWER_TRAIN);
 
         //then
         assertThat(counts.size()).isEqualTo(2);

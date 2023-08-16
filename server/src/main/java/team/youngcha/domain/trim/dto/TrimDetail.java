@@ -1,8 +1,10 @@
 package team.youngcha.domain.trim.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import team.youngcha.domain.option.dto.OptionSummary;
 
 import java.util.ArrayList;
@@ -10,40 +12,41 @@ import java.util.List;
 
 @Getter
 @Schema(description = "트림 상세정보")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TrimDetail {
 
     @Schema(description = "트림 id")
-    private final Long id;
+    private Long id;
 
     @Schema(description = "트림 이름")
-    private final String name;
+    private String name;
 
     @Schema(description = "트림 이미지 주소")
-    private final String imgUrl;
+    private String imgUrl;
 
     @Schema(description = "트림 배경 이미지 주소")
-    private final String backgroundImgUrl;
+    private String backgroundImgUrl;
 
     @Schema(description = "해시 태그")
-    private final String hashTag;
+    private String hashTag;
 
     @Schema(description = "트림 설명")
-    private final String description;
+    private String description;
 
     @Schema(description = "베스트 셀러")
-    private final boolean best;
+    private boolean best;
 
     @Schema(description = "트림 최소 가격")
-    private final int price;
+    private int price;
 
     @Schema(description = "핵심 옵션")
-    private final List<OptionSummary> mainOptions;
+    private List<OptionSummary> mainOptions;
 
     @Schema(description = "외장 색상 옵션")
-    private final List<OptionSummary> exteriorColors;
+    private List<OptionSummary> exteriorColors;
 
     @Schema(description = "내장 색상 옵션")
-    private final List<OptionSummary> interiorColors;
+    private List<OptionSummary> interiorColors;
 
     @Builder
     public TrimDetail(Long id, String name, String backgroundImgUrl, String imgUrl, String hashTag, String description, boolean best, int price) {

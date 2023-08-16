@@ -1,6 +1,5 @@
 package team.youngcha.domain.dictionary;
 
-import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -31,15 +30,10 @@ public class DictionaryIntegrationTest extends IntegrationTestBase {
                 "엔진에서 구동바퀴사이의 모든 기관을 지칭하는 말이에요. 자동차 플랫폼과 비슷한 뜻이에요.",
                 null);
 
+        String url = "/car-make/dictionary";
+
         //when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-
-                .when()
-                .get("/car-make/dictionary")
-
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = callEndpoint(url, null);
 
         //then
         SuccessResponse<List<FindDictionaryResponse>> successResponse = response.body().as(new TypeRef<>() {

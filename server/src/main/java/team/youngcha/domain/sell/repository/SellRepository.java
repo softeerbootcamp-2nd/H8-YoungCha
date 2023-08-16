@@ -1,16 +1,15 @@
 package team.youngcha.domain.sell.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.sell.entity.Sell;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,25 +21,30 @@ public class SellRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final RowMapper<Sell> sellRowMapper = new SellRowMapper();
 
-    public Map<Long, Long> countPowerTrainByTrimIdAndContainPowerTrainIds(Long trimId, List<Long> powerTrainIds) {
-        List<Map<String, Object>> results = querySellCounts(namedParameterJdbcTemplate, trimId, powerTrainIds);
+    public Map<Long, Long> countOptionsByTrimIdAndContainOptionsIds(Long trimId, List<Long> optionIds,
+                                                                    SelectiveCategory category) {
+        List<Map<String, Object>> results = querySellCounts(namedParameterJdbcTemplate, trimId,
+                optionIds, category);
 
         return results.stream()
                 .collect(Collectors.toMap(
-                        row -> (Long) row.get("engine_id"),
+                        row -> (Long) row.get(category.getColumn() + "_id"),
                         row -> (Long) row.get("count")
                 ));
     }
 
-    private List<Map<String, Object>> querySellCounts(NamedParameterJdbcTemplate namedParameterJdbcTemplate, Long trimId, List<Long> powerTrainIds) {
+    private List<Map<String, Object>> querySellCounts(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+                                                      Long trimId, List<Long> optionIds,
+                                                      SelectiveCategory category) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
-        params.addValue("powerTrainIds", powerTrainIds);
+        params.addValue("optionIds", optionIds);
 
+        String column = category.getColumn() + "_id";
         return namedParameterJdbcTemplate.queryForList(
-                "select sell.engine_id, COUNT(*) as count from sell " +
-                        "where sell.engine_id in (:powerTrainIds) and sell.trim_id in (:trimId)" +
-                        "group by sell.engine_id",
+                "select sell." + column + ", COUNT(*) as count from sell " +
+                        "where sell." + column + " in (:optionIds) and sell.trim_id = (:trimId) " +
+                        "group by sell." + column,
                 params);
     }
 

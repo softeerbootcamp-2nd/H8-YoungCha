@@ -1,15 +1,6 @@
 package team.youngcha.domain.category.enums;
 
-import lombok.Getter;
-
-@Getter
-public enum CategoryName {
-    POWER_TRAIN("파워 트레인"),
-    DRIVING_SYSTEM("구동 방식"),
-    BODY_TYPE("바디 타입"),
-    EXTERIOR_COLOR("외장 색상"),
-    INTERIOR_COLOR("내장 색상"),
-    WHEEL("휠"),
+public enum BasicCategory {
     SYSTEM("시스템"),
     TEMPERATURE_MANAGEMENT("온도 관리"),
     EXTERIOR_DEVICE("외부 장치"),
@@ -23,9 +14,9 @@ public enum CategoryName {
     CONVENIENCE("편의"),
     MULTIMEDIA("멀티미디어");
 
-    private String value;
+    private String name;
 
-    CategoryName(String value) {
-        this.value = value;
+    BasicCategory(String name) {
+        this.name = name;
     }
 }

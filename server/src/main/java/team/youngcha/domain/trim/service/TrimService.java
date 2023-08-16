@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import team.youngcha.common.exception.CustomException;
 import team.youngcha.domain.car.dto.CarDetails;
-import team.youngcha.domain.category.enums.CategoryName;
+import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.dto.DefaultOptionSummary;
 import team.youngcha.domain.option.dto.OptionSummary;
 import team.youngcha.domain.option.repository.OptionRepository;
@@ -66,11 +66,11 @@ public class TrimService {
             trimDetail.getMainOptions().add(option);
             return;
         }
-        if (dto.getOptionCategoryName().equals(CategoryName.EXTERIOR_COLOR.getValue())) {
+        if (dto.getOptionCategoryName().equals(SelectiveCategory.EXTERIOR_COLOR.getName())) {
             trimDetail.getExteriorColors().add(option);
             return;
         }
-        if (dto.getOptionCategoryName().equals(CategoryName.INTERIOR_COLOR.getValue())) {
+        if (dto.getOptionCategoryName().equals(SelectiveCategory.INTERIOR_COLOR.getName())) {
             trimDetail.getInteriorColors().add(option);
         }
     }

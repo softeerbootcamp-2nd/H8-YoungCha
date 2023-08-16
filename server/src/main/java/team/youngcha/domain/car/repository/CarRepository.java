@@ -8,10 +8,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import team.youngcha.domain.car.dto.CarDetails;
 import team.youngcha.domain.car.entity.Car;
-import team.youngcha.domain.category.enums.CategoryName;
+import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.enums.OptionImageType;
 import team.youngcha.domain.trim.enums.TrimOptionType;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +22,7 @@ import java.util.Optional;
 public class CarRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<Car> carRowMapper = BeanPropertyRowMapper.newInstance(Car.class);
+    private final RowMapper<Car> carRowMapper = new CarRowMapper();
     private final RowMapper<CarDetails> carDetailsDtoRowMapper = BeanPropertyRowMapper.newInstance(CarDetails.class);
 
     public Optional<Car> findById(Long carId) {
@@ -70,8 +72,15 @@ public class CarRepository {
                 OptionImageType.LOGO.getValue(),
                 carId,
                 TrimOptionType.MAIN.getValue(),
-                CategoryName.EXTERIOR_COLOR.getValue(),
-                CategoryName.INTERIOR_COLOR.getValue(),
+                SelectiveCategory.EXTERIOR_COLOR.getName(),
+                SelectiveCategory.INTERIOR_COLOR.getName(),
                 OptionImageType.SUB.getValue());
+    }
+
+    private static class CarRowMapper implements RowMapper<Car> {
+        @Override
+        public Car mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            return new Car(resultSet.getLong("id"), resultSet.getString("name"));
+        }
     }
 }
