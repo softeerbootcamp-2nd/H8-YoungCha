@@ -29,6 +29,7 @@
     <string name="palisade_name_kr">팰리세이드</string>
     <string name="leblanc_name_en">Le Blanc</string>
     <string name="leblanc_name_kr">르블랑</string>
+    <string name="leblanc_name">Le Blanc (르블랑)</string>
     <string name="leblanc_name_tag">#베스트셀러</string>
     <string name="leblanc_price_kr">38,960,000원 부터</string>
 
@@ -113,6 +114,24 @@
     <string name="strength">내 차는 이런 부분에서 강했으면 좋겠어요</string>
     <string name="important">나는 차를 탈 때 이런게 중요해요</string>
     <string name="use">나는 차를 이렇게 활용하고 싶어요</string>
+
+    <string name="modify">수정</string>
+    <string name="estimate_detail">견적 자세히 보기</string>
+    <string name="trim">트림</string>
+    <string name="chooser_option">선택 옵션</string>
+
+    <string name="interior">내부</string>
+    <string name="exterior">외부</string>
+
+    <string name="option_txt">옵션</string>
+    <string name="estimate_main_text">나를 위한 팰리세이드가\n완성되었어요!</string>
+    <string name="estimate_summary">견적 요약</string>
+    <string name="color">색상</string>
+
+    <string name="request_purchase_consultation">구매 상담 신청</string>
+    <string name="request_driving">시승 신청하기</string>
+    <string name="share">공유하기</string>
+    <string name="save">저장하기</string>
 
 
 </resources>
