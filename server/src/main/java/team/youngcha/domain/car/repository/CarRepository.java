@@ -8,10 +8,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import team.youngcha.domain.car.dto.CarDetails;
 import team.youngcha.domain.car.entity.Car;
-import team.youngcha.domain.category.enums.CategoryName;
+import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.enums.OptionImageType;
 import team.youngcha.domain.trim.enums.TrimOptionType;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +22,7 @@ import java.util.Optional;
 public class CarRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<Car> carRowMapper = BeanPropertyRowMapper.newInstance(Car.class);
+    private final RowMapper<Car> carRowMapper = new CarRowMapper();
     private final RowMapper<CarDetails> carDetailsDtoRowMapper = BeanPropertyRowMapper.newInstance(CarDetails.class);
 
     public Optional<Car> findById(Long carId) {
@@ -37,30 +39,30 @@ public class CarRepository {
     public List<CarDetails> findDetails(Long carId) {
         String sql =
                 "SELECT * " +
-                "FROM (" +
+                        "FROM (" +
                         "SELECT " +
-                            "car.id AS carId, " +
-                            "car.name AS carName, " +
-                            "trim.id AS trimId, " +
-                            "trim.name AS trimName, " +
-                            "trim.img_url AS trimImgUrl, " +
-                            "trim.background_img_url AS trimBackgroundImgUrl, " +
-                            "trim.hashtag AS trimHashTag, " +
-                            "trim.price AS trimPrice, " +
-                            "trim.description AS trimDescription, " +
-                            "trim_options.type AS trimOptionType, " +
-                            "options.name AS optionName, " +
-                            "category.name AS optionCategoryName, " +
-                            "options_image.img_url AS optionImgUrl, " +
-                            "options_image.img_type AS optionImgType " +
+                        "car.id AS carId, " +
+                        "car.name AS carName, " +
+                        "trim.id AS trimId, " +
+                        "trim.name AS trimName, " +
+                        "trim.img_url AS trimImgUrl, " +
+                        "trim.background_img_url AS trimBackgroundImgUrl, " +
+                        "trim.hashtag AS trimHashTag, " +
+                        "trim.price AS trimPrice, " +
+                        "trim.description AS trimDescription, " +
+                        "trim_options.type AS trimOptionType, " +
+                        "options.name AS optionName, " +
+                        "category.name AS optionCategoryName, " +
+                        "options_image.img_url AS optionImgUrl, " +
+                        "options_image.img_type AS optionImgType " +
                         "FROM car " +
-                            "JOIN trim ON trim.car_id = car.id " +
-                            "LEFT JOIN (SELECT * FROM trim_options WHERE NOT type = ?) trim_options ON trim.id = trim_options.trim_id " +
-                            "LEFT JOIN options ON trim_options.options_id = options.id " +
-                            "LEFT JOIN category ON options.category_id = category.id " +
-                            "LEFT JOIN (SELECT * FROM options_image WHERE NOT img_type = ?) options_image ON options.id = options_image.options_id " +
+                        "JOIN trim ON trim.car_id = car.id " +
+                        "LEFT JOIN (SELECT * FROM trim_options WHERE NOT type = ?) trim_options ON trim.id = trim_options.trim_id " +
+                        "LEFT JOIN options ON trim_options.options_id = options.id " +
+                        "LEFT JOIN category ON options.category_id = category.id " +
+                        "LEFT JOIN (SELECT * FROM options_image WHERE NOT img_type = ?) options_image ON options.id = options_image.options_id " +
                         "WHERE car.id = ?) inner_table " +
-                "WHERE trimName = 'Guide Mode' " +
+                        "WHERE trimName = 'Guide Mode' " +
                         "OR trimOptionType = ? " +
                         "OR optionCategoryName = ? " +
                         "OR optionCategoryName = ? AND optionImgType = ?";
@@ -70,8 +72,15 @@ public class CarRepository {
                 OptionImageType.LOGO.getValue(),
                 carId,
                 TrimOptionType.MAIN.getValue(),
-                CategoryName.EXTERIOR_COLOR.getValue(),
-                CategoryName.INTERIOR_COLOR.getValue(),
+                SelectiveCategory.EXTERIOR_COLOR.getName(),
+                SelectiveCategory.INTERIOR_COLOR.getName(),
                 OptionImageType.SUB.getValue());
+    }
+
+    private static class CarRowMapper implements RowMapper<Car> {
+        @Override
+        public Car mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            return new Car(resultSet.getLong("id"), resultSet.getString("name"));
+        }
     }
 }

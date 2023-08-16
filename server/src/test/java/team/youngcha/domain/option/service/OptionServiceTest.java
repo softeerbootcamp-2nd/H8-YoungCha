@@ -8,9 +8,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import team.youngcha.common.exception.CustomException;
 import team.youngcha.common.enums.AgeRange;
 import team.youngcha.common.enums.Gender;
+import team.youngcha.common.exception.CustomException;
+import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.estimate.repository.EstimateRepository;
 import team.youngcha.domain.keyword.dto.KeywordRate;
 import team.youngcha.domain.keyword.entity.Keyword;
@@ -112,9 +113,11 @@ class OptionServiceTest {
 
             given(trimRepository.findById(trimId))
                     .willReturn(Optional.of(mock(Trim.class)));
-            given(optionRepository.findPowerTrainsByTrimIdAndType(trimId, OptionType.OPTIONAL))
+            given(optionRepository.
+                    findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, SelectiveCategory.POWER_TRAIN))
                     .willReturn(options);
-            given(sellRepository.countPowerTrainByTrimIdAndContainPowerTrainIds(eq(trimId), anyList()))
+            given(sellRepository.
+                    countOptionsByTrimIdAndContainOptionsIds(eq(trimId), anyList(), eq(SelectiveCategory.POWER_TRAIN)))
                     .willReturn(powerTrainCounts);
             given(optionImageRepository.findByContainOptionIds(anyList()))
                     .willReturn(optionImages);
@@ -122,12 +125,16 @@ class OptionServiceTest {
                     .willReturn(optionDetails);
 
             //when
-            List<FindSelfOptionResponse> powerTrainResponses = optionService.findSelfPowerTrains(trimId);
+            List<FindSelfOptionResponse> powerTrainResponses = optionService.
+                    findSelfOptions(trimId, SelectiveCategory.POWER_TRAIN);
 
             //then
-            FindSelfOptionResponse expected1 = new FindSelfOptionResponse(options.get(0), 0, optionImages.subList(0, 2), optionDetails.subList(0, 1));
-            FindSelfOptionResponse expected2 = new FindSelfOptionResponse(options.get(1), 33, optionImages.subList(2, 3), optionDetails.subList(1, 2));
-            FindSelfOptionResponse expected3 = new FindSelfOptionResponse(options.get(2), 67, List.of(), optionDetails.subList(2, 3));
+            FindSelfOptionResponse expected1 = new FindSelfOptionResponse(options.get(0), 0,
+                    optionImages.subList(0, 2), optionDetails.subList(0, 1));
+            FindSelfOptionResponse expected2 = new FindSelfOptionResponse(options.get(1), 33,
+                    optionImages.subList(2, 3), optionDetails.subList(1, 2));
+            FindSelfOptionResponse expected3 = new FindSelfOptionResponse(options.get(2), 67,
+                    List.of(), optionDetails.subList(2, 3));
             assertThat(powerTrainResponses).hasSize(3);
             assertThat(powerTrainResponses).usingRecursiveComparison()
                     .isEqualTo(List.of(expected3, expected2, expected1));
@@ -140,7 +147,8 @@ class OptionServiceTest {
             given(trimRepository.findById(trimId)).willReturn(Optional.empty());
 
             //when
-            Throwable throwable = catchThrowable(() -> optionService.findSelfPowerTrains(trimId));
+            Throwable throwable = catchThrowable(() ->
+                    optionService.findSelfOptions(trimId, SelectiveCategory.POWER_TRAIN));
 
             //then
             assertThat(throwable).isInstanceOf(CustomException.class);
@@ -323,7 +331,8 @@ class OptionServiceTest {
                                 List<OptionDetail> optionDetails, GuideInfo guideInfo,
                                 Map<Long, Long> powerTrainCounts, Map<Long, List<Keyword>> groupKeyword) {
             given(trimRepository.findById(trimId)).willReturn(Optional.of(mock(Trim.class)));
-            given(optionRepository.findPowerTrainsByTrimIdAndType(trimId, OptionType.OPTIONAL))
+            given(optionRepository.
+                    findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, SelectiveCategory.POWER_TRAIN))
                     .willReturn(List.of(diesel, gasoline));
             given(optionImageRepository.findByContainOptionIds(optionIds))
                     .willReturn(optionImages);

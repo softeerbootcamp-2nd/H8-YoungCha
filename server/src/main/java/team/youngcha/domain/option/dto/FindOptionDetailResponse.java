@@ -26,7 +26,6 @@ public class FindOptionDetailResponse {
     private String imgUrl;
 
     @Schema(description = "스펙")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FindSpecResponse> specs;
 
     public FindOptionDetailResponse(OptionDetail optionDetail) {

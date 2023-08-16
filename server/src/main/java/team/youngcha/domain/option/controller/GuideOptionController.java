@@ -10,33 +10,22 @@ import team.youngcha.common.dto.SuccessResponse;
 import team.youngcha.common.enums.AgeRange;
 import team.youngcha.common.enums.Gender;
 import team.youngcha.domain.option.dto.FindGuideOptionResponse;
-import team.youngcha.domain.option.dto.FindSelfOptionResponse;
 import team.youngcha.domain.option.dto.GuideInfo;
 import team.youngcha.domain.option.service.OptionService;
 
 import java.util.List;
 
-@Tag(name = "Option", description = "옵션 API")
+@Tag(name = "Option Guide", description = "옵션 가이드 API")
 @RestController
-@RequestMapping("/car-make/{trimId}")
+@RequestMapping("/car-make/{trimId}/guide")
 @RequiredArgsConstructor
-public class OptionController {
+public class GuideOptionController {
 
     private final OptionService optionService;
 
-    @Operation(summary = "파워 트레인 셀프 모드 옵션 조회", description = "셀프 모드에서 파워 트레인의 옵션을 판매량과 함께 조회합니다.")
-    @GetMapping("/self/power-train")
-    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfPowerTrains(
-            @PathVariable Long trimId
-    ) {
-        List<FindSelfOptionResponse> findSelfOptionResponses = optionService.findSelfPowerTrains(trimId);
-        SuccessResponse<List<FindSelfOptionResponse>> successResponse =
-                new SuccessResponse<>(findSelfOptionResponses);
-        return ResponseEntity.ok(successResponse);
-    }
-
-    @Operation(summary = "파워 트레인 가이드 모드 옵션 조회", description = "가이드 모드에서 파워 트레인의 옵션을 유사 사용자 선택량과 함께 조회합니다.")
-    @GetMapping("/guide/power-train")
+    @Operation(summary = "파워 트레인 가이드 모드 옵션 조회",
+            description = "가이드 모드에서 파워 트레인의 옵션을 유사 사용자 선택량과 함께 조회합니다.")
+    @GetMapping("/power-train")
     public ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findGuidePowerTrains(
             @Schema(description = "트림 아이디")
             @PathVariable Long trimId,

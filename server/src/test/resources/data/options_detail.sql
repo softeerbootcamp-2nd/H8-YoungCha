@@ -267,4 +267,12 @@ DRM(Driving Rear Monitor) 기능 : 주행 중 후방 영상을 실시간으로 �
        (111, null, '도로 여건에 따라 SNOW / MUD / SAND 주행모드를 선택할 수 있습니다. 각 주행 모드의 상태는 클러스터를 통해 확인가능합니다.',
         'https://www.hyundai.com/contents/spec/LX24/tractionmode.jpg', 114),
        (112, null, '가파른 경사길에서 사용자가 원하는 일정한 속도로 안전하게 주행 가능합니다.<br>* 버튼 선택 후 속도 제어가 가능합니다.(전진 : 4~40km/h / 후진 : 2.5km/h)',
-        'https://www.hyundai.com/contents/spec/LX24/dbc.jpg', 115);
+        'https://www.hyundai.com/contents/spec/LX24/dbc.jpg', 115),
+       (113, null, '기존 8인승 시트(1열 2명, 2열 3명, 3열 3명)에서 2열 가운데 시트를 없애 2열 탑승객의 편의는 물론, 3열 탑승객의 승하차가 편리합니다.',
+        'https://www.hyundai.com/contents/spec/guide/lx_7seats_s.jpg', 5),
+       (114, null, '1열 2명, 2열 3명, 3열 3명이 탑승할 수 있는 구조로, 많은 인원이 탑승할 수 있도록 배려하였습니다.',
+        'https://www.hyundai.com/contents/spec/guide/lx_8seats_s.jpg', 6),
+       (115, null, '엔진에서 전달되는 동력이 전/후륜 바퀴 중 한쪽으로만 전달되어 차량을 움직이는 방식입니다.<br>차체가 가벼워 연료 효율이 높습니다.',
+        'https://www.hyundai.com/contents/spec/guide/lx_2wd_s.jpg', 3),
+       (116, null, '전자식 상시 4륜 구동 시스템 입니다.<br>도로의 상황이나 주행 환경에 맞춰 전후륜 구동력을 자동배분하여 주행 안전성을 높여줍니다.',
+        'https://www.hyundai.com/contents/spec/guide/lx_htrac_s.jpg', 4);

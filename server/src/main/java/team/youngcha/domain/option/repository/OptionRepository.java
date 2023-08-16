@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.entity.Option;
 import team.youngcha.domain.option.entity.OptionType;
 
@@ -18,13 +19,13 @@ public class OptionRepository {
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Option> optionRowMapper = new OptionRowMapper();
 
-    public List<Option> findPowerTrainsByTrimIdAndType(Long trimId, OptionType type) {
+    public List<Option> findOptionsByTrimIdAndType(Long trimId, OptionType type, SelectiveCategory name) {
 
         return jdbcTemplate.query("select * from options " +
-                        "join category on options.category_id = category.id and category.name = '파워 트레인' " +
+                        "join category on options.category_id = category.id and category.name = ? " +
                         "join trim_options on options.id = trim_options.options_id " +
                         "and trim_options.trim_id = ? and trim_options.type = ? ",
-                optionRowMapper, trimId, type.getType());
+                optionRowMapper, name.getName(), trimId, type.getType());
     }
 
     private static class OptionRowMapper implements RowMapper<Option> {
