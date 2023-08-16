@@ -200,7 +200,7 @@ class OptionServiceTest {
                     .willReturn(Optional.of(new Keyword(1L, "효율")));
 
             //when
-            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuidePowerTrains(trimId, guideInfo);
+            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuideOptions(trimId, guideInfo);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
@@ -255,7 +255,7 @@ class OptionServiceTest {
                     .willReturn(Optional.of(new Keyword(2L, "안전")));
 
             //when
-            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuidePowerTrains(trimId, guideInfo);
+            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuideOptions(trimId, guideInfo);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
@@ -304,7 +304,7 @@ class OptionServiceTest {
             mockedTrim(optionIds, optionImages, optionDetails, guideInfo, powerTrainCounts, groupKeyword);
 
             //when
-            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuidePowerTrains(trimId, guideInfo);
+            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuideOptions(trimId, guideInfo);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
