@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.youngcha.common.dto.SuccessResponse;
 import team.youngcha.domain.car.dto.FindCarDetailsResponse;
+import team.youngcha.domain.car.dto.FindCarsResponse;
 import team.youngcha.domain.car.service.CarService;
 
 @Tag(name = "Car", description = "자동차 API")
@@ -26,6 +27,14 @@ public class CarController {
         FindCarDetailsResponse carDetails = carService.findDetails(id);
         SuccessResponse<FindCarDetailsResponse> successResponse = new SuccessResponse<>(carDetails);
         return ResponseEntity.ok(successResponse);
+    }
+
+    @Operation(summary = "자동차 모델 목록 조회", description = "자동차 모델의 목록을 조회합니다.")
+    @GetMapping("")
+    public ResponseEntity<SuccessResponse<FindCarsResponse>> findCars() {
+        FindCarsResponse carsResponse = carService.findCars();
+        SuccessResponse<FindCarsResponse> successResponse = new SuccessResponse<>(carsResponse);
+        return ResponseEntity.ok().body(successResponse);
     }
 
 }
