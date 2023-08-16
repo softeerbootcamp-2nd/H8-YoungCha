@@ -57,10 +57,10 @@ public class CarRepository {
                         "options_image.img_type AS optionImgType " +
                         "FROM car " +
                         "JOIN trim ON trim.car_id = car.id " +
-                        "LEFT JOIN (SELECT * FROM trim_options WHERE NOT type = ?) trim_options ON trim.id = trim_options.trim_id " +
+                        "LEFT JOIN trim_options ON trim.id = trim_options.trim_id AND NOT trim_options.type = ? " +
                         "LEFT JOIN options ON trim_options.options_id = options.id " +
                         "LEFT JOIN category ON options.category_id = category.id " +
-                        "LEFT JOIN (SELECT * FROM options_image WHERE NOT img_type = ?) options_image ON options.id = options_image.options_id " +
+                        "LEFT JOIN options_image ON options.id = options_image.options_id AND NOT options_image.img_type = ? " +
                         "WHERE car.id = ?) inner_table " +
                         "WHERE trimName = 'Guide Mode' " +
                         "OR trimOptionType = ? " +
