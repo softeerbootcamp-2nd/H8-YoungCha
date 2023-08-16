@@ -1,9 +1,8 @@
 import { ReactNode } from 'react';
 import PopUpMain from './PopUpMain';
-import Description from './Contents/Description';
+import CenteredDescription from './Contents/CenteredDescription';
 import PopUpButton from './Contents/PopUpButton';
 import DualMufflerImg from './Contents/DualMufflerImg';
-import SingleDescription from './Contents/SingleDescription';
 import ModeSelectCard from './Contents/ModeSelectCard';
 
 interface PopUpProps {
@@ -28,8 +27,7 @@ function PopUp({ onClose, children }: PopUpProps) {
 
 export default Object.assign(PopUp, {
   PopUpMain,
-  SingleDescription,
-  Description,
+  CenteredDescription,
   PopUpButton,
   DualMufflerImg,
   ModeSelectCard,

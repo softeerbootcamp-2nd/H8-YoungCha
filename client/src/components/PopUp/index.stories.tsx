@@ -24,10 +24,7 @@ export const ModelChange: Story = {
           title={ModelChangePopUp.title}
           imgSrc={<ModelChangePopUp.ImgSrc />}
         />
-        <PopUp.Description
-          firstLine={ModelChangePopUp.firstLine}
-          secondLine={ModelChangePopUp.secondLine}
-        />
+        <PopUp.CenteredDescription description={ModelChangePopUp.description} />
         <PopUp.PopUpButton
           greyButtonContent={ModelChangePopUp.greyButtonContent}
           blueButtonContent={ModelChangePopUp.blueButtonContent}
@@ -45,8 +42,8 @@ export const PowerTrainChange: Story = {
           title={ChangeToGasolinePopUp.title}
           imgSrc={<ChangeToGasolinePopUp.ImgSrc />}
         />
-        <PopUp.SingleDescription
-          singleLine={ChangeToGasolinePopUp.singleLine}
+        <PopUp.CenteredDescription
+          description={ChangeToGasolinePopUp.singleLine}
         />
         <PopUp.DualMufflerImg />
         <PopUp.PopUpButton
@@ -69,16 +66,12 @@ export const ModeChangeToGuide: Story = {
         <PopUp.ModeSelectCard
           currentMode="self"
           mode={SelfModeCard.mode}
-          firstLine={SelfModeCard.firstLine}
-          secondLine={SelfModeCard.secondLine}
-          thirdLine={SelfModeCard.thirdLine}
+          description={SelfModeCard.description}
         />
         <PopUp.ModeSelectCard
           currentMode="self"
           mode={GuideModeCard.mode}
-          firstLine={GuideModeCard.firstLine}
-          secondLine={GuideModeCard.secondLine}
-          thirdLine={GuideModeCard.thirdLine}
+          description={GuideModeCard.description}
         />
       </div>
     ),
@@ -96,16 +89,12 @@ export const ModeChangeToSelf: Story = {
         <PopUp.ModeSelectCard
           currentMode="guide"
           mode={SelfModeCard.mode}
-          firstLine={SelfModeCard.firstLine}
-          secondLine={SelfModeCard.secondLine}
-          thirdLine={SelfModeCard.thirdLine}
+          description={SelfModeCard.description}
         />
         <PopUp.ModeSelectCard
           currentMode="guide"
           mode={GuideModeCard.mode}
-          firstLine={GuideModeCard.firstLine}
-          secondLine={GuideModeCard.secondLine}
-          thirdLine={GuideModeCard.thirdLine}
+          description={GuideModeCard.description}
         />
       </div>
     ),

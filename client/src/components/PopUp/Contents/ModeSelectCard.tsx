@@ -4,17 +4,13 @@ import { PROGRESSING_NOW } from '../constant';
 interface ModeSelectCardProps {
   currentMode: string;
   mode: string;
-  firstLine: string;
-  secondLine: string;
-  thirdLine: string;
+  description: string;
 }
 
 function ModeSelectCard({
   currentMode,
   mode,
-  firstLine,
-  secondLine,
-  thirdLine,
+  description,
 }: ModeSelectCardProps) {
   return (
     <div
@@ -49,9 +45,7 @@ function ModeSelectCard({
             mode === '셀프 모드' ? 'opacity-50' : 'text-white'
           } body3`}
         >
-          <p>{firstLine}</p>
-          <p>{secondLine}</p>
-          <p>{thirdLine}</p>
+          <p className="whitespace-pre-wrap">{description}</p>
         </div>
         <div className="absolute left-285px">
           {mode === '셀프 모드' ? (
