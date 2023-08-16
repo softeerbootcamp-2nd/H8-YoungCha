@@ -42,7 +42,18 @@ public class SelfOptionController {
     public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfBodyType(
             @PathVariable Long trimId
     ) {
-        return findSelfOptions(trimId, SelectiveCategory.BODY_TYPE);
+        List<FindSelfOptionResponse> findSelfOptionResponses = optionService
+                .findSelfOptions(trimId, SelectiveCategory.BODY_TYPE);
+        SuccessResponse<List<FindSelfOptionResponse>> successResponse = new SuccessResponse<>(findSelfOptionResponses);
+        return ResponseEntity.ok(successResponse);
+    }
+
+    @Operation(summary = "외장 색상 셀프 모드 옵션 조회", description = "셀프 모드에서 외장 색상의 옵션을 판매량과 함께 조회합니다.")
+    @GetMapping("/exterior-color")
+    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfExteriorColor(
+            @PathVariable Long trimId
+    ) {
+        return findSelfOptions(trimId, SelectiveCategory.EXTERIOR_COLOR);
     }
 
     @Operation(summary = "내장 색상 셀프 모드 옵션 조회", description = "셀프 모드에서 내장 색상의 옵션을 판매량과 함께 조회합니다.")
@@ -63,5 +74,4 @@ public class SelfOptionController {
         SuccessResponse<List<FindSelfOptionResponse>> successResponse = new SuccessResponse<>(findSelfOptionResponses);
         return ResponseEntity.ok(successResponse);
     }
-
 }

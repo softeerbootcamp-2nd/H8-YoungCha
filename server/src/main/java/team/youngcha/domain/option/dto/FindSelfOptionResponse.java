@@ -1,7 +1,10 @@
 package team.youngcha.domain.option.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import team.youngcha.domain.option.entity.Option;
 import team.youngcha.domain.option.entity.OptionDetail;
 import team.youngcha.domain.option.entity.OptionImage;
@@ -26,6 +29,9 @@ public class FindSelfOptionResponse {
     @Schema(description = "이름")
     private String name;
 
+    @Schema(description = "선택 피트백 문구")
+    private String feedback;
+
     @Schema(description = "옵션 사진")
     private List<FindOptionImageResponse> images;
 
@@ -37,6 +43,7 @@ public class FindSelfOptionResponse {
         this.rate = rate;
         this.price = option.getPrice();
         this.name = option.getName();
+        this.feedback = option.getFeedback();
         this.images = optionImages.stream()
                 .map(FindOptionImageResponse::new)
                 .collect(Collectors.toList());
@@ -46,11 +53,12 @@ public class FindSelfOptionResponse {
     }
 
     @Builder
-    public FindSelfOptionResponse(Long id, int rate, int price, String name, List<FindOptionImageResponse> images, List<FindOptionDetailResponse> details) {
+    public FindSelfOptionResponse(Long id, int rate, int price, String name, String feedback, List<FindOptionImageResponse> images, List<FindOptionDetailResponse> details) {
         this.id = id;
         this.rate = rate;
         this.price = price;
         this.name = name;
+        this.feedback = feedback;
         this.images = images;
         this.details = details;
     }
