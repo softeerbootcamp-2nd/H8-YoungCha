@@ -9,7 +9,10 @@ import com.youngcha.ohmycarset.databinding.PreliminariesShortButtonBinding
 import com.youngcha.ohmycarset.model.tag.Important
 import com.youngcha.ohmycarset.viewmodel.UserTagViewModel
 
-class ImportantAdapter(private val viewModel: UserTagViewModel) :
+class ImportantAdapter(
+    private val viewModel: UserTagViewModel,
+    private val onItemClick: (Important) -> Unit
+) :
     RecyclerView.Adapter<ImportantAdapter.ImportantViewHolder>() {
 
     var importantList = emptyList<Important>()
@@ -17,11 +20,6 @@ class ImportantAdapter(private val viewModel: UserTagViewModel) :
             field = value
             notifyDataSetChanged()
         }
-    private var listener: ItemClickListener? = null
-
-    interface ItemClickListener {
-        fun onItemClickListener(important: Important)
-    }
 
     inner class ImportantViewHolder(private val binding: PreliminariesShortButtonBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -29,8 +27,9 @@ class ImportantAdapter(private val viewModel: UserTagViewModel) :
             binding.tvData.text = important.toString()
 
             binding.root.setOnClickListener {
-                listener?.onItemClickListener(important)
-                notifyItemChanged(pos)
+                important.isSelected = !important.isSelected
+                notifyDataSetChanged()
+                onItemClick.invoke(important)
             }
 
             if (importantList[pos].isSelected) {
@@ -66,18 +65,8 @@ class ImportantAdapter(private val viewModel: UserTagViewModel) :
     }
 
     override fun onBindViewHolder(holder: ImportantAdapter.ImportantViewHolder, position: Int) {
-        holder.bind(position,importantList[position])
+        holder.bind(position, importantList[position])
     }
 
     override fun getItemCount(): Int = importantList.size
-
-    fun setImportantClickEvent(onClick: (Important) -> Unit) {
-        listener = object : ItemClickListener {
-            override fun onItemClickListener(important: Important) {
-                important.isSelected=!important.isSelected
-                notifyDataSetChanged()
-                onClick.invoke(important)
-            }
-        }
-    }
 }

@@ -9,7 +9,10 @@ import com.youngcha.ohmycarset.databinding.PreliminariesShortButtonBinding
 import com.youngcha.ohmycarset.model.tag.Strength
 import com.youngcha.ohmycarset.viewmodel.UserTagViewModel
 
-class StrengthAdapter(private val viewModel: UserTagViewModel) :
+class StrengthAdapter(
+    private val viewModel: UserTagViewModel,
+    private val onItemClick: (Strength) -> Unit
+) :
     RecyclerView.Adapter<StrengthAdapter.StrengthViewHolder>() {
 
     var strengthList = emptyList<Strength>()
@@ -17,11 +20,6 @@ class StrengthAdapter(private val viewModel: UserTagViewModel) :
             field = value
             notifyDataSetChanged()
         }
-    private var listener: ItemClickListener? = null
-
-    interface ItemClickListener {
-        fun onItemClickListener(strength: Strength)
-    }
 
     inner class StrengthViewHolder(private val binding: PreliminariesShortButtonBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -29,12 +27,12 @@ class StrengthAdapter(private val viewModel: UserTagViewModel) :
             binding.tvData.text = strength.toString()
 
             binding.root.setOnClickListener {
-                listener?.onItemClickListener(strength)
-                notifyItemChanged(pos)
+                strength.isSelected = !strength.isSelected
+                notifyDataSetChanged()
+                onItemClick.invoke(strength)
             }
 
             if (strengthList[pos].isSelected) {
-
                 binding.vBackground.setBackgroundResource(R.drawable.btn_select_style)
                 binding.tvData.setTextColor(
                     ContextCompat.getColor(
@@ -67,18 +65,8 @@ class StrengthAdapter(private val viewModel: UserTagViewModel) :
     }
 
     override fun onBindViewHolder(holder: StrengthAdapter.StrengthViewHolder, position: Int) {
-        holder.bind(position,strengthList[position])
+        holder.bind(position, strengthList[position])
     }
 
     override fun getItemCount(): Int = strengthList.size
-
-    fun setStrengthClickEvent(onClick: (Strength) -> Unit) {
-        listener = object : ItemClickListener {
-            override fun onItemClickListener(strength: Strength) {
-                strength.isSelected=!strength.isSelected
-                notifyDataSetChanged()
-                onClick.invoke(strength)
-            }
-        }
-    }
 }

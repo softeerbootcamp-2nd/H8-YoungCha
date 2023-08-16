@@ -9,7 +9,10 @@ import com.youngcha.ohmycarset.databinding.PreliminariesLongButtonBinding
 import com.youngcha.ohmycarset.model.tag.Gender
 import com.youngcha.ohmycarset.viewmodel.UserTagViewModel
 
-class GenderAdapter(private val viewModel: UserTagViewModel) :
+class GenderAdapter(
+    private val viewModel: UserTagViewModel,
+    private val onItemClick: (Gender) -> Unit
+) :
     RecyclerView.Adapter<GenderAdapter.GenderViewHolder>() {
 
     var genderList = emptyList<Gender>()
@@ -17,11 +20,6 @@ class GenderAdapter(private val viewModel: UserTagViewModel) :
             field = value
             notifyDataSetChanged()
         }
-    private var listener: ItemClickListener? = null
-
-    interface ItemClickListener {
-        fun onItemClickListener(gender:Gender)
-    }
 
     inner class GenderViewHolder(private val binding: PreliminariesLongButtonBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -29,12 +27,13 @@ class GenderAdapter(private val viewModel: UserTagViewModel) :
             binding.tvData.text = gender.toString()
 
             binding.root.setOnClickListener {
-                listener?.onItemClickListener(gender)
-                notifyItemChanged(pos)
+                genderList.forEach { it.isSelected = false }
+                gender.isSelected = true
+                notifyDataSetChanged()
+                onItemClick.invoke(gender)
             }
 
             if (genderList[pos].isSelected) {
-
                 binding.vBackground.setBackgroundResource(R.drawable.btn_select_style)
                 binding.tvData.setTextColor(
                     ContextCompat.getColor(
@@ -67,19 +66,8 @@ class GenderAdapter(private val viewModel: UserTagViewModel) :
     }
 
     override fun onBindViewHolder(holder: GenderAdapter.GenderViewHolder, position: Int) {
-        holder.bind(position,genderList[position])
+        holder.bind(position, genderList[position])
     }
 
     override fun getItemCount(): Int = genderList.size
-
-    fun setGenderClickEvent(onClick: (Gender) -> Unit) {
-        listener = object : ItemClickListener {
-            override fun onItemClickListener(gender: Gender) {
-                genderList.forEach { it.isSelected = false }
-                gender.isSelected = true
-                notifyDataSetChanged()
-                onClick.invoke(gender)
-            }
-        }
-    }
 }
