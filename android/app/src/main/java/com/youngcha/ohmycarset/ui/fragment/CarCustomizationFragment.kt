@@ -8,12 +8,18 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentCarCustomizationBinding
 import com.youngcha.ohmycarset.model.car.OptionInfo
+import com.youngcha.ohmycarset.model.dialog.ButtonDialog
+import com.youngcha.ohmycarset.model.dialog.ButtonHorizontal
+import com.youngcha.ohmycarset.model.dialog.ButtonVertical
 import com.youngcha.ohmycarset.ui.adapter.viewpager.CarOptionPagerAdapter
+import com.youngcha.ohmycarset.ui.customview.ButtonDialogView
+import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 
@@ -47,9 +53,34 @@ class CarCustomizationFragment : Fragment() {
             setupMainTabSelectionListener()
             setupSubTabs()
             observeViewModel()
+            setupListener()
         }
     }
 
+    private fun setupListener() {
+        binding.htbHeaderToolbar.listener  = object: OnHeaderToolbarClickListener {
+            override fun onExitClick() {
+                showSnackbar("Exit clicked!")
+            }
+
+            override fun onModeChangeClick() {
+                showSnackbar("Mode change clicked!")
+            }
+
+            override fun onDictionaryOffClick() {
+                showSnackbar("Dictionary off clicked!")
+            }
+
+            override fun onModelChangeClick() {
+                showSnackbar("Model change clicked!")
+            }
+
+            private fun showSnackbar(message: String) {
+                Snackbar.make(binding.htbHeaderToolbar, message, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+    
     private fun attachTabLayoutMediator() {
         TabLayoutMediator(binding.tbOptionIndicator, binding.vpOptionContainer) { _, _ ->
         }.attach()
