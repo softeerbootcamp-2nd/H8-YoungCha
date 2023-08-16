@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import team.youngcha.domain.car.entity.Car;
 
+import java.util.List;
 import java.util.Optional;
 
 @JdbcTest
@@ -58,5 +59,32 @@ class CarRepositoryTest {
 
         //then
         softAssertions.assertThat(optionalCar.isEmpty()).isTrue();
+    }
+
+    @Test
+    @DisplayName("모든 자동차 목록을 조회한다")
+    void findAll() {
+        //given
+        jdbcTemplate.execute("INSERT INTO car VALUES " +
+                "(1, '팰리세이드'), " +
+                "(2, '아반떼'), " +
+                "(3, '소나타')");
+
+        List<Car> expected = List.of(
+                new Car(1L, "팰리세이드"),
+                new Car(2L, "아반떼"),
+                new Car(3L, "소나타")
+        );
+
+        //when
+        List<Car> actual = carRepository.findAll();
+
+        //then
+        softAssertions.assertThat(actual.size()).isEqualTo(3);
+
+        softAssertions.assertThat(actual)
+                .usingRecursiveComparison()
+                .ignoringCollectionOrder()
+                .isEqualTo(expected);
     }
 }
