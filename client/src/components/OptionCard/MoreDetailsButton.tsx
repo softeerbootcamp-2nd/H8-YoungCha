@@ -17,7 +17,7 @@ function MoreDetailsButton() {
       <span className="font-medium text-grey-003 body3 pr-2px">
         {isExpanded ? '접기' : '자세히 보기'}
       </span>
-      <div className="relative top-5px">
+      <div className="relative top-2px">
         {isExpanded ? (
           <Icon.MoreDetailsArrow transform="rotate(180)" />
         ) : (
