@@ -39,6 +39,8 @@ services:
       - ~/nginx/conf.d/service-url.inc:/etc/nginx/conf.d/service-url.inc
     environment:
       - TZ=Asia/Seoul
+    networks:
+      - youngcha
 
 networks:
   youngcha:
