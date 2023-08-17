@@ -31,7 +31,7 @@ jobs:
       - name: Set ${{ env.DOCKER_COMPOSE_FILE }}
         uses: microsoft/variable-substitution@v1
         with:
-          files: ./${{ env.DOCKER_COMPOSE_FILE }}
+          files: ${{ github.workspace }}/server/${{ env.DOCKER_COMPOSE_FILE }}
         env:
           services.spring1.image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
           services.spring2.image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
