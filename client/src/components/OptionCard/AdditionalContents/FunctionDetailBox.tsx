@@ -9,7 +9,7 @@ function FunctionDetailBox({ details }: FunctionDetailBoxProps) {
     <div
       className={`${
         isActive ? 'bg-[#f3f3f3]' : 'bg-grey-001'
-      }  rounded-6px pt-4px pb-12px mt-8px`}
+      }  rounded-6px pt-4px pb-12px mt-12px`}
     >
       {details[0].specs.map((item, index) => (
         <div
