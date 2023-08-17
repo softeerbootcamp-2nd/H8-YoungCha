@@ -9,14 +9,16 @@ function FunctionDetailBox({ details }: FunctionDetailBoxProps) {
     <div
       className={`${
         isActive ? 'bg-[#f3f3f3]' : 'bg-grey-001'
-      }  rounded-6px py-12px mt-8px`}
+      }  rounded-6px pt-4px pb-12px mt-8px`}
     >
       {details[0].specs.map((item, index) => (
         <div
           key={`FunctionDetail-${index}`}
-          className={`${isActive ? 'text-[#4B4B4B]' : 'text-grey-003'} body3`}
+          className={`${
+            isActive ? 'text-[#4B4B4B]' : 'text-grey-003'
+          } body3 mt-8px`}
         >
-          <span className="p-14px">{item.name}</span>
+          <span className="p-12px">{item.name}</span>
           <span>{item.description}</span>
         </div>
       ))}
