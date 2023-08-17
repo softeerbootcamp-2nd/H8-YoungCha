@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import team.youngcha.domain.car.dto.CarDetails;
 
@@ -20,8 +21,8 @@ public class CarDetailsRepositoryTest {
     CarDetailsRepository carDetailsRepository;
 
     @Autowired
-    CarDetailsRepositoryTest(JdbcTemplate jdbcTemplate) {
-        this.carDetailsRepository = new CarDetailsRepository(jdbcTemplate);
+    CarDetailsRepositoryTest(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.carDetailsRepository = new CarDetailsRepository(namedParameterJdbcTemplate);
     }
 
     @Test
