@@ -9,7 +9,7 @@ function find_idle_profile() {
     # nginx와 연결된 컨테이너가 없으면 spring2가 연결되어 있다고 설정
     CURRENT_PROFILE=spring2
   else
-    CURRENT_PROFILE=$(curl -s http://localhost/api/profile)
+    CURRENT_PROFILE=$(curl -s http://localhost/profile)
   fi
 
   # 구동할 profile 설정

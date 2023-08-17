@@ -21,7 +21,7 @@ else
   echo "> 구동 중인 유휴 spring container가 없으므로 종료하지 않습니다."
 fi
 
-if [[ "$(docker images -q ghcr.io/"$ORGANIZATION"/"$REPOSITORY":latest 2> /dev/null)" != "" ]]; then
+if [[ "$(docker images -q "$DOCKER_USERNAME"/"$DOCKER_REPO":latest 2> /dev/null)" != "" ]]; then
   echo "> latest image tag를 old로 변경"
   docker rmi "$DOCKER_USERNAME"/"$DOCKER_REPO":old
   docker tag "$DOCKER_USERNAME"/"$DOCKER_REPO":latest "$DOCKER_USERNAME"/"$DOCKER_REPO":old
