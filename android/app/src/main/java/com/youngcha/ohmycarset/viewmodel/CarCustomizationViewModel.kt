@@ -52,7 +52,6 @@ class CarCustomizationViewModel : ViewModel() {
         MutableLiveData<Int>(0) // sub option viewpager <-> recyclerview 전환 이미지
     val subOptionViewType = MutableLiveData<Int>(0)
 
-
     // --------------
     private val _mainOptionsTabs = MutableLiveData<List<String>>()
     val mainOptionsTabs: LiveData<List<String>> = _mainOptionsTabs
@@ -81,7 +80,6 @@ class CarCustomizationViewModel : ViewModel() {
     fun resetCustomizedParts() {
         _customizedParts.value = emptyList()
     }
-
 
     fun updateTabInformation(car: Car) {
         val mainOptions = car.mainOptions[0].keys.mapIndexed { index, carOptionKey ->

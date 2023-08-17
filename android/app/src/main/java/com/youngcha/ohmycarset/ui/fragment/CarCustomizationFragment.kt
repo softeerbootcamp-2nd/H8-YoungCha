@@ -1,6 +1,7 @@
 package com.youngcha.ohmycarset.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,7 +65,7 @@ class CarCustomizationFragment : Fragment() {
             }
 
             override fun onModeChangeClick() {
-                val dialog = ButtonDialogView(requireContext(), ButtonDialog("Vertical", R.drawable.ic_change, "모델을 변경하시겠어요?", ButtonHorizontal(
+                val dialog = ButtonDialogView(requireContext(), ButtonDialog("Vertical", R.drawable.ic_change, "모드를 변경하시겠어요?", ButtonHorizontal(
                     "", 1, "", ""), ButtonVertical(carViewModel.currentType.value!!)
                 )
                 )
@@ -72,6 +73,8 @@ class CarCustomizationFragment : Fragment() {
                 dialog.setOnVerticalButtonClickListener { value ->
                     if (value == carViewModel.currentType.value!!) return@setOnVerticalButtonClickListener
                     carViewModel.updateCurrentType(value)
+                    // 탭을 첫 번째로 이동
+                    binding.tlMainOptionTab.getTabAt(0)?.select()
                 }
 
                 dialog.show()
@@ -129,6 +132,7 @@ class CarCustomizationFragment : Fragment() {
         }
     }
 
+    // 현재 선택한 탭의 옵션 리스트를 ViewPager에 연결
     private fun handleOptionListUpdates(optionList: List<OptionInfo>) {
         if (optionList.size <= 2) {
             (binding.vpOptionContainer.adapter as? CarOptionPagerAdapter)?.clearOptions()
@@ -139,7 +143,9 @@ class CarCustomizationFragment : Fragment() {
         (binding.vpOptionContainer.adapter as? CarOptionPagerAdapter)?.setOptions(
             optionList,
             "",
-            currentKey
+            currentKey,
+            true,
+            carViewModel.currentType.value
         )
         val selectedOptions = carViewModel.isSelectedOptions(currentKey!!) ?: listOf()
         val position = optionList.indexOf(selectedOptions.getOrNull(0)).takeIf { it != -1 } ?: 0
@@ -242,19 +248,17 @@ class CarCustomizationFragment : Fragment() {
 
     private fun displayOnRecyclerView(optionInfos: List<OptionInfo>, tabName: String) {
         val adapter = CarOptionPagerAdapter(carViewModel)
-        adapter.isDisplayingInPager = false
         binding.rvSubOptionList.adapter = adapter
-        adapter.setOptions(optionInfos, OPTION_SELECTION, tabName)
+        adapter.setOptions(optionInfos, OPTION_SELECTION, tabName, false, carViewModel.currentType.value)
     }
 
     private fun displayOnViewPager(optionInfos: List<OptionInfo>, tabName: String) {
         val adapter = CarOptionPagerAdapter(carViewModel)
-        adapter.isDisplayingInPager = true
         binding.vpOptionContainer.adapter = adapter
         val selectedOptions = carViewModel.isSelectedOptions(tabName) ?: listOf()
         val position = optionInfos.indexOfFirst { it == selectedOptions.firstOrNull() }.takeIf { it != -1 } ?: 0
         binding.vpOptionContainer.setCurrentItem(position, false)
-        adapter.setOptions(optionInfos, OPTION_SELECTION, tabName)
+        adapter.setOptions(optionInfos, OPTION_SELECTION, tabName, true, carViewModel.currentType.value)
     }
 
 
