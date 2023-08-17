@@ -1,24 +1,28 @@
 package com.youngcha.ohmycarset.ui.adapter.binding
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.model.car.Car
 import com.youngcha.ohmycarset.model.car.OptionInfo
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.EstimateSummaryAdapter
 import com.youngcha.ohmycarset.ui.customview.CircleView
+import com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
 import com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
 import com.youngcha.ohmycarset.ui.interfaces.OnHyundaiButtonClickListener
 
@@ -185,6 +189,7 @@ fun bindRecyclerView(recyclerView: RecyclerView, myCarData: List<Map<String, Lis
     val adapter = recyclerView.adapter as? EstimateSummaryAdapter ?: EstimateSummaryAdapter()
     recyclerView.adapter = adapter
 
+    // xml 이동
     if (recyclerView.layoutManager == null) {
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
     }
@@ -203,4 +208,107 @@ fun bindRecyclerView(recyclerView: RecyclerView, myCarData: List<Map<String, Lis
         }
     }
     adapter.updateOptionInfo(matchedOptionsMap)
+}
+
+@BindingAdapter(value = ["currentTypeForBackground", "visibleForBackground"], requireAll = false)
+fun View.setCurrentType(currentType: String?, visible: Int) {
+    val backgroundView = this.findViewById<View>(R.id.v_background)
+    when (visible) {
+        1 -> {
+            when (currentType) {
+                "SelfMode" -> backgroundView.setBackgroundResource(R.drawable.style_self_mode_button)
+                "GuideMode" -> backgroundView.setBackgroundResource(R.drawable.style_guide_mode_button)
+            }
+        }
+        else -> backgroundView.setBackgroundResource(R.drawable.btn_unselect_style)
+    }
+}
+
+@BindingAdapter(value = ["currentTypeForIcon", "visibleForIcon"], requireAll = false)
+fun View.setCustomIcon(currentType: String?, visible: Int) {
+    val icon = this.findViewById<ImageView>(R.id.iv_check)
+    when (visible) {
+        1 -> {
+            when (currentType) {
+                "SelfMode" -> icon.setImageResource(R.drawable.ic_check_on)
+                "GuideMode" -> icon.setImageResource(R.drawable.ic_check_guide)
+            }
+        }
+        else -> icon.setImageResource(R.drawable.ic_check_off)
+    }
+}
+
+@SuppressLint("ResourceAsColor")
+@BindingAdapter(value = ["currentTypeForText", "visibleForText"], requireAll = false)
+fun View.setTextColor(currentType: String?, visible: Int) {
+    val rate = this.findViewById<TextView>(R.id.tv_rate)
+    when (visible) {
+        1 -> {
+            when (currentType) {
+                "SelfMode" -> rate.setTextColor(ContextCompat.getColor(context, R.color.main_hyundai_blue))
+                "GuideMode" -> rate.setTextColor(ContextCompat.getColor(context, R.color.sub_active_blue))
+            }
+        }
+        else -> rate.setTextColor(ContextCompat.getColor(context, R.color.cool_grey_003))
+    }
+}
+
+@SuppressLint("ResourceAsColor")
+@BindingAdapter("visibleForTextNamePrice")
+fun View.setTextColorForHyundaiButton(visible: Int) {
+    val name = this.findViewById<TextView>(R.id.tv_name)
+    val price = this.findViewById<TextView>(R.id.tv_price)
+    when (visible) {
+        1 -> {
+            name.setTextColor(ContextCompat.getColor(context, R.color.main_hyundai_blue))
+            price.setTextColor(ContextCompat.getColor(context, R.color.main_hyundai_blue))
+        }
+        else -> {
+            name.setTextColor(ContextCompat.getColor(context, R.color.cool_grey_003))
+            price.setTextColor(ContextCompat.getColor(context, R.color.cool_grey_003))
+        }
+    }
+}
+
+@BindingAdapter(value = ["animateOnClick", "currentType"], requireAll = false)
+fun HyundaiButtonView.bindAnimateOnClick(shouldAnimate: Boolean, currentType: String?) {
+    if (shouldAnimate && currentType == "GuideMode") {
+        this.setOnClickListener {
+            this.animateBorder()
+        }
+    } else {
+        this.setOnClickListener(null)
+    }
+}
+
+@BindingAdapter(value = ["currentTypeForBorder", "visibleForBorder"], requireAll = false)
+fun HyundaiButtonView.borderVisible(currentType: String?, visible: Int) {
+    val bottomLine = this.findViewById<View>(R.id.v_bottom_line)
+    val topLine = this.findViewById<View>(R.id.v_top_line)
+    val leftLine = this.findViewById<View>(R.id.v_left_line)
+    val rightLine = this.findViewById<View>(R.id.v_right_line)
+    if (currentType == "GuideMode") {
+       if (visible == 0) {
+           bottomLine.visibility = INVISIBLE
+           topLine.visibility = INVISIBLE
+           leftLine.visibility = INVISIBLE
+           rightLine.visibility = INVISIBLE
+       }
+    } else {
+        bottomLine.visibility = INVISIBLE
+        topLine.visibility = INVISIBLE
+        leftLine.visibility = INVISIBLE
+        rightLine.visibility = INVISIBLE
+    }
+}
+
+@BindingAdapter("app:title")
+fun setTitle(view: HeaderToolBarView, title: String?) {
+    view.setTitle(title ?: "")
+}
+
+@BindingAdapter(value = ["currentTypeForBorderAnimation", "visibleForBorderAnimation"], requireAll = false)
+fun HyundaiButtonView.borderAnimation(currentType: String?, visible: Int) {
+    if (currentType == "GuideMode" && visible == 1)
+        this.animateBorder()
 }
