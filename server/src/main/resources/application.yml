@@ -3,6 +3,12 @@ spring:
     active:
       - local
       - secret
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  api-docs:
+    groups:
+      enabled: true
 
 --- # local
 spring:
@@ -21,28 +27,19 @@ logging:
     org:
       springframework:
         jdbc:
-          core: info
+          core: debug
           datasource:
             init:
-              ScriptUtils: info
-springdoc:
-  default-consumes-media-type: application/json
-  default-produces-media-type: application/json
-  api-docs:
-    groups:
-      enabled: true
+              ScriptUtils: debug
 
---- # prod
+--- # spring1
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: spring1
     import: secrets/application-env.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
   origin: https://api.youngcha.team
 logging:
   level:
@@ -53,9 +50,22 @@ logging:
           datasource:
             init:
               ScriptUtils: debug
-springdoc:
-  default-consumes-media-type: application/json
-  default-produces-media-type: application/json
-  api-docs:
-    groups:
-      enabled: true
+
+--- # spring2
+spring:
+  config:
+    activate:
+      on-profile: spring2
+    import: secrets/application-env.yml
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  origin: https://api.youngcha.team
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: debug
+          datasource:
+            init:
+              ScriptUtils: debug
