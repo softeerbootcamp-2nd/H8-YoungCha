@@ -14,6 +14,7 @@ import ModeChangeIcon from './ModeChangeIcon';
 import ModelChangeIcon from './ModelChangeIcon';
 import RecommendationIcon from './RecommendationIcon';
 import InactiveRound from './prepare-guide/InactiveRound';
+import Close from './Close';
 
 export {
   HyundaiLogo,
@@ -32,4 +33,5 @@ export {
   ModelChangeIcon,
   RecommendationIcon,
   InactiveRound,
+  Close,
 };
