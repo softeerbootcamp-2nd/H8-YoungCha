@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.youngcha.domain.dictionary.entity.Dictionary;
 
+@Schema(description = "백카사전 데이터")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Schema(description = "백카사전 데이터")
 public class FindDictionaryResponse {
 
     @Schema(description = "용어")

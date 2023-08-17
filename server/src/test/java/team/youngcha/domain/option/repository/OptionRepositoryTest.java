@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.entity.Option;
-import team.youngcha.domain.option.entity.OptionType;
+import team.youngcha.domain.option.enums.OptionType;
 
 import java.util.List;
 

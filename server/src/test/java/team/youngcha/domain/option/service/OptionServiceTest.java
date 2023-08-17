@@ -18,6 +18,7 @@ import team.youngcha.domain.keyword.entity.Keyword;
 import team.youngcha.domain.keyword.repository.KeywordRepository;
 import team.youngcha.domain.option.dto.*;
 import team.youngcha.domain.option.entity.*;
+import team.youngcha.domain.option.enums.OptionType;
 import team.youngcha.domain.option.repository.OptionDetailRepository;
 import team.youngcha.domain.option.repository.OptionImageRepository;
 import team.youngcha.domain.option.repository.OptionRepository;

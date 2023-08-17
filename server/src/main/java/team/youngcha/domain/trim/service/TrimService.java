@@ -8,10 +8,10 @@ import team.youngcha.domain.car.dto.CarDetails;
 import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.dto.DefaultOptionSummary;
 import team.youngcha.domain.option.dto.OptionSummary;
+import team.youngcha.domain.option.enums.OptionType;
 import team.youngcha.domain.option.repository.OptionRepository;
 import team.youngcha.domain.trim.dto.FindTrimDefaultOptionsResponse;
 import team.youngcha.domain.trim.dto.TrimDetail;
-import team.youngcha.domain.trim.enums.TrimOptionType;
 import team.youngcha.domain.trim.repository.TrimRepository;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class TrimService {
     private void addTrimOptionToTrimDetail(TrimDetail trimDetail, CarDetails dto) {
         OptionSummary option = new OptionSummary(dto.getOptionName(), dto.getOptionImgUrl());
 
-        if (dto.getTrimOptionType().equals(TrimOptionType.MAIN.getValue())) {
+        if (dto.getTrimOptionType().equals(OptionType.CORE.getType())) {
             trimDetail.getMainOptions().add(option);
             return;
         }

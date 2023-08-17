@@ -75,10 +75,12 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
 
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
                 .id(2L).rate(75).price(0).name("가솔린 3.8")
+                .feedback("가솔린 엔진은 조용해요! 조용한 주행을 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(gasolineImage))
                 .details(List.of(gasolineDetail)).build();
         FindSelfOptionResponse optionResponse2 = FindSelfOptionResponse.builder()
                 .id(1L).rate(25).price(1480000).name("디젤 2.2")
+                .feedback("디젤 엔진은 효율이 좋아요! 효율을 중시한다면, 탁월한 선택입니다.")
                 .images(List.of(dieselImage))
                 .details(List.of(dieselDetail)).build();
 
@@ -121,10 +123,12 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
 
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
                 .id(3L).rate(50).price(0).name("2WD")
+                .feedback("2WD는 효율이 좋아요! 효율을 중시한다면, 탁월한 선택입니다.")
                 .images(List.of(wd2Image))
                 .details(List.of(wd2Detail)).build();
         FindSelfOptionResponse optionResponse2 = FindSelfOptionResponse.builder()
                 .id(4L).rate(50).price(2370000).name("4WD")
+                .feedback("4WD는 파워풀해요! 힘있는 주행을 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(wd4Image))
                 .details(List.of(wd4Detail)).build();
 
@@ -167,15 +171,97 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
                 .id(5L).rate(75)
                 .price(0).name("7인승")
+                .feedback("통로가 있어 쾌적해요! 쾌적함을 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(seat7Image))
                 .details(List.of(seat7Detail)).build();
         FindSelfOptionResponse optionResponse2 = FindSelfOptionResponse.builder()
                 .id(6L).rate(25)
                 .price(0).name("8인승")
+                .feedback("공간 활용을 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(seat8Image))
                 .details(List.of(seat8Detail)).build();
 
         assertResponseAndExpected(response, List.of(optionResponse1, optionResponse2));
+    }
+
+    @Test
+    @DisplayName("트림의 외장 색상 옵션을 셀프 모드로 조회한다.")
+    void findSelfExteriorColor() {
+        //given
+        jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
+                "values (1, 2, 1, 1, 1, 7, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(2, 2, 1, 1, 1, 10, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(3, 2, 1, 1, 1, 10, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(4, 2, 1, 1, 1, 9, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(5, 2, 1, 1, 1, 9, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(6, 2, 1, 1, 1, 11, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(7, 2, 1, 1, 1, 12, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(8, 2, 1, 1, 1, 12, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(9, 2, 1, 1, 1, 12, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
+                "(10, 2, 1, 1, 1, 12, 1, 1, 50, 0, '2023-01-01 12:12:12')");
+
+        String url = "/car-make/2/self/exterior-color";
+
+        //when
+        ExtractableResponse<Response> response = callEndpoint(url, null);
+
+        //then
+        FindOptionImageResponse creamyWhiteImg = FindOptionImageResponse.builder()
+                .imgUrl("https://www.hyundai.com/contents/vr360/LX06/exterior/WC9/colorchip-exterior.png")
+                .imgType(1).build();
+        FindSelfOptionResponse creamyWhite = FindSelfOptionResponse.builder()
+                .id(12L).rate(40).price(100000)
+                .name("크리미 화이트 펄")
+                .feedback("크리미 화이트 펄은 밝은 화이트(흰색)의 외장색상으로, 차량에 깨끗하고 우아한 느낌을 줍니다.")
+                .images(List.of(creamyWhiteImg)).details(List.of()).build();
+
+        FindOptionImageResponse moonLightImg = FindOptionImageResponse.builder()
+                .imgUrl("https://www.hyundai.com/contents/vr360/LX06/exterior/UB7/colorchip-exterior.png")
+                .imgType(1).build();
+        FindSelfOptionResponse moonLight = FindSelfOptionResponse.builder()
+                .id(9L).rate(20).price(0)
+                .name("문라이트 블루 펄")
+                .feedback("문라이트 블루 펄은 밝은 파란색의 외장색상으로, 차량에 상쾌하고 활기찬 느낌을 줍니다.")
+                .images(List.of(moonLightImg)).details(List.of()).build();
+
+        FindOptionImageResponse gaiaBrownImg = FindOptionImageResponse.builder()
+                .imgUrl("https://www.hyundai.com/contents/vr360/LX06/exterior/D2S/colorchip-exterior.png")
+                .imgType(1).build();
+        FindSelfOptionResponse gaiaBrown = FindSelfOptionResponse.builder()
+                .id(10L).rate(20).price(0)
+                .name("가이아 브라운 펄")
+                .feedback("가이아 브라운 펄은 브라운 계열의 외장색상으로, 차량에 고급스러움과 차분한 분위기를 부여합니다.")
+                .images(List.of(gaiaBrownImg)).details(List.of()).build();
+
+        FindOptionImageResponse abyssBlackImg = FindOptionImageResponse.builder()
+                .imgUrl("https://www.hyundai.com/contents/vr360/LX06/exterior/A2B/colorchip-exterior.png")
+                .imgType(1).build();
+        FindSelfOptionResponse abyssBlack = FindSelfOptionResponse.builder()
+                .id(7L).rate(10).price(0)
+                .name("어비스 블랙펄")
+                .feedback("어비스 블랙펄은 깊은 검정색의 외장색상으로, 차량에 고급스러움과 우아함을 더해줍니다.")
+                .images(List.of(abyssBlackImg)).details(List.of()).build();
+
+        FindOptionImageResponse graphiteGrayImg = FindOptionImageResponse.builder()
+                .imgUrl("https://www.hyundai.com/contents/vr360/LX06/exterior/P7V/colorchip-exterior.png")
+                .imgType(1).build();
+        FindSelfOptionResponse graphiteGray = FindSelfOptionResponse.builder()
+                .id(11L).rate(10).price(0)
+                .name("그라파이트 그레이 메탈릭")
+                .feedback("그라파이트 그레이 메탈릭은 회색 계열의 외장색상으로, 차량에 현대적이고 세련된 분위기를 부여합니다.")
+                .images(List.of(graphiteGrayImg)).details(List.of()).build();
+
+        FindOptionImageResponse shimmeringSilverImg = FindOptionImageResponse.builder()
+                .imgUrl("https://www.hyundai.com/contents/vr360/LX06/exterior/R2T/colorchip-exterior.png")
+                .imgType(1).build();
+        FindSelfOptionResponse shimmeringSilver = FindSelfOptionResponse.builder()
+                .id(8L).rate(0).price(0)
+                .name("쉬머링 실버 메탈릭")
+                .feedback("쉬머링 실버 메탈릭은 은색 계열의 외장색상으로, 차량에 현대적이고 세련된 분위기를 더해줍니다.")
+                .images(List.of(shimmeringSilverImg)).details(List.of()).build();
+
+        assertResponseAndExpected(response, List.of(creamyWhite, moonLight,
+                gaiaBrown, abyssBlack, graphiteGray, shimmeringSilver));
     }
 
     private void assertResponseAndExpected(ExtractableResponse<Response> response, List<FindSelfOptionResponse> expectedResponses) {
