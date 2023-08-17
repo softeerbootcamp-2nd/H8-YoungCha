@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="car"
+            name="viewModel"
             type="com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,329 +39,37 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="41,300,000원"/>
 
-        <TextView
-            android:id="@+id/tv_detail_trim_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/trim"
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_result_detail" />
 
-        <TextView
-            android:id="@+id/tv_detail_trim_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_result_detail" />
-
-        <View
-            android:id="@+id/v_trim_bar"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_main_option"
             android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/cool_grey_001"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_detail_trim_name" />
-
-        <include
-            android:id="@+id/item_trim"
-            layout="@layout/item_estimate_detail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="@id/tv_detail_trim_price"
-            app:layout_constraintStart_toStartOf="@id/tv_detail_trim_name"
-            app:layout_constraintTop_toBottomOf="@id/v_trim_bar" />
-
-        <TextView
-            android:id="@+id/tv_detail_powertrain_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/power_train"
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_trim" />
-
-        <TextView
-            android:id="@+id/tv_detail_powertrain_price"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
+            android:nestedScrollingEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_trim" />
-
-        <View
-            android:id="@+id/v_powertrain_bar"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/cool_grey_001"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_detail_powertrain_name" />
+            app:layout_constraintTop_toBottomOf="@id/tv_result_detail"
+            app:myCarData="@{viewModel.myCar}"
+            app:viewType='@{"main"}'
+            tools:itemCount="4"
+            tools:listitem="@layout/item_estimate_detail" />
 
-        <include
-            android:id="@+id/item_powertrain"
-            layout="@layout/item_estimate_detail"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_color_option"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="@id/tv_detail_powertrain_price"
-            app:layout_constraintStart_toStartOf="@id/tv_detail_powertrain_name"
-            app:layout_constraintTop_toBottomOf="@id/v_powertrain_bar" />
-
-        <TextView
-            android:id="@+id/tv_detail_drivingsystem_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/driving_system"
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_powertrain" />
-
-        <TextView
-            android:id="@+id/tv_detail_drivingsystem_price"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
+            android:nestedScrollingEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_powertrain" />
-
-        <View
-            android:id="@+id/v_drivingsystem_bar"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/cool_grey_001"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_detail_drivingsystem_name" />
-
-        <include
-            android:id="@+id/item_drivingsystem"
-            layout="@layout/item_estimate_detail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="@id/tv_detail_drivingsystem_price"
-            app:layout_constraintStart_toStartOf="@id/tv_detail_drivingsystem_name"
-            app:layout_constraintTop_toBottomOf="@id/v_drivingsystem_bar" />
-
-        <TextView
-            android:id="@+id/tv_detail_bodytype_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/body_type"
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_drivingsystem" />
-
-        <TextView
-            android:id="@+id/tv_detail_bodytype_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_powertrain" />
-
-        <View
-            android:id="@+id/v_bodytype_bar"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/cool_grey_001"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_detail_bodytype_name" />
-
-        <include
-            android:id="@+id/item_bodytype"
-            layout="@layout/item_estimate_detail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="@id/tv_detail_bodytype_price"
-            app:layout_constraintStart_toStartOf="@id/tv_detail_bodytype_name"
-            app:layout_constraintTop_toBottomOf="@id/v_bodytype_bar" />
-
-        <TextView
-            android:id="@+id/tv_detail_exterior_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/exterior_color"
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_bodytype" />
-
-        <TextView
-            android:id="@+id/tv_detail_exterior_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_bodytype" />
-
-        <View
-            android:id="@+id/v_exterior_bar"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/cool_grey_001"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_detail_exterior_name" />
-
-        <include
-            android:id="@+id/item_exterior"
-            layout="@layout/item_estimate_detail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="@id/tv_detail_exterior_price"
-            app:layout_constraintStart_toStartOf="@id/tv_detail_exterior_name"
-            app:layout_constraintTop_toBottomOf="@id/v_exterior_bar" />
-
-        <TextView
-            android:id="@+id/tv_detail_interior_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/interior_color"
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_exterior" />
-
-        <TextView
-            android:id="@+id/tv_detail_interior_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_exterior" />
-
-        <View
-            android:id="@+id/v_interior_bar"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/cool_grey_001"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_detail_interior_name" />
-
-        <include
-            android:id="@+id/item_interior"
-            layout="@layout/item_estimate_detail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="@id/tv_detail_interior_price"
-            app:layout_constraintStart_toStartOf="@id/tv_detail_interior_name"
-            app:layout_constraintTop_toBottomOf="@id/v_interior_bar" />
-
-        <TextView
-            android:id="@+id/tv_detail_wheel_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/wheel"
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_interior" />
-
-        <TextView
-            android:id="@+id/tv_detail_wheel_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/cool_grey_black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_interior" />
-
-        <View
-            android:id="@+id/v_wheel_bar"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/cool_grey_001"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_detail_wheel_name" />
-
-        <include
-            android:id="@+id/item_wheel"
-            layout="@layout/item_estimate_detail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="@id/tv_detail_wheel_price"
-            app:layout_constraintStart_toStartOf="@id/tv_detail_wheel_name"
-            app:layout_constraintTop_toBottomOf="@id/v_wheel_bar" />
+            app:layout_constraintTop_toBottomOf="@id/rv_main_option"
+            app:myCarData="@{viewModel.myCar}"
+            app:viewType='@{"color"}'
+            tools:itemCount="2"
+            tools:listitem="@layout/item_estimate_detail" />
 
         <TextView
             android:id="@+id/tv_detail_chooser_option_name"
@@ -373,7 +81,7 @@
             android:textColor="@color/cool_grey_black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_wheel" />
+            app:layout_constraintTop_toBottomOf="@id/rv_color_option" />
 
         <TextView
             android:id="@+id/tv_detail_chooser_option_price"
@@ -385,7 +93,7 @@
             android:textColor="@color/cool_grey_black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_wheel" />
+            app:layout_constraintTop_toBottomOf="@id/rv_color_option" />
 
         <View
             android:id="@+id/v_chooser_option_bar"
@@ -407,6 +115,8 @@
             android:layout_marginTop="12dp"
             android:background="@null"
             android:elevation="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/v_chooser_option_bar"
             app:tabIndicator="@null"
             app:tabIndicatorAnimationMode="linear"
@@ -418,14 +128,17 @@
             app:tabSelectedTextColor="@color/white" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_chooser_option"
+            android:id="@+id/rv_sub_option"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="12dp"
+            android:nestedScrollingEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tl_option" />
+            app:layout_constraintTop_toBottomOf="@id/tl_option"
+            app:myCarData="@{viewModel.myCar}"
+            app:viewType='@{"sub"}'
+            tools:listitem="@layout/item_estimate_detail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
