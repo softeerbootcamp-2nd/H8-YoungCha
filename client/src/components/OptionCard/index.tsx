@@ -49,7 +49,7 @@ function OptionCard({ tags, imgUrl, step, children }: OptionCardProps) {
 
   return (
     <div
-      className={`m-20px relative border-2 rounded-6px w-375px p-20px cursor-pointer 
+      className={`relative border-2 rounded-6px w-375px p-20px cursor-pointer 
       ${totalDivColor} ${
         isExpanded ? 'max-h-750px' : 'max-h-150px'
       } transition-all ease-in-out duration-500`}
