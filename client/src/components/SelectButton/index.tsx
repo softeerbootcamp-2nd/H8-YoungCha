@@ -1,5 +1,6 @@
-interface SelectButtonProps {
-  children: React.ReactNode;
+import { HTMLAttributes, PropsWithChildren } from 'react';
+
+interface SelectButtonProps extends HTMLAttributes<HTMLButtonElement> {
   size?: 'default' | 'md' | 'lg';
   type: 'default' | 'active' | 'iconActive';
   onClick?: () => void;
@@ -25,10 +26,11 @@ function SelectButton({
   size = 'default',
   type,
   onClick,
-}: SelectButtonProps) {
-  const style = `flex items-center justify-between font-medium  rounded-6px body2 px-20px ${selectColor[type]} ${selectSize[size]}`;
+  ...restProps
+}: PropsWithChildren<SelectButtonProps>) {
+  const style = `flex justify-between items-center font-medium  rounded-6px body2 px-20px ${selectColor[type]} ${selectSize[size]}`;
   return (
-    <button className={style} onClick={onClick}>
+    <button className={style} onClick={onClick} {...restProps}>
       {children}
     </button>
   );
