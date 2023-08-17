@@ -14,7 +14,8 @@ function useFetch<T>({ url, params }: FetchType) {
   if (params) {
     requestURL += new URLSearchParams(params).toString();
   }
-  function reFetch() {
+
+  useEffect(() => {
     fetch(requestURL)
       .then((res) => res.json())
       .then((data) => {
@@ -25,13 +26,10 @@ function useFetch<T>({ url, params }: FetchType) {
         setError(error);
         setLoading(false);
       });
-  }
+    console.log('reFetch');
+  }, [url, params]);
 
-  useEffect(() => {
-    reFetch();
-  }, [url]);
-
-  return { loading, data, error, reFetch };
+  return { loading, data, error };
 }
 
 export default useFetch;

@@ -1,6 +1,6 @@
 import { BasicOptionType } from '@/assets/mock/mock';
 import useFetch from '@/hooks/useFetch';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface BasicOptionListsProps {
   id: number;
@@ -12,7 +12,7 @@ function BasicOptionLists({
   id,
   setIsLastPage,
 }: BasicOptionListsProps) {
-  const { data, loading, reFetch } = useFetch<BasicOptionType>({
+  const [params, setParams] = useState({
     url: `${import.meta.env.VITE_API_URL}/trims/2/default-components?`,
     params: {
       categoryId: String(id),
@@ -20,16 +20,19 @@ function BasicOptionLists({
       size: String(currentSize),
     },
   });
+  const { data, loading } = useFetch<BasicOptionType>(params);
 
   useEffect(() => {
     setIsLastPage((prev) => (data.last ? prev + 1 : prev));
   }, [data]);
 
   useEffect(() => {
-    if (!loading && data.contents.length !== currentSize) {
-      reFetch();
-    }
+    setParams((prev) => ({
+      ...prev,
+      params: { ...prev.params, size: String(currentSize) },
+    }));
   }, [currentSize]);
+
   return (
     <>
       {!loading &&
