@@ -66,7 +66,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
-          source: './${{ env.DOCKER_COMPOSE_FILE }},./script'
+          source: './${{ env.DOCKER_COMPOSE_FILE }},./script,./nginx'
           target: ~
 
       - name: Deploy to dev
@@ -78,24 +78,23 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           script: |
+            if [ -f ~/nginx/conf.d/service-url.inc ]
+            then
+              cp -f ~/nginx/conf.d/service-url.inc ~/nginx/conf.d
+            fi
+            
+            chmod +x ./script/*.sh
+            
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             
-            if [ "$(docker ps -aqf name="^spring$")" ];
-            then
-              echo "> spring container 제거"
-              docker stop spring
-              docker rm spring
-            else
-              echo "> 구동 중인 spring container가 없으므로 종료하지 않습니다."
-            fi
-            
-            if [[ "$(docker images -q ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest 2> /dev/null)" != "" ]]; then
-              echo "> latest image 삭제"
-              docker rmi ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
-            fi
-            
-            echo "> docker compose up"
-            docker compose up -d --build spring
+            ./script/deploy.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPO }} ${{ env.DOCKER_COMPOSE_FILE }}
             
             docker image prune -f
             docker logout
+            
+            ./script/health.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPO }} ${{ env.DOCKER_COMPOSE_FILE }}
+            # nginx 전환에 실패하면 workflow 종료
+            if [ "$?" -ge 1 ]
+            then
+              exit 1
+            fi
