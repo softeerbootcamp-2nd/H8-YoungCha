@@ -5,6 +5,7 @@ import DetailCard from '@/components/MakingModeButton/DetailCard.tsx';
 import ChevronRight from '@/assets/icons/ChevronRight';
 import GuideModeDetailList from '@/components/MakingModeButton/GuideModeDetailList';
 import MainOptionList from '@/components/MakingModeButton/MainOptionList';
+import { getPriceTemplete } from '@/utils';
 
 // TYPES
 export interface MakingModeButtonProps
@@ -40,7 +41,7 @@ function MakingModeButton({
           <div className="title2 mb-16px">{name}</div>
           <div className="flex items-center justify-between">
             <span className="opacity-80">
-              {minPrice.toLocaleString()} 원 부터
+              {getPriceTemplete(minPrice)} 부터
             </span>
             <ChevronRight />
           </div>

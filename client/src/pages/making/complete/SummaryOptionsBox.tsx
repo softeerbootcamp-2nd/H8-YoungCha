@@ -1,3 +1,4 @@
+import { getPriceTemplete } from '@/utils';
 import SummaryOption from './SummaryOption';
 import { PropsWithChildren } from 'react';
 
@@ -17,7 +18,7 @@ function SummaryOptionsBox({
           {title}
         </span>
         <span className="text-grey-black font-hsans-head text-24px font-medium leading-[31.2px] tracking-[-0.72px]">
-          {`+${price.toLocaleString()}원`}
+          {getPriceTemplete(price)}
         </span>
       </div>
       <div className="py-16px">{children}</div>

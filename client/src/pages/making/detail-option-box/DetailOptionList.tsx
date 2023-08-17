@@ -1,3 +1,4 @@
+import { getPriceTemplete } from '@/utils';
 import ModifyButton from '../complete/ModifyButton';
 import { OptionType } from '../type';
 
@@ -27,7 +28,7 @@ function DetailOptionList({ option }: DetailOptionListProps) {
           ) : (
             <>
               <span className="text-grey-black font-hsans-head text-20px leading-[26px] tracking-[-0.6px]">
-                +{option.price?.toLocaleString()}원
+                {getPriceTemplete(option.price!)}
               </span>
               <ModifyButton onClick={() => {}} />
             </>
