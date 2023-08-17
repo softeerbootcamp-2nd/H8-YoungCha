@@ -128,8 +128,6 @@
 
     <string name="option_txt">옵션</string>
     <string name="estimate_main_text">나를 위한 팰리세이드가\n완성되었어요!</string>
-    <string name="estimate_summary">견적 요약</string>
-    <string name="color">색상</string>
 
     <string name="request_purchase_consultation">구매 상담 신청</string>
     <string name="request_driving">시승 신청하기</string>
