@@ -1,24 +1,37 @@
 import { useState, useEffect } from 'react';
 
-function useFetch(url: string) {
+interface FetchType {
+  url: string;
+  params?: Record<string, string>;
+}
+
+function useFetch<T>({ url, params }: FetchType) {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<T>({} as T);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetch(url)
+  let requestURL = url;
+  if (params) {
+    requestURL += new URLSearchParams(params).toString();
+  }
+  function reFetch() {
+    fetch(requestURL)
       .then((res) => res.json())
       .then((data) => {
-        setData(data);
+        setData(data.data);
         setLoading(false);
       })
       .catch((error) => {
         setError(error);
         setLoading(false);
       });
+  }
+
+  useEffect(() => {
+    reFetch();
   }, [url]);
 
-  return { loading, data, error };
+  return { loading, data, error, reFetch };
 }
 
 export default useFetch;
