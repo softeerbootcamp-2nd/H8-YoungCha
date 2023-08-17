@@ -44,7 +44,7 @@ public class CarDetailsRepository {
                 "LEFT JOIN options_image ON options.id = options_image.options_id AND NOT options_image.img_type = :logo " +
                 "WHERE car.id = :carId " +
                 "AND trim.name = 'Guide Mode'" +
-                "OR trim_options.type = :mainOption " +
+                "OR (trim_options.type = :mainOption AND options_image.img_type = :iconImage) " +
                 "OR category.name = :exteriorColor " +
                 "OR (category.name = :interiorColor AND options_image.img_type = :subImage)";
 
@@ -56,6 +56,7 @@ public class CarDetailsRepository {
         params.addValue("exteriorColor", SelectiveCategory.EXTERIOR_COLOR.getName());
         params.addValue("interiorColor", SelectiveCategory.INTERIOR_COLOR.getName());
         params.addValue("subImage", OptionImageType.SUB.getValue());
+        params.addValue("iconImage", OptionImageType.ICON.getValue());
 
         return namedParameterJdbcTemplate.query(sql, params, carDetailsDtoRowMapper);
     }
