@@ -6,7 +6,7 @@ services:
     restart: always
     image: img
     environment:
-      SERVER_MODE: prod
+      SERVER_MODE: spring1
     ports:
       - "8081:8080"
     depends_on:
@@ -19,7 +19,7 @@ services:
     restart: always
     image: img
     environment:
-      SERVER_MODE: prod
+      SERVER_MODE: spring2
     ports:
       - "8082:8080"
     depends_on:
