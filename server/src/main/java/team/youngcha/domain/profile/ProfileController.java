@@ -1,4 +1,4 @@
-package team.youngcha.profile;
+package team.youngcha.domain.profile;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
