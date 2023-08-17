@@ -16,42 +16,42 @@ defaults:
     working-directory: server
 
 jobs:
-  push-docker-image:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-
-      # image 이름 붙여넣기
-      - name: Set ${{ env.DOCKER_COMPOSE_FILE }}
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ github.workspace }}/server/${{ env.DOCKER_COMPOSE_FILE }}
-        env:
-          services.spring1.image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
-          services.spring2.image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
-
-      - name: Create secret file
-        run: |
-          mkdir src/main/resources/secrets
-          echo "${{ secrets.APPLICATION_ENV }}" > src/main/resources/secrets/application-env.yml
-
-      - name: Build with Gradle
-        run: ./gradlew clean bootJar
-
-      - name: Docker build and push
-        run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }} .
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+#  push-docker-image:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Set up JDK 11
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '11'
+#          distribution: 'temurin'
+#
+#      # image 이름 붙여넣기
+#      - name: Set ${{ env.DOCKER_COMPOSE_FILE }}
+#        uses: microsoft/variable-substitution@v1
+#        with:
+#          files: ${{ github.workspace }}/server/${{ env.DOCKER_COMPOSE_FILE }}
+#        env:
+#          services.spring1.image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+#          services.spring2.image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+#
+#      - name: Create secret file
+#        run: |
+#          mkdir src/main/resources/secrets
+#          echo "${{ secrets.APPLICATION_ENV }}" > src/main/resources/secrets/application-env.yml
+#
+#      - name: Build with Gradle
+#        run: ./gradlew clean bootJar
+#
+#      - name: Docker build and push
+#        run: |
+#          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+#          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }} .
+#          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
 
   deploy:
-    needs: [ push-docker-image ]
+#    needs: [ push-docker-image ]
     runs-on: ubuntu-latest
 
     steps:
@@ -66,7 +66,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           source: '${{ github.workspace }}/server/${{ env.DOCKER_COMPOSE_FILE }},${{ github.workspace }}/server/script'
-          target: '~'
+          target: '/'
 
       - name: Deploy to dev
         uses: appleboy/ssh-action@master
