@@ -1,20 +1,23 @@
 package team.youngcha.domain.option.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Schema(description = "기본 품목 정보")
 @Getter
+@Schema(description = "기본 품목 정보")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DefaultOptionSummary {
 
     @Schema(description = "이름")
-    private final String name;
+    private String name;
 
     @Schema(description = "카테고리 아이디")
-    private final Long categoryId;
+    private Long categoryId;
 
     @Schema(description = "이미지 주소")
-    private final String imgUrl;
+    private String imgUrl;
 
     public DefaultOptionSummary(String name, Long categoryId, String imgUrl) {
         this.name = name;

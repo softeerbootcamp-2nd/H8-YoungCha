@@ -15,7 +15,7 @@ import team.youngcha.domain.option.dto.OptionSummary;
 import team.youngcha.domain.trim.dto.TrimDetail;
 
 @Sql({"classpath:data/car_details.sql"})
-public class CarDetailsIntegrationTest extends IntegrationTestBase {
+public class FindCarDetailsIntegrationTest extends IntegrationTestBase {
 
     @Test
     @DisplayName("자동차의 상세정보를 조회한다")
