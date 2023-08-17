@@ -14,6 +14,10 @@
             type="int" />
 
         <variable
+            name="current_type"
+            type="String" />
+
+        <variable
             name="is_view_pager"
             type="boolean" />
 
@@ -28,23 +32,26 @@
         customLayoutHeight="@{is_view_pager ? -1f : @dimen/size_150dp}"
         customMarginBottom="@{is_view_pager ? 0f : @dimen/size_12dp}"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="150dp">
 
         <View
             android:id="@+id/v_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@{is_visible == 1 ? @drawable/btn_select_style : @drawable/btn_unselect_style}" />
+            app:currentTypeForBackground="@{current_type}"
+            app:visibleForBackground="@{is_visible}" />
 
         <ImageView
             android:id="@+id/iv_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="fitXY"
             android:layout_marginStart="17dp"
             android:layout_marginTop="20dp"
-            android:src="@{is_visible == 1 ? @drawable/ic_check_on : @drawable/ic_check_off}"
+            app:currentTypeForIcon="@{current_type}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:visibleForIcon="@{is_visible}" />
 
         <TextView
             android:id="@+id/tv_tag"
@@ -69,10 +76,11 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/hyundai_sans_head_kr_regular"
             android:text="@{option_info.rate}"
-            android:textColor="@{is_visible == 1 ? @color/main_hyundai_blue :@color/cool_grey_003}"
             android:textSize="12sp"
+            app:currentTypeForText="@{current_type}"
             app:layout_constraintStart_toStartOf="@id/tv_price"
-            app:layout_constraintTop_toBottomOf="@id/iv_check" />
+            app:layout_constraintTop_toBottomOf="@id/iv_check"
+            app:visibleForText="@{is_visible}" />
 
         <TextView
             android:id="@+id/tv_name"
@@ -144,6 +152,46 @@
             android:background="@drawable/ic_group"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Bottom line -->
+        <View
+            android:id="@+id/v_bottom_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
+            android:background="@drawable/shape_bottom_border_line"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Right line -->
+        <View
+            android:id="@+id/v_right_line"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
+            android:background="@drawable/shape_right_border_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Top line -->
+        <View
+            android:id="@+id/v_top_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
+            android:background="@drawable/shape_top_border_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Left line -->
+        <View
+            android:id="@+id/v_left_line"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
+            android:background="@drawable/shape_left_border_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
