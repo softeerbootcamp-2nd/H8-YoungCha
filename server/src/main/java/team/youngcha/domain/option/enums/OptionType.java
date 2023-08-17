@@ -1,4 +1,4 @@
-package team.youngcha.domain.option.entity;
+package team.youngcha.domain.option.enums;
 
 import lombok.Getter;
 

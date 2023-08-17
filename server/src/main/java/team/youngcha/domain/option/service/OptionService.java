@@ -15,7 +15,7 @@ import team.youngcha.domain.option.dto.GuideInfo;
 import team.youngcha.domain.option.entity.Option;
 import team.youngcha.domain.option.entity.OptionDetail;
 import team.youngcha.domain.option.entity.OptionImage;
-import team.youngcha.domain.option.entity.OptionType;
+import team.youngcha.domain.option.enums.OptionType;
 import team.youngcha.domain.option.repository.OptionDetailRepository;
 import team.youngcha.domain.option.repository.OptionImageRepository;
 import team.youngcha.domain.option.repository.OptionRepository;
