@@ -5,8 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Schema(description = "기본 품목 정보")
 @Getter
+@Schema(description = "기본 품목 정보")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DefaultOptionSummary {
 

@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.entity.Option;
-import team.youngcha.domain.option.entity.OptionType;
+import team.youngcha.domain.option.enums.OptionType;
 
 import java.util.List;
 

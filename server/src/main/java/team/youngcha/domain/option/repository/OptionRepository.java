@@ -8,8 +8,7 @@ import org.springframework.stereotype.Repository;
 import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.dto.DefaultOptionSummary;
 import team.youngcha.domain.option.entity.Option;
-import team.youngcha.domain.option.entity.OptionType;
-import team.youngcha.domain.trim.enums.TrimOptionType;
+import team.youngcha.domain.option.enums.OptionType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -99,7 +98,7 @@ public class OptionRepository {
                                                                                        Long categoryId,
                                                                                        int page, int size) {
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("trimOptionType", TrimOptionType.DEFAULT.getValue());
+        params.addValue("trimOptionType", OptionType.BASIC.getType());
         params.addValue("categoryId", categoryId);
         params.addValue("trimId", trimId);
         params.addValue("size", size);
