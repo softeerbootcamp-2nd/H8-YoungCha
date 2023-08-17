@@ -30,7 +30,7 @@ function Button({
   onClick,
   ...restProps
 }: ButtonProps) {
-  const className = `flex justify-center items-center rounded-[6px] ${buttonSize[size]} ${buttonColor[color]}`;
+  const className = `flex justify-center items-center rounded-[6px] font-medium body2 cursor-pointer ${buttonSize[size]} ${buttonColor[color]}`;
 
   return (
     <button className={className} onClick={onClick} {...restProps}>

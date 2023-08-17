@@ -7,10 +7,10 @@ import { MoreViewArrow } from '@/assets/icons';
 import { BasicOptionFilterType } from '@/types';
 import { BasicOptions } from '@/constant';
 import { TITLE } from './constant';
-
 interface BasicOptionBoxProps {
   basicOptionLists: BasicOptionType[];
 }
+
 function BasicOptionBox({ basicOptionLists }: BasicOptionBoxProps) {
   const [selectedOption, setSelectedOption] =
     useState<BasicOptionFilterType>('전체');

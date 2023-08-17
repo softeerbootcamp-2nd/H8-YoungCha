@@ -1,9 +1,9 @@
 import App from '@/App';
 import Home from '@/pages/home';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Guide from '@/pages/guide';
 import Making from '@/pages/making';
 import FullScreenLayout from '@/components/layout/FullScreenLayout';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {
