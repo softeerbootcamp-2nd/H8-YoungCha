@@ -1,7 +1,10 @@
 import Button from '@/components/Button';
 import { TEXT } from './constant';
+import { Link, useParams } from 'react-router-dom';
 
 function CompleteGuide() {
+  const { id } = useParams();
+
   return (
     <div className="flex flex-col items-center w-full gap-16px">
       <img
@@ -25,12 +28,17 @@ function CompleteGuide() {
         <span>옵션을 차례로 살펴보며 변경할 수 있어요.</span>
       </div>
       <div className="flex gap-12px mt-20px w-700px h-55px">
-        <Button color="main-blue" size="full">
-          완성된 견적을 바로 볼게요
-        </Button>
-        <Button color="grey" size="full">
-          옵션을 하나씩 살펴볼래요
-        </Button>
+        <Link to={`/model/${id}/making/guide/8`} className="w-full">
+          <Button color="main-blue" size="full">
+            완성된 견적을 바로 볼게요
+          </Button>
+        </Link>
+
+        <Link to={`/model/${id}/making/guide/1`} className="w-full">
+          <Button color="grey" size="full">
+            옵션을 하나씩 살펴볼래요
+          </Button>
+        </Link>
       </div>
     </div>
   );

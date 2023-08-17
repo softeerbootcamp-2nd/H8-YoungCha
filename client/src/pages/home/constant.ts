@@ -1,16 +1,3 @@
-import { BasicOptionFilterType } from './type';
-
-export const BasicOptions: Array<BasicOptionFilterType> = [
-  '전체',
-  '성능',
-  '지능형 안전기술',
-  '안전',
-  '외관',
-  '내장',
-  '시트',
-  '편의',
-  '멀티미디어',
-];
 export const TITLE = {
   BASIC_OPTION: '기본 포함 품목',
   EXTERIR_COLOR: '외장 색상',
