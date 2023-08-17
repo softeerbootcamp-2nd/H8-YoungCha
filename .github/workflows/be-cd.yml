@@ -77,18 +77,18 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            mv ~/server/* ~
+            mv -f ~/server/* ~
             rm -rf ~/server
             chmod +x ./script/*.sh
             
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             
-            ./script/deploy.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPO }} ${{ env.DOCKER_COMPOSE_FILE }}
+            ./script/deploy.sh ${{ env.DOCKER_COMPOSE_FILE }} ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPO }}
             
             docker image prune -f
             docker logout
             
-            ./script/health.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPO }} ${{ env.DOCKER_COMPOSE_FILE }}
+            ./script/health.sh ${{ env.DOCKER_COMPOSE_FILE }} ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPO }}
             
             # nginx 전환에 실패하면 workflow 종료
             if [ "$?" -ge 1 ]
