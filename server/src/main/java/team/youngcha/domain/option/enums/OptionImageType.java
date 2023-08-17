@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum OptionImageType {
     MAIN(0),
     SUB(1),
-    LOGO(2);
+    LOGO(2),
+    ICON(3);
 
     private int value;
 

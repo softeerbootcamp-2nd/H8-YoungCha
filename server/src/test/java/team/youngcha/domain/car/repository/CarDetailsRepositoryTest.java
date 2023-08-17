@@ -29,9 +29,9 @@ public class CarDetailsRepositoryTest {
     void findDetails() {
         //given
         List<CarDetails> carDetails = new ArrayList<>(Arrays.asList(
-                new CarDetails(1L, "팰리세이드", 2L, "Le Blanc (르블랑)", "leblancImgUrl", "leblancBgImgUrl", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 2, "내비게이션 기반 스마트 크루즈 컨트롤 (안전구간, 곡선로)", "지능형 안전기술", 1, "cruise-control.jpg"),
-                new CarDetails(1L, "팰리세이드", 2L, "Le Blanc (르블랑)", "leblancImgUrl", "leblancBgImgUrl", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 2, "베젤리스 인사이드 미러", "내관", 1, "inside-mirror.jpg"),
-                new CarDetails(1L, "팰리세이드", 2L, "Le Blanc (르블랑)", "leblancImgUrl", "leblancBgImgUrl", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 2, "12.3인치 내비게이션(블루링크, 폰 프로젝션, 현대 카페이)", "멀티미디어", 1, "12-3-navigation.png"),
+                new CarDetails(1L, "팰리세이드", 2L, "Le Blanc (르블랑)", "leblancImgUrl", "leblancBgImgUrl", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 2, "내비게이션 기반 스마트 크루즈 컨트롤 (안전구간, 곡선로)", "지능형 안전기술", 3, "cruise-control.jpg"),
+                new CarDetails(1L, "팰리세이드", 2L, "Le Blanc (르블랑)", "leblancImgUrl", "leblancBgImgUrl", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 2, "베젤리스 인사이드 미러", "내관", 3, "inside-mirror.jpg"),
+                new CarDetails(1L, "팰리세이드", 2L, "Le Blanc (르블랑)", "leblancImgUrl", "leblancBgImgUrl", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 2, "12.3인치 내비게이션(블루링크, 폰 프로젝션, 현대 카페이)", "멀티미디어", 3, "12-3-navigation.png"),
                 new CarDetails(1L, "팰리세이드", 2L, "Le Blanc (르블랑)", "leblancImgUrl", "leblancBgImgUrl", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 1, "어비스 블랙펄", "외장 색상", 1, "black-pearl.png"),
                 new CarDetails(1L, "팰리세이드", 2L, "Le Blanc (르블랑)", "leblancImgUrl", "leblancBgImgUrl", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 1, "쉬머링 실버 메탈릭", "외장 색상", 1, "silver-metalic.png"),
                 new CarDetails(1L, "팰리세이드", 2L, "Le Blanc (르블랑)", "leblancImgUrl", "leblancBgImgUrl", "베스트셀러", 40440000, "모두가 선택한 베스트셀러", 1, "문라이트 블루 펄", "외장 색상", 1, "blue-pearl.png"),
