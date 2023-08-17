@@ -10,7 +10,7 @@ const typography = plugin(function ({ addUtilities }) {
     },
     '.title2': {
       'font-family': 'Hyundai Sans Head KR',
-      'font-size': '22px',
+      'font-size': '20px',
       'font-weight': 500,
       'letter-spacing': '-0.6px',
     },

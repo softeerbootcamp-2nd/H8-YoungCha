@@ -1,5 +1,9 @@
 import App from '@/App';
-import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
+import Home from '@/pages/home';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
+import Guide from '@/pages/guide';
+import Making from '@/pages/making';
+import FullScreenLayout from '@/components/layout/FullScreenLayout';
 
 const router = createBrowserRouter([
   {
@@ -12,40 +16,39 @@ const router = createBrowserRouter([
       },
       {
         path: 'model/:id',
-        element: <Outlet />,
         children: [
-          { index: true, element: <div>main</div> },
+          { index: true, element: <Home /> },
           {
             path: 'guide',
-            element: <Outlet />,
+            element: <FullScreenLayout />,
             children: [
               {
                 path: 'age',
-                element: <div>age</div>,
+                element: <Guide path="age" />,
               },
               {
                 path: 'gender',
-                element: <div>gender</div>,
+                element: <Guide path="gender" />,
               },
               {
                 path: 'keyword',
-                element: <div>keyword</div>,
+                element: <Guide path="keyword" />,
               },
               {
-                path: 'compelete',
-                element: <div>compelete</div>,
+                path: 'complete',
+                element: <Guide path="complete" />,
               },
             ],
           },
           {
             path: 'making',
-            element: <Outlet />,
+            element: <FullScreenLayout />,
             children: [
               {
                 path: 'self/:step',
-                element: <div>self</div>,
+                element: <Making path="self" />,
               },
-              { path: 'guide/:step', element: <div>guide</div> },
+              { path: 'guide/:step', element: <Making path="self" /> },
             ],
           },
         ],
