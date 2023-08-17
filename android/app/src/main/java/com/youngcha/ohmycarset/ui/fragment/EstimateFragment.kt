@@ -10,6 +10,7 @@ import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
@@ -17,6 +18,7 @@ import com.youngcha.ohmycarset.databinding.FragmentEstimateBinding
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.EstimateDetailAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.EstimateSummaryAdapter
 import com.youngcha.ohmycarset.util.decorator.LinearItemDecoration
+import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -27,6 +29,8 @@ class EstimateFragment : Fragment() {
 
     private lateinit var summaryAdapter: EstimateSummaryAdapter
     private lateinit var detailAdapter: EstimateDetailAdapter
+
+    private val carViewModel: CarCustomizationViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +45,7 @@ class EstimateFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initAdapter()
+        observeViewModel()
         particleAnimation()
         toggleButton()
         setupTabs()
@@ -156,14 +161,23 @@ class EstimateFragment : Fragment() {
         summaryAdapter = EstimateSummaryAdapter()
         detailAdapter = EstimateDetailAdapter()
 
-        binding.lySummary.rvChooserOption.layoutManager = LinearLayoutManager(activity)
-        binding.lySummary.rvChooserOption.adapter = summaryAdapter
+        binding.lySummary.rvSubOption.layoutManager = LinearLayoutManager(activity)
+        binding.lySummary.rvSubOption.adapter = summaryAdapter
 
-        binding.lyDetail.rvChooserOption.layoutManager = LinearLayoutManager(activity)
-        binding.lyDetail.rvChooserOption.adapter = detailAdapter
+        binding.lyDetail.rvSubOption.layoutManager = LinearLayoutManager(activity)
+        binding.lyDetail.rvSubOption.adapter = detailAdapter
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
-        binding.lySummary.rvChooserOption.addItemDecoration(LinearItemDecoration(spacingInPixels))
-        binding.lyDetail.rvChooserOption.addItemDecoration(LinearItemDecoration(spacingInPixels))
+        binding.lySummary.rvSubOption.addItemDecoration(LinearItemDecoration(spacingInPixels))
+        binding.lyDetail.rvSubOption.addItemDecoration(LinearItemDecoration(spacingInPixels))
+    }
+
+    private fun observeViewModel()
+    {
+        carViewModel.myCar.observe(viewLifecycleOwner) {car->
+            //작업 처리
+
+
+        }
     }
 }
