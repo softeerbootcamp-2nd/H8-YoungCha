@@ -67,7 +67,7 @@ function CompleteOptionPage() {
                   <SummaryOptionsBox.Option
                     type={isDuplicatedType ? '' : type}
                     name={name}
-                    price={price}
+                    price={price!}
                     key={name}
                   />
                 );

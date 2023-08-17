@@ -1,3 +1,3 @@
-export function getPriceTemplete(price: number) {
-  return `+{${price}.toLocaleString()}원`;
+export function getPriceTemplete(price: number, isPlus: boolean = false) {
+  return `${isPlus ? '+' : ''}${price.toLocaleString()}원`;
 }

@@ -1,4 +1,5 @@
 import { TrimType } from '@/assets/mock/mock';
+import { getPriceTemplete } from '@/utils';
 
 interface CarsImageBoxProps {
   trims: TrimType[];
@@ -13,7 +14,9 @@ function CarsImageBox({ trims }: CarsImageBoxProps) {
           key={`car-image-${index}`}
         >
           <img src={imgUrl} alt="palisade" className="w-214px h-155px" />
-          <p className="font-normal body1 text-grey-black">{minPrice}원 부터</p>
+          <p className="font-normal body1 text-grey-black">
+            {getPriceTemplete(minPrice)}원 부터
+          </p>
         </li>
       ))}
     </ul>
