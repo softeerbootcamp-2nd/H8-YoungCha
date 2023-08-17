@@ -8,7 +8,10 @@ function DictionaryToggleButton() {
     setDictionaryOn((prevState) => !prevState);
   }
   return (
-    <button className="flex text-center title5" onClick={toggleDictionary}>
+    <button
+      className="flex items-center text-center title5"
+      onClick={toggleDictionary}
+    >
       {dictionaryOn ? <Icon.DictionaryOnIcon /> : <Icon.DictionaryOffIcon />}
       <span
         className={`pl-4px ${
