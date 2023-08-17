@@ -65,8 +65,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
-          source: '${{ github.workspace }}/server/${{ env.DOCKER_COMPOSE_FILE }},${{ github.workspace }}/server/script'
-          target: 'server'
+          source: './server/${{ env.DOCKER_COMPOSE_FILE }},./server/script'
+          target: '~'
 
       - name: Deploy to dev
         uses: appleboy/ssh-action@master
