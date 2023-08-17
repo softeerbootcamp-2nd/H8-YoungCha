@@ -1,6 +1,7 @@
 import { TrimType } from '@/assets/mock/mock';
 import OptionLayout from './OptionLayout';
 import { TITLE } from './constant';
+import removeBracket from '../../utils/removeBracket';
 
 interface MainOptionBoxProps {
   trims: TrimType[];
@@ -20,7 +21,7 @@ function MainOptionBox({ trims }: MainOptionBoxProps) {
               key={`main-option-imgae-${index}`}
             >
               <img src={imgUrl} alt="name" className="w-80px h-60px" />
-              <p className="body3 text-grey-004">{name}</p>
+              <p className="body3 text-grey-004">{removeBracket(name)}</p>
             </li>
           ))}
         </ul>
