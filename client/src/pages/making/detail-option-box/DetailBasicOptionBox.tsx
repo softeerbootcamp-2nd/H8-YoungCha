@@ -25,15 +25,14 @@ function DetailBasicOptionBox() {
         selectedOption={selectedOptionFilter}
         onClick={(option) => setSelectedOptionFilter(option)}
       />
-      {mockBasicOptions.contents.map(
-        (option) =>
-          isSelectOption(option.categoryId!) && (
-            <DetailOption.List
-              option={{ ...option, type: '기본 포함 품목' }}
-              key={option.name}
-            />
-          )
-      )}
+      {mockBasicOptions.contents
+        .filter((option) => isSelectOption(option.categoryId!))
+        .map((option) => (
+          <DetailOption.List
+            option={{ ...option, type: '기본 포함 품목' }}
+            key={option.name}
+          />
+        ))}
     </DetailOption>
   );
 }

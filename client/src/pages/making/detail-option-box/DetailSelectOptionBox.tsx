@@ -29,12 +29,11 @@ function DetailSelectOptionBox() {
         selectedOption={selectedOptionFilter}
         onClick={(option) => setSelectedOptionFilter(option)}
       />
-      {mockUserSelectedOptionData.selectedOptions.options.map(
-        (option) =>
-          isSelectOption(option.categoryId!) && (
-            <DetailOption.List option={option} key={option.name} />
-          )
-      )}
+      {mockUserSelectedOptionData.selectedOptions.options
+        .filter((option) => isSelectOption(option.categoryId!))
+        .map((option) => (
+          <DetailOption.List option={option} key={option.name} />
+        ))}
     </DetailOption>
   );
 }
