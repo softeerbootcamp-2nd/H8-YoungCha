@@ -42,15 +42,19 @@ public class OptionService {
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
         List<Option> options = optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, category);
 
-        List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
-        Map<Long, Integer> sellRatio = getSellRatio(trimId, optionsIds, category);
-        Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
-        Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsIds);
-
-        return getSortedSelfOptionResponses(options, sellRatio, optionImagesGroup, optionDetailsGroup);
+        return buildSelfOptionResponses(trimId, options, category);
     }
 
-    public List<FindGuideOptionResponse> findGuidePowerTrains(Long trimId, GuideInfo guideInfo) {
+    public List<FindSelfOptionResponse> findSelfInteriorColors(Long trimId, Long exteriorColorId) {
+        trimRepository.findById(trimId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+        List<Option> options = optionRepository
+                .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
+
+        return buildSelfOptionResponses(trimId, options, SelectiveCategory.INTERIOR_COLOR);
+    }
+
+    public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo) {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
         List<Option> powerTrains = optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, SelectiveCategory.POWER_TRAIN);
@@ -71,6 +75,15 @@ public class OptionService {
 
         return getSortedGuideOptionResponses(powerTrains, similarityUsersRatio, keywordRateGroup,
                 powerTrainImagesGroup, powerTrainDetailsGroup);
+    }
+
+    private List<FindSelfOptionResponse> buildSelfOptionResponses(Long trimId, List<Option> options, SelectiveCategory category) {
+        List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
+        Map<Long, Integer> sellRatio = getSellRatio(trimId, optionsIds, category);
+        Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
+        Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsIds);
+
+        return getSortedSelfOptionResponses(options, sellRatio, optionImagesGroup, optionDetailsGroup);
     }
 
     private Map<Long, Integer> getSellRatio(Long trimId, List<Long> optionsIds, SelectiveCategory category) {

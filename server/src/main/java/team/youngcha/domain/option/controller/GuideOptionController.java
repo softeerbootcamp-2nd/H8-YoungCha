@@ -41,7 +41,7 @@ public class GuideOptionController {
             @RequestParam Long keyword3Id
     ) {
         GuideInfo guideInfo = new GuideInfo(gender, ageRange, List.of(keyword1Id, keyword2Id, keyword3Id));
-        List<FindGuideOptionResponse> findGuideOptionResponses = optionService.findGuidePowerTrains(trimId, guideInfo);
+        List<FindGuideOptionResponse> findGuideOptionResponses = optionService.findGuideOptions(trimId, guideInfo);
         SuccessResponse<List<FindGuideOptionResponse>> successResponse =
                 new SuccessResponse<>(findGuideOptionResponses);
         return ResponseEntity.ok(successResponse);

@@ -14,7 +14,7 @@ public enum SelectiveCategory {
     private final String name;
     private final String column;
 
-    SelectiveCategory(String name, String column){
+    SelectiveCategory(String name, String column) {
         this.name = name;
         this.column = column;
     }

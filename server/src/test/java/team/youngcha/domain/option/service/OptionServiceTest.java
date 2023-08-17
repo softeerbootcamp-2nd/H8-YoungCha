@@ -97,10 +97,11 @@ class OptionServiceTest {
     }
 
     @Nested
-    class FindSelfPowerTrains {
+    class FindSelfOptions {
         @Test
         @DisplayName("power train을 self mode로 판매량 내림차순 조회한다.")
         void findPowerTrainSelf() {
+            //given
             List<Option> options = createOptions(3, 1L, 1L);
             List<OptionImage> optionImages = createOptionImages(2, 1L, options.get(0).getId());
             optionImages.addAll(createOptionImages(1, 3L, options.get(1).getId()));
@@ -160,7 +161,55 @@ class OptionServiceTest {
     }
 
     @Nested
-    class FindGuidePowerTrains {
+    class FindSelfInteriorColors {
+        @Test
+        @DisplayName("내장 색상을 self mode로 판매량 내림차순 조회한다.")
+        void findPowerTrainSelf() {
+            //given
+            Long exteriorColorId = 2L;
+            List<Option> options = createOptions(3, 1L, 1L);
+            List<OptionImage> optionImages = createOptionImages(2, 1L, options.get(0).getId());
+            optionImages.addAll(createOptionImages(1, 3L, options.get(1).getId()));
+            List<OptionDetail> optionDetails = createOptionDetails(1, 1L, options.get(0).getId());
+            optionDetails.addAll(createOptionDetails(1, 2L, options.get(1).getId()));
+            optionDetails.addAll(createOptionDetails(1, 3L, options.get(2).getId()));
+
+            Map<Long, Long> powerTrainCounts = new HashMap<>();
+            powerTrainCounts.put(options.get(1).getId(), 1L);
+            powerTrainCounts.put(options.get(2).getId(), 2L);
+
+            given(trimRepository.findById(trimId))
+                    .willReturn(Optional.of(mock(Trim.class)));
+            given(optionRepository
+                    .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId))
+                    .willReturn(options);
+            given(sellRepository
+                    .countOptionsByTrimIdAndContainOptionsIds(eq(trimId), anyList(), eq(SelectiveCategory.INTERIOR_COLOR)))
+                    .willReturn(powerTrainCounts);
+            given(optionImageRepository.findByContainOptionIds(anyList()))
+                    .willReturn(optionImages);
+            given(optionDetailRepository.findWithSpecsByContainOptionIds(anyList()))
+                    .willReturn(optionDetails);
+
+            //when
+            List<FindSelfOptionResponse> powerTrainResponses = optionService.
+                    findSelfInteriorColors(trimId, exteriorColorId);
+
+            //then
+            FindSelfOptionResponse expected1 = new FindSelfOptionResponse(options.get(0), 0,
+                    optionImages.subList(0, 2), optionDetails.subList(0, 1));
+            FindSelfOptionResponse expected2 = new FindSelfOptionResponse(options.get(1), 33,
+                    optionImages.subList(2, 3), optionDetails.subList(1, 2));
+            FindSelfOptionResponse expected3 = new FindSelfOptionResponse(options.get(2), 67,
+                    List.of(), optionDetails.subList(2, 3));
+            assertThat(powerTrainResponses).hasSize(3);
+            assertThat(powerTrainResponses).usingRecursiveComparison()
+                    .isEqualTo(List.of(expected3, expected2, expected1));
+        }
+    }
+
+    @Nested
+    class FindGuideOptions {
         final Option diesel = Option.builder()
                 .id(1L).name("디젤")
                 .categoryId(1L).price(1000).
@@ -201,7 +250,7 @@ class OptionServiceTest {
                     .willReturn(Optional.of(new Keyword(1L, "효율")));
 
             //when
-            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuidePowerTrains(trimId, guideInfo);
+            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuideOptions(trimId, guideInfo);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
@@ -256,7 +305,7 @@ class OptionServiceTest {
                     .willReturn(Optional.of(new Keyword(2L, "안전")));
 
             //when
-            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuidePowerTrains(trimId, guideInfo);
+            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuideOptions(trimId, guideInfo);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
@@ -305,7 +354,7 @@ class OptionServiceTest {
             mockedTrim(optionIds, optionImages, optionDetails, guideInfo, powerTrainCounts, groupKeyword);
 
             //when
-            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuidePowerTrains(trimId, guideInfo);
+            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuideOptions(trimId, guideInfo);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
