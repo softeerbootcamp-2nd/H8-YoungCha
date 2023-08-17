@@ -1,5 +1,5 @@
 import * as Icon from '@/assets/icons';
-import { useOptionCardState } from '../../store/useOptionCardContext';
+import { useOptionCardState } from '@/store/useOptionCardContext';
 
 function MoreDetailsButton() {
   const { isExpanded, setIsExpanded } = useOptionCardState();

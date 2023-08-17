@@ -21,7 +21,7 @@ import MoreDetailsArrow from './MoreDetailsArrow';
 import SmileIcon from './SmileIcon';
 import LaughingFaceIcon from './LaughingFaceIcon';
 import ThumbsUpIcon from './ThumbsUpIcon';
-import NPerformance from '../mock/icons/NPerformance';
+import NPerformance from '@/assets/mock/icons/NPerformance';
 
 export {
   HyundaiLogo,
