@@ -15,7 +15,7 @@ function CarsImageBox({ trims }: CarsImageBoxProps) {
         >
           <img src={imgUrl} alt="palisade" className="w-214px h-155px" />
           <p className="font-normal body1 text-grey-black">
-            {getPriceTemplete(price)}원 부터
+            {getPriceTemplete(price)} 부터
           </p>
         </li>
       ))}

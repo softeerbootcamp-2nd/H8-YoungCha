@@ -15,20 +15,14 @@ import InternalColorBox from './InternalColorBox';
 import ExteriorColorBox from './ExteriorColorBox';
 
 interface TrimsDataType {
-  mode: string;
+  model: string;
   trims: TrimType[];
 }
 function Home() {
-  // const basicOptionLists = [
-  //   mockBasicOptions,
-  //   mockBasicOptions,
-  //   mockBasicOptions,
-  //   mockBasicOptions,
-  // ];
-
   const { data, loading } = useFetch<TrimsDataType>({
     url: `${import.meta.env.VITE_API_URL}/cars/1/details`,
   });
+  const trims = loading ? [] : data?.trims.filter((trim) => trim.id !== 5);
   return (
     <div>
       {!loading && (
@@ -40,12 +34,12 @@ function Home() {
                   {TEXT.MAKING_MY_CAR}
                 </p>
                 <p className="font-medium text-white text-64px font-hsans-head leading-[83.2px]">
-                  {data?.mode}
+                  {data?.model}
                 </p>
               </div>
 
               <div>
-                <TrimCardsBox trims={data?.trims} />
+                <TrimCardsBox trims={trims} />
                 <div className="flex flex-col items-center">
                   <p className="text-white opacity-60 title mt-24px">
                     {TEXT.MAIN_DETAIL_COMPARE}
@@ -63,13 +57,13 @@ function Home() {
             </div>
           </div>
           <div className="w-full pb-400px">
-            <CarsNameListBox trims={data?.trims} />
+            <CarsNameListBox trims={trims} />
             <div className="flex flex-col m-auto max-w-7xl pt-32px gap-60px px-128px">
-              <CarsImageBox trims={data?.trims} />
+              <CarsImageBox trims={trims} />
               <div className="flex flex-col gap-48px">
-                <MainOptionBox trims={data?.trims} />
-                <ExteriorColorBox trims={data?.trims} />
-                <InternalColorBox trims={data?.trims} />
+                <MainOptionBox trims={trims} />
+                <ExteriorColorBox trims={trims} />
+                <InternalColorBox trims={trims} />
                 <BasicOptionBox />
                 <MakingCarButtonsBox />
                 <GuideModeButton />
