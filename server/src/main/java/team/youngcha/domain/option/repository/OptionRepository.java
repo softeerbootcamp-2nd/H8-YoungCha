@@ -8,7 +8,6 @@ import team.youngcha.domain.option.dto.DefaultOptionSummary;
 import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.entity.Option;
 import team.youngcha.domain.option.enums.OptionType;
-import team.youngcha.domain.trim.enums.TrimOptionType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,7 +76,7 @@ public class OptionRepository {
                 "ORDER BY options.id LIMIT ? OFFSET ?";
 
         return jdbcTemplate.query(sql, defaultOptionSummaryRowMapper,
-                TrimOptionType.DEFAULT.getValue(),
+                OptionType.BASIC.getType(),
                 categoryId,
                 trimId,
                 size,

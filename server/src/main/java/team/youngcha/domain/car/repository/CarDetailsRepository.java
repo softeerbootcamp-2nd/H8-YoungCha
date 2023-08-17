@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import team.youngcha.domain.car.dto.CarDetails;
 import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.enums.OptionImageType;
-import team.youngcha.domain.trim.enums.TrimOptionType;
+import team.youngcha.domain.option.enums.OptionType;
 
 import java.util.List;
 
@@ -49,10 +49,10 @@ public class CarDetailsRepository {
                 "OR (category.name = :interiorColor AND options_image.img_type = :subImage)";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("defaultOption", TrimOptionType.DEFAULT.getValue());
+        params.addValue("defaultOption", OptionType.BASIC.getType());
         params.addValue("logo", OptionImageType.LOGO.getValue());
         params.addValue("carId", carId);
-        params.addValue("mainOption", TrimOptionType.MAIN.getValue());
+        params.addValue("mainOption", OptionType.CORE.getType());
         params.addValue("exteriorColor", SelectiveCategory.EXTERIOR_COLOR.getName());
         params.addValue("interiorColor", SelectiveCategory.INTERIOR_COLOR.getName());
         params.addValue("subImage", OptionImageType.SUB.getValue());
