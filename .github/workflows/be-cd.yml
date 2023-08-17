@@ -77,6 +77,8 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           script: |
+            mv ~/server/* ~
+            rm -rf ~/server
             chmod +x ./script/*.sh
             
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
