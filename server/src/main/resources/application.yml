@@ -21,10 +21,10 @@ logging:
     org:
       springframework:
         jdbc:
-          core: debug
+          core: info
           datasource:
             init:
-              ScriptUtils: debug
+              ScriptUtils: info
 springdoc:
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
@@ -32,11 +32,11 @@ springdoc:
     groups:
       enabled: true
 
---- # dev
+--- # prod
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: prod
     import: secrets/application-env.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
