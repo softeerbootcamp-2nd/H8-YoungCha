@@ -14,13 +14,13 @@ function MainOptionBox({ trims }: MainOptionBoxProps) {
           className="flex flex-col w-full gap-8px"
           key={`main-option-${index}`}
         >
-          {mainOptions.map(({ imgUrl, description }, index) => (
+          {mainOptions.map(({ imgUrl, name }, index) => (
             <li
               className="flex items-center gap-8px"
               key={`main-option-imgae-${index}`}
             >
-              <img src={imgUrl} alt="description" className="w-80px h-60px" />
-              <p className="body3 text-grey-004">{description}</p>
+              <img src={imgUrl} alt="name" className="w-80px h-60px" />
+              <p className="body3 text-grey-004">{name}</p>
             </li>
           ))}
         </ul>

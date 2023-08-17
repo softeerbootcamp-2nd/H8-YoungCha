@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { BasicOptionType } from '@/assets/mock/mock';
 import OptionLayout from './OptionLayout';
 import SelectButton from '@/components/SelectButton';
 import Button from '@/components/Button';
@@ -7,17 +6,17 @@ import { MoreViewArrow } from '@/assets/icons';
 import { BasicOptionFilterType } from '@/types';
 import { BasicOptions } from '@/constant';
 import { TITLE } from './constant';
-interface BasicOptionBoxProps {
-  basicOptionLists: BasicOptionType[];
-}
+import BasicOptionLists from './BasicOptionLists';
 
-function BasicOptionBox({ basicOptionLists }: BasicOptionBoxProps) {
+function BasicOptionBox() {
   const [selectedOption, setSelectedOption] =
     useState<BasicOptionFilterType>('전체');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentSize, setCurrentSize] = useState(5);
+  const [lastPageCount, setLastPageCount] = useState(0);
+  const categories = [1, 1, 1, 1];
 
   function handleMoreOptionClick() {
-    setCurrentPage((prev) => prev + 1);
+    setCurrentSize((prev) => prev + 5);
   }
   const basicOptionList = Object.keys(BasicOptions) as BasicOptionFilterType[];
   return (
@@ -38,28 +37,20 @@ function BasicOptionBox({ basicOptionLists }: BasicOptionBoxProps) {
           ))}
         </div>
         <OptionLayout>
-          {basicOptionLists.map(({ contents }, index) => (
+          {categories.map((id, index) => (
             <ul
               className="flex flex-col w-full gap-24px"
               key={`basic-option-${index}`}
             >
-              {contents.map(({ name, imgUrl }, index) => (
-                <li
-                  className="flex items-center gap-15px"
-                  key={`basic-option-content-${index}`}
-                >
-                  <img
-                    src={imgUrl}
-                    alt={name}
-                    className="w-80px h-60px rounded-6px"
-                  />
-                  <p className="font-medium body2">{name}</p>
-                </li>
-              ))}
+              <BasicOptionLists
+                id={id}
+                currentSize={currentSize}
+                setIsLastPage={setLastPageCount}
+              />
             </ul>
           ))}
         </OptionLayout>
-        {currentPage < 4 && (
+        {lastPageCount < 3 && (
           <Button color="grey" onClick={handleMoreOptionClick}>
             더보기
             <MoreViewArrow />
