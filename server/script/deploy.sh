@@ -9,6 +9,9 @@ source "$ABS_DIR"/profile.sh
 
 IDLE_CONTAINER=$(find_idle_profile)
 
+echo "> Nginx container 실행"
+docker-compose -f "$DOCKER_COMPOSE_FILE" up nginx -d --build
+
 # $IDLE_CONTAINER의 컨테이너 ID를 찾고, 있다면 제거
 if [ "$(docker ps -aqf name="^$IDLE_CONTAINER$")" ];
 then
@@ -25,5 +28,5 @@ if [[ "$(docker images -q ghcr.io/"$ORGANIZATION"/"$REPOSITORY":latest 2> /dev/n
   docker rmi "$DOCKER_USERNAME"/"$DOCKER_REPO":latest
 fi
 
-echo "> nginx, $IDLE_CONTAINER container 실행"
-docker compose -f "$DOCKER_COMPOSE_FILE" up nginx "$IDLE_CONTAINER" -d --build
+echo "> $IDLE_CONTAINER container 실행"
+docker compose -f "$DOCKER_COMPOSE_FILE" up "$IDLE_CONTAINER" -d --build
