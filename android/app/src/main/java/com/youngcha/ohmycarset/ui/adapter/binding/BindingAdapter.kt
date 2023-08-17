@@ -1,7 +1,6 @@
 package com.youngcha.ohmycarset.ui.adapter.binding
 
 import android.graphics.Color
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
@@ -12,9 +11,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.youngcha.ohmycarset.model.car.Car
 import com.youngcha.ohmycarset.model.car.OptionInfo
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.EstimateSummaryAdapter
@@ -26,6 +25,8 @@ import com.youngcha.ohmycarset.ui.interfaces.OnHyundaiButtonClickListener
 @BindingAdapter("imageUrl")
 fun loadImage(view: ImageView, imageUrl: String) {
     // 여기에 이미지 로딩 로직 (Glide | Coil)
+    // coil
+    view.load(imageUrl)
 }
 
 @BindingAdapter("testImageSource")
