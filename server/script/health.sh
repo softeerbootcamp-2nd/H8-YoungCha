@@ -28,6 +28,7 @@ do
     then
       exit 1
     fi
+    # 성공 시 break
     break
   else
     echo "> 응답 실패"
