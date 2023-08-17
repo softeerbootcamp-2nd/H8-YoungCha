@@ -8,9 +8,13 @@ on:
 permissions:
   contents: read
 
+env:
+  DOCKER_COMPOSE_FILE: docker-compose.yml
+
 jobs:
-  deploy:
+  push-docker-image:
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: server
@@ -29,16 +33,40 @@ jobs:
           echo "${{ secrets.APPLICATION_ENV }}" > src/main/resources/secrets/application-env.yml
 
       - name: Build with Gradle
-        run: ./gradlew build -x test
-
-      - name: Set up Docker buildx
-        uses: docker/setup-buildx-action@v2
+        run: ./gradlew clean bootJar
 
       - name: Docker build and push
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+
+  deploy:
+    needs: [ push-docker-image ]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # image 이름 붙여넣기
+      - name: Set ${{ env.DOCKER_COMPOSE_FILE }}
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ github.workspace }}/server/${{ env.DOCKER_COMPOSE_FILE }}
+        env:
+          services.spring1.image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+          services.spring2.image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+
+      - name: Copy docker compose & Scripts
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          source: './server/${{ env.DOCKER_COMPOSE_FILE }},./server/script'
+          target: '~'
 
       - name: Deploy to dev
         uses: appleboy/ssh-action@master
@@ -49,21 +77,21 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            if [ "$(docker ps -aqf name="^spring$")" ];
-            then
-              echo "> spring container 제거"
-              docker stop spring
-              docker rm spring
-            else
-              echo "> 구동 중인 spring container가 없으므로 종료하지 않습니다."
-            fi
+            cp -r ~/server/* ~ && rm -rf ~/server
             
-            if [[ "$(docker images -q ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest 2> /dev/null)" != "" ]]; then
-              echo "> latest image 삭제"
-              docker rmi ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
-            fi
+            chmod +x ./script/*.sh
             
-            echo "> docker compose up"
-            docker compose up -d --build spring
-        
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            
+            ./script/deploy.sh ${{ env.DOCKER_COMPOSE_FILE }} ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPO }}
+            
             docker image prune -f
+            docker logout
+            
+            ./script/health.sh ${{ env.DOCKER_COMPOSE_FILE }} ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPO }}
+            
+            # nginx 전환에 실패하면 workflow 종료
+            if [ "$?" -ge 1 ]
+            then
+              exit 1
+            fi
