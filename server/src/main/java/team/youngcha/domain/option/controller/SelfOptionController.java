@@ -28,10 +28,7 @@ public class SelfOptionController {
     public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfPowerTrains(
             @PathVariable Long trimId
     ) {
-        List<FindSelfOptionResponse> findSelfOptionResponses = optionService
-                .findSelfOptions(trimId, SelectiveCategory.POWER_TRAIN);
-        SuccessResponse<List<FindSelfOptionResponse>> successResponse = new SuccessResponse<>(findSelfOptionResponses);
-        return ResponseEntity.ok(successResponse);
+        return findSelfOptions(trimId, SelectiveCategory.POWER_TRAIN);
     }
 
     @Operation(summary = "구동 방식 셀프 모드 옵션 조회", description = "셀프 모드에서 구동 방식의 옵션을 판매량과 함께 조회합니다.")
@@ -39,10 +36,7 @@ public class SelfOptionController {
     public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfDrivingSystem(
             @PathVariable Long trimId
     ) {
-        List<FindSelfOptionResponse> findSelfOptionResponses = optionService
-                .findSelfOptions(trimId, SelectiveCategory.DRIVING_SYSTEM);
-        SuccessResponse<List<FindSelfOptionResponse>> successResponse = new SuccessResponse<>(findSelfOptionResponses);
-        return ResponseEntity.ok(successResponse);
+        return findSelfOptions(trimId, SelectiveCategory.DRIVING_SYSTEM);
     }
 
     @Operation(summary = "바디 타입 셀프 모드 옵션 조회", description = "셀프 모드에서 바디 타입의 옵션을 판매량과 함께 조회합니다.")
@@ -50,10 +44,20 @@ public class SelfOptionController {
     public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfBodyType(
             @PathVariable Long trimId
     ) {
-        List<FindSelfOptionResponse> findSelfOptionResponses = optionService
-                .findSelfOptions(trimId, SelectiveCategory.BODY_TYPE);
+        return findSelfOptions(trimId, SelectiveCategory.BODY_TYPE);
+    }
+
+    @Operation(summary = "외장 색상 셀프 모드 옵션 조회", description = "셀프 모드에서 외장 색상의 옵션을 판매량과 함께 조회합니다.")
+    @GetMapping("/exterior-color")
+    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfExteriorColor(
+            @PathVariable Long trimId
+    ) {
+        return findSelfOptions(trimId, SelectiveCategory.EXTERIOR_COLOR);
+    }
+
+    private ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfOptions(Long trimId, SelectiveCategory category) {
+        List<FindSelfOptionResponse> findSelfOptionResponses = optionService.findSelfOptions(trimId, category);
         SuccessResponse<List<FindSelfOptionResponse>> successResponse = new SuccessResponse<>(findSelfOptionResponses);
         return ResponseEntity.ok(successResponse);
     }
-
 }
