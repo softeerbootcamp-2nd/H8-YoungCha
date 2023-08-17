@@ -5,7 +5,7 @@ import DictionaryOffIcon from './dictionary-off-icon';
 import DictionaryOnIcon from './dictionary-on-icon';
 import BlueCheckIcon from './BlueCheckIcon';
 import GreyCheckIcon from './GreyCheckIcon';
-import SkyblueCheckIcon from './SkyblueCheckIcon';
+import SubBlueCheckIcon from './SubBlueCheckIcon';
 import MoreDetailsArrow from './MoreDetailsArrow';
 import SmileIcon from './SmileIcon';
 import LaughingFaceIcon from './LaughingFaceIcon';
@@ -20,7 +20,7 @@ export {
   DictionaryOnIcon,
   BlueCheckIcon,
   GreyCheckIcon,
-  SkyblueCheckIcon,
+  SubBlueCheckIcon,
   MoreDetailsArrow,
   SmileIcon,
   LaughingFaceIcon,
