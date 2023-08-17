@@ -2,14 +2,14 @@
 
 # nginx와 연결되지 않은 profile 찾기(활성화시킬 profile)
 function find_idle_profile() {
-  RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/profile)
+  RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/profiles)
 
   if [ "$RESPONSE_CODE" -ge 400 ]
   then
     # nginx와 연결된 컨테이너가 없으면 spring2가 연결되어 있다고 설정
     CURRENT_PROFILE=spring2
   else
-    CURRENT_PROFILE=$(curl -s http://localhost/profile)
+    CURRENT_PROFILE=$(curl -s http://localhost/profiles)
   fi
 
   # 구동할 profile 설정

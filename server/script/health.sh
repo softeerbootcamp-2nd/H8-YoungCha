@@ -12,12 +12,12 @@ IDLE_PORT=$(find_idle_port)
 
 echo "> Health check 시작"
 echo "> IDLE_CONTAINER: $IDLE_PORT"
-echo "> curl -s http://localhost:$IDLE_PORT/profile"
+echo "> curl -s http://localhost:$IDLE_PORT/profiles"
 sleep 10
 
 for RETRY_COUNT in $(seq 1 10)
 do
-  RESPONSE=$(curl -s http://localhost:"$IDLE_PORT"/profile)
+  RESPONSE=$(curl -s http://localhost:"$IDLE_PORT"/profiles)
   UP_COUNT=$(echo "$RESPONSE" | grep -c "spring") # spring이 들어간 행의 개수
 
   if [ "$UP_COUNT" -ge 1 ]
