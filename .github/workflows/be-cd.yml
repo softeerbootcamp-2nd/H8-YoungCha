@@ -67,7 +67,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           source: './${{ env.DOCKER_COMPOSE_FILE }},./script'
-          target: ${{ env.REPOSITORY }}
+          target: ~
 
       - name: Deploy to dev
         uses: appleboy/ssh-action@master
