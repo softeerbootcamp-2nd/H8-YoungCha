@@ -1,6 +1,7 @@
 package com.youngcha.ohmycarset.model.car
 
 data class OptionInfo(
+    val optionType: String, // main, sub, color
     val rate: String, // 63%
     val name: String, // 디젤 2.2
     val price: String, // + 1,480,000원

@@ -12,3 +12,17 @@ fun View.fadeOut() {
         this.visibility = View.GONE
     }.start()
 }
+fun View.slideInRight() {
+    this.visibility = View.VISIBLE // visibility 값을 VISIBLE로 변경
+    this.animate().translationX(this.width.toFloat()).setDuration(700).start()
+}
+
+fun View.slideOutLeft() {
+    this.animate()
+        .translationX(-this.width.toFloat())
+        .setDuration(700)
+        .withEndAction {
+            this.visibility = View.GONE
+        }
+        .start()
+}

@@ -12,8 +12,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.model.car.Car
 import com.youngcha.ohmycarset.model.car.OptionInfo
+import com.youngcha.ohmycarset.ui.adapter.recyclerview.EstimateSummaryAdapter
 import com.youngcha.ohmycarset.ui.customview.CircleView
 import com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
 import com.youngcha.ohmycarset.ui.interfaces.OnHyundaiButtonClickListener
@@ -174,4 +178,29 @@ fun setCustomMarginBottom(view: View, marginBottom: Float) {
         p.setMargins(p.leftMargin, p.topMargin, p.rightMargin, marginBottom.toInt())
         view.requestLayout()
     }
+}
+
+@BindingAdapter(value = ["myCarData", "viewType"], requireAll = false)
+fun bindRecyclerView(recyclerView: RecyclerView, myCarData: List<Map<String, List<OptionInfo>>>?, viewType: String) {
+    val adapter = recyclerView.adapter as? EstimateSummaryAdapter ?: EstimateSummaryAdapter()
+    recyclerView.adapter = adapter
+
+    if (recyclerView.layoutManager == null) {
+        recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
+    }
+
+    val matchedOptionsMap = mutableMapOf<String, MutableList<OptionInfo>>()
+
+    myCarData?.forEach { mapEntry ->
+        mapEntry.forEach { (key, optionList) ->
+            optionList.forEach { option ->
+                if (option.optionType == viewType) {
+                    matchedOptionsMap[key] = matchedOptionsMap.getOrDefault(key, mutableListOf()).apply {
+                        add(option)
+                    }
+                }
+            }
+        }
+    }
+    adapter.updateOptionInfo(matchedOptionsMap)
 }

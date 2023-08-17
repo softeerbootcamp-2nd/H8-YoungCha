@@ -9,7 +9,10 @@ import com.youngcha.ohmycarset.databinding.PreliminariesShortButtonBinding
 import com.youngcha.ohmycarset.model.tag.Use
 import com.youngcha.ohmycarset.viewmodel.UserTagViewModel
 
-class UseAdapter(private val viewModel: UserTagViewModel) :
+class UseAdapter(
+    private val viewModel: UserTagViewModel,
+    private val onItemClick: (Use) -> Unit
+) :
     RecyclerView.Adapter<UseAdapter.UseViewHolder>() {
 
     var useList = emptyList<Use>()
@@ -17,11 +20,6 @@ class UseAdapter(private val viewModel: UserTagViewModel) :
             field = value
             notifyDataSetChanged()
         }
-    private var listener: ItemClickListener? = null
-
-    interface ItemClickListener {
-        fun onItemClickListener(use: Use)
-    }
 
     inner class UseViewHolder(private val binding: PreliminariesShortButtonBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -29,8 +27,9 @@ class UseAdapter(private val viewModel: UserTagViewModel) :
             binding.tvData.text = use.toString()
 
             binding.root.setOnClickListener {
-                listener?.onItemClickListener(use)
-                notifyItemChanged(pos)
+                use.isSelected = !use.isSelected
+                notifyDataSetChanged()
+                onItemClick.invoke(use)
             }
 
             if (useList[pos].isSelected) {
@@ -70,14 +69,4 @@ class UseAdapter(private val viewModel: UserTagViewModel) :
     }
 
     override fun getItemCount(): Int = useList.size
-
-    fun setUseClickEvent(onClick: (Use) -> Unit) {
-        listener = object : ItemClickListener {
-            override fun onItemClickListener(use: Use) {
-                use.isSelected = !use.isSelected
-                notifyDataSetChanged()
-                onClick.invoke(use)
-            }
-        }
-    }
 }

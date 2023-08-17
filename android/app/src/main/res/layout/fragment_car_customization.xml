@@ -15,8 +15,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.fragment.CarCustomizationFragment">
+        android:layout_height="match_parent">
 
         <com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
             android:id="@+id/htb_header_toolbar"
@@ -48,7 +47,7 @@
             android:id="@+id/iv_main_img"
             android:layout_width="match_parent"
             android:layout_height="310dp"
-            android:visibility="@{viewModel.subOptionVerticalButtonVisible == 1? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.subOptionButtonVisible == 1? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
@@ -65,7 +64,7 @@
             android:text="@{viewModel.currentComponentName}"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:customTopConstraint="@{viewModel.subOptionVerticalButtonVisible == 1 ? @id/iv_main_img : @id/tl_sub_option_tab}"
+            app:customTopConstraint="@{viewModel.subOptionButtonVisible == 1 ? @id/iv_main_img : @id/tl_sub_option_tab}"
             app:layout_constraintEnd_toStartOf="@id/tv_title_sub"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_main_img"
@@ -89,9 +88,9 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="16dp"
-            android:background="@{viewModel.subOptionVerticalButtonVisible == 1 ? @drawable/ic_list : @drawable/ic_gallery}"
+            android:background="@{viewModel.subOptionButtonVisible == 1 ? @drawable/ic_list : @drawable/ic_gallery}"
             android:onClick="@{viewModel::onSubOptionChanged}"
-            android:visibility="@{viewModel.subOptionChangeButton == 1 ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.subOptionViewTypeChangeButton == 1 ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/tv_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_title" />
@@ -149,7 +148,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:visibility="@{viewModel.subOptionVerticalButtonVisible == 1 ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.subOptionButtonVisible == 1 ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title" />
@@ -162,7 +161,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="33dp"
-            android:visibility="@{(viewModel.swipeButtonVisible == 1 &amp;&amp; viewModel.subOptionVerticalButtonVisible == 1) ? View.VISIBLE : View.GONE}"
+            android:visibility="@{(viewModel.swipeButtonVisible == 1 &amp;&amp; viewModel.subOptionButtonVisible == 1) ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title" />
@@ -173,7 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
             android:background="@null"
-            android:visibility="@{(viewModel.swipeButtonVisible == 1 &amp;&amp; viewModel.subOptionVerticalButtonVisible == 1) ? View.VISIBLE : View.GONE}"
+            android:visibility="@{(viewModel.swipeButtonVisible == 1 &amp;&amp; viewModel.subOptionButtonVisible == 1) ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/vp_option_container"
@@ -186,16 +185,6 @@
             app:tabPaddingEnd="8dp"
             app:tabPaddingStart="8dp" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/style_hyundai_main_color_border"
-            android:text="선택"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_sub_option_tab"
             android:layout_width="match_parent"
@@ -203,7 +192,7 @@
             android:layout_marginTop="8dp"
             android:background="@null"
             android:elevation="0dp"
-            android:visibility="@{(viewModel.subOptionChangeButton == 1 || viewModel.subOptionVerticalButtonVisible == 0)? View.VISIBLE : View.GONE}"
+            android:visibility="@{(viewModel.subOptionViewTypeChangeButton == 1 || viewModel.subOptionButtonVisible == 0)? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
@@ -218,5 +207,25 @@
             app:tabRippleColor="@null"
             app:tabSelectedTextColor="@color/white" />
 
+        <include
+            android:id="@+id/bottom_sheet_layout"
+            layout="@layout/layout_bottom_sheet_estimate_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:viewModel="@{viewModel}"
+            app:layout_constraintBottom_toTopOf="@id/button1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="108dp"
+            android:background="@color/white"
+            android:text="선택"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

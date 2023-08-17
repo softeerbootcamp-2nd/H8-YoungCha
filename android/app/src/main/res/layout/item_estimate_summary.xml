@@ -1,34 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="component_name"
+            type="String" />
+
+        <variable
+            name="option_info"
+            type="com.youngcha.ohmycarset.model.car.OptionInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp">
 
         <TextView
-            android:id="@+id/tv_type"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_component_name"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/cool_grey_black"
+            android:fontFamily="@font/hyundai_sans_text_kr_regular"
+            android:gravity="start"
+            android:textColor="@color/cool_grey_003"
             android:textSize="14sp"
+            android:text="@{component_name}"
+            app:layout_constraintEnd_toStartOf="@id/tv_option_name"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="파워트레인"/>
 
         <TextView
-            android:id="@+id/tv_price"
+            android:id="@+id/tv_option_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:fontFamily="@font/hyundai_sans_text_kr_regular"
+            android:gravity="start"
+            android:text="@{option_info.name}"
             android:textColor="@color/cool_grey_black"
             android:textSize="14sp"
+            android:layout_marginStart="21dp"
+            app:layout_constraintEnd_toStartOf="@id/tv_option_price"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_component_name"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="디젤 2.2"/>
+
+        <TextView
+            android:id="@+id/tv_option_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hyundai_sans_text_kr_regular"
+            android:gravity="end"
+            android:text="@{option_info.price}"
+            android:textColor="@color/cool_grey_black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/tv_option_name"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="123,123,123원"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

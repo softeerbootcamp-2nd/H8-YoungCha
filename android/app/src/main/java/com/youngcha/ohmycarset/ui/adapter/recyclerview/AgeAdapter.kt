@@ -9,7 +9,7 @@ import com.youngcha.ohmycarset.databinding.PreliminariesLongButtonBinding
 import com.youngcha.ohmycarset.model.tag.Age
 import com.youngcha.ohmycarset.viewmodel.UserTagViewModel
 
-class AgeAdapter(private val viewModel: UserTagViewModel) :
+class AgeAdapter(private val viewModel: UserTagViewModel, private val onItemClick: (Age) -> Unit) :
     RecyclerView.Adapter<AgeAdapter.AgeViewHolder>() {
 
     var ageList = emptyList<Age>()
@@ -17,11 +17,6 @@ class AgeAdapter(private val viewModel: UserTagViewModel) :
             field = value
             notifyDataSetChanged()
         }
-    private var listener: ItemClickListener? = null
-
-    interface ItemClickListener {
-        fun onItemClickListener(age: Age)
-    }
 
     inner class AgeViewHolder(private val binding: PreliminariesLongButtonBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -29,12 +24,13 @@ class AgeAdapter(private val viewModel: UserTagViewModel) :
             binding.tvData.text = age.toString()
 
             binding.root.setOnClickListener {
-                listener?.onItemClickListener(age)
-                notifyItemChanged(pos)
+                ageList.forEach { it.isSelected = false }
+                age.isSelected = true
+                notifyDataSetChanged()
+                onItemClick.invoke(age)
             }
 
             if (ageList[pos].isSelected) {
-
                 binding.vBackground.setBackgroundResource(R.drawable.btn_select_style)
                 binding.tvData.setTextColor(
                     ContextCompat.getColor(
@@ -70,16 +66,5 @@ class AgeAdapter(private val viewModel: UserTagViewModel) :
 
     override fun onBindViewHolder(holder: AgeViewHolder, position: Int) {
         holder.bind(position, ageList[position])
-    }
-
-    fun setAgeClickEvent(onClick: (Age) -> Unit) {
-        listener = object : ItemClickListener {
-            override fun onItemClickListener(age: Age) {
-                ageList.forEach { it.isSelected = false }
-                age.isSelected = true
-                notifyDataSetChanged()
-                onClick.invoke(age)
-            }
-        }
     }
 }
