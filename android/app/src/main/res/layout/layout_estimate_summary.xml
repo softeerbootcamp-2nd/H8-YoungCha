@@ -102,7 +102,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_main_option_view"
-                app:myCarData="@{viewModel.myCar}"
+                app:myCarData="@{viewModel.customizedParts}"
                 app:viewType='@{"main"}'
                 tools:itemCount="5"
                 tools:listitem="@layout/item_estimate_summary" />
@@ -157,7 +157,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_option_color_view"
-                app:myCarData="@{viewModel.myCar}"
+                app:myCarData="@{viewModel.customizedParts}"
                 app:viewType='@{"color"}'
                 tools:itemCount="5"
                 tools:listitem="@layout/item_estimate_summary" />
@@ -212,7 +212,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_sub_option_view"
-                app:myCarData="@{viewModel.myCar}"
+                app:myCarData="@{viewModel.customizedParts}"
                 app:viewType='@{"sub"}'
                 tools:itemCount="5"
                 tools:listitem="@layout/item_estimate_summary" />

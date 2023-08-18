@@ -25,8 +25,11 @@ class CarCustomizationViewModel : ViewModel() {
     val currentComponentName: LiveData<String> = _currentComponentName
 
     // 내가 커스터마이징 하고 있는 자동차
-    private val _myCar = MutableLiveData<List<Map<String, List<OptionInfo>>>>()
-    val myCar: LiveData<List<Map<String, List<OptionInfo>>>> = _myCar
+    private val _customizedParts = MutableLiveData<List<Map<String, List<OptionInfo>>>>()
+    val customizedParts: LiveData<List<Map<String, List<OptionInfo>>>> = _customizedParts
+
+    private val _currentType = MutableLiveData<String>("SelfMode")
+    val currentType: LiveData<String> = _currentType
 
     /*
     파워트레인, 구동 방식, 바디 타입등 선택할 수 있는 옵션이 2개이하라면 Horizontal Two Button 으로 선택 가능
@@ -53,7 +56,6 @@ class CarCustomizationViewModel : ViewModel() {
     val estimateViewVisible: LiveData<Int> = _estimateViewVisible
 
     val exteriorButtonChange = MutableLiveData<Int>(1)
-
     // --------------
     private val _mainOptionsTabs = MutableLiveData<List<String>>()
     val mainOptionsTabs: LiveData<List<String>> = _mainOptionsTabs
@@ -76,6 +78,14 @@ class CarCustomizationViewModel : ViewModel() {
 
     fun updateEstimateColorButton(view:View) {
         exteriorButtonChange.value = if(exteriorButtonChange.value==1) 0 else 1
+    }
+    fun updateCurrentType(currentType: String) {
+        _currentType.value = currentType
+        resetCustomizedParts()
+    }
+
+    fun resetCustomizedParts() {
+        _customizedParts.value = emptyList()
     }
 
     fun updateTabInformation(car: Car) {
@@ -137,7 +147,7 @@ class CarCustomizationViewModel : ViewModel() {
         option: OptionInfo,
         subOptionName: String? = null
     ) {
-        val updatedList = _myCar.value?.toMutableList() ?: mutableListOf()
+        val updatedList = _customizedParts.value?.toMutableList() ?: mutableListOf()
 
         val keyName = subOptionName ?: componentName
         val index = updatedList.indexOfFirst { it.containsKey(keyName) }
@@ -164,11 +174,11 @@ class CarCustomizationViewModel : ViewModel() {
             updatedList.add(newComponentMap)
         }
         //_myCar.postValue(updatedList)
-        _myCar.value = updatedList
+        _customizedParts.value = updatedList
     }
 
     fun removeCarComponents(keyName: String, option: OptionInfo) {
-        val updatedList = _myCar.value?.toMutableList() ?: return
+        val updatedList = _customizedParts.value?.toMutableList() ?: return
         val index = updatedList.indexOfFirst { it.containsKey(keyName) }
 
         if (index != -1) {
@@ -184,12 +194,12 @@ class CarCustomizationViewModel : ViewModel() {
                 updatedList[index] = existingComponent
             }
             //_myCar.postValue(updatedList)
-            _myCar.value = updatedList
+            _customizedParts.value = updatedList
         }
     }
 
     fun isSelectedOptions(tabName: String): List<OptionInfo>? {
-        val car = _myCar.value
+        val car = _customizedParts.value
 
         val index = car?.indexOfFirst { it.containsKey(tabName) }
 
@@ -201,7 +211,7 @@ class CarCustomizationViewModel : ViewModel() {
     }
 
     fun alreadySelectedComponent(componentName: String) {
-        val car = _myCar.value ?: listOf()
+        val car = _customizedParts.value ?: listOf()
         val index = car.indexOfFirst { it.containsKey(componentName) }
         setComponentOptionVisibility(1, 0)
         if (index != -1) {
