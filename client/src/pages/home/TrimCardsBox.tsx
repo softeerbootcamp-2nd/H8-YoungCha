@@ -1,6 +1,6 @@
-import { TrimType } from '@/assets/mock/mock';
 import MakingModeButton from '@/components/MakingModeButton';
 import removeBracket from '../../utils/removeBracket';
+import { TrimType } from '@/types';
 
 interface TrimCardsBoxProps {
   trims: TrimType[];

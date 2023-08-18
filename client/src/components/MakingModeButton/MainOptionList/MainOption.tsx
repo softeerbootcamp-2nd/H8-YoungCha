@@ -1,4 +1,3 @@
-import { MainOptionType } from '@/assets/mock/mock.ts';
 import { removeBracket } from '@/utils';
 
 interface MainOptionProps extends MainOptionType {}

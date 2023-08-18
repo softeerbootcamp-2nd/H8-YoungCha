@@ -1,49 +1,7 @@
 // TODO: 실제 데이터로 변경
 
 import { UserSelectedOptionDataType } from '@/pages/making/type';
-
-export interface MainOptionType {
-  imgUrl: string;
-  name: string;
-}
-
-export interface ExteriorColorType {
-  imgUrl: string;
-  name: string;
-}
-
-export interface InternalColorType {
-  imgUrl: string;
-  name: string;
-}
-
-export interface TrimType {
-  id: number;
-  name: string;
-  backgroundImgUrl: string;
-  imgUrl: string;
-  hashTag: string;
-  description: string;
-  best: boolean;
-  price: number;
-  mainOptions: MainOptionType[];
-  exteriorColors: ExteriorColorType[];
-  interiorColors: InternalColorType[];
-}
-
-export interface BasicOptionType {
-  first: boolean;
-  last: boolean;
-  totalElements: number;
-  totalPages: number;
-  contents: [
-    {
-      name: string;
-      categoryId: number;
-      imgUrl: string;
-    },
-  ];
-}
+import { TrimType } from '@/types';
 
 export const mockLeblanc: TrimType = {
   id: 1,

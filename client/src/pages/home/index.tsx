@@ -1,4 +1,3 @@
-import { TrimType } from '@/assets/mock/mock';
 import { TEXT } from './constant';
 import useFetch from '@/hooks/useFetch';
 
@@ -13,6 +12,7 @@ import MakingCarButtonsBox from './MakingCarButtonsBox';
 import TrimCardsBox from './TrimCardsBox';
 import InternalColorBox from './InternalColorBox';
 import ExteriorColorBox from './ExteriorColorBox';
+import { TrimType } from '@/types';
 
 interface TrimsDataType {
   model: string;
