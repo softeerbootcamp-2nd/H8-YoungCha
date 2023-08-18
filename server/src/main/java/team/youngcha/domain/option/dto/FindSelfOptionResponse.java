@@ -30,7 +30,7 @@ public class FindSelfOptionResponse {
     private String name;
 
     @Schema(description = "선택 피트백 문구")
-    private String feedback;
+    private Feedback feedback;
 
     @Schema(description = "옵션 사진")
     private List<FindOptionImageResponse> images;
@@ -43,7 +43,7 @@ public class FindSelfOptionResponse {
         this.rate = rate;
         this.price = option.getPrice();
         this.name = option.getName();
-        this.feedback = option.getFeedback();
+        this.feedback = new Feedback(option.getFeedbackTitle(), option.getFeedbackDescription());
         this.images = optionImages.stream()
                 .map(FindOptionImageResponse::new)
                 .collect(Collectors.toList());
@@ -53,12 +53,12 @@ public class FindSelfOptionResponse {
     }
 
     @Builder
-    public FindSelfOptionResponse(Long id, int rate, int price, String name, String feedback, List<FindOptionImageResponse> images, List<FindOptionDetailResponse> details) {
+    public FindSelfOptionResponse(Long id, int rate, int price, String name, String feedbackTitle, String feedbackDescription, List<FindOptionImageResponse> images, List<FindOptionDetailResponse> details) {
         this.id = id;
         this.rate = rate;
         this.price = price;
         this.name = name;
-        this.feedback = feedback;
+        this.feedback = new Feedback(feedbackTitle, feedbackDescription);
         this.images = images;
         this.details = details;
     }
