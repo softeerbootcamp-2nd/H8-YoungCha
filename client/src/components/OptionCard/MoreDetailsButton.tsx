@@ -1,8 +1,8 @@
 import * as Icon from '@/assets/icons';
-import { useOptionCardState } from '@/store/useOptionCardContext';
+import { useOptionCardContext } from '@/store/useOptionCardContext';
 
 function MoreDetailsButton() {
-  const { isExpanded, setIsExpanded } = useOptionCardState();
+  const { isExpanded, setIsExpanded } = useOptionCardContext();
 
   function handleIsExpanded(event: React.MouseEvent<HTMLInputElement>) {
     event.stopPropagation();

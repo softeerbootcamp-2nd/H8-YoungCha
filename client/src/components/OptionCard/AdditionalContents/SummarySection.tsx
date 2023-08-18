@@ -1,10 +1,10 @@
 import { PowerTrain } from '@/assets/mock/optionMock';
-import { useOptionCardState } from '@/store/useOptionCardContext';
+import { useOptionCardContext } from '@/store/useOptionCardContext';
 
 interface SummarySectionProps extends Pick<PowerTrain, 'details'> {}
 
 function SummarySection({ details }: SummarySectionProps) {
-  const { isActive } = useOptionCardState();
+  const { isActive } = useOptionCardContext();
   return (
     <p
       className={`${

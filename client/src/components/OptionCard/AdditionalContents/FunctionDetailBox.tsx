@@ -1,10 +1,10 @@
 import { PowerTrain } from '@/assets/mock/optionMock';
-import { useOptionCardState } from '@/store/useOptionCardContext';
+import { useOptionCardContext } from '@/store/useOptionCardContext';
 
 interface FunctionDetailBoxProps extends Pick<PowerTrain, 'details'> {}
 
 function FunctionDetailBox({ details }: FunctionDetailBoxProps) {
-  const { isActive } = useOptionCardState();
+  const { isActive } = useOptionCardContext();
   return (
     <div
       className={`${

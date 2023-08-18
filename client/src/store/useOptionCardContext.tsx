@@ -47,6 +47,6 @@ export function OptionCardProvider({
   );
 }
 
-export function useOptionCardState() {
+export function useOptionCardContext() {
   return useContext(OptionCardContext);
 }

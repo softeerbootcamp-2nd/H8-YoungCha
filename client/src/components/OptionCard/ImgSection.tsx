@@ -1,5 +1,6 @@
-import { useOptionCardState } from '@/store/useOptionCardContext';
+import { useOptionCardContext } from '@/store/useOptionCardContext';
 import { PowerTrainDetails } from '@/assets/mock/optionMock';
+import HGenuingAccessories from '@/assets/mock/icons/HGenuineAccessories';
 
 interface ImgSectionProps extends Pick<PowerTrainDetails, 'imgUrl'> {
   imgUrl: string;
@@ -7,7 +8,7 @@ interface ImgSectionProps extends Pick<PowerTrainDetails, 'imgUrl'> {
 }
 
 function ImgSection({ imgUrl, step }: ImgSectionProps) {
-  const { isActive } = useOptionCardState();
+  const { isActive } = useOptionCardContext();
   let imgElement = <></>;
   switch (step) {
     case 4: //휠 선택
@@ -42,7 +43,8 @@ function ImgSection({ imgUrl, step }: ImgSectionProps) {
             isActive ? '' : 'opacity-40'
           } absolute top-20px left-265px`}
         >
-          <img src={imgUrl} alt="H Genuine Accessories" />
+          {/* <img src={imgUrl} alt="H Genuine Accessories" /> */}
+          <HGenuingAccessories />
         </div>
       );
       break;

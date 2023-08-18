@@ -1,8 +1,8 @@
 import * as Icon from '@/assets/icons';
-import { useOptionCardState } from '@/store/useOptionCardContext';
+import { useOptionCardContext } from '@/store/useOptionCardContext';
 
 function CheckIcon() {
-  const { isActive, isSelfMode } = useOptionCardState();
+  const { isActive, isSelfMode } = useOptionCardContext();
 
   return (
     <>
