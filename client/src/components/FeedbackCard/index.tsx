@@ -2,6 +2,9 @@ import * as Icon from '@/assets/icons';
 import { powerTrainMock } from '@/assets/mock/optionMock';
 import { useState, useEffect } from 'react';
 
+const SHOW_SMILE_TIME = 500;
+const SHOW_LAUGHING_TIME = 1000;
+
 interface FeedbackCardProps {
   isSelected: boolean;
 }
@@ -14,11 +17,11 @@ function FeedbackCard({ isSelected }: FeedbackCardProps) {
     if (isSelected) {
       const timer1 = setTimeout(() => {
         setShowSmileIcon(false);
-      }, 500);
+      }, SHOW_SMILE_TIME);
 
       const timer2 = setTimeout(() => {
         setShowLaughingIcon(true);
-      }, 1000);
+      }, SHOW_LAUGHING_TIME);
 
       return () => {
         clearTimeout(timer1);
