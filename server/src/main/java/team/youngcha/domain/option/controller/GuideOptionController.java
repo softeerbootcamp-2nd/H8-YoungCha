@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import team.youngcha.common.dto.SuccessResponse;
 import team.youngcha.common.enums.AgeRange;
 import team.youngcha.common.enums.Gender;
+import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.dto.FindGuideOptionResponse;
 import team.youngcha.domain.option.dto.GuideInfo;
 import team.youngcha.domain.option.service.OptionService;
@@ -41,7 +42,8 @@ public class GuideOptionController {
             @RequestParam Long keyword3Id
     ) {
         GuideInfo guideInfo = new GuideInfo(gender, ageRange, List.of(keyword1Id, keyword2Id, keyword3Id));
-        List<FindGuideOptionResponse> findGuideOptionResponses = optionService.findGuideOptions(trimId, guideInfo);
+        List<FindGuideOptionResponse> findGuideOptionResponses = optionService
+                .findGuideOptions(trimId, guideInfo, SelectiveCategory.POWER_TRAIN);
         SuccessResponse<List<FindGuideOptionResponse>> successResponse =
                 new SuccessResponse<>(findGuideOptionResponses);
         return ResponseEntity.ok(successResponse);

@@ -54,10 +54,11 @@ public class OptionService {
         return buildSelfOptionResponses(trimId, options, SelectiveCategory.INTERIOR_COLOR);
     }
 
-    public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo) {
+    public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo, SelectiveCategory category) {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
-        List<Option> options = optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, SelectiveCategory.POWER_TRAIN);
+        List<Option> options = optionRepository
+                .findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, category);
 
         List<Long> optionsId = options.stream().map(Option::getId).collect(Collectors.toList());
 
