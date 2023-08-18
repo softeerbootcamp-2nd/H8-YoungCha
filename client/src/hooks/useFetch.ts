@@ -10,14 +10,10 @@ function useFetch<T>({ url, params }: FetchType) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<T>({} as T);
 
-  let requestURL = url;
-  if (params) {
-    requestURL += new URLSearchParams(params).toString();
-  }
   useEffect(() => {
     (async () => {
-      const { data } = await get(requestURL);
-      setData(data);
+      const data = await get<T>({ url, params });
+      setData(data as T);
       setLoading(false);
     })();
   }, [url, params]);
