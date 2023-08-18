@@ -69,4 +69,39 @@ class OptionImageRepositoryTest {
                 .ignoringCollectionOrder()
                 .isEqualTo(List.of(optionImage1, optionImage2, optionImage3));
     }
+
+    @Test
+    @DisplayName("옵션 이미지 조회 시, 아이콘 이미지는 제외하고 조회한다")
+    void findOptionImagesExceptIconImage() {
+        //given
+        List<Long> optionsIds = List.of(1L, 2L);
+
+        jdbcTemplate.update("insert into options_image (id, img_url, img_type, options_id) " +
+                "values (5, '디젤 아이콘 img', 3, 1), " +
+                "(6, '가솔린 아이콘 img', 3, 2)");
+
+        //when
+        List<OptionImage> optionImages = optionImageRepository.findByContainOptionIds(optionsIds);
+
+        //then
+        OptionImage optionImage1 = OptionImage.builder()
+                .id(1L).imgUrl("디젤 img1")
+                .imgType(0).optionId(1L)
+                .build();
+
+        OptionImage optionImage2 = OptionImage.builder()
+                .id(2L).imgUrl("디젤 img2")
+                .imgType(1).optionId(1L)
+                .build();
+
+        OptionImage optionImage3 = OptionImage.builder()
+                .id(3L).imgUrl("가솔린 img1")
+                .imgType(0).optionId(2L)
+                .build();
+
+        assertThat(optionImages).usingRecursiveComparison()
+                .ignoringCollectionOrder()
+                .isEqualTo(List.of(optionImage1, optionImage2, optionImage3));
+    }
+
 }
