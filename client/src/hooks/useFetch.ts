@@ -26,7 +26,6 @@ function useFetch<T>({ url, params }: FetchType) {
         setError(error);
         setLoading(false);
       });
-    console.log('reFetch');
   }, [url, params]);
 
   return { loading, data, error };
