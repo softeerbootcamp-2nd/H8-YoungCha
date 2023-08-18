@@ -52,6 +52,10 @@ class CarCustomizationViewModel : ViewModel() {
         MutableLiveData<Int>(0) // sub option viewpager <-> recyclerview 전환 이미지
     val subOptionViewType = MutableLiveData<Int>(0)
 
+    private val _estimateViewVisible = MutableLiveData<Int>(0)
+    val estimateViewVisible: LiveData<Int> = _estimateViewVisible
+
+    val exteriorButtonChange = MutableLiveData<Int>(1)
     // --------------
     private val _mainOptionsTabs = MutableLiveData<List<String>>()
     val mainOptionsTabs: LiveData<List<String>> = _mainOptionsTabs
@@ -72,6 +76,9 @@ class CarCustomizationViewModel : ViewModel() {
         }
     }
 
+    fun updateEstimateColorButton(view:View) {
+        exteriorButtonChange.value = if(exteriorButtonChange.value==1) 0 else 1
+    }
     fun updateCurrentType(currentType: String) {
         _currentType.value = currentType
         resetCustomizedParts()
@@ -94,8 +101,16 @@ class CarCustomizationViewModel : ViewModel() {
         _additionalTabs.value = additionalTabsList
     }
 
+
     fun setCurrentComponentName(componentName: String) {
         _currentComponentName.value = componentName
+        Log.d("Component", componentName)
+
+        if (componentName == "견적 내기") {
+            _estimateViewVisible.value = 1
+        } else {
+            _estimateViewVisible.value = 0
+        }
 
         horizontalButtonVisible.value = 0
         swipeButtonVisible.value = 0
@@ -142,7 +157,7 @@ class CarCustomizationViewModel : ViewModel() {
             val existingComponent = updatedList[index].toMutableMap() // List
 
             // Map의 벨류 List<OptionInfo>: 여기서 componentName이 선택 옵션이면 값을 추가하고 아니면 값을 덮어써야함
-            var existingOptions = existingComponent[keyName]?.toMutableList() ?: mutableListOf()
+            val existingOptions = existingComponent[keyName]?.toMutableList() ?: mutableListOf()
             if (componentName == OPTION_SELECTION) {
                 existingOptions.add(option)
                 existingComponent[keyName] = existingOptions

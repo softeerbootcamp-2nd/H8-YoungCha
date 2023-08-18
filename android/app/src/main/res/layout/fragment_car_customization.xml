@@ -241,15 +241,85 @@
             app:layout_constraintStart_toStartOf="parent"
             app:viewModel="@{viewModel}" />
 
-        <View
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button1"
             android:layout_width="match_parent"
             android:layout_height="108dp"
             android:background="@color/white"
-            android:text="선택"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tv_estimate_price_int"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/hyundai_sans_text_kr_regular"
+                android:text="총 견적금액"
+                android:textColor="@color/cool_grey_003"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/button1"
+                app:layout_constraintTop_toTopOf="@id/button1"
+                app:layout_constraintBottom_toTopOf="@id/tv_estimate_price_int"/>
+
+            <TextView
+                android:id="@+id/tv_estimate_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="42dp"
+                android:fontFamily="@font/hyundai_sans_head_kr_medium"
+                android:text="42,000,000원"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="@id/button1"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/btn_prev"
+                android:layout_width="87dp"
+                android:layout_height="20dp"
+                android:background="@drawable/btn_main_style"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/hyundai_sans_text_kr_regular"
+                android:text="이전"
+                android:textAlignment="center"
+                android:textColor="@color/cool_grey_003"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="@id/btn_next"
+                app:layout_constraintBottom_toBottomOf="@id/btn_next"
+                app:layout_constraintEnd_toStartOf="@id/btn_next"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_next"
+                android:layout_width="87dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="27dp"
+
+                android:background="@drawable/btn_main_style"
+                android:fontFamily="@font/hyundai_sans_text_kr_regular"
+                android:text="선택완료"
+                app:layout_constraintEnd_toEndOf="@id/button1"
+                app:layout_constraintBottom_toBottomOf="@id/button1"
+                app:layout_constraintTop_toTopOf="@id/button1"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</layout>
+    <include
+        android:id="@+id/fragment_estimate"
+        layout="@layout/layout_estimate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="@{viewModel.estimateViewVisible == 1 ?View.VISIBLE:View.INVISIBLE}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
+        app:viewModel="@{viewModel}" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </layout>

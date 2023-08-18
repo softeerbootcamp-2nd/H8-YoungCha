@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_estimate_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:text="@string/estimate_main_text"
+                android:textAlignment="center"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_particle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:src="@drawable/img_particle"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_estimate_done"
+                android:layout_width="0dp"
+                android:layout_height="190dp"
+                android:layout_marginTop="42dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_trim_leblanc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_estimate_done" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_exterior"
+                android:layout_width="88dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="24dp"
+                android:background="@{viewModel.exteriorButtonChange == 1 ? @color/main_hyundai_blue : @color/cool_grey_001}"
+                android:text="@string/exterior"
+                android:textColor="@{viewModel.exteriorButtonChange == 1 ? @color/white : @color/cool_grey_black}"
+                android:textSize="14sp"
+                android:onClick="@{viewModel.updateEstimateColorButton}"
+                app:layout_constraintEnd_toStartOf="@id/btn_interior"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_estimate_done" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_interior"
+                android:layout_width="88dp"
+                android:layout_height="38dp"
+                android:background="@{viewModel.exteriorButtonChange != 1 ? @color/main_hyundai_blue : @color/cool_grey_001}"
+                android:text="@string/interior"
+                android:textColor="@{viewModel.exteriorButtonChange != 1 ? @color/white : @color/cool_grey_black}"
+                android:textSize="14sp"
+                android:onClick="@{viewModel.updateEstimateColorButton}"
+                app:layout_constraintBottom_toBottomOf="@id/btn_exterior"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/btn_exterior"
+                app:layout_constraintTop_toTopOf="@id/btn_exterior" />
+
+            <include
+                android:id="@+id/ly_summary"
+                layout="@layout/layout_estimate_summary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_exterior"
+                app:viewModel="@{viewModel}" />
+
+            <View
+                android:id="@+id/v_bar"
+                android:layout_width="0dp"
+                android:layout_height="12dp"
+                android:layout_marginTop="21dp"
+                android:background="@color/cool_grey_001"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ly_summary" />
+
+            <include
+                android:id="@+id/ly_detail"
+                layout="@layout/layout_estimate_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="90dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_bar"
+                app:viewModel="@{viewModel}" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

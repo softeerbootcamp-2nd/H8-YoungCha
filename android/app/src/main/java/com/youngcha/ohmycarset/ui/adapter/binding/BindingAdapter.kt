@@ -2,7 +2,6 @@ package com.youngcha.ohmycarset.ui.adapter.binding
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.View.INVISIBLE
@@ -30,6 +29,8 @@ import com.youngcha.ohmycarset.ui.interfaces.OnHyundaiButtonClickListener
 @BindingAdapter("imageUrl")
 fun loadImage(view: ImageView, imageUrl: String) {
     // 여기에 이미지 로딩 로직 (Glide | Coil)
+    // coil
+    view.load(imageUrl)
 }
 
 @BindingAdapter("testImageSource")
