@@ -23,7 +23,8 @@ function px(start = 0, stop = 200, step = 1) {
 const pixel = plugin(null, {
   theme: {
     extend: {
-      spacing: px(-128, 1280),
+      minWidth: px(0, 1280),
+      spacing: px(0, 1280),
       borderWidth: px(0, 10),
       borderRadius: px(0, 16),
       fontSize: px(0, 64, 2),
