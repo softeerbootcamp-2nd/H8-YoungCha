@@ -1,6 +1,6 @@
 import { BasicOptionFilterType, SelectOptionFilterType } from './types';
 
-export const BasicOptions: Record<BasicOptionFilterType, number> = {
+export const BasicOptionsId: Record<BasicOptionFilterType, number> = {
   '전체': -1,
   '성능': 11,
   '지능형 안전기술': 12,
@@ -12,10 +12,10 @@ export const BasicOptions: Record<BasicOptionFilterType, number> = {
   '멀티미디어': 18,
 };
 
-export const SelectOptions: Record<SelectOptionFilterType, number> = {
-  전체: -1,
-  시스템: 7,
-  편의: 8,
-  디자인: 9,
-  주행: 10,
+export const SelectOptionsId: Record<SelectOptionFilterType, number> = {
+  '전체': -1,
+  '시스템': 7,
+  '온도 관리': 8,
+  '외부 장치': 9,
+  '내부 장치': 10,
 };

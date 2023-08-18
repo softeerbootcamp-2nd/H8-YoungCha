@@ -3,11 +3,10 @@ import OptionLayout from './OptionLayout';
 import SelectButton from '@/components/SelectButton';
 import Button from '@/components/Button';
 import { MoreViewArrow } from '@/assets/icons';
-import { BasicOptionFilterType } from '@/types';
-import { BasicOptions } from '@/constant';
+import { BasicOptionFilterType, TrimType } from '@/types';
+import { BasicOptionsId } from '@/constant';
 import { TITLE } from './constant';
 import BasicOptionLists from './BasicOptionLists';
-import { TrimType } from '@/assets/mock/mock';
 
 interface BasicOptionBoxProps {
   trims: TrimType[];
@@ -21,7 +20,9 @@ function BasicOptionBox({ trims }: BasicOptionBoxProps) {
   function handleMoreOptionClick() {
     setCurrentSize((prev) => prev + 5);
   }
-  const basicOptionList = Object.keys(BasicOptions) as BasicOptionFilterType[];
+  const basicOptionList = Object.keys(
+    BasicOptionsId
+  ) as BasicOptionFilterType[];
 
   return (
     <div className="flex flex-col gap-16px max-w-7xl">

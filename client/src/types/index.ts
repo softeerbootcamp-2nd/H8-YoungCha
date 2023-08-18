@@ -12,9 +12,9 @@ export type BasicOptionFilterType =
 export type SelectOptionFilterType =
   | '전체'
   | '시스템'
-  | '편의'
-  | '디자인'
-  | '주행';
+  | '온도 관리'
+  | '외부 장치'
+  | '내부 장치';
 
 export interface MainOptionType {
   imgUrl: string;
