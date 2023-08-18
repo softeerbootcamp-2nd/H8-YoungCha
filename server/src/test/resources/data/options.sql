@@ -1,4 +1,4 @@
-INSERT INTO youngcha.options (id, name, price, category_id, feedback_title, feedback_description)
+INSERT INTO options (id, name, price, category_id, feedback_title, feedback_description)
 VALUES (1, '디젤 2.2', 1480000, 1, '디젤 엔진은 효율이 좋아요!', '효율을 중시한다면, 탁월한 선택입니다.'),
        (2, '가솔린 3.8', 0, 1, '가솔린 엔진은 조용해요!', '조용한 주행을 원하신다면, 탁월한 선택입니다.'),
        (3, '2WD', 0, 2, '2WD는 효율이 좋아요!', '효율을 중시한다면, 탁월한 선택입니다.'),
