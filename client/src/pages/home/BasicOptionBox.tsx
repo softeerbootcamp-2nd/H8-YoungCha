@@ -7,18 +7,22 @@ import { BasicOptionFilterType } from '@/types';
 import { BasicOptions } from '@/constant';
 import { TITLE } from './constant';
 import BasicOptionLists from './BasicOptionLists';
+import { TrimType } from '@/assets/mock/mock';
 
-function BasicOptionBox() {
+interface BasicOptionBoxProps {
+  trims: TrimType[];
+}
+function BasicOptionBox({ trims }: BasicOptionBoxProps) {
   const [selectedOption, setSelectedOption] =
     useState<BasicOptionFilterType>('전체');
   const [currentSize, setCurrentSize] = useState(5);
   const [lastPageCount, setLastPageCount] = useState(0);
-  const categories = [1, 1, 1, 1];
 
   function handleMoreOptionClick() {
     setCurrentSize((prev) => prev + 5);
   }
   const basicOptionList = Object.keys(BasicOptions) as BasicOptionFilterType[];
+
   return (
     <div className="flex flex-col gap-16px max-w-7xl">
       <h3 className="font-medium text-center text-grey-black py-8px">
@@ -37,7 +41,7 @@ function BasicOptionBox() {
           ))}
         </div>
         <OptionLayout>
-          {categories.map((id, index) => (
+          {trims.map(({ id }, index) => (
             <ul
               className="flex flex-col w-full gap-24px"
               key={`basic-option-${index}`}

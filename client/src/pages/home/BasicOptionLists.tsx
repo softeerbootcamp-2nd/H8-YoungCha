@@ -1,5 +1,5 @@
-import { BasicOptionType } from '@/assets/mock/mock';
-import useFetch from '@/hooks/useFetch';
+import { get } from '@/service';
+import { BasicOptionType, ContentsType } from '@/types';
 import { useEffect, useState } from 'react';
 
 interface BasicOptionListsProps {
@@ -7,36 +7,54 @@ interface BasicOptionListsProps {
   currentSize: number;
   setIsLastPage: React.Dispatch<React.SetStateAction<number>>;
 }
+
+const OPTION_SIZE = 5;
+
 function BasicOptionLists({
   currentSize,
   id,
   setIsLastPage,
 }: BasicOptionListsProps) {
-  const [params, setParams] = useState({
-    url: `${import.meta.env.VITE_API_URL}/trims/2/default-components?`,
-    params: {
-      categoryId: String(id),
-      page: '1',
-      size: String(currentSize),
-    },
-  });
-  const { data, loading } = useFetch<BasicOptionType>(params);
+  const [basicOptions, setBasicOptions] = useState<BasicOptionType>(
+    {} as BasicOptionType
+  );
+  const url = `${import.meta.env.VITE_API_URL}/trims/${id}/default-components?`;
+  const currentPage = Math.floor((currentSize - 1) / OPTION_SIZE) + 1;
+  const params = {
+    categoryId: String(1),
+    page: String(currentPage),
+    size: String(OPTION_SIZE),
+  };
+  useEffect(() => {
+    setIsLastPage((prev) => (basicOptions.last ? prev + 1 : prev));
+  }, [basicOptions]);
 
   useEffect(() => {
-    setIsLastPage((prev) => (data.last ? prev + 1 : prev));
-  }, [data]);
+    (async () => {
+      const data = (await get<BasicOptionType>({
+        url,
+        params,
+      })) as BasicOptionType;
 
-  useEffect(() => {
-    setParams((prev) => ({
-      ...prev,
-      params: { ...prev.params, size: String(currentSize) },
-    }));
+      if (currentSize > OPTION_SIZE) {
+        const newContents: ContentsType[] = [
+          ...basicOptions.contents,
+          ...data.contents,
+        ];
+        setBasicOptions((prev) => ({
+          ...prev,
+          contents: newContents,
+        }));
+      } else {
+        setBasicOptions(data);
+      }
+    })();
   }, [currentSize]);
 
   return (
     <>
-      {!loading &&
-        data.contents.map(({ name, imgUrl }, index) => (
+      {Object.keys(basicOptions).length !== 0 &&
+        basicOptions.contents.map(({ name, imgUrl }, index) => (
           <li
             className="flex items-center gap-15px"
             key={`basic-option-content-${index}`}
