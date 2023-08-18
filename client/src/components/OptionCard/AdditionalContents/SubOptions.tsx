@@ -6,14 +6,14 @@ function SubOptions() {
     '내비게이션 기반 스마트 크루즈 컨트롤',
     '고속도로 주행보조 2',
   ];
-  const [isSubSelected, setIsSubSelected] = useState(0);
+  const [subSelectedIndex, setsubSelectedIndex] = useState(0);
 
   function handleOnClick(
     event: React.MouseEvent<HTMLParagraphElement>,
     index: number
   ) {
     event.stopPropagation();
-    setIsSubSelected(index);
+    setsubSelectedIndex(index);
   }
 
   return (
@@ -22,7 +22,7 @@ function SubOptions() {
         <Fragment key={`SubOption-${index}`}>
           <p
             className={`${
-              isSubSelected === index ? 'text-grey-black font-medium' : ''
+              subSelectedIndex === index ? 'text-grey-black font-medium' : ''
             }`}
             onClick={(event) => handleOnClick(event, index)}
             role="none"
