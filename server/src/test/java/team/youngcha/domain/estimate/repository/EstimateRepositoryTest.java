@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import team.youngcha.common.enums.AgeRange;
 import team.youngcha.common.enums.Gender;
+import team.youngcha.domain.category.enums.SelectiveCategory;
 import team.youngcha.domain.option.dto.GuideInfo;
 
 import java.util.List;
@@ -68,7 +69,8 @@ class EstimateRepositoryTest {
                 .ageRange(AgeRange.AGE_20).build();
 
         //when
-        Map<Long, Long> similarityUsers = estimateRepository.countoptionsSimilarityUsers(trimId, powerTrainIds, guideInfo);
+        Map<Long, Long> similarityUsers = estimateRepository
+                .countOptionsSimilarityUsers(trimId, powerTrainIds, guideInfo, SelectiveCategory.POWER_TRAIN);
 
         //then
         assertThat(similarityUsers).hasSize(2);
@@ -85,7 +87,8 @@ class EstimateRepositoryTest {
         Long keywordId = 4L;
 
         //when
-        Integer rate = estimateRepository.calculateRate(trimId, optionId, keywordId);
+        Integer rate = estimateRepository
+                .calculateRate(trimId, optionId, keywordId, SelectiveCategory.POWER_TRAIN);
 
         //then
         assertThat(rate).isEqualTo(Math.round((float) 2 / 6 * 100));

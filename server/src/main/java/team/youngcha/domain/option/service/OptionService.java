@@ -66,19 +66,22 @@ public class OptionService {
         Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsId);
 
         // 트림에 해당하는 파워 트레인 별 유사 사용자 수 비율
-        Map<Long, Integer> similarityUsersRatio = getSimilarityUsersRatio(trimId, optionsId, guideInfo);
+        Map<Long, Integer> similarityUsersRatio = getSimilarityUsersRatio(trimId, optionsId,
+                guideInfo, category);
 
         // 옵션 별 키워드 조회
         Map<Long, List<Keyword>> optionIdKeywordGroup = keywordRepository
                 .findByContainOptionIdsAndGroupKeywords(optionsId);
 
-        Map<Long, List<KeywordRate>> keywordRateGroup = findKeywordRateGroup(guideInfo, optionIdKeywordGroup, trimId);
+        Map<Long, List<KeywordRate>> keywordRateGroup = findKeywordRateGroup(guideInfo, optionIdKeywordGroup,
+                trimId, category);
 
         return getSortedGuideOptionResponses(options, similarityUsersRatio, keywordRateGroup,
                 optionImagesGroup, optionDetailsGroup);
     }
 
-    private List<FindSelfOptionResponse> buildSelfOptionResponses(Long trimId, List<Option> options, SelectiveCategory category) {
+    private List<FindSelfOptionResponse> buildSelfOptionResponses(Long trimId, List<Option> options,
+                                                                  SelectiveCategory category) {
         List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
         Map<Long, Integer> sellRatio = getSellRatio(trimId, optionsIds, category);
         Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
@@ -94,9 +97,10 @@ public class OptionService {
         return calculateOptionRatios(optionCounts);
     }
 
-    private Map<Long, Integer> getSimilarityUsersRatio(Long trimId, List<Long> optionsIds, GuideInfo guideInfo) {
+    private Map<Long, Integer> getSimilarityUsersRatio(Long trimId, List<Long> optionsIds,
+                                                       GuideInfo guideInfo, SelectiveCategory category) {
         Map<Long, Long> optionCounts = estimateRepository
-                .countoptionsSimilarityUsers(trimId, optionsIds, guideInfo);
+                .countOptionsSimilarityUsers(trimId, optionsIds, guideInfo, category);
         addMissingOptionIds(optionCounts, optionsIds);
         return calculateOptionRatios(optionCounts);
     }
@@ -144,7 +148,8 @@ public class OptionService {
 
     private Map<Long, List<KeywordRate>> findKeywordRateGroup(GuideInfo guideInfo,
                                                               Map<Long, List<Keyword>> optionIdKeywordGroup,
-                                                              Long trimId) {
+                                                              Long trimId,
+                                                              SelectiveCategory category) {
         Map<Long, List<KeywordRate>> keywordRateGroup = new HashMap<>();
 
         for (Long keywordId : guideInfo.getKeywordIds()) {
@@ -158,7 +163,7 @@ public class OptionService {
             // 겹치는 키워드가 없으면 비율을 조회 후 반환
             if (optionIdsWithKeyword.size() == 1) {
                 Long selectedOptionId = optionIdsWithKeyword.get(0);
-                int rate = estimateRepository.calculateRate(trimId, selectedOptionId, keywordId);
+                int rate = estimateRepository.calculateRate(trimId, selectedOptionId, keywordId, category);
                 Keyword keyword = keywordRepository.findById(keywordId)
                         .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "키워드를 찾을 수 없습니다."));
                 KeywordRate keywordRate = new KeywordRate(rate, keyword.getName());

@@ -19,6 +19,7 @@ public class ProfileController {
 
     private final Environment env;
 
+    // TODO : actuator
     @Operation(summary = "컨테이너 profile 조회", description = "구동 중인 컨테이너의 profile을 얻습니다.")
     @GetMapping
     String profile() {

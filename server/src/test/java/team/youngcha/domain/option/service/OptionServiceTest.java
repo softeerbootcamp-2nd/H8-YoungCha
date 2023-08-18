@@ -17,7 +17,10 @@ import team.youngcha.domain.keyword.dto.KeywordRate;
 import team.youngcha.domain.keyword.entity.Keyword;
 import team.youngcha.domain.keyword.repository.KeywordRepository;
 import team.youngcha.domain.option.dto.*;
-import team.youngcha.domain.option.entity.*;
+import team.youngcha.domain.option.entity.Option;
+import team.youngcha.domain.option.entity.OptionDetail;
+import team.youngcha.domain.option.entity.OptionImage;
+import team.youngcha.domain.option.entity.Spec;
 import team.youngcha.domain.option.enums.OptionType;
 import team.youngcha.domain.option.repository.OptionDetailRepository;
 import team.youngcha.domain.option.repository.OptionImageRepository;
@@ -244,7 +247,7 @@ class OptionServiceTest {
             groupKeyword.put(2L, List.of(new Keyword(3L, "주행력")));
 
             mockedTrim(optionIds, optionImages, optionDetails, guideInfo, powerTrainCounts, groupKeyword);
-            given(estimateRepository.calculateRate(trimId, 1L, 1L))
+            given(estimateRepository.calculateRate(trimId, 1L, 1L, SelectiveCategory.POWER_TRAIN))
                     .willReturn(50);
             given(keywordRepository.findById(1L))
                     .willReturn(Optional.of(new Keyword(1L, "효율")));
@@ -300,7 +303,7 @@ class OptionServiceTest {
             int rate = 50;
 
             mockedTrim(optionIds, optionImages, optionDetails, guideInfo, powerTrainCounts, groupKeyword);
-            given(estimateRepository.calculateRate(trimId, 2L, 2L))
+            given(estimateRepository.calculateRate(trimId, 2L, 2L, SelectiveCategory.POWER_TRAIN))
                     .willReturn(rate);
             given(keywordRepository.findById(2L))
                     .willReturn(Optional.of(new Keyword(2L, "안전")));
@@ -391,7 +394,8 @@ class OptionServiceTest {
                     .willReturn(optionImages);
             given(optionDetailRepository.findWithSpecsByContainOptionIds(optionIds))
                     .willReturn(optionDetails);
-            given(estimateRepository.countoptionsSimilarityUsers(trimId, optionIds, guideInfo))
+            given(estimateRepository.countOptionsSimilarityUsers(trimId, optionIds,
+                    guideInfo, SelectiveCategory.POWER_TRAIN))
                     .willReturn(powerTrainCounts);
             given(keywordRepository.findByContainOptionIdsAndGroupKeywords(optionIds))
                     .willReturn(groupKeyword);
