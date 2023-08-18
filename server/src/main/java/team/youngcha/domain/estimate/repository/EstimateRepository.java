@@ -21,8 +21,8 @@ public class EstimateRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final RowMapper<Estimate> estimateRowMapper = new EstimateRowMapper();
 
-    public Map<Long, Long> countPowerTrainsSimilarityUsers(Long trimId, List<Long> powerTrainIds,
-                                                           GuideInfo guideInfo) {
+    public Map<Long, Long> countoptionsSimilarityUsers(Long trimId, List<Long> powerTrainIds,
+                                                       GuideInfo guideInfo) {
         List<Map<String, Object>> results = queryCountSimilarityUser(namedParameterJdbcTemplate,
                 trimId, powerTrainIds, guideInfo);
 

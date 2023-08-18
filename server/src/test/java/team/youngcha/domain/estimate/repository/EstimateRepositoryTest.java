@@ -68,7 +68,7 @@ class EstimateRepositoryTest {
                 .ageRange(AgeRange.AGE_20).build();
 
         //when
-        Map<Long, Long> similarityUsers = estimateRepository.countPowerTrainsSimilarityUsers(trimId, powerTrainIds, guideInfo);
+        Map<Long, Long> similarityUsers = estimateRepository.countoptionsSimilarityUsers(trimId, powerTrainIds, guideInfo);
 
         //then
         assertThat(similarityUsers).hasSize(2);

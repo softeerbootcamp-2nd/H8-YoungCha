@@ -388,7 +388,7 @@ class OptionServiceTest {
                     .willReturn(optionImages);
             given(optionDetailRepository.findWithSpecsByContainOptionIds(optionIds))
                     .willReturn(optionDetails);
-            given(estimateRepository.countPowerTrainsSimilarityUsers(trimId, optionIds, guideInfo))
+            given(estimateRepository.countoptionsSimilarityUsers(trimId, optionIds, guideInfo))
                     .willReturn(powerTrainCounts);
             given(keywordRepository.findByContainOptionIdsAndGroupKeywords(optionIds))
                     .willReturn(groupKeyword);
