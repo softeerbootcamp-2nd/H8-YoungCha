@@ -15,17 +15,17 @@ function FeedbackCard({ isSelected }: FeedbackCardProps) {
 
   useEffect(() => {
     if (isSelected) {
-      const timer1 = setTimeout(() => {
+      const showSmileTimer = setTimeout(() => {
         setShowSmileIcon(false);
       }, SHOW_SMILE_TIME);
 
-      const timer2 = setTimeout(() => {
+      const showLaughingTimer = setTimeout(() => {
         setShowLaughingIcon(true);
       }, SHOW_LAUGHING_TIME);
 
       return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer2);
+        clearTimeout(showSmileTimer);
+        clearTimeout(showLaughingTimer);
       };
     }
   }, [isSelected]);
