@@ -43,7 +43,9 @@ public class OptionRepository {
         params.addValue("exteriorColorId", exteriorColorId);
 
         String baseQuery = "select options.id as id, options.name as name, options.price as price, " +
-                "options.feedback as feedback, options.category_id as category_id from options " +
+                "options.feedback_title as feedback_title, options.feedback_description as feedback_description, " +
+                "options.category_id as category_id " +
+                "from options " +
                 "join category on options.category_id = category.id and category.name = (:categoryName) " +
                 "join trim_options on options.id = trim_options.options_id " +
                 "and trim_options.trim_id = (:trimId) and trim_options.type = (:optionType)";
@@ -69,7 +71,8 @@ public class OptionRepository {
                     .id(resultSet.getLong("id"))
                     .name(resultSet.getString("name"))
                     .price(resultSet.getInt("price"))
-                    .feedback(resultSet.getString("feedback"))
+                    .feedbackTitle(resultSet.getString("feedback_title"))
+                    .feedbackDescription(resultSet.getString("feedback_description"))
                     .categoryId(resultSet.getLong("category_id"))
                     .build();
         }
