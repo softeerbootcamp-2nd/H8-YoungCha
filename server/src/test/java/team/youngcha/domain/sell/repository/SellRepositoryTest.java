@@ -34,12 +34,12 @@ class SellRepositoryTest {
         jdbcTemplate.update("insert into trim (id, name, img_url, background_img_url, hashtag, price, description, car_id)" +
                 " values (2, 'Exclusive', 'Exclusive_img.jpg', 'Exclusive_back', '#기본', 9000000, '기본', 1)");
         jdbcTemplate.update("insert into category (id, name) values (1, '파워 트레인')");
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (1,'a', 0, 'b', 1)");
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (2,'a', 0, 'b', 1)");
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (3,'a', 0, 'b', 1)");
+        jdbcTemplate.update("insert into options (id, name, price, feedback_title, feedback_description, category_id) " +
+                "values (1,'a1', 0, 'b', 'c', 1)");
+        jdbcTemplate.update("insert into options (id, name, price, feedback_title, feedback_description, category_id) " +
+                "values (2,'a2', 0, 'b', 'c', 1)");
+        jdbcTemplate.update("insert into options (id, name, price, feedback_title, feedback_description, category_id) " +
+                "values (3,'a3', 0, 'b', 'c', 1)");
         jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
                 "values (1, 1, 1, 1, 1, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')");
         jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
