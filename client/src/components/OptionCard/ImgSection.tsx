@@ -25,7 +25,7 @@ function ImgSection({ imgUrl, step }: ImgSectionProps) {
       className="absolute top-50px rounded-6px w-150px h-50px left-200px"
       alt="내장 색상"
       key={`${step}-내장 색상`}
-    />, // step 7
+    />,
     <div
       className={`${isActive ? '' : 'opacity-40'} absolute top-20px left-265px`}
       key={`${step}-옵션 선택`}
