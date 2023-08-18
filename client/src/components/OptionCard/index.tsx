@@ -6,7 +6,7 @@ import SubOptions from './AdditionalContents/SubOptions';
 import SubOptionDescription from './AdditionalContents/SubOptionDescription';
 import ImgSection from './ImgSection';
 import CheckIcon from './CheckIcon';
-import { useOptionCardState } from '@/store/useOptionCardContext';
+import { useOptionCardContext } from '@/store/useOptionCardContext';
 import {
   PowerTrain,
   PowerTrainDetails,
@@ -19,12 +19,13 @@ interface OptionCardProps
     Pick<PowerTrainDetails, 'imgUrl'> {
   imgUrl: string;
   step: number;
+  price: number;
   children?: React.ReactNode;
 }
 
-function OptionCard({ tags, imgUrl, step, children }: OptionCardProps) {
+function OptionCard({ tags, imgUrl, step, price, children }: OptionCardProps) {
   const { isActive, setIsActive, isExpanded, isSelfMode } =
-    useOptionCardState();
+    useOptionCardContext();
   const stepsWithDetail = new Set([1, 2, 3, 4, 7]);
 
   const totalDivColor = isActive
@@ -83,7 +84,7 @@ function OptionCard({ tags, imgUrl, step, children }: OptionCardProps) {
         <div className="my-12px">{children}</div>
       </div>
       <div className="flex justify-between">
-        <PriceSection isActive={isActive} />
+        <PriceSection price={price} isActive={isActive} />
         {hasDetail(step) ? <MoreDetailsButton /> : ''}
       </div>
     </div>
