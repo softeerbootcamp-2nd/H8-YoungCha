@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationSet
+import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -16,6 +20,7 @@ import com.youngcha.ohmycarset.model.car.OptionInfo
 import com.youngcha.ohmycarset.ui.adapter.viewpager.CarOptionPagerAdapter
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
+import kotlinx.coroutines.launch
 
 class CarCustomizationFragment : Fragment() {
     private var _binding: FragmentCarCustomizationBinding? = null
@@ -77,6 +82,12 @@ class CarCustomizationFragment : Fragment() {
         carViewModel.additionalTabs.observe(viewLifecycleOwner) { tabs ->
             tabs.forEach { tabName ->
                 binding.tlMainOptionTab.addTab(binding.tlMainOptionTab.newTab().setText(tabName))
+            }
+        }
+
+        carViewModel.estimateViewVisible.observe(viewLifecycleOwner) {
+            if (it == 1) {
+                particleAnimation()
             }
         }
     }
@@ -145,6 +156,7 @@ class CarCustomizationFragment : Fragment() {
         // 초기 어댑터 설정 (옵션 데이터가 없는 초기 상태)
         binding.rvSubOptionList.adapter = CarOptionPagerAdapter(carViewModel)
     }
+
     private fun setupSubTabs() {
         setupSubOptionTabs()
         addTabSelectedListener()
@@ -211,9 +223,83 @@ class CarCustomizationFragment : Fragment() {
         adapter.isDisplayingInPager = true
         binding.vpOptionContainer.adapter = adapter
         val selectedOptions = carViewModel.isSelectedOptions(tabName) ?: listOf()
-        val position = optionInfos.indexOfFirst { it == selectedOptions.firstOrNull() }.takeIf { it != -1 } ?: 0
+        val position =
+            optionInfos.indexOfFirst { it == selectedOptions.firstOrNull() }.takeIf { it != -1 }
+                ?: 0
         binding.vpOptionContainer.setCurrentItem(position, false)
         adapter.setOptions(optionInfos, OPTION_SELECTION, tabName)
+    }
+
+    private fun particleAnimation() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val slideInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_down)
+            val fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
+
+            val animationSet = AnimationSet(true)
+            animationSet.addAnimation(slideInAnimation)
+            animationSet.addAnimation(fadeInAnimation)
+
+            binding.fragmentEstimate.ivParticle.visibility = View.VISIBLE
+            binding.fragmentEstimate.ivParticle.startAnimation(animationSet)
+        }
+    }
+
+
+    private fun toggleButton() {
+        binding.fragmentEstimate.btnExterior.setOnClickListener {
+            binding.fragmentEstimate.ivEstimateDone.setImageResource(R.drawable.img_trim_leblanc)
+            binding.fragmentEstimate.btnExterior.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.main_hyundai_blue
+                )
+            )
+            binding.fragmentEstimate.btnExterior.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
+            binding.fragmentEstimate.btnInterior.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.cool_grey_001
+                )
+            )
+            binding.fragmentEstimate.btnInterior.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.cool_grey_black
+                )
+            )
+        }
+        binding.fragmentEstimate.btnInterior.setOnClickListener {
+            binding.fragmentEstimate.ivEstimateDone.setImageResource(R.drawable.img_test_make_car_05)
+            binding.fragmentEstimate.btnExterior.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.cool_grey_001
+                )
+            )
+            binding.fragmentEstimate.btnExterior.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.cool_grey_black
+                )
+            )
+            binding.fragmentEstimate.btnInterior.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.main_hyundai_blue
+                )
+            )
+            binding.fragmentEstimate.btnInterior.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
+        }
     }
 
 

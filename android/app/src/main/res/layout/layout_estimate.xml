@@ -11,7 +11,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -59,12 +60,13 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_exterior"
                 android:layout_width="88dp"
-                android:layout_height="34dp"
+                android:layout_height="38dp"
                 android:layout_marginTop="24dp"
-                android:background="@color/main_hyundai_blue"
+                android:background="@{viewModel.exteriorButtonChange == 1 ? @color/main_hyundai_blue : @color/cool_grey_001}"
                 android:text="@string/exterior"
-                android:textColor="@color/white"
+                android:textColor="@{viewModel.exteriorButtonChange == 1 ? @color/white : @color/cool_grey_black}"
                 android:textSize="14sp"
+                android:onClick="@{viewModel.updateEstimateColorButton}"
                 app:layout_constraintEnd_toStartOf="@id/btn_interior"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
@@ -74,11 +76,12 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_interior"
                 android:layout_width="88dp"
-                android:layout_height="34dp"
-                android:background="@color/cool_grey_001"
+                android:layout_height="38dp"
+                android:background="@{viewModel.exteriorButtonChange != 1 ? @color/main_hyundai_blue : @color/cool_grey_001}"
                 android:text="@string/interior"
-                android:textColor="@color/cool_grey_black"
+                android:textColor="@{viewModel.exteriorButtonChange != 1 ? @color/white : @color/cool_grey_black}"
                 android:textSize="14sp"
+                android:onClick="@{viewModel.updateEstimateColorButton}"
                 app:layout_constraintBottom_toBottomOf="@id/btn_exterior"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
