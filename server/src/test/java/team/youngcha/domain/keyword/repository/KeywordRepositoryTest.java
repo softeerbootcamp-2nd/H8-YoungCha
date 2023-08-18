@@ -30,12 +30,12 @@ class KeywordRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (1, 'a', 0, 'f', 1)," +
-                "(2, 'a', 0, 'f', 1)," +
-                "(3, 'a', 0, 'f', 1)," +
-                "(4, 'a', 0, 'f', 1)," +
-                "(5, 'a', 0, 'f', 1)");
+        jdbcTemplate.update("insert into options (id, name, price, feedback_title, feedback_description, category_id) " +
+                "values (1, 'a', 0, 'f', 'f', 1)," +
+                "(2, 'b', 0, 'f', 'f', 1)," +
+                "(3, 'c', 0, 'f', 'f', 1)," +
+                "(4, 'd', 0, 'f', 'f', 1)," +
+                "(5, 'e', 0, 'f', 'f', 1)");
         jdbcTemplate.update("insert into options_keyword (id, options_id, keyword_id) " +
                 "values (1, 1, 1)," +
                 "(2, 2, 1)," +
@@ -63,8 +63,8 @@ class KeywordRepositoryTest {
                 .id(2L).name("소음")
                 .build();
         Keyword 효율 = Keyword.builder()
-                        .id(3L).name("효율")
-                        .build();
+                .id(3L).name("효율")
+                .build();
         Keyword 파워 = Keyword.builder()
                 .id(4L).name("파워")
                 .build();

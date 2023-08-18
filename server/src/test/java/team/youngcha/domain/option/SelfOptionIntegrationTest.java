@@ -75,12 +75,14 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
 
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
                 .id(2L).rate(75).price(0).name("가솔린 3.8")
-                .feedback("가솔린 엔진은 조용해요! 조용한 주행을 원하신다면, 탁월한 선택입니다.")
+                .feedbackTitle("가솔린 엔진은 조용해요!")
+                .feedbackDescription("조용한 주행을 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(gasolineImage))
                 .details(List.of(gasolineDetail)).build();
         FindSelfOptionResponse optionResponse2 = FindSelfOptionResponse.builder()
                 .id(1L).rate(25).price(1480000).name("디젤 2.2")
-                .feedback("디젤 엔진은 효율이 좋아요! 효율을 중시한다면, 탁월한 선택입니다.")
+                .feedbackTitle("디젤 엔진은 효율이 좋아요!")
+                .feedbackDescription("효율을 중시한다면, 탁월한 선택입니다.")
                 .images(List.of(dieselImage))
                 .details(List.of(dieselDetail)).build();
 
@@ -123,12 +125,14 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
 
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
                 .id(3L).rate(50).price(0).name("2WD")
-                .feedback("2WD는 효율이 좋아요! 효율을 중시한다면, 탁월한 선택입니다.")
+                .feedbackTitle("2WD는 효율이 좋아요!")
+                .feedbackDescription("효율을 중시한다면, 탁월한 선택입니다.")
                 .images(List.of(wd2Image))
                 .details(List.of(wd2Detail)).build();
         FindSelfOptionResponse optionResponse2 = FindSelfOptionResponse.builder()
                 .id(4L).rate(50).price(2370000).name("4WD")
-                .feedback("4WD는 파워풀해요! 힘있는 주행을 원하신다면, 탁월한 선택입니다.")
+                .feedbackTitle("4WD는 파워풀해요!")
+                .feedbackDescription("힘있는 주행을 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(wd4Image))
                 .details(List.of(wd4Detail)).build();
 
@@ -171,13 +175,15 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
                 .id(5L).rate(75)
                 .price(0).name("7인승")
-                .feedback("통로가 있어 쾌적해요! 쾌적함을 원하신다면, 탁월한 선택입니다.")
+                .feedbackTitle("통로가 있어 쾌적해요!")
+                .feedbackDescription("쾌적함을 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(seat7Image))
                 .details(List.of(seat7Detail)).build();
         FindSelfOptionResponse optionResponse2 = FindSelfOptionResponse.builder()
                 .id(6L).rate(25)
                 .price(0).name("8인승")
-                .feedback("공간 활용을 원하신다면, 탁월한 선택입니다.")
+                .feedbackTitle("많은 사람이 탑승할 수 있어요!")
+                .feedbackDescription("공간 활용을 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(seat8Image))
                 .details(List.of(seat8Detail)).build();
 
@@ -212,7 +218,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindSelfOptionResponse creamyWhite = FindSelfOptionResponse.builder()
                 .id(12L).rate(40).price(100000)
                 .name("크리미 화이트 펄")
-                .feedback("크리미 화이트 펄은 밝은 화이트(흰색)의 외장색상으로, 차량에 깨끗하고 우아한 느낌을 줍니다.")
+                .feedbackTitle("크리미 화이트 펄은 우이한 분위기에요!")
+                .feedbackDescription("밝은 화이트(흰색)의 외장색상으로, 차량에 깨끗하고 우아한 느낌을 줍니다.")
                 .images(List.of(creamyWhiteImg)).details(List.of()).build();
 
         FindOptionImageResponse moonLightImg = FindOptionImageResponse.builder()
@@ -221,7 +228,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindSelfOptionResponse moonLight = FindSelfOptionResponse.builder()
                 .id(9L).rate(20).price(0)
                 .name("문라이트 블루 펄")
-                .feedback("문라이트 블루 펄은 밝은 파란색의 외장색상으로, 차량에 상쾌하고 활기찬 느낌을 줍니다.")
+                .feedbackTitle("문라이트 블루 펄은 활기찬 분위기에요!")
+                .feedbackDescription("밝은 파란색의 외장색상으로, 차량에 상쾌하고 활기찬 느낌을 줍니다.")
                 .images(List.of(moonLightImg)).details(List.of()).build();
 
         FindOptionImageResponse gaiaBrownImg = FindOptionImageResponse.builder()
@@ -230,7 +238,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindSelfOptionResponse gaiaBrown = FindSelfOptionResponse.builder()
                 .id(10L).rate(20).price(0)
                 .name("가이아 브라운 펄")
-                .feedback("가이아 브라운 펄은 브라운 계열의 외장색상으로, 차량에 고급스러움과 차분한 분위기를 부여합니다.")
+                .feedbackTitle("가이아 브라운 펄은 고급스러워요!")
+                .feedbackDescription("브라운 계열의 외장색상으로, 차량에 고급스러움과 차분한 분위기를 부여합니다.")
                 .images(List.of(gaiaBrownImg)).details(List.of()).build();
 
         FindOptionImageResponse abyssBlackImg = FindOptionImageResponse.builder()
@@ -239,7 +248,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindSelfOptionResponse abyssBlack = FindSelfOptionResponse.builder()
                 .id(7L).rate(10).price(0)
                 .name("어비스 블랙펄")
-                .feedback("어비스 블랙펄은 깊은 검정색의 외장색상으로, 차량에 고급스러움과 우아함을 더해줍니다.")
+                .feedbackTitle("어비스 블랙펄은 고급스러워요!")
+                .feedbackDescription("깊은 검정색의 외장색상으로, 차량에 고급스러움과 우아함을 더해줍니다.")
                 .images(List.of(abyssBlackImg)).details(List.of()).build();
 
         FindOptionImageResponse graphiteGrayImg = FindOptionImageResponse.builder()
@@ -248,7 +258,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindSelfOptionResponse graphiteGray = FindSelfOptionResponse.builder()
                 .id(11L).rate(10).price(0)
                 .name("그라파이트 그레이 메탈릭")
-                .feedback("그라파이트 그레이 메탈릭은 회색 계열의 외장색상으로, 차량에 현대적이고 세련된 분위기를 부여합니다.")
+                .feedbackTitle("그라파이트 그레이 메탈릭은 세련된 느낌을 줘요!")
+                .feedbackDescription("회색 계열의 외장색상으로, 차량에 현대적이고 세련된 분위기를 부여합니다.")
                 .images(List.of(graphiteGrayImg)).details(List.of()).build();
 
         FindOptionImageResponse shimmeringSilverImg = FindOptionImageResponse.builder()
@@ -257,7 +268,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindSelfOptionResponse shimmeringSilver = FindSelfOptionResponse.builder()
                 .id(8L).rate(0).price(0)
                 .name("쉬머링 실버 메탈릭")
-                .feedback("쉬머링 실버 메탈릭은 은색 계열의 외장색상으로, 차량에 현대적이고 세련된 분위기를 더해줍니다.")
+                .feedbackTitle("쉬머링 실버 메탈릭은 현대적이에요!")
+                .feedbackDescription("은색 계열의 외장색상으로, 차량에 현대적이고 세련된 분위기를 더해줍니다.")
                 .images(List.of(shimmeringSilverImg)).details(List.of()).build();
 
         assertResponseAndExpected(response, List.of(creamyWhite, moonLight,
@@ -290,7 +302,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindSelfOptionResponse black = FindSelfOptionResponse.builder()
                 .id(13L).rate(60).price(0)
                 .name("퀄팅천연(블랙)")
-                .feedback("블랙 컬러는 클래식한 분위기에요! 클래식한 분위기를 원하신다면, 탁월한 선택입니다.")
+                .feedbackTitle("블랙 컬러는 클래식한 분위기에요!")
+                .feedbackDescription("클래식한 분위기를 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(blackBigImg, blackSmallImg)).details(List.of()).build();
 
         FindOptionImageResponse grayBigImg = FindOptionImageResponse.builder()
@@ -302,7 +315,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindSelfOptionResponse gray = FindSelfOptionResponse.builder()
                 .id(14L).rate(40).price(0)
                 .name("쿨그레이")
-                .feedback("쿨그레이는 환한 분위기에요! 환한 분위기를 원하신다면, 탁월한 선택입니다.")
+                .feedbackTitle("쿨그레이는 환한 분위기에요!")
+                .feedbackDescription("환한 분위기를 원하신다면, 탁월한 선택입니다.")
                 .images(List.of(grayBigImg, graySmallImg)).details(List.of()).build();
 
         assertResponseAndExpected(response, List.of(black, gray));
