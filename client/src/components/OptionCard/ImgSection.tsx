@@ -1,6 +1,5 @@
 import { useOptionCardContext } from '@/store/useOptionCardContext';
 import { PowerTrainDetails } from '@/assets/mock/optionMock';
-import HGenuingAccessories from '@/assets/mock/icons/HGenuineAccessories';
 
 interface ImgSectionProps extends Pick<PowerTrainDetails, 'imgUrl'> {
   imgUrl: string;
@@ -9,50 +8,33 @@ interface ImgSectionProps extends Pick<PowerTrainDetails, 'imgUrl'> {
 
 function ImgSection({ imgUrl, step }: ImgSectionProps) {
   const { isActive } = useOptionCardContext();
-  let imgElement = <></>;
-  switch (step) {
-    case 4: //휠 선택
-      imgElement = (
-        <div
-          className={`${
-            isActive ? '' : 'opacity-40'
-          } absolute top-20px left-265px`}
-        >
-          <img src={imgUrl} alt="N Performance" />
-        </div>
-      );
-      break;
-    case 5: //외장 색상
-      imgElement = (
-        <div className="absolute bg-white rounded-full top-50px left-285px w-60px h-60px border-1px border-grey-002"></div>
-      );
-      break;
-    case 6: //내장 색상
-      imgElement = (
-        <img
-          src={imgUrl}
-          alt="내장 색상"
-          className="absolute top-50px rounded-6px w-150px h-50px left-200px"
-        />
-      );
-      break;
-    case 7: //옵션 선택
-      imgElement = (
-        <div
-          className={`${
-            isActive ? '' : 'opacity-40'
-          } absolute top-20px left-265px`}
-        >
-          {/* <img src={imgUrl} alt="H Genuine Accessories" /> */}
-          <HGenuingAccessories />
-        </div>
-      );
-      break;
-    default:
-      imgElement = <></>;
-  }
+  const imgElement = [
+    ...Array(4).fill(null),
+    <div
+      className={`${isActive ? '' : 'opacity-40'} absolute top-20px left-265px`}
+      key={`${step}-휠 선택`}
+    >
+      <img src={imgUrl} alt="H Genuine Accessories" />
+    </div>,
+    <div
+      className="absolute bg-white rounded-full top-50px left-285px w-60px h-60px border-1px border-grey-002"
+      key={`${step}-외장 색상`}
+    ></div>,
+    <img
+      src={imgUrl}
+      className="absolute top-50px rounded-6px w-150px h-50px left-200px"
+      alt="내장 색상"
+      key={`${step}-내장 색상`}
+    />, // step 7
+    <div
+      className={`${isActive ? '' : 'opacity-40'} absolute top-20px left-265px`}
+      key={`${step}-옵션 선택`}
+    >
+      <img src={imgUrl} alt="H Genuine Accessories" />
+    </div>,
+  ];
 
-  return <div>{imgElement}</div>;
+  return <div>{imgElement[step]}</div>;
 }
 
 export default ImgSection;
