@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.youngcha.common.dto.SuccessResponse;
-import team.youngcha.domain.dictionary.service.DictionaryService;
 import team.youngcha.domain.dictionary.dto.FindDictionaryResponse;
+import team.youngcha.domain.dictionary.service.DictionaryService;
 
 import java.util.List;
 
