@@ -29,8 +29,11 @@ public class FindSelfOptionResponse {
     @Schema(description = "이름")
     private String name;
 
-    @Schema(description = "선택 피트백 문구")
-    private Feedback feedback;
+    @Schema(description = "선택 피트백 제목")
+    private String feedbackTitle;
+
+    @Schema(description = "선택 피트백 설명")
+    private String feedbackDescription;
 
     @Schema(description = "옵션 사진")
     private List<FindOptionImageResponse> images;
@@ -43,7 +46,8 @@ public class FindSelfOptionResponse {
         this.rate = rate;
         this.price = option.getPrice();
         this.name = option.getName();
-        this.feedback = new Feedback(option.getFeedbackTitle(), option.getFeedbackDescription());
+        this.feedbackTitle = option.getFeedbackTitle();
+        this.feedbackDescription = option.getFeedbackDescription();
         this.images = optionImages.stream()
                 .map(FindOptionImageResponse::new)
                 .collect(Collectors.toList());
@@ -53,12 +57,15 @@ public class FindSelfOptionResponse {
     }
 
     @Builder
-    public FindSelfOptionResponse(Long id, int rate, int price, String name, String feedbackTitle, String feedbackDescription, List<FindOptionImageResponse> images, List<FindOptionDetailResponse> details) {
+    public FindSelfOptionResponse(Long id, int rate, int price, String name,
+                                  String feedbackTitle, String feedbackDescription,
+                                  List<FindOptionImageResponse> images, List<FindOptionDetailResponse> details) {
         this.id = id;
         this.rate = rate;
         this.price = price;
         this.name = name;
-        this.feedback = new Feedback(feedbackTitle, feedbackDescription);
+        this.feedbackTitle = feedbackTitle;
+        this.feedbackDescription = feedbackDescription;
         this.images = images;
         this.details = details;
     }

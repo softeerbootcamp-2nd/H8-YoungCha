@@ -33,8 +33,11 @@ public class FindGuideOptionResponse {
     @Schema(description = "이름")
     private String name;
 
-    @Schema(description = "선택 피드백 문구")
-    private Feedback feedback;
+    @Schema(description = "선택 피드백 제목")
+    private String feedbackTitle;
+
+    @Schema(description = "선택 피드백 설명")
+    private String feedbackDescription;
 
     @Schema(description = "태그")
     private List<KeywordRate> tags;
@@ -51,7 +54,8 @@ public class FindGuideOptionResponse {
         this.rate = rate;
         this.price = option.getPrice();
         this.name = option.getName();
-        this.feedback = new Feedback(option.getFeedbackTitle(), option.getFeedbackDescription());
+        this.feedbackTitle = option.getFeedbackTitle();
+        this.feedbackDescription = option.getFeedbackDescription();
         this.tags = tags;
         this.images = optionImages.stream()
                 .map(FindOptionImageResponse::new)
@@ -62,7 +66,8 @@ public class FindGuideOptionResponse {
     }
 
     @Builder
-    public FindGuideOptionResponse(Long id, boolean checked, int rate, int price, String name, String feedbackTitle, String feedbackDescription,
+    public FindGuideOptionResponse(Long id, boolean checked, int rate, int price, String name,
+                                   String feedbackTitle, String feedbackDescription,
                                    List<KeywordRate> tags,
                                    List<FindOptionDetailResponse> details,
                                    List<FindOptionImageResponse> images) {
@@ -71,7 +76,8 @@ public class FindGuideOptionResponse {
         this.rate = rate;
         this.price = price;
         this.name = name;
-        this.feedback = new Feedback(feedbackTitle, feedbackDescription);
+        this.feedbackTitle = feedbackTitle;
+        this.feedbackDescription = feedbackDescription;
         this.tags = tags;
         this.details = details;
         this.images = images;

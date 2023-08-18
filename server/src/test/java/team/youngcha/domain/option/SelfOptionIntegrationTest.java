@@ -218,7 +218,7 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindSelfOptionResponse creamyWhite = FindSelfOptionResponse.builder()
                 .id(12L).rate(40).price(100000)
                 .name("크리미 화이트 펄")
-                .feedbackTitle("크리미 화이트 펄은 우이한 분위기에요!")
+                .feedbackTitle("크리미 화이트 펄은 우아한 분위기에요!")
                 .feedbackDescription("밝은 화이트(흰색)의 외장색상으로, 차량에 깨끗하고 우아한 느낌을 줍니다.")
                 .images(List.of(creamyWhiteImg)).details(List.of()).build();
 

@@ -14,7 +14,8 @@ public class Option {
     private Long categoryId;
 
     @Builder
-    public Option(Long id, String name, int price, String feedbackTitle, String feedbackDescription, Long categoryId) {
+    public Option(Long id, String name, int price,
+                  String feedbackTitle, String feedbackDescription, Long categoryId) {
         this.id = id;
         this.name = name;
         this.price = price;

@@ -60,10 +60,14 @@ class OptionRepositoryTest {
 
         //then
         Option diesel = Option.builder()
-                .id(1L).name("디젤").price(1000).feedbackTitle("좋아요").feedbackDescription("좋습니다").categoryId(1L)
+                .id(1L).name("디젤").price(1000)
+                .feedbackTitle("좋아요").feedbackDescription("좋습니다")
+                .categoryId(1L)
                 .build();
         Option gasoline = Option.builder()
-                .id(2L).name("가솔린").price(2000).feedbackTitle("추천").feedbackDescription("추천합니다").categoryId(1L)
+                .id(2L).name("가솔린").price(2000)
+                .feedbackTitle("추천").feedbackDescription("추천합니다")
+                .categoryId(1L)
                 .build();
         assertThat(powerTrains)
                 .usingRecursiveComparison()
@@ -80,13 +84,13 @@ class OptionRepositoryTest {
                     "values (1, '" + SelectiveCategory.EXTERIOR_COLOR.getName() + "')," +
                     "(2, '" + SelectiveCategory.INTERIOR_COLOR.getName() + "')");
             jdbcTemplate.update("insert into options (id, name, price, feedback_title, feedback_description, category_id) " +
-                    "values (1,'blue', 0, 'blue','blue feedback', 1)," + // 외장 색상
-                    "(2,'black', 0, 'black', 'black feedback', 1)," +
-                    "(3,'white', 0, 'white', 'white feedback', 1)," +
+                    "values (1,'blue', 0, 'blue feedback', 'blue description', 1)," + // 외장 색상
+                    "(2,'black', 0, 'black feedback', 'black description', 1)," +
+                    "(3,'white', 0, 'white feedback', 'white description', 1)," +
 
-                    "(4, 'in1', 0, 'in1', 'in1 feedback', 2)," + // 내장 색상
-                    "(5, 'in2', 0, 'in2', 'in2 feedback', 2)," +
-                    "(6, 'in3', 1000, 'in3', 'in3 feedback', 2)");
+                    "(4, 'in1', 0, 'in1 feedback', 'in1 description', 2)," + // 내장 색상
+                    "(5, 'in2', 0, 'in2 feedback', 'in2 description', 2)," +
+                    "(6, 'in3', 1000, 'in3 feedback', 'in3 description', 2)");
             jdbcTemplate.update("insert into trim_options (id, type, trim_id, options_id) " +
                     "values (1, " + OptionType.OPTIONAL.getType() + ", 1, 4)," +
                     "(2," + OptionType.OPTIONAL.getType() + ", 1, 5)," +
@@ -100,20 +104,20 @@ class OptionRepositoryTest {
         Option inColor1 = Option.builder()
                 .id(4L).price(0)
                 .name("in1")
-                .feedbackTitle("in1")
-                .feedbackDescription("in1 feedback")
+                .feedbackTitle("in1 feedback")
+                .feedbackDescription("in1 description")
                 .categoryId(2L).build();
         Option inColor2 = Option.builder()
                 .id(5L).price(0)
                 .name("in2")
-                .feedbackTitle("in2")
-                .feedbackDescription("in2 feedback")
+                .feedbackTitle("in2 feedback")
+                .feedbackDescription("in2 description")
                 .categoryId(2L).build();
         Option inColor3 = Option.builder()
                 .id(6L).price(1000)
                 .name("in3")
-                .feedbackTitle("in3")
-                .feedbackDescription("in3 feedback")
+                .feedbackTitle("in3 feedback")
+                .feedbackDescription("in3 description")
                 .categoryId(2L).build();
 
         @Test

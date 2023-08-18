@@ -44,8 +44,7 @@ public class OptionRepository {
 
         String baseQuery = "select options.id as id, options.name as name, options.price as price, " +
                 "options.feedback_title as feedback_title, options.feedback_description as feedback_description, " +
-                "options.category_id as category_id " +
-                "from options " +
+                "options.category_id as category_id from options " +
                 "join category on options.category_id = category.id and category.name = (:categoryName) " +
                 "join trim_options on options.id = trim_options.options_id " +
                 "and trim_options.trim_id = (:trimId) and trim_options.type = (:optionType)";
