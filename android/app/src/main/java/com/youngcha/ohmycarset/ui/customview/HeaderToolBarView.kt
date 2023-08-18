@@ -10,6 +10,8 @@ import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 
 class HeaderToolBarView(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
 
+    private val titleTextView: TextView
+
     var listener: OnHeaderToolbarClickListener? = null
 
     init {
@@ -20,7 +22,7 @@ class HeaderToolBarView(context: Context, attrs: AttributeSet) : ConstraintLayou
         val modeChangeValid = attributes.getInteger(R.styleable.HeaderToolBar_modeChangeValid, 1)
         attributes.recycle()
 
-        val titleTextView: TextView = findViewById(R.id.tv_header_toolbar_title)
+        titleTextView = findViewById(R.id.tv_header_toolbar_title)
         titleTextView.text = title
 
         val modeChangeButton: ImageButton = findViewById(R.id.ib_mode_change)
@@ -32,28 +34,11 @@ class HeaderToolBarView(context: Context, attrs: AttributeSet) : ConstraintLayou
         findViewById<ImageButton>(R.id.ib_dictionary_off).setOnClickListener { listener?.onDictionaryOffClick() }
         findViewById<ImageButton>(R.id.ib_model_change).setOnClickListener { listener?.onModelChangeClick() }
     }
-    /*
-    event 처리
-            binding.htbHeaderToolbar.listener  = object: OnHeaderToolbarClickListener {
-            override fun onExitClick() {
-                showSnackbar("Exit clicked!")
-            }
 
-            override fun onModeChangeClick() {
-                showSnackbar("Mode change clicked!")
-            }
-
-            override fun onDictionaryOffClick() {
-                showSnackbar("Dictionary off clicked!")
-            }
-
-            override fun onModelChangeClick() {
-                showSnackbar("Model change clicked!")
-            }
-
-            private fun showSnackbar(message: String) {
-                Snackbar.make(binding.htbHeaderToolbar, message, Snackbar.LENGTH_SHORT).show()
-            }
+    fun setTitle(currentType: String) {
+        when(currentType) {
+            "GuideMode" -> titleTextView.text = "가이드 모드"
+            "SelfMode" -> titleTextView.text = "셀프 모드"
         }
-     */
+    }
 }

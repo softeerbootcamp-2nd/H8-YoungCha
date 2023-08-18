@@ -25,7 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:modeChangeValid="1"
-            app:title="@string/self_mode_kr" />
+            app:title="@{viewModel.currentType}" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_main_option_tab"
@@ -113,31 +113,55 @@
                 android:id="@+id/btn_component_option_1"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
-                android:layout_marginEnd="5.5dp"
+                android:layout_marginEnd="3.5dp"
                 android:clickable="true"
                 android:focusable="true"
+                app:animateOnClick="@{true}"
+                app:currentType="@{viewModel.currentType}"
+                app:currentTypeForBackground="@{viewModel.currentType}"
+                app:currentTypeForBorder="@{viewModel.currentType}"
+                app:currentTypeForBorderAnimation="@{viewModel.currentType}"
+                app:currentTypeForIcon="@{viewModel.currentType}"
+                app:currentTypeForText="@{viewModel.currentType}"
                 app:customOnClickAction="@{viewModel::onComponentOption1Selected}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_component_option_2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:optionInfo="@{viewModel.getOption(viewModel.currentComponentName, 0)}"
-                app:visible="@{viewModel.componentOption1Visibility}" />
+                app:visibleForBackground="@{viewModel.componentOption1Visibility}"
+                app:visibleForBorder="@{viewModel.componentOption1Visibility}"
+                app:visibleForBorderAnimation="@{viewModel.componentOption1Visibility}"
+                app:visibleForIcon="@{viewModel.componentOption1Visibility.intValue()}"
+                app:visibleForText="@{viewModel.componentOption1Visibility.intValue()}"
+                app:visibleForTextNamePrice="@{viewModel.componentOption1Visibility}" />
 
             <com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
                 android:id="@+id/btn_component_option_2"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
-                android:layout_marginStart="5.5dp"
+                android:layout_marginStart="3.5dp"
                 android:clickable="true"
                 android:focusable="true"
+                app:animateOnClick="@{true}"
+                app:currentType="@{viewModel.currentType}"
+                app:currentTypeForBackground="@{viewModel.currentType}"
+                app:currentTypeForBorder="@{viewModel.currentType}"
+                app:currentTypeForBorderAnimation="@{viewModel.currentType}"
+                app:currentTypeForIcon="@{viewModel.currentType}"
+                app:currentTypeForText="@{viewModel.currentType}"
                 app:customOnClickAction="@{viewModel::onComponentOption2Selected}"
                 app:layout_constraintBottom_toBottomOf="@+id/btn_component_option_1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btn_component_option_1"
                 app:layout_constraintTop_toTopOf="@+id/btn_component_option_1"
                 app:optionInfo="@{viewModel.getOption(viewModel.currentComponentName, 1)}"
-                app:visible="@{viewModel.componentOption2Visibility}" />
+                app:visibleForBackground="@{viewModel.componentOption2Visibility}"
+                app:visibleForBorder="@{viewModel.componentOption2Visibility}"
+                app:visibleForBorderAnimation="@{viewModel.componentOption2Visibility}"
+                app:visibleForIcon="@{viewModel.componentOption2Visibility.intValue()}"
+                app:visibleForText="@{viewModel.componentOption2Visibility.intValue()}"
+                app:visibleForTextNamePrice="@{viewModel.componentOption2Visibility}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -212,10 +236,10 @@
             layout="@layout/layout_bottom_sheet_estimate_summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:viewModel="@{viewModel}"
             app:layout_constraintBottom_toTopOf="@id/button1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:viewModel="@{viewModel}" />
 
         <View
             android:id="@+id/button1"
