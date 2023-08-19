@@ -1,6 +1,7 @@
 package com.youngcha.ohmycarset.ui.adapter.viewpager
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -102,15 +103,27 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
         }
 
         private fun handleOptionUpdates() {
-            val clickedOption = options[adapterPosition]
-            if (optionType == OPTION_SELECTION) {
-                handleOptionSelection(clickedOption)
-            } else {
-                handleSingleOptionSelection(clickedOption)
+            try {
+                // 아이템의 위치를 확인하고, 리스트의 범위를 벗어나는지 확인
+                if (adapterPosition in 0 until options.size) {
+                    val clickedOption = options[adapterPosition]
+
+                    if (optionType == OPTION_SELECTION) {
+                        handleOptionSelection(clickedOption)
+                    } else {
+                        handleSingleOptionSelection(clickedOption)
+                    }
+
+                    currentSelectedOptions = viewModel.isSelectedOptions(subOptionName!!) ?: listOf()
+                    notifyDataSetChanged()
+                } else {
+                    Log.e("로그", "Invalid adapter position: $adapterPosition")
+                }
+            } catch (e: IndexOutOfBoundsException) {
+                Log.e("로그", "Index out of bounds: $adapterPosition", e)
             }
-            currentSelectedOptions = viewModel.isSelectedOptions(subOptionName!!) ?: listOf()
-            notifyDataSetChanged()
         }
+
 
         private fun handleOptionSelection(clickedOption: OptionInfo) {
             val isSelected = currentSelectedOptions.contains(clickedOption)
