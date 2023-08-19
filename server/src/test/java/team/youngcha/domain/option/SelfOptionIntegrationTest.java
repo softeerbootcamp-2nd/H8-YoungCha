@@ -104,10 +104,10 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
 
         //then
         FindOptionImageResponse wd2Image = FindOptionImageResponse.builder()
-                .imgUrl("https://www.hyundai.com/contents/spec/guide/lx_2wd_s.jpg")
+                .imgUrl( "https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/2wd.png")
                 .imgType(0).build();
         FindOptionImageResponse wd4Image = FindOptionImageResponse.builder()
-                .imgUrl("https://www.hyundai.com/contents/spec/guide/lx_htrac_s.jpg")
+                .imgUrl( "https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/4wd.png")
                 .imgType(0).build();
 
         FindOptionDetailResponse wd2Detail = FindOptionDetailResponse.builder()
@@ -152,10 +152,10 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
 
         //then
         FindOptionImageResponse seat7Image = FindOptionImageResponse.builder()
-                .imgUrl("https://www.hyundai.com/contents/spec/guide/lx_7seats_s.jpg")
+                .imgUrl("https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/7seat.png")
                 .imgType(0).build();
         FindOptionImageResponse seat8Image = FindOptionImageResponse.builder()
-                .imgUrl("https://www.hyundai.com/contents/spec/guide/lx_8seats_s.jpg")
+                .imgUrl("https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/8seat.png")
                 .imgType(0).build();
 
         FindOptionDetailResponse seat7Detail = FindOptionDetailResponse.builder()
