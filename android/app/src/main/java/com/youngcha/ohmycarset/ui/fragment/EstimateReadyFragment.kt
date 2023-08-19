@@ -1,12 +1,12 @@
 package com.youngcha.ohmycarset.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -22,8 +22,6 @@ import com.youngcha.ohmycarset.ui.adapter.recyclerview.StrengthAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.UseAdapter
 import com.youngcha.ohmycarset.util.decorator.GridItemDecoration
 import com.youngcha.ohmycarset.util.decorator.LinearItemDecoration
-import com.youngcha.ohmycarset.util.slideInRight
-import com.youngcha.ohmycarset.util.slideOutLeft
 import com.youngcha.ohmycarset.viewmodel.UserTagViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -39,9 +37,6 @@ class EstimateReadyFragment : Fragment() {
     private lateinit var strengthAdapter: StrengthAdapter
     private lateinit var importantAdapter: ImportantAdapter
     private lateinit var useAdapter: UseAdapter
-
-    private var selectedItemsCount = 0
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,6 +48,9 @@ class EstimateReadyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.layoutPreliminariesKeyword.viewModel=userTagViewModel
+        binding.layoutPreliminariesKeyword.lifecycleOwner=this
 
         initView()
         setRecyclerView()
@@ -93,19 +91,19 @@ class EstimateReadyFragment : Fragment() {
     private fun handlePreliminariesStep(type: PreliminariesStepType) {
         when (type) {
             PreliminariesStepType.AGE -> {
-                binding.layoutPreliminariesAge.clRootView.slideOutLeft()
-                binding.layoutPreliminariesGender.clRootView.slideInRight()
+                binding.layoutPreliminariesAge.clRootView.visibility = View.GONE
+                binding.layoutPreliminariesGender.clRootView.visibility = View.VISIBLE
             }
 
             PreliminariesStepType.GENDER -> {
-                binding.layoutPreliminariesGender.clRootView.slideOutLeft()
-                binding.layoutPreliminariesKeyword.clRootView.slideInRight()
+                binding.layoutPreliminariesGender.clRootView.visibility = View.GONE
+                binding.layoutPreliminariesKeyword.clRootView.visibility = View.VISIBLE
             }
 
             PreliminariesStepType.KEYWORD -> {
-                binding.layoutPreliminariesKeyword.clRootView.slideOutLeft()
+                binding.layoutPreliminariesKeyword.clRootView.visibility = View.GONE
                 //원래는 로딩 프래그먼트로 전환
-                binding.layoutEstimateReady.clRootView.slideInRight()
+                binding.layoutEstimateReady.clRootView.visibility = View.VISIBLE
             }
 
             PreliminariesStepType.READY -> {
@@ -139,10 +137,7 @@ class EstimateReadyFragment : Fragment() {
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
 
         // AGE ==========================================================================
-        ageAdapter = AgeAdapter(userTagViewModel) { selectedAge ->
-            userTagViewModel.updateSelectedAge(selectedAge)
-        }
-
+        ageAdapter = AgeAdapter(userTagViewModel)
         binding.layoutPreliminariesAge.rvTag.layoutManager = LinearLayoutManager(activity)
         binding.layoutPreliminariesAge.rvTag.adapter = ageAdapter
         binding.layoutPreliminariesAge.rvTag.addItemDecoration(LinearItemDecoration(spacingInPixels))
@@ -153,11 +148,7 @@ class EstimateReadyFragment : Fragment() {
 
 
         //GENDER
-        genderAdapter = GenderAdapter(userTagViewModel) { selectedGender ->
-            userTagViewModel.updateSelectedGender(selectedGender)
-        }
-
-
+        genderAdapter = GenderAdapter(userTagViewModel)
         binding.layoutPreliminariesGender.rvTag.layoutManager = LinearLayoutManager(activity)
         binding.layoutPreliminariesGender.rvTag.adapter = genderAdapter
         binding.layoutPreliminariesGender.rvTag.addItemDecoration(
@@ -165,20 +156,13 @@ class EstimateReadyFragment : Fragment() {
                 spacingInPixels
             )
         )
-
         binding.layoutPreliminariesGender.btnNext.setOnClickListener {
             handlePreliminariesStep(PreliminariesStepType.GENDER)
         }
 
 
         //STRENGTH
-        strengthAdapter = StrengthAdapter(userTagViewModel) { selectedStrength ->
-            userTagViewModel.updateSelectedStrength(selectedStrength)
-            selectedItemsCount += if (selectedStrength.isSelected) 1 else -1
-            updateNextButtonColor()
-        }
-
-
+        strengthAdapter = StrengthAdapter(userTagViewModel)
         binding.layoutPreliminariesKeyword.rvStrength.layoutManager = GridLayoutManager(activity, 2)
         binding.layoutPreliminariesKeyword.rvStrength.adapter = strengthAdapter
         binding.layoutPreliminariesKeyword.rvStrength.addItemDecoration(
@@ -190,13 +174,7 @@ class EstimateReadyFragment : Fragment() {
         )
 
         //IMPORTANT
-        importantAdapter = ImportantAdapter(userTagViewModel) { selectedImportant ->
-            userTagViewModel.updateSelectedImportant(selectedImportant)
-            selectedItemsCount += if (selectedImportant.isSelected) 1 else -1
-            updateNextButtonColor()
-        }
-
-
+        importantAdapter = ImportantAdapter(userTagViewModel)
         binding.layoutPreliminariesKeyword.rvImportant.layoutManager =
             GridLayoutManager(activity, 2)
         binding.layoutPreliminariesKeyword.rvImportant.adapter = importantAdapter
@@ -209,13 +187,7 @@ class EstimateReadyFragment : Fragment() {
         )
 
         //USES
-        useAdapter = UseAdapter(userTagViewModel) { selectedUse ->
-            userTagViewModel.updateSelectedUse(selectedUse)
-            selectedItemsCount += if (selectedUse.isSelected) 1 else -1
-            updateNextButtonColor()
-        }
-
-
+        useAdapter = UseAdapter(userTagViewModel)
         binding.layoutPreliminariesKeyword.rvUses.layoutManager = GridLayoutManager(activity, 2)
         binding.layoutPreliminariesKeyword.rvUses.adapter = useAdapter
         binding.layoutPreliminariesKeyword.rvUses.addItemDecoration(
@@ -225,12 +197,12 @@ class EstimateReadyFragment : Fragment() {
                 false
             )
         )
-
     }
 
     private fun onClickFunction() {
         binding.layoutPreliminariesKeyword.btnNext.setOnClickListener {
-            if (selectedItemsCount == 3) {
+            Log.d("Fragment", userTagViewModel.isChange.value.toString())
+            if (userTagViewModel.isChange.value == 1) {
                 //로딩 프래그먼트로 전환
                 handlePreliminariesStep(PreliminariesStepType.KEYWORD)
             }
@@ -241,33 +213,4 @@ class EstimateReadyFragment : Fragment() {
             handlePreliminariesStep(PreliminariesStepType.KEYWORD)
         }
     }
-
-    private fun updateNextButtonColor() {
-        if (selectedItemsCount == 3) {
-            binding.layoutPreliminariesKeyword.btnNext.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
-                )
-            )
-            binding.layoutPreliminariesKeyword.btnNext.backgroundTintList =
-                ContextCompat.getColorStateList(
-                    requireContext(),
-                    R.color.main_hyundai_blue
-                )
-        } else {
-            binding.layoutPreliminariesKeyword.btnNext.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.cool_grey_003
-                )
-            )
-            binding.layoutPreliminariesKeyword.btnNext.backgroundTintList =
-                ContextCompat.getColorStateList(
-                    requireContext(),
-                    R.color.cool_grey_001
-                )
-        }
-    }
-
 }
