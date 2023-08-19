@@ -154,7 +154,7 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
                 .feedbackTitle("4WD는 파워풀해요!")
                 .feedbackDescription("힘있는 주행을 원하신다면, 탁월한 선택입니다.")
                 .name("4WD").checked(true)
-                .tags(List.of(new KeywordRate(0, "주행력")))
+                .tags(List.of(new KeywordRate(100, "주행력")))
                 .images(List.of(wd4Image))
                 .details(List.of(wd4Detail)).build();
 
