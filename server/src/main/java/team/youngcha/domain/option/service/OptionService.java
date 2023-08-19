@@ -160,7 +160,7 @@ public class OptionService {
                     .map(Map.Entry::getKey)
                     .collect(Collectors.toList());
 
-            // 겹치는 키워드가 없으면 비율을 조회 후 반환
+            // 겹치는 키워드가 옵션 하나에만 있으면 비율을 조회 후 반환
             if (optionIdsWithKeyword.size() == 1) {
                 Long selectedOptionId = optionIdsWithKeyword.get(0);
                 int rate = estimateRepository.calculateRate(trimId, selectedOptionId, keywordId, category);
