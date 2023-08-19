@@ -7,20 +7,20 @@ interface ProgressBarProps {
   id: string;
 }
 
-function ProgressBar({ step, path, id }: ProgressBarProps) {
-  const progressItems = [
-    '파워트레인',
-    '구동 방식',
-    '바디 타입',
-    '외장 색상',
-    '내장 색상',
-    '휠 선택',
-    '옵션 선택',
-    '견적 내기',
-  ];
+const PROGRESS_LIST = [
+  '파워트레인',
+  '구동 방식',
+  '바디 타입',
+  '외장 색상',
+  '내장 색상',
+  '휠 선택',
+  '옵션 선택',
+  '견적 내기',
+];
 
+function ProgressBar({ step, path, id }: ProgressBarProps) {
   function makeCategory() {
-    return progressItems.map((item: string, index: number) => (
+    return PROGRESS_LIST.map((item: string, index: number) => (
       <ProgressItem
         key={index}
         itemIndex={index + 1}
