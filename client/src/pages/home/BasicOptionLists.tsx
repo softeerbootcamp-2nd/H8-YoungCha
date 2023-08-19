@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 interface BasicOptionListsProps {
   id: number;
   currentSize: number;
+  categoryId: number;
   setIsLastPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -13,6 +14,7 @@ const OPTION_SIZE = 5;
 function BasicOptionLists({
   currentSize,
   id,
+  categoryId,
   setIsLastPage,
 }: BasicOptionListsProps) {
   const [basicOptions, setBasicOptions] = useState<BasicOptionType>(
@@ -21,7 +23,7 @@ function BasicOptionLists({
   const url = `${import.meta.env.VITE_API_URL}/trims/${id}/default-components?`;
   const currentPage = Math.floor((currentSize - 1) / OPTION_SIZE) + 1;
   const params = {
-    categoryId: String(1),
+    categoryId: String(categoryId),
     page: String(currentPage),
     size: String(OPTION_SIZE),
   };
@@ -30,6 +32,7 @@ function BasicOptionLists({
   }, [basicOptions]);
 
   useEffect(() => {
+    if (basicOptions.last) return;
     (async () => {
       const data = (await get<BasicOptionType>({
         url,
@@ -41,8 +44,8 @@ function BasicOptionLists({
           ...basicOptions.contents,
           ...data.contents,
         ];
-        setBasicOptions((prev) => ({
-          ...prev,
+        setBasicOptions(() => ({
+          ...data,
           contents: newContents,
         }));
       } else {
@@ -50,6 +53,17 @@ function BasicOptionLists({
       }
     })();
   }, [currentSize]);
+
+  useEffect(() => {
+    (async () => {
+      const data = (await get<BasicOptionType>({
+        url,
+        params,
+      })) as BasicOptionType;
+
+      setBasicOptions(data);
+    })();
+  }, [categoryId]);
 
   return (
     <>

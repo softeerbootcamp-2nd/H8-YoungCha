@@ -1,4 +1,4 @@
-import { TrimType } from '@/assets/mock/mock';
+import { TrimType } from '@/types';
 import { getPriceTemplete } from '@/utils';
 
 interface CarsImageBoxProps {

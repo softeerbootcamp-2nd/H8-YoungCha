@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
-import { TrimType } from '@/assets/mock/mock.ts';
 import { TRIM_MAIN_OPTION } from '@/components/MakingModeButton/MainOptionList/constant';
 import MainOption from '@/components/MakingModeButton/MainOptionList/MainOption';
+import { TrimType } from '@/types';
 
 interface MainOptionListProps extends Pick<TrimType, 'mainOptions'> {}
 

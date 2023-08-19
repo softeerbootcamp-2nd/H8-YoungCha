@@ -35,7 +35,11 @@ function BasicOptionBox({ trims }: BasicOptionBoxProps) {
             <SelectButton
               key={option}
               type={selectedOption === option ? 'active' : 'default'}
-              onClick={() => setSelectedOption(option)}
+              onClick={() => {
+                setCurrentSize(5);
+                setLastPageCount(0);
+                setSelectedOption(option);
+              }}
             >
               {option}
             </SelectButton>
@@ -49,6 +53,7 @@ function BasicOptionBox({ trims }: BasicOptionBoxProps) {
             >
               <BasicOptionLists
                 id={id}
+                categoryId={BasicOptionsId[selectedOption]}
                 currentSize={currentSize}
                 setIsLastPage={setLastPageCount}
               />

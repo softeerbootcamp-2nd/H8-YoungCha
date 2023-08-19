@@ -1,3 +1,4 @@
+import { MainOptionType } from '@/types';
 import { removeBracket } from '@/utils';
 
 interface MainOptionProps extends MainOptionType {}

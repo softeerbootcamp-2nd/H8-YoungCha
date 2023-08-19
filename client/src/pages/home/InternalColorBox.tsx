@@ -1,4 +1,4 @@
-import { TrimType } from '@/assets/mock/mock';
+import { TrimType } from '@/types';
 import OptionLayout from './OptionLayout';
 import { TITLE } from './constant';
 
