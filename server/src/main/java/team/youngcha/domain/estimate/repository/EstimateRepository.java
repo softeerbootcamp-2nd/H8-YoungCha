@@ -42,7 +42,7 @@ public class EstimateRepository {
 
         String optionIdColumn = category.getColumn() + "_id";
 
-        // sum(트림 + 옵션 + 키워드 포함) * 100 / sum(트림 + 키워드 포함) -> 반올림
+        // sum(트림 + 옵션 + 키워드 포함) * 100 / sum(트림 + 키워드 포함)
         Integer rate = namedParameterJdbcTemplate.queryForObject("select " +
                         "sum(case when " +
                         "e.trim_id = (:trimId) and e." + optionIdColumn + " = (:optionId) " +
