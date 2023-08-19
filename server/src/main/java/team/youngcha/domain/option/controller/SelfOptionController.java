@@ -69,6 +69,12 @@ public class SelfOptionController {
         return ResponseEntity.ok(successResponse);
     }
 
+    @Operation(summary = "휠 셀프 모드 옵션 조회", description = "셀프 모드에서 휠의 옵션을 판매량과 함께 조회합니다.")
+    @GetMapping("/wheel")
+    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findWheel(@PathVariable Long trimId) {
+        return findSelfOptions(trimId, SelectiveCategory.WHEEL);
+    }
+
     private ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfOptions(Long trimId, SelectiveCategory category) {
         List<FindSelfOptionResponse> findSelfOptionResponses = optionService.findSelfOptions(trimId, category);
         SuccessResponse<List<FindSelfOptionResponse>> successResponse = new SuccessResponse<>(findSelfOptionResponses);

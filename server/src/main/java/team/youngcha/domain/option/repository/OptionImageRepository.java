@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import team.youngcha.domain.option.entity.OptionImage;
+import team.youngcha.domain.option.enums.OptionImageType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,12 +23,13 @@ public class OptionImageRepository {
     public List<OptionImage> findByContainOptionIds(List<Long> optionIds) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("optionIds", optionIds);
+        params.addValue("imgType", OptionImageType.ICON.getValue());
 
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
 
         return namedParameterJdbcTemplate.query(
                 "select * from options_image " +
-                        "where options_image.options_id in (:optionIds) "
+                        "where options_image.options_id in (:optionIds) and NOT options_image.img_type = (:imgType)"
                 , params, optionImageRowMapper);
     }
 
