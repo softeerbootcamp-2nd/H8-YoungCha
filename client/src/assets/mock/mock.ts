@@ -1,7 +1,7 @@
 // TODO: 실제 데이터로 변경
 
 import { UserSelectedOptionDataType } from '@/pages/making/type';
-import { TrimType } from '@/types';
+import { BasicOptionType, TrimType } from '@/types';
 
 export const mockLeblanc: TrimType = {
   id: 1,
