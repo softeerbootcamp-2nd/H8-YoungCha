@@ -1,15 +1,12 @@
 package team.youngcha.domain.sell.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import team.youngcha.common.enums.AgeRange;
 import team.youngcha.domain.category.enums.RequiredCategory;
-import team.youngcha.domain.sell.entity.Sell;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,7 +16,6 @@ import java.util.stream.Collectors;
 public class SellRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final RowMapper<Sell> sellRowMapper = new SellRowMapper();
 
     public Map<Long, Long> countOptionsByTrimIdAndContainOptionsIds(Long trimId, List<Long> optionIds,
                                                                     RequiredCategory category) {
@@ -29,6 +25,26 @@ public class SellRepository {
         return results.stream()
                 .collect(Collectors.toMap(
                         row -> (Long) row.get(category.getColumn() + "_id"),
+                        row -> (Long) row.get("count")
+                ));
+    }
+
+    // 특정 트림의 특정 카테고리에 속하는 옵션의 연령대별 판매량을 조회
+    public Map<Long, Long> countOptionsByTrimIdAndAgeRange(Long trimId, RequiredCategory requiredCategory, AgeRange ageRange) {
+        String column = requiredCategory.getColumn() + "_id";
+
+        String sql = "SELECT sell." + column + ", COUNT(*) AS count FROM sell " +
+                "WHERE (sell.age >= :minAge AND sell.age <= :maxAge) AND sell.trim_id = :trimId " +
+                "GROUP BY sell." + column;
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("minAge", ageRange.getMinAge());
+        params.addValue("maxAge", ageRange.getMaxAge());
+        params.addValue("trimId", trimId);
+
+        return namedParameterJdbcTemplate.queryForList(sql, params)
+                .stream().collect(Collectors.toMap(
+                        row -> (Long) row.get(column),
                         row -> (Long) row.get("count")
                 ));
     }
@@ -46,23 +62,5 @@ public class SellRepository {
                         "where sell." + column + " in (:optionIds) and sell.trim_id = (:trimId) " +
                         "group by sell." + column,
                 params);
-    }
-
-    private static class SellRowMapper implements RowMapper<Sell> {
-        @Override
-        public Sell mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            return Sell.builder()
-                    .id(resultSet.getLong("id"))
-                    .trimId(resultSet.getLong("trim_id"))
-                    .engineId(resultSet.getLong("engine_id"))
-                    .bodyTypeId(resultSet.getLong("body_type_id"))
-                    .drivingSystemId(resultSet.getLong("driving_system_id"))
-                    .exteriorColorId(resultSet.getLong("exterior_color_id"))
-                    .interiorColorId(resultSet.getLong("interior_color_id"))
-                    .wheelId(resultSet.getLong("wheel_id"))
-                    .age(resultSet.getInt("age"))
-                    .gender(resultSet.getInt("gender"))
-                    .build();
-        }
     }
 }
