@@ -5,42 +5,22 @@ import Transition from '../Transition/Transition';
 import { Close } from '@/assets/icons';
 import { mockUserSelectedOptionData } from '@/assets/mock/mock';
 
+const ESTIMATION_SUMMARY = '견적 요약';
+
 interface SummaryModalProps {
   render: boolean;
   onClose: () => void;
 }
-
-const ESTIMATION_SUMMARY = '견적 요약';
 
 interface OptionTitleProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
   price: number;
 }
 
-function OptionTitle({ title, price }: OptionTitleProps) {
-  return (
-    <div className="flex items-center justify-between text-main-blue bg-grey-001 px-20px pt-10px pb-8px title4">
-      <div>{title}</div>
-      <div>{getPriceTemplete(price, true)}</div>
-    </div>
-  );
-}
 interface OptionProps extends HTMLAttributes<HTMLDivElement> {
   type: string;
   name: string;
   price: number;
-}
-
-function Option({ type, name, price }: OptionProps) {
-  return (
-    <>
-      <div className="grid grid-cols-4 body2 text-grey-black">
-        <div className="text-grey-003">{type}</div>
-        <div className="col-span-2">{name}</div>
-        <div className="text-right">{getPriceTemplete(price, true)}</div>
-      </div>
-    </>
-  );
 }
 
 function SummaryModal({ render, onClose }: SummaryModalProps) {
@@ -95,6 +75,32 @@ function SummaryModal({ render, onClose }: SummaryModalProps) {
         </div>
       </div>
     </Transition>
+  );
+}
+
+function OptionTitle({ title, price }: OptionTitleProps) {
+  return (
+    <div className="flex items-center justify-between text-main-blue bg-grey-001 px-20px pt-10px pb-8px title4">
+      <div>{title}</div>
+      <div>{getPriceTemplete(price, true)}</div>
+    </div>
+  );
+}
+interface OptionProps extends HTMLAttributes<HTMLDivElement> {
+  type: string;
+  name: string;
+  price: number;
+}
+
+function Option({ type, name, price }: OptionProps) {
+  return (
+    <>
+      <div className="grid grid-cols-4 body2 text-grey-black">
+        <div className="text-grey-003">{type}</div>
+        <div className="col-span-2">{name}</div>
+        <div className="text-right">{getPriceTemplete(price, true)}</div>
+      </div>
+    </>
   );
 }
 
