@@ -3,6 +3,7 @@ package team.youngcha.domain.option.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import team.youngcha.common.enums.Gender;
 import team.youngcha.common.exception.CustomException;
 import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.estimate.repository.EstimateRepository;
@@ -91,6 +92,63 @@ public class OptionService {
                 optionImagesGroup, optionDetailsGroup);
     }
 
+    public List<FindGuideOptionResponse> findGuideModeExteriorColors(Long trimId, GuideInfo guideInfo) {
+        // 옵션 카테고리
+        RequiredCategory category = RequiredCategory.EXTERIOR_COLOR;
+
+        // 트림 아이디 검증
+        trimRepository.findById(trimId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+
+        // 외장 색상 옵션 조회
+        List<Option> exteriorColors
+                = optionRepository.findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, RequiredCategory.EXTERIOR_COLOR);
+        List<Long> exteriorColorIds = exteriorColors.stream().map(Option::getId).collect(Collectors.toList());
+
+        // 옵션 이미지
+        Map<Long, List<OptionImage>> exteriorColorImagesGroup = getOptionImagesGroup(exteriorColorIds);
+
+        // 옵션 상세설명
+        Map<Long, List<OptionDetail>> exteriorColorDetailsGroup = getOptionDetailGroup(exteriorColorIds);
+
+        // 유사 사용자 비율
+        Map<Long, Integer> similarityUsersRatio = getSimilarityUsersRatio(trimId, exteriorColorIds, guideInfo, RequiredCategory.EXTERIOR_COLOR);
+
+        // 연령대별 판매량
+        Map<Long, Long> sellCountByAgeRange
+                = sellRepository.countOptionsByTrimIdAndAgeRange(trimId, category, guideInfo.getAgeRange());
+
+        // 연령대별 판매율
+        Map<Long, Integer> sellRatioByAgeRange = calculateOptionRatios(sellCountByAgeRange);
+
+        // 성별을 선택하지 않은 경우, 동일 연령대를 기준으로 가장 많이 판매된 옵션을 추천
+        if (guideInfo.getGender() == Gender.NONE) {
+            Map<Long, List<KeywordRate>> keywordRateGroup = getKeywordGroupOfAgeRange(guideInfo, exteriorColorIds, sellRatioByAgeRange);
+
+            return buildFindGuideOptionResponseSortedBySellRatio(exteriorColors, sellRatioByAgeRange, similarityUsersRatio,
+                    keywordRateGroup, exteriorColorImagesGroup, exteriorColorDetailsGroup);
+        }
+
+        // 성별별 판매량
+        Map<Long, Long> sellCountByGender
+                = sellRepository.countOptionsByTrimIdAndGender(trimId, category, guideInfo.getGender());
+
+        // 성별별 판매율
+        Map<Long, Integer> sellRatioByGender = calculateOptionRatios(sellCountByGender);
+
+        // 키워드 그룹
+        Map<Long, List<KeywordRate>> keywordRateGroup = getKeywordGroupOfAgeRangeAndGender(guideInfo, exteriorColorIds, sellRatioByAgeRange, sellRatioByGender);
+
+        // 성별 및 연령대별 옵션 판매량
+        Map<Long, Long> sellCountByAgeRangeAndGender
+                = sellRepository.countOptionsByTrimIdAndAgeRangeAndGender(trimId, category, guideInfo.getAgeRange(), guideInfo.getGender());
+        Map<Long, Integer> sellRatioByAgeRangeAndGender = calculateOptionRatios(sellCountByAgeRangeAndGender);
+
+        // 동일 성별 및 연령대를 기준으로 가장 많이 판매된 옵션을 추천
+        return buildFindGuideOptionResponseSortedBySellRatio(exteriorColors, sellRatioByAgeRangeAndGender, similarityUsersRatio,
+                keywordRateGroup, exteriorColorImagesGroup, exteriorColorDetailsGroup);
+    }
+
     private List<FindSelfOptionResponse> buildFindSelfRequiredOptionResponses(Long trimId, List<Option> options,
                                                                               RequiredCategory category) {
         List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
@@ -103,7 +161,7 @@ public class OptionService {
 
     private List<FindSelfOptionResponse> buildFindSelfSelectiveOptionResponses(Long trimId, List<Option> options) {
         List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
-        Map<Long, Integer> sellRatio = getSelectiveOptionSellRatio(trimId, optionsIds);
+        Map<Long, Integer> sellRatio = getSelectiveOptionSellRatio(trimId);
         Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
         Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsIds);
 
@@ -117,7 +175,7 @@ public class OptionService {
         return calculateOptionRatios(optionCounts);
     }
 
-    private Map<Long, Integer> getSelectiveOptionSellRatio(Long trimId, List<Long> optionsIds) {
+    private Map<Long, Integer> getSelectiveOptionSellRatio(Long trimId) {
         Map<Long, Long> optionCounts = sellSelectiveOptionRepository.countByOptionIdForTrim(trimId);
         return calculateOptionRatios(optionCounts);
     }
@@ -235,5 +293,69 @@ public class OptionService {
             similarityUsersRatio.put(optionId, Integer.MAX_VALUE);
         }
         return isMaxRate;
+    }
+
+    private Map<Long, List<KeywordRate>> getKeywordGroupOfAgeRange(GuideInfo guideInfo, List<Long> exteriorColorIds, Map<Long, Integer> sellRatioByAgeRange) {
+        // 연령대 키워드 이름
+        String keywordAgeRange = guideInfo.getAgeRange().toKeyword();
+
+        Map<Long, KeywordRate> ageRangeKeywordRate = sellRatioByAgeRange.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> new KeywordRate(entry.getValue(), keywordAgeRange)));
+
+        return exteriorColorIds.stream()
+                .collect(Collectors.toMap(
+                        id -> id,
+                        id -> List.of(ageRangeKeywordRate.get(id))
+                ));
+    }
+
+    private Map<Long, List<KeywordRate>> getKeywordGroupOfAgeRangeAndGender(GuideInfo guideInfo, List<Long> exteriorColorIds, Map<Long, Integer> sellRatioByAgeRange, Map<Long, Integer> sellRatioByGender) {
+        // 연령대 키워드 이름
+        String keywordAgeRange = guideInfo.getAgeRange().toKeyword();
+
+        // 성별 키워드 이름
+        String keywordGender = guideInfo.getGender().toKeyword();
+
+        Map<Long, KeywordRate> ageRangeKeywordRate = sellRatioByAgeRange.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> new KeywordRate(entry.getValue(), keywordAgeRange)));
+
+        Map<Long, KeywordRate> genderKeywordRate = sellRatioByGender.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> new KeywordRate(entry.getValue(), keywordGender)));
+
+        return exteriorColorIds.stream()
+                .collect(Collectors.toMap(
+                        id -> id,
+                        id -> List.of(ageRangeKeywordRate.get(id),
+                                genderKeywordRate.get(id))
+                ));
+    }
+
+    private List<FindGuideOptionResponse> buildFindGuideOptionResponseSortedBySellRatio(List<Option> options,
+                                                                                        Map<Long, Integer> sellRatio,
+                                                                                        Map<Long, Integer> similarityUsersRatio,
+                                                                                        Map<Long, List<KeywordRate>> keywordRateGroup,
+                                                                                        Map<Long, List<OptionImage>> optionImagesGroup,
+                                                                                        Map<Long, List<OptionDetail>> optionDetailsGroup) {
+        List<FindGuideOptionResponse> responses = options.stream()
+                .map(option -> {
+                    Integer ratio = similarityUsersRatio.get(option.getId());
+                    boolean isSelected = false;
+                    return new FindGuideOptionResponse(
+                            option,
+                            isSelected,
+                            ratio,
+                            keywordRateGroup.getOrDefault(option.getId(), new ArrayList<>()),
+                            optionImagesGroup.getOrDefault(option.getId(), new ArrayList<>()),
+                            optionDetailsGroup.getOrDefault(option.getId(), new ArrayList<>())
+                    );
+                })
+                .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> -sellRatio.get(response.getId())))
+                .collect(Collectors.toList());
+
+        if (!responses.isEmpty()) {
+            responses.get(0).setChecked(true);
+        }
+
+        return responses;
     }
 }

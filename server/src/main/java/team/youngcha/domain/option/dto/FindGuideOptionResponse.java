@@ -82,4 +82,8 @@ public class FindGuideOptionResponse {
         this.details = details;
         this.images = images;
     }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 }
