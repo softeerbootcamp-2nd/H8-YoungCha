@@ -1,12 +1,14 @@
-import HyundaiLogoButton from './HyundaiLogoButton';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import DictionaryToggleButton from './DictionaryToggleButton';
 import ModelChangeButton from './ModelChangeButton';
-import { useEffect, useState } from 'react';
+import * as Icon from '../../assets/icons';
 
 const TEXT_MAKING_MY_CAR = '내 차 만들기';
 
 function Header() {
   const [backgroundColor, setBackgroundColor] = useState('');
+
   useEffect(() => {
     document.addEventListener('scroll', () => {
       if (window.scrollY === 0) setBackgroundColor('');
@@ -16,31 +18,26 @@ function Header() {
       document.removeEventListener('scroll', () => {});
     };
   }, []);
+
   return (
-    <div className={`${backgroundColor} z-20 duration-500 fixed top-0 w-full`}>
-      <div
-        className={`flex justify-between px-128px  max-w-7xl py-32px mx-auto`}
-      >
-        <div className="flex text-center">
-          <HyundaiLogoButton />
-          <div>
-            <span>|</span>
-          </div>
-          <div>
-            <span className="font-medium pl-20px title3">
-              {TEXT_MAKING_MY_CAR}
-            </span>
-          </div>
+    <header
+      className={`${backgroundColor} z-20 transition-colors duration-300 ease-out fixed top-0 w-full h-80px select-none min-w-768px`}
+    >
+      <div className="flex items-center justify-between h-full max-w-5xl mx-auto xl:max-w-none px-32px xl:px-160px">
+        <div className="flex h-24px gap-20px">
+          <Link to="/">
+            <Icon.HDLogo className="w-45px lg:w-166px h-23px" />
+          </Link>
+          <span>|</span>
+          <span className="font-medium title3">{TEXT_MAKING_MY_CAR}</span>
         </div>
         <div className="flex gap-20px">
           <DictionaryToggleButton />
-          <div>
-            <span>|</span>
-          </div>
+          <span>|</span>
           <ModelChangeButton />
         </div>
       </div>
-    </div>
+    </header>
   );
 }
 
