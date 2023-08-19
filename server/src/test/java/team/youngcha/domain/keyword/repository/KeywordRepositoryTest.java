@@ -30,12 +30,12 @@ class KeywordRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (1, 'a', 0, 'f', 1)," +
-                "(2, 'a', 0, 'f', 1)," +
-                "(3, 'a', 0, 'f', 1)," +
-                "(4, 'a', 0, 'f', 1)," +
-                "(5, 'a', 0, 'f', 1)");
+        jdbcTemplate.update("insert into options (id, name, price, feedback_title, feedback_description, category_id) " +
+                "values (1, 'a', 0, 'f', 'fd', 1)," +
+                "(2, 'b', 0, 'f', 'fd', 1)," +
+                "(3, 'c', 0, 'f', 'fd', 1)," +
+                "(4, 'd', 0, 'f', 'fd', 1)," +
+                "(5, 'e', 0, 'f', 'fd', 1)");
         jdbcTemplate.update("insert into options_keyword (id, options_id, keyword_id) " +
                 "values (1, 1, 1)," +
                 "(2, 2, 1)," +
