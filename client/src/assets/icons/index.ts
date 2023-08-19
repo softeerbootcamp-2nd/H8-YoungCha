@@ -14,6 +14,16 @@ import ModeChangeIcon from './ModeChangeIcon';
 import ModelChangeIcon from './ModelChangeIcon';
 import RecommendationIcon from './RecommendationIcon';
 import InactiveRound from './prepare-guide/InactiveRound';
+import Close from './Close';
+import DownArrow from './DownArrow';
+import BlueCheckIcon from './BlueCheckIcon';
+import GreyCheckIcon from './GreyCheckIcon';
+import SubBlueCheckIcon from './SubBlueCheckIcon';
+import MoreDetailsArrow from './MoreDetailsArrow';
+import SmileIcon from './SmileIcon';
+import LaughingFaceIcon from './LaughingFaceIcon';
+import ThumbsUpIcon from './ThumbsUpIcon';
+import NPerformance from '@/assets/mock/icons/NPerformance';
 
 export {
   HDLogo,
@@ -32,4 +42,14 @@ export {
   ModelChangeIcon,
   RecommendationIcon,
   InactiveRound,
+  Close,
+  DownArrow,
+  BlueCheckIcon,
+  GreyCheckIcon,
+  SubBlueCheckIcon,
+  MoreDetailsArrow,
+  SmileIcon,
+  LaughingFaceIcon,
+  ThumbsUpIcon,
+  NPerformance,
 };
