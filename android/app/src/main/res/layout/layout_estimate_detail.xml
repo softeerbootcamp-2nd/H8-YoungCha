@@ -52,7 +52,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_result_detail"
-            app:myCarData="@{viewModel.myCar}"
+            app:myCarData="@{viewModel.customizedParts}"
             app:viewType='@{"main"}'
             tools:itemCount="4"
             tools:listitem="@layout/item_estimate_detail" />
@@ -66,7 +66,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rv_main_option"
-            app:myCarData="@{viewModel.myCar}"
+            app:myCarData="@{viewModel.customizedParts}"
             app:viewType='@{"color"}'
             tools:itemCount="2"
             tools:listitem="@layout/item_estimate_detail" />
@@ -136,7 +136,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tl_option"
-            app:myCarData="@{viewModel.myCar}"
+            app:myCarData="@{viewModel.customizedParts}"
             app:viewType='@{"sub"}'
             tools:listitem="@layout/item_estimate_detail" />
 

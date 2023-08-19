@@ -1,8 +1,10 @@
 package com.youngcha.ohmycarset.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationSet
@@ -26,6 +28,7 @@ import com.youngcha.ohmycarset.ui.adapter.viewpager.CarOptionPagerAdapter
 import com.youngcha.ohmycarset.ui.customview.ButtonDialogView
 import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
+import com.youngcha.ohmycarset.util.setupImageSwipe
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import kotlinx.coroutines.launch
 
@@ -63,6 +66,7 @@ class CarCustomizationFragment : Fragment() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupListener() {
         binding.htbHeaderToolbar.listener  = object: OnHeaderToolbarClickListener {
             override fun onExitClick() {
@@ -98,7 +102,7 @@ class CarCustomizationFragment : Fragment() {
             }
         }
     }
-    
+
     private fun attachTabLayoutMediator() {
         TabLayoutMediator(binding.tbOptionIndicator, binding.vpOptionContainer) { _, _ ->
         }.attach()
