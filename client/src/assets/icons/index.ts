@@ -14,6 +14,8 @@ import ModeChangeIcon from './ModeChangeIcon';
 import ModelChangeIcon from './ModelChangeIcon';
 import RecommendationIcon from './RecommendationIcon';
 import InactiveRound from './prepare-guide/InactiveRound';
+import Close from './Close';
+import DownArrow from './DownArrow';
 import BlueCheckIcon from './BlueCheckIcon';
 import GreyCheckIcon from './GreyCheckIcon';
 import SubBlueCheckIcon from './SubBlueCheckIcon';
@@ -40,6 +42,8 @@ export {
   ModelChangeIcon,
   RecommendationIcon,
   InactiveRound,
+  Close,
+  DownArrow,
   BlueCheckIcon,
   GreyCheckIcon,
   SubBlueCheckIcon,
