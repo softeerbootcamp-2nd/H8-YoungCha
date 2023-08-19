@@ -93,26 +93,28 @@ public class OptionService {
     }
 
     public List<FindGuideOptionResponse> findGuideModeExteriorColors(Long trimId, GuideInfo guideInfo) {
-        // 옵션 카테고리
         RequiredCategory category = RequiredCategory.EXTERIOR_COLOR;
 
-        // 트림 아이디 검증
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
 
-        // 외장 색상 옵션 조회
         List<Option> exteriorColors
                 = optionRepository.findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, RequiredCategory.EXTERIOR_COLOR);
-        List<Long> exteriorColorIds = exteriorColors.stream().map(Option::getId).collect(Collectors.toList());
+
+        return getFindGuideColorOptionResponse(trimId, guideInfo, category, exteriorColors);
+    }
+
+    private List<FindGuideOptionResponse> getFindGuideColorOptionResponse(Long trimId, GuideInfo guideInfo, RequiredCategory category, List<Option> options) {
+        List<Long> optionIds = options.stream().map(Option::getId).collect(Collectors.toList());
 
         // 옵션 이미지
-        Map<Long, List<OptionImage>> exteriorColorImagesGroup = getOptionImagesGroup(exteriorColorIds);
+        Map<Long, List<OptionImage>> exteriorColorImagesGroup = getOptionImagesGroup(optionIds);
 
         // 옵션 상세설명
-        Map<Long, List<OptionDetail>> exteriorColorDetailsGroup = getOptionDetailGroup(exteriorColorIds);
+        Map<Long, List<OptionDetail>> exteriorColorDetailsGroup = getOptionDetailGroup(optionIds);
 
         // 유사 사용자 비율
-        Map<Long, Integer> similarityUsersRatio = getSimilarityUsersRatio(trimId, exteriorColorIds, guideInfo, RequiredCategory.EXTERIOR_COLOR);
+        Map<Long, Integer> similarityUsersRatio = getSimilarityUsersRatio(trimId, optionIds, guideInfo, category);
 
         // 연령대별 판매량
         Map<Long, Long> sellCountByAgeRange
@@ -123,9 +125,9 @@ public class OptionService {
 
         // 성별을 선택하지 않은 경우, 동일 연령대를 기준으로 가장 많이 판매된 옵션을 추천
         if (guideInfo.getGender() == Gender.NONE) {
-            Map<Long, List<KeywordRate>> keywordRateGroup = getKeywordGroupOfAgeRange(guideInfo, exteriorColorIds, sellRatioByAgeRange);
+            Map<Long, List<KeywordRate>> keywordRateGroup = getKeywordGroupOfAgeRange(guideInfo, optionIds, sellRatioByAgeRange);
 
-            return buildFindGuideOptionResponseSortedBySellRatio(exteriorColors, sellRatioByAgeRange, similarityUsersRatio,
+            return buildFindGuideOptionResponseSortedBySellRatio(options, sellRatioByAgeRange, similarityUsersRatio,
                     keywordRateGroup, exteriorColorImagesGroup, exteriorColorDetailsGroup);
         }
 
@@ -137,7 +139,7 @@ public class OptionService {
         Map<Long, Integer> sellRatioByGender = calculateOptionRatios(sellCountByGender);
 
         // 키워드 그룹
-        Map<Long, List<KeywordRate>> keywordRateGroup = getKeywordGroupOfAgeRangeAndGender(guideInfo, exteriorColorIds, sellRatioByAgeRange, sellRatioByGender);
+        Map<Long, List<KeywordRate>> keywordRateGroup = getKeywordGroupOfAgeRangeAndGender(guideInfo, optionIds, sellRatioByAgeRange, sellRatioByGender);
 
         // 성별 및 연령대별 옵션 판매량
         Map<Long, Long> sellCountByAgeRangeAndGender
@@ -145,7 +147,7 @@ public class OptionService {
         Map<Long, Integer> sellRatioByAgeRangeAndGender = calculateOptionRatios(sellCountByAgeRangeAndGender);
 
         // 동일 성별 및 연령대를 기준으로 가장 많이 판매된 옵션을 추천
-        return buildFindGuideOptionResponseSortedBySellRatio(exteriorColors, sellRatioByAgeRangeAndGender, similarityUsersRatio,
+        return buildFindGuideOptionResponseSortedBySellRatio(options, sellRatioByAgeRangeAndGender, similarityUsersRatio,
                 keywordRateGroup, exteriorColorImagesGroup, exteriorColorDetailsGroup);
     }
 
