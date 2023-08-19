@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import team.youngcha.common.enums.AgeRange;
+import team.youngcha.common.enums.Gender;
 import team.youngcha.domain.category.enums.RequiredCategory;
 
 import java.util.List;
@@ -40,6 +41,25 @@ public class SellRepository {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("minAge", ageRange.getMinAge());
         params.addValue("maxAge", ageRange.getMaxAge());
+        params.addValue("trimId", trimId);
+
+        return namedParameterJdbcTemplate.queryForList(sql, params)
+                .stream().collect(Collectors.toMap(
+                        row -> (Long) row.get(column),
+                        row -> (Long) row.get("count")
+                ));
+    }
+
+    // 특정 트림의 특정 카테고리에 속하는 옵션의 성별별 판매량을 조회
+    public Map<Long, Long> countOptionsByTrimIdAndGender(Long trimId, RequiredCategory requiredCategory, Gender gender) {
+        String column = requiredCategory.getColumn() + "_id";
+
+        String sql = "SELECT sell." + column + ", COUNT(*) AS count FROM sell " +
+                "WHERE sell.gender = :gender AND sell.trim_id = :trimId " +
+                "GROUP BY sell." + column;
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("gender", gender.getType());
         params.addValue("trimId", trimId);
 
         return namedParameterJdbcTemplate.queryForList(sql, params)
