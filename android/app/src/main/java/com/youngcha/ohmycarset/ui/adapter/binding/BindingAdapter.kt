@@ -30,7 +30,6 @@ import com.youngcha.ohmycarset.ui.interfaces.OnHyundaiButtonClickListener
 fun loadImage(view: ImageView, imageUrl: String) {
     // 여기에 이미지 로딩 로직 (Glide | Coil)
     // coil
-    view.load(imageUrl)
 }
 
 @BindingAdapter("testImageSource")
