@@ -104,6 +104,18 @@ public class OptionService {
         return getFindGuideColorOptionResponse(trimId, guideInfo, category, exteriorColors);
     }
 
+    public List<FindGuideOptionResponse> findGuideModeInteriorColors(Long trimId, GuideInfo guideInfo, Long exteriorColorId) {
+        RequiredCategory category = RequiredCategory.INTERIOR_COLOR;
+
+        trimRepository.findById(trimId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+
+        List<Option> interiorColors
+                = optionRepository.findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
+
+        return getFindGuideColorOptionResponse(trimId, guideInfo, category, interiorColors);
+    }
+
     private List<FindGuideOptionResponse> getFindGuideColorOptionResponse(Long trimId, GuideInfo guideInfo, RequiredCategory category, List<Option> options) {
         List<Long> optionIds = options.stream().map(Option::getId).collect(Collectors.toList());
 
