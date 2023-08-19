@@ -248,13 +248,14 @@ class OptionServiceTest {
             groupKeyword.put(2L, List.of(new Keyword(3L, "주행력")));
 
             mockedTrim(optionIds, optionImages, optionDetails, guideInfo, powerTrainCounts, groupKeyword);
-            given(estimateRepository.calculateRate(trimId, 1L, 1L))
+            given(estimateRepository.calculateRate(trimId, 1L, 1L, SelectiveCategory.POWER_TRAIN))
                     .willReturn(50);
             given(keywordRepository.findById(1L))
                     .willReturn(Optional.of(new Keyword(1L, "효율")));
 
             //when
-            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuideOptions(trimId, guideInfo);
+            List<FindGuideOptionResponse> guideOptionResponses = optionService
+                    .findGuideOptions(trimId, guideInfo, SelectiveCategory.POWER_TRAIN);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
@@ -303,13 +304,14 @@ class OptionServiceTest {
             int rate = 50;
 
             mockedTrim(optionIds, optionImages, optionDetails, guideInfo, powerTrainCounts, groupKeyword);
-            given(estimateRepository.calculateRate(trimId, 2L, 2L))
+            given(estimateRepository.calculateRate(trimId, 2L, 2L, SelectiveCategory.POWER_TRAIN))
                     .willReturn(rate);
             given(keywordRepository.findById(2L))
                     .willReturn(Optional.of(new Keyword(2L, "안전")));
 
             //when
-            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuideOptions(trimId, guideInfo);
+            List<FindGuideOptionResponse> guideOptionResponses = optionService
+                    .findGuideOptions(trimId, guideInfo, SelectiveCategory.POWER_TRAIN);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
@@ -358,7 +360,8 @@ class OptionServiceTest {
             mockedTrim(optionIds, optionImages, optionDetails, guideInfo, powerTrainCounts, groupKeyword);
 
             //when
-            List<FindGuideOptionResponse> guideOptionResponses = optionService.findGuideOptions(trimId, guideInfo);
+            List<FindGuideOptionResponse> guideOptionResponses = optionService
+                    .findGuideOptions(trimId, guideInfo, SelectiveCategory.POWER_TRAIN);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
@@ -392,7 +395,8 @@ class OptionServiceTest {
                     .willReturn(optionImages);
             given(optionDetailRepository.findWithSpecsByContainOptionIds(optionIds))
                     .willReturn(optionDetails);
-            given(estimateRepository.countPowerTrainsSimilarityUsers(trimId, optionIds, guideInfo))
+            given(estimateRepository.countOptionsSimilarityUsers(trimId, optionIds,
+                    guideInfo, SelectiveCategory.POWER_TRAIN))
                     .willReturn(powerTrainCounts);
             given(keywordRepository.findByContainOptionIdsAndGroupKeywords(optionIds))
                     .willReturn(groupKeyword);

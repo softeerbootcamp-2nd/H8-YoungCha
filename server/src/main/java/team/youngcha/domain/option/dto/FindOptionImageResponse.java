@@ -1,7 +1,10 @@
 package team.youngcha.domain.option.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import team.youngcha.domain.option.entity.OptionImage;
 
 @Getter
