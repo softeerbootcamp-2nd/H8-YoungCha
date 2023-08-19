@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 function FullScreenLayout() {
   return (
-    <div className="h-full pt-85px">
+    <div className="h-full pt-80px">
       <Outlet />
     </div>
   );
