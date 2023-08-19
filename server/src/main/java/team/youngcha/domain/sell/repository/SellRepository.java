@@ -69,6 +69,28 @@ public class SellRepository {
                 ));
     }
 
+    // 특정 트림의 특정 카테고리에 속하는 옵션의 연령대 및 성별 별 판매량을 조회
+    public Map<Long, Long> countOptionsByTrimIdAndAgeRangeAndGender(Long trimId, RequiredCategory category, AgeRange ageRange, Gender gender) {
+        String column = category.getColumn() + "_id";
+
+        String sql = "SELECT sell." + column + ", COUNT(*) AS count FROM sell " +
+                "WHERE (sell.age >= :minAge AND sell.age <= :maxAge) AND sell.gender = :gender AND sell.trim_id = :trimId " +
+                "GROUP BY sell." + column;
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("minAge", ageRange.getMinAge());
+        params.addValue("maxAge", ageRange.getMaxAge());
+        params.addValue("gender", gender.getType());
+        params.addValue("trimId", trimId);
+
+        List<Map<String, Object>> result = namedParameterJdbcTemplate.queryForList(sql, params);
+
+        return result.stream().collect(Collectors.toMap(
+                row -> (Long) row.get(column),
+                row -> (Long) row.get("count")
+        ));
+    }
+
     private List<Map<String, Object>> querySellCounts(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                                                       Long trimId, List<Long> optionIds,
                                                       RequiredCategory category) {
