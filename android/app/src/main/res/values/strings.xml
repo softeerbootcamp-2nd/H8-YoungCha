@@ -133,6 +133,9 @@
     <string name="request_driving">시승 신청하기</string>
     <string name="share">공유하기</string>
     <string name="save">저장하기</string>
+    <string name="total_estimate_label">총 견적금액</string>
+    <string name="prev_button_label">이전</string>
+    <string name="selection_complete_button_label">선택완료</string>
 
 
 </resources>
