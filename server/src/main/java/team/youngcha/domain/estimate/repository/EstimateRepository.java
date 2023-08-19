@@ -44,14 +44,14 @@ public class EstimateRepository {
 
         // sum(트림 + 옵션 + 키워드 포함) * 100 / sum(트림 + 키워드 포함) -> 반올림
         Integer rate = namedParameterJdbcTemplate.queryForObject("select " +
-                        "round(sum(case when " +
+                        "sum(case when " +
                         "e.trim_id = (:trimId) and e." + optionIdColumn + " = (:optionId) " +
                         "and (e.keyword1_id = (:keywordId) or e.keyword2_id = (:keywordId) or e.keyword3_id = (:keywordId))" +
                         "then 1 else 0 end) * 100" +
                         "/ sum(case when " +
                         "e.trim_id = (:trimId) " +
                         "and (e.keyword1_id = (:keywordId) or e.keyword2_id = (:keywordId) or e.keyword3_id = (:keywordId))" +
-                        "then 1 else 0 end))" +
+                        "then 1 else 0 end)" +
                         "from estimate as e",
                 params, Integer.class);
         if (rate == null) {
