@@ -19,43 +19,34 @@ import com.youngcha.ohmycarset.util.OPTION_SELECTION
 
 class CarCustomizationViewModel : ViewModel() {
 
-    // 사용자가 선택한 자동차
+    // 자동차 정보 관련 변수들
+    // 관련된 변수: selectedCar, currentComponentName, customizedParts
     private val _selectedCar = MutableLiveData<Car>()
     val selectedCar: LiveData<Car> = _selectedCar
 
-    // 현재 선택한 자동차 이름 == _selectedCar.value?.name
     private val _currentComponentName = MutableLiveData<String>()
     val currentComponentName: LiveData<String> = _currentComponentName
 
-    // 내가 커스터마이징 하고 있는 자동차
     private val _customizedParts = MutableLiveData<List<Map<String, List<OptionInfo>>>>()
     val customizedParts: LiveData<List<Map<String, List<OptionInfo>>>> = _customizedParts
 
+    // 선택 모드 관련 변수
+    // 관련된 변수: currentType
     private val _currentType = MutableLiveData<String>("SelfMode")
     val currentType: LiveData<String> = _currentType
 
-    /*
-    파워트레인, 구동 방식, 바디 타입등 선택할 수 있는 옵션이 2개이하라면 Horizontal Two Button 으로 선택 가능
-    그 중 componentOption1Visibility는 왼쪽 버튼이 선택 됐을 경우 버튼 layout 변경 (ex: background....)
-         componentOption2Visibility는 오른쪽 버튼 선택 됐을 경우 처리
-
-    옵션이 2개 이상이라면 스와이프 형식으로 옵션 선택 ViewPager사용
-    tlOptionVisibility -> ViewPager2 가시성 제어
-    만약 tlOptionVisibility가 1이라면 ViewPager보이고 2개 버튼 표시되는 View 가리기
-    */
+    // 옵션 선택 UI 관련 변수들
+    // 관련된 변수: componentOption1Visibility, componentOption2Visibility, horizontalButtonVisible, swipeButtonVisible, subOptionButtonVisible, subOptionViewTypeChangeButton, subOptionViewType
     val componentOption1Visibility = MutableLiveData<Int>()
     val componentOption2Visibility = MutableLiveData<Int>()
-
-    val currentOptionList = MediatorLiveData<List<OptionInfo>>()
-
-    val horizontalButtonVisible = MutableLiveData<Int>(0) // 가로 버튼 visible
-    val swipeButtonVisible = MutableLiveData<Int>(0) // viewpager visible
-    val subOptionButtonVisible = MutableLiveData<Int>(1) // subOption: 1이면 mainImage 보이게 0이면 안보이게
-    val subOptionViewTypeChangeButton =
-        MutableLiveData<Int>(0) // sub option viewpager <-> recyclerview 전환 이미지
+    val horizontalButtonVisible = MutableLiveData<Int>(0)
+    val swipeButtonVisible = MutableLiveData<Int>(0)
+    val subOptionButtonVisible = MutableLiveData<Int>(1)
+    val subOptionViewTypeChangeButton = MutableLiveData<Int>(0)
     val subOptionViewType = MutableLiveData<Int>(0)
 
-    // Tab 관련 변수
+    // 탭 UI 관련 변수들
+    // 관련된 변수: currentTabName, currentTabPosition, currentSubTabPosition, currentMainTabs, currentSubTabs
     val currentTabName = MutableLiveData<String>()
     private val _currentTabPosition =  MutableLiveData<Int>(0)
     val currentTabPosition: LiveData<Int> = _currentTabPosition
@@ -64,13 +55,21 @@ class CarCustomizationViewModel : ViewModel() {
     private val _currentSubTabs = MutableLiveData<List<String>>()
     val currentSubTabs: LiveData<List<String>> = _currentSubTabs
 
+    // 뷰페이지 및 리사이클러뷰 표시 관련 변수
+    // 관련된 변수: displayOnRecyclerViewOnViewPager
     private val _displayOnRecyclerViewAndViewPager = MutableLiveData<Int>(0)
     val displayOnRecyclerViewOnViewPager: LiveData<Int> = _displayOnRecyclerViewAndViewPager
 
+    // 추정 보기 관련 변수
+    // 관련된 변수: estimateViewVisible
     private val _estimateViewVisible = MutableLiveData<Int>(0)
     val estimateViewVisible: LiveData<Int> = _estimateViewVisible
 
+    // 외관 버튼 변화 관련 변수
+    // 관련된 변수: exteriorButtonChange
     val exteriorButtonChange = MutableLiveData<Int>(1)
+
+    val currentOptionList = MediatorLiveData<List<OptionInfo>>()
 
     // init block
     init {
