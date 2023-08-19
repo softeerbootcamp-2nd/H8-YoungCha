@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -37,7 +39,6 @@ class CarCustomizationFragment : Fragment() {
     private val binding get() = _binding ?: throw IllegalStateException("Binding is null.")
 
     private val carViewModel: CarCustomizationViewModel by viewModels()
-    private var currentTabIndex = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,11 +60,11 @@ class CarCustomizationFragment : Fragment() {
             vpOptionContainer.adapter = CarOptionPagerAdapter(carViewModel)
             attachTabLayoutMediator()
             setupRecyclerView()
-            setupMainTabSelectionListener()
             setupSubTabs()
             observeViewModel()
             setupListener()
         }
+        binding.vMainTabLayoutOverlay.setOnTouchListener { _, _ -> true }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -110,26 +111,29 @@ class CarCustomizationFragment : Fragment() {
 
     private fun observeViewModel() {
         carViewModel.selectedCar.observe(viewLifecycleOwner) { car ->
-            carViewModel.updateTabInformation(car)
+            carViewModel.updateTabInfo(car)
+            val firstKey = car.mainOptions.first().keys.firstOrNull()
+            carViewModel.setCurrentComponentName(firstKey!!)
         }
 
         carViewModel.subOptionViewType.observe(viewLifecycleOwner) {
-            updateDataContainerWithCurrentTab()
+            carViewModel.updateDataContainer()
         }
 
+        // 메인 탭 옵션 리스트 (ex: 파워 트레인 -> [디젤], [가솔린])
         carViewModel.currentOptionList.observe(viewLifecycleOwner) { optionList ->
             handleOptionListUpdates(optionList)
         }
 
-        carViewModel.mainOptionsTabs.observe(viewLifecycleOwner) { tabs ->
+        carViewModel.currentMainTabs.observe(viewLifecycleOwner) { tabs ->
             tabs.forEach { tabName ->
                 binding.tlMainOptionTab.addTab(binding.tlMainOptionTab.newTab().setText(tabName))
             }
         }
 
-        carViewModel.additionalTabs.observe(viewLifecycleOwner) { tabs ->
+        carViewModel.currentSubTabs.observe(viewLifecycleOwner) {tabs ->
             tabs.forEach { tabName ->
-                binding.tlMainOptionTab.addTab(binding.tlMainOptionTab.newTab().setText(tabName))
+                binding.tlSubOptionTab.addTab(createCustomTab(tabName))
             }
         }
 
@@ -138,17 +142,31 @@ class CarCustomizationFragment : Fragment() {
                 particleAnimation()
             }
         }
-    }
 
-    private fun updateDataContainerWithCurrentTab() {
-        val currentTab = binding.tlSubOptionTab.getTabAt(currentTabIndex)
-        currentTab?.let { tab ->
-            updateDataContainer(tab)
+        carViewModel.displayOnRecyclerViewOnViewPager.observe(viewLifecycleOwner) { mode ->
+            val tabName = carViewModel.currentTabName.value // currentTabName -> main tab + sub tab
+            carViewModel.getOptionInfoByKey(tabName!!).let {
+                when (mode) {
+                    0 -> it?.let { it1 -> displayOnRecyclerView(it1, tabName) }
+                    1 -> it?.let { it1 -> displayOnViewPager(it1, tabName) }
+                    else -> {}
+                }
+            }
+            attachTabLayoutMediator()
+        }
+
+        carViewModel.currentTabPosition.observe(viewLifecycleOwner) {
+            binding.tlMainOptionTab.getTabAt(it)?.select()
+        }
+
+        carViewModel.customizedParts.observe(viewLifecycleOwner) {
+            Log.d("로그1", it.toString())
         }
     }
 
     // 현재 선택한 탭의 옵션 리스트를 ViewPager에 연결
     private fun handleOptionListUpdates(optionList: List<OptionInfo>) {
+        // optionList.size가 2이상이라면 viewpager에 데이터가 보여야함
         if (optionList.size <= 2) {
             (binding.vpOptionContainer.adapter as? CarOptionPagerAdapter)?.clearOptions()
             return
@@ -167,35 +185,6 @@ class CarCustomizationFragment : Fragment() {
         binding.vpOptionContainer.setCurrentItem(position, false)
     }
 
-    private fun setupMainTabSelectionListener() {
-        binding.tlMainOptionTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                val tabName = tab?.text?.replace(Regex("^\\d+\\s"), "") ?: "Unknown"
-                carViewModel.setCurrentComponentName(tabName)
-
-                when (tabName) {
-                    OPTION_SELECTION -> handleOptionSelectionTab()
-                    else -> handleDefaultTab()
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
-    }
-
-    // 선택 옵션 탭이 선택되었을 때 처리.
-    private fun handleOptionSelectionTab() {
-        binding.tlSubOptionTab.getTabAt(0)?.let { updateDataContainer(it) }
-        carViewModel.setOptionSelectionTabValues()
-    }
-
-    // 기본 탭이 선택되었을 때 처리.
-    private fun handleDefaultTab() {
-        carViewModel.setDefaultTabValues()
-    }
-
     private fun setupRecyclerView() {
         // LinearLayoutManager 사용하여 수직 방향의 리스트로 설정
         val linearLayoutManager = LinearLayoutManager(requireContext())
@@ -209,16 +198,16 @@ class CarCustomizationFragment : Fragment() {
     }
 
     private fun setupSubTabs() {
-        setupSubOptionTabs()
-        addTabSelectedListener()
-    }
+        // 옵션 선택에서 sub tab이 클릭되었을때
+        binding.tlSubOptionTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                carViewModel.currentSubTabPosition.value = tab.position
+                carViewModel.updateDataContainer()
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
 
-    private fun setupSubOptionTabs() {
-        val tabNames = carViewModel.getSubOptionKeys()
-
-        for (name in tabNames) {
-            binding.tlSubOptionTab.addTab(createCustomTab(name))
-        }
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
     }
 
     private fun createCustomTab(name: String): TabLayout.Tab {
@@ -229,45 +218,15 @@ class CarCustomizationFragment : Fragment() {
         return tab
     }
 
-    private fun addTabSelectedListener() {
-        binding.tlSubOptionTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                currentTabIndex = tab.position
-                updateDataContainer(tab)
-            }
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
-    }
-
-    private fun updateDataContainer(tab: TabLayout.Tab) {
-        val tabName = getTabName(tab)
-
-        val optionInfos = carViewModel.getOptionInfoByKey(tabName)
-        if (optionInfos != null) {
-            if (carViewModel.subOptionButtonVisible.value == 0) {
-                displayOnRecyclerView(optionInfos, tabName)
-            } else {
-                displayOnViewPager(optionInfos, tabName)
-            }
-        }
-
-        TabLayoutMediator(binding.tbOptionIndicator, binding.vpOptionContainer) { _, _ -> }.attach()
-    }
-
-    private fun getTabName(tab: TabLayout.Tab): String {
-        val customView = tab.customView
-        return customView?.findViewById<TextView>(R.id.tv_tab_name)?.text?.toString() ?: ""
-    }
-
+    // sub option 상태에서만 가능
     private fun displayOnRecyclerView(optionInfos: List<OptionInfo>, tabName: String) {
         val adapter = CarOptionPagerAdapter(carViewModel)
         binding.rvSubOptionList.adapter = adapter
         adapter.setOptions(optionInfos, OPTION_SELECTION, tabName, false, carViewModel.currentType.value)
     }
 
+    // main & sub 전부 가능
     private fun displayOnViewPager(optionInfos: List<OptionInfo>, tabName: String) {
         val adapter = CarOptionPagerAdapter(carViewModel)
         binding.vpOptionContainer.adapter = adapter
@@ -292,65 +251,6 @@ class CarCustomizationFragment : Fragment() {
             binding.fragmentEstimate.ivParticle.startAnimation(animationSet)
         }
     }
-
-
-    private fun toggleButton() {
-        binding.fragmentEstimate.btnExterior.setOnClickListener {
-            binding.fragmentEstimate.ivEstimateDone.setImageResource(R.drawable.img_trim_leblanc)
-            binding.fragmentEstimate.btnExterior.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.main_hyundai_blue
-                )
-            )
-            binding.fragmentEstimate.btnExterior.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
-                )
-            )
-            binding.fragmentEstimate.btnInterior.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.cool_grey_001
-                )
-            )
-            binding.fragmentEstimate.btnInterior.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.cool_grey_black
-                )
-            )
-        }
-        binding.fragmentEstimate.btnInterior.setOnClickListener {
-            binding.fragmentEstimate.ivEstimateDone.setImageResource(R.drawable.img_test_make_car_05)
-            binding.fragmentEstimate.btnExterior.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.cool_grey_001
-                )
-            )
-            binding.fragmentEstimate.btnExterior.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.cool_grey_black
-                )
-            )
-            binding.fragmentEstimate.btnInterior.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.main_hyundai_blue
-                )
-            )
-            binding.fragmentEstimate.btnInterior.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
-                )
-            )
-        }
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

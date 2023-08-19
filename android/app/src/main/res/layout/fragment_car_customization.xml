@@ -43,6 +43,19 @@
             app:tabTextAppearance="@style/MyCustomTabText"
             app:tabTextColor="@color/cool_grey_002" />
 
+        <View
+            android:id="@+id/v_main_tab_layout_overlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            app:layout_constraintTop_toTopOf="@id/tl_main_option_tab"
+            app:layout_constraintBottom_toBottomOf="@id/tl_main_option_tab"
+            app:layout_constraintStart_toStartOf="@id/tl_main_option_tab"
+            app:layout_constraintEnd_toEndOf="@id/tl_main_option_tab" />
+
         <ImageView
             android:id="@+id/iv_main_img"
             android:layout_width="match_parent"
@@ -236,14 +249,14 @@
             layout="@layout/layout_bottom_sheet_estimate_summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/button1"
+            app:layout_constraintBottom_toTopOf="@id/cl_button_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:viewModel="@{viewModel}" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/button1"
+            android:id="@+id/cl_button_container"
             android:layout_width="match_parent"
             android:layout_height="108dp"
             android:background="@color/white"
@@ -258,12 +271,12 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/hyundai_sans_text_kr_regular"
-                android:text="총 견적금액"
+                android:text="@string/total_estimate_label"
                 android:textColor="@color/cool_grey_003"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@id/button1"
-                app:layout_constraintTop_toTopOf="@id/button1"
-                app:layout_constraintBottom_toTopOf="@id/tv_estimate_price_int"/>
+                app:layout_constraintBottom_toTopOf="@id/tv_estimate_price_int"
+                app:layout_constraintStart_toStartOf="@id/cl_button_container"
+                app:layout_constraintTop_toTopOf="@id/cl_button_container" />
 
             <TextView
                 android:id="@+id/tv_estimate_price"
@@ -275,8 +288,8 @@
                 android:text="42,000,000원"
                 android:textColor="@color/cool_grey_black"
                 android:textSize="22sp"
-                app:layout_constraintStart_toStartOf="@id/button1"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/cl_button_container" />
 
             <TextView
                 android:id="@+id/btn_prev"
@@ -285,41 +298,42 @@
                 android:background="@drawable/btn_main_style"
                 android:backgroundTint="@color/white"
                 android:fontFamily="@font/hyundai_sans_text_kr_regular"
-                android:text="이전"
+                android:text="@string/prev_button_label"
                 android:textAlignment="center"
                 android:textColor="@color/cool_grey_003"
                 android:textSize="14sp"
-                app:layout_constraintTop_toTopOf="@id/btn_next"
+                android:onClick="@{() -> viewModel.handleTabChange(-1)}"
                 app:layout_constraintBottom_toBottomOf="@id/btn_next"
-                app:layout_constraintEnd_toStartOf="@id/btn_next"/>
+                app:layout_constraintEnd_toStartOf="@id/btn_next"
+                app:layout_constraintTop_toTopOf="@id/btn_next" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_next"
                 android:layout_width="87dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="27dp"
-
                 android:background="@drawable/btn_main_style"
                 android:fontFamily="@font/hyundai_sans_text_kr_regular"
-                android:text="선택완료"
-                app:layout_constraintEnd_toEndOf="@id/button1"
-                app:layout_constraintBottom_toBottomOf="@id/button1"
-                app:layout_constraintTop_toTopOf="@id/button1"
+                android:text="@string/selection_complete_button_label"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:onClick="@{() -> viewModel.handleTabChange(1)}"
+                app:layout_constraintBottom_toBottomOf="@id/cl_button_container"
+                app:layout_constraintEnd_toEndOf="@id/cl_button_container"
+                app:layout_constraintTop_toTopOf="@id/cl_button_container" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/fragment_estimate"
+                layout="@layout/layout_estimate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.estimateViewVisible == 1 ?View.VISIBLE:View.INVISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
+                app:viewModel="@{viewModel}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include
-        android:id="@+id/fragment_estimate"
-        layout="@layout/layout_estimate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:visibility="@{viewModel.estimateViewVisible == 1 ?View.VISIBLE:View.INVISIBLE}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
-        app:viewModel="@{viewModel}" />
-</androidx.constraintlayout.widget.ConstraintLayout>
-
-    </layout>
+</layout>
