@@ -1,10 +1,14 @@
-import ProgressItem from './ProgressItem';
+import { Link, LinkProps } from 'react-router-dom';
 import SelectedBar from './SelectedBar';
 
 interface ProgressBarProps {
   step: number;
   path: 'self' | 'guide';
   id: string;
+}
+
+interface ProgressItemProps extends LinkProps {
+  isSelected: boolean;
 }
 
 const PROGRESS_LIST = [
@@ -33,13 +37,32 @@ function ProgressBar({ step, path, id }: ProgressBarProps) {
 function ProgressList({ step, path, id }: ProgressBarProps) {
   return PROGRESS_LIST.map((item: string, index: number) => (
     <ProgressItem
-      key={index}
-      itemIndex={index + 1}
-      itemName={item}
       isSelected={index + 1 === step}
-      url={`/model/${id}/making/${path}/${index + 1}`}
-    />
+      to={`/model/${id}/making/${path}/${index + 1}`}
+      key={`ProgressItem-${index}`}
+    >
+      {`${(index + 1).toString().padStart(2, '0')} ${item}`}
+    </ProgressItem>
   ));
+}
+
+function ProgressItem({
+  children,
+  to,
+  isSelected,
+  ...props
+}: ProgressItemProps) {
+  return (
+    <Link
+      to={to}
+      className={`w-120px inline-block ${
+        isSelected ? 'text-main-blue' : 'text-grey-002'
+      } ${isSelected ? 'font-medium' : 'font-normal'}`}
+      {...props}
+    >
+      {children}
+    </Link>
+  );
 }
 
 export default ProgressBar;
