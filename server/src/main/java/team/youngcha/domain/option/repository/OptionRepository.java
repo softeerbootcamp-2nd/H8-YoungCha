@@ -63,6 +63,20 @@ public class OptionRepository {
         return query;
     }
 
+    public List<Option> findOptionsByTrimIdAndOptionType(Long trimId, OptionType type) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("trimId", trimId);
+        params.addValue("optionType", type.getType());
+
+        String sql = "SELECT * FROM options " +
+                "JOIN trim_options ON options.id = trim_options.options_id " +
+                "AND trim_options.trim_id = (:trimId) " +
+                "AND trim_options.type = (:optionType)";
+
+        return namedParameterJdbcTemplate.query(sql,
+                params, optionRowMapper);
+    }
+
     private static class OptionRowMapper implements RowMapper<Option> {
         @Override
         public Option mapRow(ResultSet resultSet, int rowNum) throws SQLException {
