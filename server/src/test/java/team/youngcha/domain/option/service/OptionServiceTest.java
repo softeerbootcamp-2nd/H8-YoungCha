@@ -71,7 +71,8 @@ class OptionServiceTest {
     List<Option> createOptions(int count, Long initId, Long categoryId) {
         List<Option> options = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            Option option = new Option(initId, "name" + initId, Math.toIntExact(initId), "feedback" + initId, categoryId);
+            Option option = new Option(initId, "name" + initId, Math.toIntExact(initId),
+                    "feedback" + initId, "description" + initId, categoryId);
             options.add(option);
             initId++;
         }

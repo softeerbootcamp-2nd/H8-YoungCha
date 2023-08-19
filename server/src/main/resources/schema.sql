@@ -33,11 +33,12 @@ CREATE TABLE IF NOT EXISTS `category`
 
 CREATE TABLE IF NOT EXISTS `options`
 (
-    `id`          bigint       NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `name`        varchar(100) NOT NULL,
-    `price`       int          NOT NULL,
-    `feedback`    varchar(255) NULL,
-    `category_id` bigint       NOT NULL,
+    `id`                   bigint              NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name`                 varchar(100) UNIQUE NOT NULL,
+    `price`                int                 NOT NULL,
+    `feedback_title`       varchar(255)        NULL,
+    `feedback_description` varchar(255)        NULL,
+    `category_id`          bigint              NOT NULL,
     FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
 );
 

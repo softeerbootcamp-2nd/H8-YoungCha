@@ -32,11 +32,11 @@ class OptionDetailRepositoryTest {
         jdbcTemplate.update("insert into category (id, name) " +
                 "values (1, '파워 트레인'), " +
                 "(2, '바디 타입')");
-        jdbcTemplate.update("insert into options (id, name, price, feedback, category_id) " +
-                "values (1,'디젤', 1000, '좋아요', 1), " +
-                "(2,'가솔린', 2000, '추천', 1), " +
-                "(3,'mock1', 0, 'mock1', 1), " +
-                "(4,'mock2', 0, 'mock2', 2)");
+        jdbcTemplate.update("insert into options (id, name, price, feedback_title, feedback_description, category_id) " +
+                "values (1,'디젤', 1000, '좋아요', 'a', 1), " +
+                "(2,'가솔린', 2000, '추천', 'b', 1), " +
+                "(3,'mock1', 0, 'mock1', 'c', 1), " +
+                "(4,'mock2', 0, 'mock2', 'd', 2)");
         jdbcTemplate.update("insert into options_detail (id, name, description, img_url, options_id) " +
                 "values (1, '디젤1', '디젤 설명1', '디젤 img1', 1), " +
                 "(2, '디젤2', '디젤 설명2', '디젤 img2', 1), " +
