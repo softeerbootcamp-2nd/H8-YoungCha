@@ -89,6 +89,29 @@ public class GuideOptionController {
         return findGuideOptions(trimId, guideInfo, RequiredCategory.BODY_TYPE);
     }
 
+    @Operation(summary = "외장 색상 가이드 모드 옵션 조회",
+            description = "가이드 모드에서 외장 색상의 옵션을 연령대 및 성별별 판매율과 함께 조회합니다.")
+    @GetMapping("/exterior-color")
+    public ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findExteriorColor(
+            @Schema(description = "트림 아이디")
+            @PathVariable Long trimId,
+            @Schema(description = "성별 (남자: 0, 여자: 1, 선택 안함: 2)")
+            @RequestParam Gender gender,
+            @Schema(description = "나이 (20대 ~ 70대 이상, 2, 3,..., 7)")
+            @RequestParam(name = "age") AgeRange ageRange,
+            @Schema(description = "1순위 키워드 아이디")
+            @RequestParam Long keyword1Id,
+            @Schema(description = "2순위 키워드 아이디")
+            @RequestParam Long keyword2Id,
+            @Schema(description = "3순위 키워드 아이디")
+            @RequestParam Long keyword3Id
+    ) {
+        GuideInfo guideInfo = new GuideInfo(gender, ageRange, List.of(keyword1Id, keyword2Id, keyword3Id));
+        List<FindGuideOptionResponse> findGuideOptionResponses = optionService.findGuideModeExteriorColors(trimId, guideInfo);
+        SuccessResponse<List<FindGuideOptionResponse>> successResponse = new SuccessResponse<>(findGuideOptionResponses);
+        return ResponseEntity.ok(successResponse);
+    }
+
     private ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findGuideOptions(Long trimId,
                                                                                             GuideInfo guideInfo,
                                                                                             RequiredCategory category) {
