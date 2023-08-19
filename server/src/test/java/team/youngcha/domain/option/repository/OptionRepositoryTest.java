@@ -56,7 +56,7 @@ class OptionRepositoryTest {
 
         //when
         List<Option> powerTrains = optionRepository.
-                findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, RequiredCategory.POWER_TRAIN);
+                findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, RequiredCategory.POWER_TRAIN);
 
         //then
         Option diesel = Option.builder()

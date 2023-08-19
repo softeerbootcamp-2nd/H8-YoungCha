@@ -37,12 +37,12 @@ public class OptionService {
     private final OptionImageRepository optionImageRepository;
     private final OptionDetailRepository optionDetailRepository;
 
-    public List<FindSelfOptionResponse> findSelfOptions(Long trimId, RequiredCategory category) {
+    public List<FindSelfOptionResponse> findSelfRequiredOptions(Long trimId, RequiredCategory category) {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
-        List<Option> options = optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, category);
+        List<Option> options = optionRepository.findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, category);
 
-        return buildSelfOptionResponses(trimId, options, category);
+        return buildFindSelfRequiredOptionResponses(trimId, options, category);
     }
 
     public List<FindSelfOptionResponse> findSelfInteriorColors(Long trimId, Long exteriorColorId) {
@@ -51,14 +51,14 @@ public class OptionService {
         List<Option> options = optionRepository
                 .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
 
-        return buildSelfOptionResponses(trimId, options, RequiredCategory.INTERIOR_COLOR);
+        return buildFindSelfRequiredOptionResponses(trimId, options, RequiredCategory.INTERIOR_COLOR);
     }
 
     public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo, RequiredCategory category) {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
         List<Option> options = optionRepository
-                .findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, category);
+                .findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, category);
 
         List<Long> optionsId = options.stream().map(Option::getId).collect(Collectors.toList());
 
@@ -80,8 +80,8 @@ public class OptionService {
                 optionImagesGroup, optionDetailsGroup);
     }
 
-    private List<FindSelfOptionResponse> buildSelfOptionResponses(Long trimId, List<Option> options,
-                                                                  RequiredCategory category) {
+    private List<FindSelfOptionResponse> buildFindSelfRequiredOptionResponses(Long trimId, List<Option> options,
+                                                                              RequiredCategory category) {
         List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
         Map<Long, Integer> sellRatio = getSellRatio(trimId, optionsIds, category);
         Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);

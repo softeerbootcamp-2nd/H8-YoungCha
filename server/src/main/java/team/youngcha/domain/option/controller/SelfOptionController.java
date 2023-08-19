@@ -43,7 +43,7 @@ public class SelfOptionController {
             @PathVariable Long trimId
     ) {
         List<FindSelfOptionResponse> findSelfOptionResponses = optionService
-                .findSelfOptions(trimId, RequiredCategory.BODY_TYPE);
+                .findSelfRequiredOptions(trimId, RequiredCategory.BODY_TYPE);
         SuccessResponse<List<FindSelfOptionResponse>> successResponse = new SuccessResponse<>(findSelfOptionResponses);
         return ResponseEntity.ok(successResponse);
     }
@@ -76,7 +76,7 @@ public class SelfOptionController {
     }
 
     private ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfOptions(Long trimId, RequiredCategory category) {
-        List<FindSelfOptionResponse> findSelfOptionResponses = optionService.findSelfOptions(trimId, category);
+        List<FindSelfOptionResponse> findSelfOptionResponses = optionService.findSelfRequiredOptions(trimId, category);
         SuccessResponse<List<FindSelfOptionResponse>> successResponse = new SuccessResponse<>(findSelfOptionResponses);
         return ResponseEntity.ok(successResponse);
     }

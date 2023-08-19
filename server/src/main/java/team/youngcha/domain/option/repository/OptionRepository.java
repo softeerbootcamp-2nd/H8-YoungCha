@@ -22,7 +22,7 @@ public class OptionRepository {
     private final RowMapper<Option> optionRowMapper = new OptionRowMapper();
     private final RowMapper<DefaultOptionSummary> defaultOptionSummaryRowMapper = new DefaultOptionSummaryRowMapper();
 
-    public List<Option> findOptionsByTrimIdAndType(Long trimId, OptionType type, RequiredCategory name) {
+    public List<Option> findRequiredOptionsByTrimIdAndOptionType(Long trimId, OptionType type, RequiredCategory name) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("categoryName", name.getName());
         params.addValue("trimId", trimId);

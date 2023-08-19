@@ -120,7 +120,7 @@ class OptionServiceTest {
             given(trimRepository.findById(trimId))
                     .willReturn(Optional.of(mock(Trim.class)));
             given(optionRepository.
-                    findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, RequiredCategory.POWER_TRAIN))
+                    findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, RequiredCategory.POWER_TRAIN))
                     .willReturn(options);
             given(sellRepository.
                     countOptionsByTrimIdAndContainOptionsIds(eq(trimId), anyList(), eq(RequiredCategory.POWER_TRAIN)))
@@ -132,7 +132,7 @@ class OptionServiceTest {
 
             //when
             List<FindSelfOptionResponse> powerTrainResponses = optionService.
-                    findSelfOptions(trimId, RequiredCategory.POWER_TRAIN);
+                    findSelfRequiredOptions(trimId, RequiredCategory.POWER_TRAIN);
 
             //then
             FindSelfOptionResponse expected1 = new FindSelfOptionResponse(options.get(0), 0,
@@ -154,7 +154,7 @@ class OptionServiceTest {
 
             //when
             Throwable throwable = catchThrowable(() ->
-                    optionService.findSelfOptions(trimId, RequiredCategory.POWER_TRAIN));
+                    optionService.findSelfRequiredOptions(trimId, RequiredCategory.POWER_TRAIN));
 
             //then
             assertThat(throwable).isInstanceOf(CustomException.class);
@@ -389,7 +389,7 @@ class OptionServiceTest {
                                 Map<Long, Long> powerTrainCounts, Map<Long, List<Keyword>> groupKeyword) {
             given(trimRepository.findById(trimId)).willReturn(Optional.of(mock(Trim.class)));
             given(optionRepository.
-                    findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, RequiredCategory.POWER_TRAIN))
+                    findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, RequiredCategory.POWER_TRAIN))
                     .willReturn(List.of(diesel, gasoline));
             given(optionImageRepository.findByContainOptionIds(optionIds))
                     .willReturn(optionImages);
