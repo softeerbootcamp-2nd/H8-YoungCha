@@ -120,7 +120,7 @@ class OptionServiceTest {
             given(trimRepository.findById(trimId))
                     .willReturn(Optional.of(mock(Trim.class)));
             given(optionRepository.
-                    findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, SelectiveCategory.POWER_TRAIN))
+                    findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, SelectiveCategory.POWER_TRAIN))
                     .willReturn(options);
             given(sellRepository.
                     countOptionsByTrimIdAndContainOptionsIds(eq(trimId), anyList(), eq(SelectiveCategory.POWER_TRAIN)))
@@ -389,7 +389,7 @@ class OptionServiceTest {
                                 Map<Long, Long> powerTrainCounts, Map<Long, List<Keyword>> groupKeyword) {
             given(trimRepository.findById(trimId)).willReturn(Optional.of(mock(Trim.class)));
             given(optionRepository.
-                    findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, SelectiveCategory.POWER_TRAIN))
+                    findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, SelectiveCategory.POWER_TRAIN))
                     .willReturn(List.of(diesel, gasoline));
             given(optionImageRepository.findByContainOptionIds(optionIds))
                     .willReturn(optionImages);

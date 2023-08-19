@@ -39,7 +39,7 @@ public class OptionRepository {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("categoryName", SelectiveCategory.INTERIOR_COLOR.getName());
         params.addValue("trimId", trimId);
-        params.addValue("optionType", OptionType.OPTIONAL.getType());
+        params.addValue("optionType", OptionType.REQUIRED.getType());
         params.addValue("exteriorColorId", exteriorColorId);
 
         String baseQuery = "select options.id as id, options.name as name, options.price as price, " +

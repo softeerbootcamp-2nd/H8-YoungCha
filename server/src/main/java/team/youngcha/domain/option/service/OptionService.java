@@ -40,7 +40,7 @@ public class OptionService {
     public List<FindSelfOptionResponse> findSelfOptions(Long trimId, SelectiveCategory category) {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
-        List<Option> options = optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, category);
+        List<Option> options = optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, category);
 
         return buildSelfOptionResponses(trimId, options, category);
     }
@@ -58,7 +58,7 @@ public class OptionService {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
         List<Option> options = optionRepository
-                .findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, category);
+                .findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, category);
 
         List<Long> optionsId = options.stream().map(Option::getId).collect(Collectors.toList());
 

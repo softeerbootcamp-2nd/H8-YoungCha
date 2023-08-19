@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum OptionType {
-    BASIC(0), OPTIONAL(1), CORE(2);
+    BASIC(0), REQUIRED(1), CORE(2), SELECTIVE(4);
 
     private final int type;
 

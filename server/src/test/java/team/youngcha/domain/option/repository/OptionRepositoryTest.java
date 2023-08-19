@@ -47,16 +47,16 @@ class OptionRepositoryTest {
                 "(2,'가솔린', 2000, '추천', '추천합니다', 1)," +
                 "(3,'mock', 0, 'mock', 'is mock', 1)");
         jdbcTemplate.update("insert into trim_options (id, type, trim_id, options_id) " +
-                "values (1, " + OptionType.OPTIONAL.getType() + ", 1, 1)," +
-                "(2," + OptionType.OPTIONAL.getType() + ", 1, 2)," +
+                "values (1, " + OptionType.REQUIRED.getType() + ", 1, 1)," +
+                "(2," + OptionType.REQUIRED.getType() + ", 1, 2)," +
                 "(3, " + OptionType.BASIC.getType() + ", 1, 2)," +
-                "(4, " + OptionType.OPTIONAL.getType() + ", 2, 2)");
+                "(4, " + OptionType.REQUIRED.getType() + ", 2, 2)");
 
         Long trimId = 1L;
 
         //when
         List<Option> powerTrains = optionRepository.
-                findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, SelectiveCategory.POWER_TRAIN);
+                findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, SelectiveCategory.POWER_TRAIN);
 
         //then
         Option diesel = Option.builder()
@@ -92,9 +92,9 @@ class OptionRepositoryTest {
                     "(5, 'in2', 0, 'in2 feedback', 'in2 description', 2)," +
                     "(6, 'in3', 1000, 'in3 feedback', 'in3 description', 2)");
             jdbcTemplate.update("insert into trim_options (id, type, trim_id, options_id) " +
-                    "values (1, " + OptionType.OPTIONAL.getType() + ", 1, 4)," +
-                    "(2," + OptionType.OPTIONAL.getType() + ", 1, 5)," +
-                    "(3, " + OptionType.OPTIONAL.getType() + ", 1, 6)");
+                    "values (1, " + OptionType.REQUIRED.getType() + ", 1, 4)," +
+                    "(2," + OptionType.REQUIRED.getType() + ", 1, 5)," +
+                    "(3, " + OptionType.REQUIRED.getType() + ", 1, 6)");
             jdbcTemplate.update("insert into options_relation (id, parent_id, child_id) " +
                     "values (1, 1, 4)," +
                     "(2, 1, 6)," +
