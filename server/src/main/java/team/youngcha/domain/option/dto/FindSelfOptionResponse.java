@@ -20,6 +20,9 @@ public class FindSelfOptionResponse {
     @Schema(description = "옵션 아이디")
     private Long id;
 
+    @Schema(description = "카테고리 아이디")
+    private Long categoryId;
+
     @Schema(description = "선택 비율")
     private int rate;
 
@@ -43,6 +46,7 @@ public class FindSelfOptionResponse {
 
     public FindSelfOptionResponse(Option option, int rate, List<OptionImage> optionImages, List<OptionDetail> optionDetails) {
         this.id = option.getId();
+        this.categoryId = option.getCategoryId();
         this.rate = rate;
         this.price = option.getPrice();
         this.name = option.getName();
@@ -57,10 +61,11 @@ public class FindSelfOptionResponse {
     }
 
     @Builder
-    public FindSelfOptionResponse(Long id, int rate, int price, String name,
+    public FindSelfOptionResponse(Long id, Long categoryId, int rate, int price, String name,
                                   String feedbackTitle, String feedbackDescription,
                                   List<FindOptionImageResponse> images, List<FindOptionDetailResponse> details) {
         this.id = id;
+        this.categoryId = categoryId;
         this.rate = rate;
         this.price = price;
         this.name = name;
