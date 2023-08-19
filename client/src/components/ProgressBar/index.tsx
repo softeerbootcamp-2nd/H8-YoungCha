@@ -3,7 +3,7 @@ import SelectedBar from './SelectedBar';
 
 interface ProgressBarProps {
   step: number;
-  path: 'self' | 'guide';
+  mode: 'self' | 'guide';
   id: string;
 }
 
@@ -22,11 +22,11 @@ const PROGRESS_LIST = [
   '견적 내기',
 ];
 
-function ProgressBar({ step, path, id }: ProgressBarProps) {
+function ProgressBar({ step, mode, id }: ProgressBarProps) {
   return (
     <nav className="relative z-10 text-center min-w-1024px h-26px title5">
       <span className="relative mx-auto whitespace-nowrap">
-        <ProgressList {...{ step, path, id }} />
+        <ProgressList {...{ step, mode, id }} />
         <SelectedBar active={step - 1} />
       </span>
       <div className="w-full h-0.5 absolute top-22px bg-grey-002" />
@@ -34,11 +34,11 @@ function ProgressBar({ step, path, id }: ProgressBarProps) {
   );
 }
 
-function ProgressList({ step, path, id }: ProgressBarProps) {
+function ProgressList({ step, mode, id }: ProgressBarProps) {
   return PROGRESS_LIST.map((item: string, index: number) => (
     <ProgressItem
       active={index + 1 === step}
-      to={`/model/${id}/making/${path}/${index + 1}`}
+      to={`/model/${id}/making/${mode}/${index + 1}`}
       key={`ProgressItem-${index}`}
     >
       {`${(index + 1).toString().padStart(2, '0')} ${item}`}
