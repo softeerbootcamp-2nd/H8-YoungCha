@@ -13,6 +13,7 @@ import TrimCardsBox from './TrimCardsBox';
 import InternalColorBox from './InternalColorBox';
 import ExteriorColorBox from './ExteriorColorBox';
 import { TrimType } from '@/types';
+import { useRef } from 'react';
 
 interface TrimsDataType {
   model: string;
@@ -23,11 +24,13 @@ function Home() {
     url: `${import.meta.env.VITE_API_URL}/cars/1/details`,
   });
   const trims = loading ? [] : data?.trims.filter((trim) => trim.id !== 5);
+
+  const secondPageRef = useRef<HTMLDivElement>(null);
   return (
     <div>
       {!loading && (
         <>
-          <div className="flex justify-center w-full h-screen bg-center bg-cover pt-85px bg-main-background-image">
+          <div className="relative flex justify-center w-full h-screen bg-center bg-cover pt-85px bg-main-background-image">
             <div className="flex flex-col justify-between max-w-5xl py-16px">
               <div>
                 <p className="text-white text-24px font-hsans-head tracking-[-0.96px] leading-[31.2px]">
@@ -45,16 +48,27 @@ function Home() {
                     {TEXT.MAIN_DETAIL_COMPARE}
                   </p>
 
-                  <div className="relative flex flex-col items-center top-12px animate-bounce">
+                  <button
+                    className="relative flex flex-col items-center top-12px animate-bounce"
+                    onClick={() =>
+                      secondPageRef.current?.scrollIntoView({
+                        behavior: 'smooth',
+                      })
+                    }
+                  >
                     <Icon.MainBelowArrow opacity={0.8} />
                     <Icon.MainBelowArrow
                       opacity={0.4}
                       className="relative bottom-18px"
                     />
-                  </div>
+                  </button>
                 </div>
               </div>
             </div>
+            <div
+              className="absolute bottom-0 w-full h-85px z-[-1]"
+              ref={secondPageRef}
+            ></div>
           </div>
           <div className="w-full pb-400px">
             <CarsNameListBox trims={trims} />
