@@ -55,6 +55,11 @@ class HyundaiButtonView @JvmOverloads constructor(
     }
 
     fun animateBorder(): ViewPropertyAnimator {
+        binding.vBottomLine.animate().cancel()
+        binding.vTopLine.animate().cancel()
+        binding.vLeftLine.animate().cancel()
+        binding.vRightLine.animate().cancel()
+
         binding.vBottomLine.scaleX = 0f
         binding.vTopLine.scaleX = 0f
         binding.vLeftLine.scaleY = 0f
