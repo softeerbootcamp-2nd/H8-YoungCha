@@ -39,7 +39,8 @@ class EstimateRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        jdbcTemplate.update("insert into estimate (id, trim_id, engine_id, body_type_id, driving_system_id, exterior_color_id, interior_color_id, wheel_id, keyword1_id, keyword2_id, keyword3_id, age_range, gender, create_date) " +
+        jdbcTemplate.update("insert into estimate (id, trim_id, engine_id, body_type_id, driving_system_id, " +
+                "exterior_color_id, interior_color_id, wheel_id, keyword1_id, keyword2_id, keyword3_id, age_range, gender, create_date) " +
                 "values (1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 3, 2, 0, '2023-01-01 12:12:12'), " +
                 "(2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 3, 2, 0, '2023-01-01 12:12:12')," +
                 "(3, 2, 1, 1, 1, 1, 1, 1, 1, 2, 3, 2, 0, '2023-01-01 12:12:12')," +
@@ -91,6 +92,6 @@ class EstimateRepositoryTest {
                 .calculateRate(trimId, optionId, keywordId, SelectiveCategory.POWER_TRAIN);
 
         //then
-        assertThat(rate).isEqualTo(Math.round((float) 2 / 6 * 100));
+        assertThat(rate).isEqualTo((int) (2.0 / 3 * 100));
     }
 }
