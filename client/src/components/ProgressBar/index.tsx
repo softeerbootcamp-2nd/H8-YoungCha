@@ -1,5 +1,4 @@
 import { Link, LinkProps } from 'react-router-dom';
-import SelectedBar from './SelectedBar';
 
 interface ProgressBarProps {
   step: number;
@@ -9,6 +8,11 @@ interface ProgressBarProps {
 
 interface ProgressItemProps extends LinkProps {
   active: boolean;
+}
+
+interface SelectedBarProps {
+  active: number;
+  length: number;
 }
 
 const PROGRESS_LIST = [
@@ -24,12 +28,13 @@ const PROGRESS_LIST = [
 
 function ProgressBar({ step, mode, id }: ProgressBarProps) {
   return (
-    <nav className="relative z-10 text-center min-w-1024px h-26px title5">
-      <span className="relative mx-auto whitespace-nowrap">
-        <ProgressList {...{ step, mode, id }} />
-        <SelectedBar active={step - 1} />
-      </span>
-      <div className="w-full h-0.5 absolute top-22px bg-grey-002" />
+    <nav className="z-10 text-center min-w-768px title5 border-b-2px border-grey-002 px-32px">
+      <div className="max-w-5xl mx-auto xl:px-96px xl:max-w-none">
+        <div className="flex h-full whitespace-nowrap">
+          <ProgressList {...{ step, mode, id }} />
+        </div>
+        <SelectedBar active={step - 1} length={PROGRESS_LIST.length} />
+      </div>
     </nav>
   );
 }
@@ -55,13 +60,25 @@ function ProgressItem({
   return (
     <Link
       to={to}
-      className={`w-120px inline-block ${
+      className={`flex-1 flex justify-center items-center h-26px ${
         active ? 'text-main-blue font-medium' : 'text-grey-002'
       }`}
       {...props}
     >
       {children}
     </Link>
+  );
+}
+
+function SelectedBar({ active, length }: SelectedBarProps) {
+  return (
+    <span
+      className="z-10 flex text-center duration-300 ease-in-out bg-main-blue h-2px"
+      style={{
+        width: `${100 / length}%`,
+        transform: `translateX(${active * 100}%)`,
+      }}
+    />
   );
 }
 
