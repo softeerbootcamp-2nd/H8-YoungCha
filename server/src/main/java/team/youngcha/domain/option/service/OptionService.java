@@ -192,8 +192,8 @@ public class OptionService {
                             optionDetailsGroup.getOrDefault(option.getId(), new ArrayList<>())
                     );
                 })
-                .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> -response.getRate()) // 비율 내림차순
-                        .thenComparing((FindGuideOptionResponse response) -> response.isChecked() ? 0 : 1)) // true가 맨 처음
+                .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> response.isChecked() ? 0 : 1) // 비율 내림차순
+                        .thenComparing((FindGuideOptionResponse response) -> -response.getRate())) // true가 맨 처음
                 .collect(Collectors.toList());
     }
 
