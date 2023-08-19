@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -167,10 +168,22 @@ class CarCustomizationFragment : Fragment() {
         binding.vpOptionContainer.setCurrentItem(position, false)
     }
 
+
     private fun setupMainTabSelectionListener() {
-        binding.tlMainOptionTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                val tabName = tab?.text?.replace(Regex("^\\d+\\s"), "") ?: "Unknown"
+        binding.vMainTabLayoutOverlay.setOnTouchListener { _, _ -> true }
+
+        binding.btnPrev.setOnClickListener {
+            val currentTabIndex = binding.tlMainOptionTab.selectedTabPosition
+
+            // 이전 탭이 존재하는 경우에만 선택
+            if (currentTabIndex > 0) {
+                val prevTabIndex = currentTabIndex - 1
+                binding.tlMainOptionTab.getTabAt(prevTabIndex)?.select()
+
+                val tabName = binding.tlMainOptionTab.getTabAt(prevTabIndex)?.text?.replace(
+                    Regex("^\\d+\\s"),
+                    ""
+                ) ?: "Unknown"
                 carViewModel.setCurrentComponentName(tabName)
 
                 when (tabName) {
@@ -178,11 +191,28 @@ class CarCustomizationFragment : Fragment() {
                     else -> handleDefaultTab()
                 }
             }
+        }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+        binding.btnNext.setOnClickListener {
+            val currentTabIndex = binding.tlMainOptionTab.selectedTabPosition
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
+            // 다음 탭이 존재하는 경우에만 선택
+            if (currentTabIndex < binding.tlMainOptionTab.tabCount - 1) {
+                val nextTabIndex = currentTabIndex + 1
+                binding.tlMainOptionTab.getTabAt(nextTabIndex)?.select()
+
+                val tabName = binding.tlMainOptionTab.getTabAt(nextTabIndex)?.text?.replace(
+                    Regex("^\\d+\\s"),
+                    ""
+                ) ?: "Unknown"
+                carViewModel.setCurrentComponentName(tabName)
+
+                when (tabName) {
+                    OPTION_SELECTION -> handleOptionSelectionTab()
+                    else -> handleDefaultTab()
+                }
+            }
+        }
     }
 
     // 선택 옵션 탭이 선택되었을 때 처리.
@@ -292,65 +322,6 @@ class CarCustomizationFragment : Fragment() {
             binding.fragmentEstimate.ivParticle.startAnimation(animationSet)
         }
     }
-
-
-    private fun toggleButton() {
-        binding.fragmentEstimate.btnExterior.setOnClickListener {
-            binding.fragmentEstimate.ivEstimateDone.setImageResource(R.drawable.img_trim_leblanc)
-            binding.fragmentEstimate.btnExterior.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.main_hyundai_blue
-                )
-            )
-            binding.fragmentEstimate.btnExterior.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
-                )
-            )
-            binding.fragmentEstimate.btnInterior.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.cool_grey_001
-                )
-            )
-            binding.fragmentEstimate.btnInterior.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.cool_grey_black
-                )
-            )
-        }
-        binding.fragmentEstimate.btnInterior.setOnClickListener {
-            binding.fragmentEstimate.ivEstimateDone.setImageResource(R.drawable.img_test_make_car_05)
-            binding.fragmentEstimate.btnExterior.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.cool_grey_001
-                )
-            )
-            binding.fragmentEstimate.btnExterior.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.cool_grey_black
-                )
-            )
-            binding.fragmentEstimate.btnInterior.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.main_hyundai_blue
-                )
-            )
-            binding.fragmentEstimate.btnInterior.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
-                )
-            )
-        }
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
