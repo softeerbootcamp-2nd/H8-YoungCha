@@ -18,7 +18,6 @@ import com.youngcha.ohmycarset.model.car.OptionInfo
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 
 class CarCustomizationViewModel : ViewModel() {
-
     // 자동차 정보 관련 변수들
     // 관련된 변수: selectedCar, currentComponentName, customizedParts
     private val _selectedCar = MutableLiveData<Car>()
@@ -71,7 +70,8 @@ class CarCustomizationViewModel : ViewModel() {
 
     val currentOptionList = MediatorLiveData<List<OptionInfo>>()
 
-    // init block
+
+    // 초기화 블록
     init {
         loadCarData("팰리세이드")
         _currentComponentName.value = selectedCar.value?.mainOptions?.get(0)?.keys?.first()
@@ -99,9 +99,18 @@ class CarCustomizationViewModel : ViewModel() {
         _currentSubTabs.value = getSubOptionKeys()
     }
 
+    // --- UI 업데이트 관련 함수 ---
+
+    /**
+     * 견적 색상 버튼 업데이트
+     */
     fun updateEstimateColorButton(view:View) {
         exteriorButtonChange.value = if(exteriorButtonChange.value==1) 0 else 1
     }
+
+    /**
+     * 현재 타입 업데이트
+     */
     fun updateCurrentType(currentType: String) {
         _currentType.value = currentType
         _currentTabPosition.value = 0
@@ -111,6 +120,9 @@ class CarCustomizationViewModel : ViewModel() {
         setCurrentComponentName(currentTabName.value!!)
     }
 
+    /**
+     * 탭 정보 업데이트
+     */
     fun updateTabInfo(car: Car) {
         val mainOptions = car.mainOptions[0].keys.mapIndexed { index, carOptionKey ->
             "${String.format("%02d", index + 1)} $carOptionKey"
@@ -124,6 +136,9 @@ class CarCustomizationViewModel : ViewModel() {
         }
     }
 
+    /**
+     * 탭 변경 핸들러
+     */
     fun handleTabChange(increment: Int) {
         val currentTabIndex = currentTabPosition.value ?: 0
         val nextTabIndex = currentTabIndex + increment
@@ -141,17 +156,19 @@ class CarCustomizationViewModel : ViewModel() {
         }
     }
 
-    // 메인 탭이 선택되었을 때 처리.
-    private fun handleMainTab() {
-        setDefaultTabValues()
+    /**
+     * 서브옵션 변경 핸들러
+     */
+    fun onSubOptionChanged(view: View) {
+        subOptionButtonVisible.value = if (subOptionButtonVisible.value == 1) 0 else 1
+        subOptionViewType.value = if (subOptionViewType.value == 1) 0 else 1
     }
 
-    // 선택 옵션 탭이 선택되었을 때 처리.
-    private fun handleSubTab() {
-        updateDataContainer()
-        setOptionSelectionTabValues()
-    }
+// --- 데이터 설정 및 조회 관련 함수 ---
 
+    /**
+     * 현재 컴포넌트 이름 설정
+     */
     fun setCurrentComponentName(componentName: String) {
         _currentComponentName.value = componentName
 
@@ -174,15 +191,9 @@ class CarCustomizationViewModel : ViewModel() {
         }
     }
 
-    private fun getSubOptionKeys(): List<String> {
-        val keys = mutableListOf<String>()
-        val car = _selectedCar.value
-        car?.subOptions?.forEach { map ->
-            keys.addAll(map.keys)
-        }
-        return keys
-    }
-
+    /**
+     * 키를 사용하여 서브옵션 정보 가져오기
+     */
     fun getOptionInfoByKey(key: String): List<OptionInfo>? {
         val car = _selectedCar.value
         car?.subOptions?.forEach { map ->
@@ -193,6 +204,9 @@ class CarCustomizationViewModel : ViewModel() {
         return null
     }
 
+    /**
+     * 자동차 컴포넌트 추가
+     */
     fun addCarComponents(
         componentName: String,
         option: OptionInfo,
@@ -227,6 +241,9 @@ class CarCustomizationViewModel : ViewModel() {
         _customizedParts.value = updatedList
     }
 
+    /**
+     * 자동차 컴포넌트 제거
+     */
     fun removeCarComponents(keyName: String, option: OptionInfo) {
         val updatedList = _customizedParts.value?.toMutableList() ?: return
         val index = updatedList.indexOfFirst { it.containsKey(keyName) }
@@ -248,6 +265,9 @@ class CarCustomizationViewModel : ViewModel() {
         }
     }
 
+    /**
+     * 선택된 옵션 조회
+     */
     fun isSelectedOptions(tabName: String): List<OptionInfo>? {
         /*
         val data = listOf(
@@ -273,6 +293,11 @@ class CarCustomizationViewModel : ViewModel() {
         return null
     }
 
+// --- 데이터 헬퍼 함수 ---
+
+    /**
+     * 이미 선택된 컴포넌트 처리
+     */
     private fun alreadySelectedComponent(componentName: String) {
         val car = _customizedParts.value ?: listOf()
         val index = car.indexOfFirst { it.containsKey(componentName) }
@@ -292,7 +317,59 @@ class CarCustomizationViewModel : ViewModel() {
             onComponentOption1Selected()
         }
     }
+    /**
+     * 데이터 컨테이너 업데이트
+     */
+    fun updateDataContainer() {
+        currentTabName.value = _currentSubTabs.value?.get(currentSubTabPosition.value!!)
+        _displayOnRecyclerViewAndViewPager.value = if (subOptionButtonVisible.value == 0) 0 else 1
+    }
 
+    /**
+     * 차량 데이터 로드
+     */
+    private fun loadCarData(carName: String) {
+        _selectedCar.value = createCarData(carName)
+    }
+
+    // --- 기타 헬퍼 함수 ---
+
+    /**
+     * 메인 탭 처리
+     */
+    private fun handleMainTab() {
+        setDefaultTabValues()
+    }
+
+    /**
+     * 서브 탭 처리
+     */
+    private fun handleSubTab() {
+        updateDataContainer()
+        setOptionSelectionTabValues()
+    }
+
+    /**
+     * 컴포넌트 옵션의 가시성 설정
+     */
+    private fun setComponentOptionVisibility(option1Visible: Int, option2Visible: Int) {
+        componentOption1Visibility.value = option1Visible
+        componentOption2Visibility.value = option2Visible
+    }
+
+    /**
+     * 컴포넌트 이름을 기반으로 옵션 조회
+     */
+    private fun getOptionsForComponent(componentName: String): List<OptionInfo>? {
+        return selectedCar.value?.mainOptions?.firstOrNull { it.containsKey(componentName) }
+            ?.get(componentName)
+    }
+
+    // --- 컴포넌트 옵션 선택 관련 함수 ---
+
+    /**
+     * 컴포넌트의 0번 인덱스 옵션을 선택했을 때의 처리 함수
+     */
     fun onComponentOption1Selected() {
         val componentName = _currentComponentName.value ?: return
         val option = getOption(componentName, 0) ?: return // 0번 인덱스 옵션 가져오기
@@ -300,55 +377,57 @@ class CarCustomizationViewModel : ViewModel() {
         setComponentOptionVisibility(1, 0)
     }
 
+    /**
+     * 컴포넌트의 1번 인덱스 옵션을 선택했을 때의 처리 함수
+     */
     fun onComponentOption2Selected() {
         val componentName = _currentComponentName.value ?: return
         val option = getOption(componentName, 1) ?: return // 1번 인덱스 옵션 가져오기
         addCarComponents(componentName, option)
         setComponentOptionVisibility(0, 1)
-
     }
 
-    private fun setComponentOptionVisibility(option1Visible: Int, option2Visible: Int) {
-        componentOption1Visibility.value = option1Visible
-        componentOption2Visibility.value = option2Visible
-    }
+    // --- 탭 및 뷰 설정 관련 함수 ---
 
-    fun onSubOptionChanged(view: View) {
-        subOptionButtonVisible.value = if (subOptionButtonVisible.value == 1) 0 else 1
-        subOptionViewType.value = if (subOptionViewType.value == 1) 0 else 1
-    }
-
+    /**
+     * 옵션 선택 탭 값 설정
+     */
     private fun setOptionSelectionTabValues() {
         subOptionViewTypeChangeButton.value = 1
         subOptionButtonVisible.value = 1
     }
 
-    private fun getOptionsForComponent(componentName: String): List<OptionInfo>? {
-        return selectedCar.value?.mainOptions?.firstOrNull { it.containsKey(componentName) }
-            ?.get(componentName)
-    }
-
-    private fun getOptionSize(componentName: String): Int {
-        return getOptionsForComponent(componentName)?.size ?: 0
-    }
-
-    fun getOption(componentName: String, index: Int): OptionInfo? {
-        return getOptionsForComponent(componentName)?.getOrNull(index)
-    }
-
+    /**
+     * 기본 탭 값 설정
+     */
     private fun setDefaultTabValues() {
         subOptionViewTypeChangeButton.value = 0 // viewpager <-> recyclerview
         subOptionButtonVisible.value = 1 // main Image visible
     }
 
-    // NEW
-    fun updateDataContainer() {
-        currentTabName.value = _currentSubTabs.value?.get(currentSubTabPosition.value!!)
-        _displayOnRecyclerViewAndViewPager.value = if (subOptionButtonVisible.value == 0) 0 else 1
+    // --- 옵션 정보 조회 관련 함수 ---
+
+    /**
+     * 컴포넌트 이름을 기반으로 해당 옵션의 크기(개수) 조회
+     */
+    private fun getOptionSize(componentName: String): Int {
+        return getOptionsForComponent(componentName)?.size ?: 0
     }
 
-    private fun loadCarData(carName: String) {
-        _selectedCar.value = createCarData(carName)
+    /**
+     * 컴포넌트 이름과 인덱스를 사용하여 특정 옵션 정보 조회
+     */
+    fun getOption(componentName: String, index: Int): OptionInfo? {
+        return getOptionsForComponent(componentName)?.getOrNull(index)
+    }
+
+    private fun getSubOptionKeys(): List<String> {
+        val keys = mutableListOf<String>()
+        val car = _selectedCar.value
+        car?.subOptions?.forEach { map ->
+            keys.addAll(map.keys)
+        }
+        return keys
     }
 
     // Test Data
