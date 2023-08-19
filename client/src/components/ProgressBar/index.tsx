@@ -19,27 +19,27 @@ const PROGRESS_LIST = [
 ];
 
 function ProgressBar({ step, path, id }: ProgressBarProps) {
-  function makeCategory() {
-    return PROGRESS_LIST.map((item: string, index: number) => (
-      <ProgressItem
-        key={index}
-        itemIndex={index + 1}
-        itemName={item}
-        isSelected={index + 1 === step}
-        url={`/model/${id}/making/${path}/${index + 1}`}
-      />
-    ));
-  }
-
   return (
     <nav className="relative z-10 text-center min-w-1024px h-26px title5">
       <span className="relative mx-auto whitespace-nowrap">
-        {makeCategory()}
+        <ProgressList {...{ step, path, id }} />
         <SelectedBar active={step - 1} />
       </span>
       <div className="w-full h-0.5 absolute top-22px bg-grey-002" />
     </nav>
   );
+}
+
+function ProgressList({ step, path, id }: ProgressBarProps) {
+  return PROGRESS_LIST.map((item: string, index: number) => (
+    <ProgressItem
+      key={index}
+      itemIndex={index + 1}
+      itemName={item}
+      isSelected={index + 1 === step}
+      url={`/model/${id}/making/${path}/${index + 1}`}
+    />
+  ));
 }
 
 export default ProgressBar;
