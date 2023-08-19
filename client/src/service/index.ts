@@ -4,11 +4,8 @@ interface GetType {
 }
 async function get<T>({ url, params }: GetType) {
   try {
-    let requestURL = url;
-    if (params) {
-      requestURL += new URLSearchParams(params).toString();
-    }
-
+    const requestURL =
+      url + (params ? new URLSearchParams(params).toString() : '');
     const res = await fetch(requestURL);
     const { data }: { data: T } = await res.json();
     return data;
