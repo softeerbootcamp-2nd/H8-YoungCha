@@ -59,7 +59,6 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
                 .description("36.2 kgf-m / 5,200 rpm").build();
         FindOptionDetailResponse gasolineDetail = FindOptionDetailResponse.builder()
                 .description("고효율의 3.8 가솔린 엔진으로 다이내믹한 주행 성능은 물론, 정속성까지 선사합니다.")
-                .imgUrl("https://www.hyundai.com/contents/spec/LX24/gasoline3.8.jpg")
                 .specs(List.of(gasolineSpec1, gasolineSpec2)).build();
 
         FindSpecResponse dieselSpec1 = FindSpecResponse.builder()
@@ -70,7 +69,6 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
                 .description("45.0 kgf-m / 1,750~2,750 rmp").build();
         FindOptionDetailResponse dieselDetail = FindOptionDetailResponse.builder()
                 .description("강력한 토크와 탁월한 효율로 여유있는 파워와 높은 연비를 제공하는 디젤엔진입니다.")
-                .imgUrl("https://www.hyundai.com/contents/spec/LX24/dieselengine2.2.jpg")
                 .specs(List.of(dieselSpec1, dieselSpec2)).build();
 
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
@@ -115,12 +113,10 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindOptionDetailResponse wd2Detail = FindOptionDetailResponse.builder()
                 .description("엔진에서 전달되는 동력이 전/후륜 바퀴 중 한쪽으로만 전달되어 차량을 움직이는 방식입니다.<br>" +
                         "차체가 가벼워 연료 효율이 높습니다.")
-                .imgUrl("https://www.hyundai.com/contents/spec/guide/lx_2wd_s.jpg")
                 .specs(List.of()).build();
         FindOptionDetailResponse wd4Detail = FindOptionDetailResponse.builder()
                 .description("전자식 상시 4륜 구동 시스템 입니다.<br>" +
                         "도로의 상황이나 주행 환경에 맞춰 전후륜 구동력을 자동배분하여 주행 안전성을 높여줍니다.")
-                .imgUrl("https://www.hyundai.com/contents/spec/guide/lx_htrac_s.jpg")
                 .specs(List.of()).build();
 
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
@@ -165,11 +161,9 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         FindOptionDetailResponse seat7Detail = FindOptionDetailResponse.builder()
                 .description("기존 8인승 시트(1열 2명, 2열 3명, 3열 3명)에서 2열 가운데 시트를 없애 2열 탑승객의 편의는 물론," +
                         " 3열 탑승객의 승하차가 편리합니다.")
-                .imgUrl("https://www.hyundai.com/contents/spec/guide/lx_7seats_s.jpg")
                 .specs(List.of()).build();
         FindOptionDetailResponse seat8Detail = FindOptionDetailResponse.builder()
                 .description("1열 2명, 2열 3명, 3열 3명이 탑승할 수 있는 구조로, 많은 인원이 탑승할 수 있도록 배려하였습니다.")
-                .imgUrl("https://www.hyundai.com/contents/spec/guide/lx_8seats_s.jpg")
                 .specs(List.of()).build();
 
         FindSelfOptionResponse optionResponse1 = FindSelfOptionResponse.builder()
