@@ -1,14 +1,12 @@
 import { Link } from 'react-router-dom';
 import * as Icon from '../../assets/icons';
 
-function HyundaiLogoButton() {
+function HDLogoButton() {
   return (
     <Link to="/">
-      <button className="w-149px h-21px pr-20px">
-        <Icon.HyundaiLogo />
-      </button>
+      <Icon.HDLogo className="w-45px md:w-166px h-23px" />
     </Link>
   );
 }
 
-export default HyundaiLogoButton;
+export default HDLogoButton;

@@ -1,4 +1,4 @@
-import HyundaiLogo from './hyundai-logo';
+import HDLogo from './logo/HDLogo';
 import CarIcon from './car-icon';
 import ModelChangeArrow from './model-change-arrow';
 import DictionaryOffIcon from './dictionary-off-icon';
@@ -16,7 +16,7 @@ import RecommendationIcon from './RecommendationIcon';
 import InactiveRound from './prepare-guide/InactiveRound';
 
 export {
-  HyundaiLogo,
+  HDLogo,
   CarIcon,
   ModelChangeArrow,
   DictionaryOffIcon,

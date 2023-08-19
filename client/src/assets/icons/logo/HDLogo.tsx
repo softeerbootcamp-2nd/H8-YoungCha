@@ -1,4 +1,4 @@
-function HyundaiLogo() {
+function HDLogo() {
   return (
     <svg
       version="1.1"
@@ -62,4 +62,4 @@ function HyundaiLogo() {
   );
 }
 
-export default HyundaiLogo;
+export default HDLogo;
