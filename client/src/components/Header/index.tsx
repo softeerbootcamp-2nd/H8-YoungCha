@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import DictionaryToggleButton from './DictionaryToggleButton';
 import ModelChangeButton from './ModelChangeButton';
@@ -9,13 +9,15 @@ const TEXT_MAKING_MY_CAR = '내 차 만들기';
 function Header() {
   const [backgroundColor, setBackgroundColor] = useState('');
 
+  const handleScroll = useCallback(() => {
+    if (window.scrollY === 0) setBackgroundColor('');
+    else if (window.scrollY > 0) setBackgroundColor('bg-grey-001');
+  }, [setBackgroundColor]);
+
   useEffect(() => {
-    document.addEventListener('scroll', () => {
-      if (window.scrollY === 0) setBackgroundColor('');
-      else if (window.scrollY > 0) setBackgroundColor('bg-grey-001');
-    });
+    document.addEventListener('scroll', handleScroll);
     return () => {
-      document.removeEventListener('scroll', () => {});
+      document.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
