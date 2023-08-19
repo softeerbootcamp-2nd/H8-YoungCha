@@ -8,7 +8,7 @@ interface ProgressBarProps {
 }
 
 interface ProgressItemProps extends LinkProps {
-  isSelected: boolean;
+  active: boolean;
 }
 
 const PROGRESS_LIST = [
@@ -37,7 +37,7 @@ function ProgressBar({ step, path, id }: ProgressBarProps) {
 function ProgressList({ step, path, id }: ProgressBarProps) {
   return PROGRESS_LIST.map((item: string, index: number) => (
     <ProgressItem
-      isSelected={index + 1 === step}
+      active={index + 1 === step}
       to={`/model/${id}/making/${path}/${index + 1}`}
       key={`ProgressItem-${index}`}
     >
@@ -49,15 +49,15 @@ function ProgressList({ step, path, id }: ProgressBarProps) {
 function ProgressItem({
   children,
   to,
-  isSelected,
+  active = false,
   ...props
 }: ProgressItemProps) {
   return (
     <Link
       to={to}
       className={`w-120px inline-block ${
-        isSelected ? 'text-main-blue' : 'text-grey-002'
-      } ${isSelected ? 'font-medium' : 'font-normal'}`}
+        active ? 'text-main-blue font-medium' : 'text-grey-002'
+      }`}
       {...props}
     >
       {children}
