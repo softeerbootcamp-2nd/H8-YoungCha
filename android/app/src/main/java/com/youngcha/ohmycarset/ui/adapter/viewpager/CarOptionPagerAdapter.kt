@@ -36,6 +36,16 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
         this.currentType = currentType
         currentSelectedOptions = viewModel.isSelectedOptions(subOption!!) ?: listOf()
 
+        // 만약 현재 선택된 옵션이 없다면 0번째 옵션을 추가
+        if (currentSelectedOptions.isEmpty()) {
+            val firstOption = options.firstOrNull()
+            firstOption?.let {
+                if (optionType != OPTION_SELECTION) {
+                    viewModel.addCarComponents(viewModel.currentComponentName.value!!, it)
+                }
+            }
+        }
+
         if (animatedTabs[subOption]?.not() == true || animatedTabs[subOption] == null) {
             shouldAnimate = true
             animatedTabs[subOption] = true
@@ -68,7 +78,6 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
             layoutParams.setMargins(0, 0, 0, marginBottom)
             hyundaiButtonView.layoutParams = layoutParams
         }
-
         return ViewHolder(hyundaiButtonView)
     }
 
