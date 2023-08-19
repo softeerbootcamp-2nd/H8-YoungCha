@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import team.youngcha.domain.category.enums.SelectiveCategory;
+import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.sell.entity.Sell;
 
 import java.sql.ResultSet;
@@ -22,7 +22,7 @@ public class SellRepository {
     private final RowMapper<Sell> sellRowMapper = new SellRowMapper();
 
     public Map<Long, Long> countOptionsByTrimIdAndContainOptionsIds(Long trimId, List<Long> optionIds,
-                                                                    SelectiveCategory category) {
+                                                                    RequiredCategory category) {
         List<Map<String, Object>> results = querySellCounts(namedParameterJdbcTemplate, trimId,
                 optionIds, category);
 
@@ -35,7 +35,7 @@ public class SellRepository {
 
     private List<Map<String, Object>> querySellCounts(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                                                       Long trimId, List<Long> optionIds,
-                                                      SelectiveCategory category) {
+                                                      RequiredCategory category) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
         params.addValue("optionIds", optionIds);

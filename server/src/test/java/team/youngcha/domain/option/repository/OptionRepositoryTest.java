@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import team.youngcha.domain.category.enums.SelectiveCategory;
+import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.option.entity.Option;
 import team.youngcha.domain.option.enums.OptionType;
 
@@ -56,7 +56,7 @@ class OptionRepositoryTest {
 
         //when
         List<Option> powerTrains = optionRepository.
-                findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, SelectiveCategory.POWER_TRAIN);
+                findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, RequiredCategory.POWER_TRAIN);
 
         //then
         Option diesel = Option.builder()
@@ -81,8 +81,8 @@ class OptionRepositoryTest {
         @BeforeEach
         void setUp() {
             jdbcTemplate.update("insert into category (id, name) " +
-                    "values (1, '" + SelectiveCategory.EXTERIOR_COLOR.getName() + "')," +
-                    "(2, '" + SelectiveCategory.INTERIOR_COLOR.getName() + "')");
+                    "values (1, '" + RequiredCategory.EXTERIOR_COLOR.getName() + "')," +
+                    "(2, '" + RequiredCategory.INTERIOR_COLOR.getName() + "')");
             jdbcTemplate.update("insert into options (id, name, price, feedback_title, feedback_description, category_id) " +
                     "values (1,'blue', 0, 'blue feedback', 'blue description', 1)," + // 외장 색상
                     "(2,'black', 0, 'black feedback', 'black description', 1)," +

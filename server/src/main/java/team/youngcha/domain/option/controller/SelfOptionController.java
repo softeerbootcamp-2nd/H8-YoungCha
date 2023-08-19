@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.youngcha.common.dto.SuccessResponse;
-import team.youngcha.domain.category.enums.SelectiveCategory;
+import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.option.dto.FindSelfOptionResponse;
 import team.youngcha.domain.option.service.OptionService;
 
@@ -26,7 +26,7 @@ public class SelfOptionController {
     public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfPowerTrains(
             @PathVariable Long trimId
     ) {
-        return findSelfOptions(trimId, SelectiveCategory.POWER_TRAIN);
+        return findSelfOptions(trimId, RequiredCategory.POWER_TRAIN);
     }
 
     @Operation(summary = "구동 방식 셀프 모드 옵션 조회", description = "셀프 모드에서 구동 방식의 옵션을 판매량과 함께 조회합니다.")
@@ -34,7 +34,7 @@ public class SelfOptionController {
     public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfDrivingSystem(
             @PathVariable Long trimId
     ) {
-        return findSelfOptions(trimId, SelectiveCategory.DRIVING_SYSTEM);
+        return findSelfOptions(trimId, RequiredCategory.DRIVING_SYSTEM);
     }
 
     @Operation(summary = "바디 타입 셀프 모드 옵션 조회", description = "셀프 모드에서 바디 타입의 옵션을 판매량과 함께 조회합니다.")
@@ -43,7 +43,7 @@ public class SelfOptionController {
             @PathVariable Long trimId
     ) {
         List<FindSelfOptionResponse> findSelfOptionResponses = optionService
-                .findSelfOptions(trimId, SelectiveCategory.BODY_TYPE);
+                .findSelfOptions(trimId, RequiredCategory.BODY_TYPE);
         SuccessResponse<List<FindSelfOptionResponse>> successResponse = new SuccessResponse<>(findSelfOptionResponses);
         return ResponseEntity.ok(successResponse);
     }
@@ -53,7 +53,7 @@ public class SelfOptionController {
     public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfExteriorColor(
             @PathVariable Long trimId
     ) {
-        return findSelfOptions(trimId, SelectiveCategory.EXTERIOR_COLOR);
+        return findSelfOptions(trimId, RequiredCategory.EXTERIOR_COLOR);
     }
 
     @Operation(summary = "내장 색상 셀프 모드 옵션 조회", description = "셀프 모드에서 내장 색상의 옵션을 판매량과 함께 조회합니다.")
@@ -72,10 +72,10 @@ public class SelfOptionController {
     @Operation(summary = "휠 셀프 모드 옵션 조회", description = "셀프 모드에서 휠의 옵션을 판매량과 함께 조회합니다.")
     @GetMapping("/wheel")
     public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findWheel(@PathVariable Long trimId) {
-        return findSelfOptions(trimId, SelectiveCategory.WHEEL);
+        return findSelfOptions(trimId, RequiredCategory.WHEEL);
     }
 
-    private ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfOptions(Long trimId, SelectiveCategory category) {
+    private ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfOptions(Long trimId, RequiredCategory category) {
         List<FindSelfOptionResponse> findSelfOptionResponses = optionService.findSelfOptions(trimId, category);
         SuccessResponse<List<FindSelfOptionResponse>> successResponse = new SuccessResponse<>(findSelfOptionResponses);
         return ResponseEntity.ok(successResponse);

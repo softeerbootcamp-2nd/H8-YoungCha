@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import team.youngcha.common.exception.CustomException;
-import team.youngcha.domain.category.enums.SelectiveCategory;
+import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.estimate.repository.EstimateRepository;
 import team.youngcha.domain.keyword.dto.KeywordRate;
 import team.youngcha.domain.keyword.entity.Keyword;
@@ -37,7 +37,7 @@ public class OptionService {
     private final OptionImageRepository optionImageRepository;
     private final OptionDetailRepository optionDetailRepository;
 
-    public List<FindSelfOptionResponse> findSelfOptions(Long trimId, SelectiveCategory category) {
+    public List<FindSelfOptionResponse> findSelfOptions(Long trimId, RequiredCategory category) {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
         List<Option> options = optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, category);
@@ -51,10 +51,10 @@ public class OptionService {
         List<Option> options = optionRepository
                 .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
 
-        return buildSelfOptionResponses(trimId, options, SelectiveCategory.INTERIOR_COLOR);
+        return buildSelfOptionResponses(trimId, options, RequiredCategory.INTERIOR_COLOR);
     }
 
-    public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo, SelectiveCategory category) {
+    public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo, RequiredCategory category) {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
         List<Option> options = optionRepository
@@ -81,7 +81,7 @@ public class OptionService {
     }
 
     private List<FindSelfOptionResponse> buildSelfOptionResponses(Long trimId, List<Option> options,
-                                                                  SelectiveCategory category) {
+                                                                  RequiredCategory category) {
         List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
         Map<Long, Integer> sellRatio = getSellRatio(trimId, optionsIds, category);
         Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
@@ -90,7 +90,7 @@ public class OptionService {
         return getSortedSelfOptionResponses(options, sellRatio, optionImagesGroup, optionDetailsGroup);
     }
 
-    private Map<Long, Integer> getSellRatio(Long trimId, List<Long> optionsIds, SelectiveCategory category) {
+    private Map<Long, Integer> getSellRatio(Long trimId, List<Long> optionsIds, RequiredCategory category) {
         Map<Long, Long> optionCounts = sellRepository
                 .countOptionsByTrimIdAndContainOptionsIds(trimId, optionsIds, category);
         addMissingOptionIds(optionCounts, optionsIds);
@@ -98,7 +98,7 @@ public class OptionService {
     }
 
     private Map<Long, Integer> getSimilarityUsersRatio(Long trimId, List<Long> optionsIds,
-                                                       GuideInfo guideInfo, SelectiveCategory category) {
+                                                       GuideInfo guideInfo, RequiredCategory category) {
         Map<Long, Long> optionCounts = estimateRepository
                 .countOptionsSimilarityUsers(trimId, optionsIds, guideInfo, category);
         addMissingOptionIds(optionCounts, optionsIds);
@@ -149,7 +149,7 @@ public class OptionService {
     private Map<Long, List<KeywordRate>> findKeywordRateGroup(GuideInfo guideInfo,
                                                               Map<Long, List<Keyword>> optionIdKeywordGroup,
                                                               Long trimId,
-                                                              SelectiveCategory category) {
+                                                              RequiredCategory category) {
         Map<Long, List<KeywordRate>> keywordRateGroup = new HashMap<>();
 
         for (Long keywordId : guideInfo.getKeywordIds()) {

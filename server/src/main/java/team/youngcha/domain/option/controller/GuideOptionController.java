@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import team.youngcha.common.dto.SuccessResponse;
 import team.youngcha.common.enums.AgeRange;
 import team.youngcha.common.enums.Gender;
-import team.youngcha.domain.category.enums.SelectiveCategory;
+import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.option.dto.FindGuideOptionResponse;
 import team.youngcha.domain.option.dto.GuideInfo;
 import team.youngcha.domain.option.service.OptionService;
@@ -43,7 +43,7 @@ public class GuideOptionController {
     ) {
         GuideInfo guideInfo =
                 new GuideInfo(gender, ageRange, List.of(keyword1Id, keyword2Id, keyword3Id));
-        return findGuideOptions(trimId, guideInfo, SelectiveCategory.POWER_TRAIN);
+        return findGuideOptions(trimId, guideInfo, RequiredCategory.POWER_TRAIN);
     }
 
     @Operation(summary = "구동 방식 가이드 모드 옵션 조회",
@@ -65,7 +65,7 @@ public class GuideOptionController {
     ) {
         GuideInfo guideInfo =
                 new GuideInfo(gender, ageRange, List.of(keyword1Id, keyword2Id, keyword3Id));
-        return findGuideOptions(trimId, guideInfo, SelectiveCategory.DRIVING_SYSTEM);
+        return findGuideOptions(trimId, guideInfo, RequiredCategory.DRIVING_SYSTEM);
     }
 
     @Operation(summary = "바디 타입 가이드 모드 옵션 조회",
@@ -86,12 +86,12 @@ public class GuideOptionController {
             @RequestParam Long keyword3Id
     ) {
         GuideInfo guideInfo = new GuideInfo(gender, ageRange, List.of(keyword1Id, keyword2Id, keyword3Id));
-        return findGuideOptions(trimId, guideInfo, SelectiveCategory.BODY_TYPE);
+        return findGuideOptions(trimId, guideInfo, RequiredCategory.BODY_TYPE);
     }
 
     private ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findGuideOptions(Long trimId,
                                                                                             GuideInfo guideInfo,
-                                                                                            SelectiveCategory category) {
+                                                                                            RequiredCategory category) {
         List<FindGuideOptionResponse> findGuideOptionResponses = optionService
                 .findGuideOptions(trimId, guideInfo, category);
         SuccessResponse<List<FindGuideOptionResponse>> successResponse =

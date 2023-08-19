@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import team.youngcha.common.enums.AgeRange;
 import team.youngcha.common.enums.Gender;
 import team.youngcha.common.exception.CustomException;
-import team.youngcha.domain.category.enums.SelectiveCategory;
+import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.estimate.repository.EstimateRepository;
 import team.youngcha.domain.keyword.dto.KeywordRate;
 import team.youngcha.domain.keyword.entity.Keyword;
@@ -120,10 +120,10 @@ class OptionServiceTest {
             given(trimRepository.findById(trimId))
                     .willReturn(Optional.of(mock(Trim.class)));
             given(optionRepository.
-                    findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, SelectiveCategory.POWER_TRAIN))
+                    findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, RequiredCategory.POWER_TRAIN))
                     .willReturn(options);
             given(sellRepository.
-                    countOptionsByTrimIdAndContainOptionsIds(eq(trimId), anyList(), eq(SelectiveCategory.POWER_TRAIN)))
+                    countOptionsByTrimIdAndContainOptionsIds(eq(trimId), anyList(), eq(RequiredCategory.POWER_TRAIN)))
                     .willReturn(powerTrainCounts);
             given(optionImageRepository.findByContainOptionIds(anyList()))
                     .willReturn(optionImages);
@@ -132,7 +132,7 @@ class OptionServiceTest {
 
             //when
             List<FindSelfOptionResponse> powerTrainResponses = optionService.
-                    findSelfOptions(trimId, SelectiveCategory.POWER_TRAIN);
+                    findSelfOptions(trimId, RequiredCategory.POWER_TRAIN);
 
             //then
             FindSelfOptionResponse expected1 = new FindSelfOptionResponse(options.get(0), 0,
@@ -154,7 +154,7 @@ class OptionServiceTest {
 
             //when
             Throwable throwable = catchThrowable(() ->
-                    optionService.findSelfOptions(trimId, SelectiveCategory.POWER_TRAIN));
+                    optionService.findSelfOptions(trimId, RequiredCategory.POWER_TRAIN));
 
             //then
             assertThat(throwable).isInstanceOf(CustomException.class);
@@ -188,7 +188,7 @@ class OptionServiceTest {
                     .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId))
                     .willReturn(options);
             given(sellRepository
-                    .countOptionsByTrimIdAndContainOptionsIds(eq(trimId), anyList(), eq(SelectiveCategory.INTERIOR_COLOR)))
+                    .countOptionsByTrimIdAndContainOptionsIds(eq(trimId), anyList(), eq(RequiredCategory.INTERIOR_COLOR)))
                     .willReturn(powerTrainCounts);
             given(optionImageRepository.findByContainOptionIds(anyList()))
                     .willReturn(optionImages);
@@ -248,14 +248,14 @@ class OptionServiceTest {
             groupKeyword.put(2L, List.of(new Keyword(3L, "주행력")));
 
             mockedTrim(optionIds, optionImages, optionDetails, guideInfo, powerTrainCounts, groupKeyword);
-            given(estimateRepository.calculateRate(trimId, 1L, 1L, SelectiveCategory.POWER_TRAIN))
+            given(estimateRepository.calculateRate(trimId, 1L, 1L, RequiredCategory.POWER_TRAIN))
                     .willReturn(50);
             given(keywordRepository.findById(1L))
                     .willReturn(Optional.of(new Keyword(1L, "효율")));
 
             //when
             List<FindGuideOptionResponse> guideOptionResponses = optionService
-                    .findGuideOptions(trimId, guideInfo, SelectiveCategory.POWER_TRAIN);
+                    .findGuideOptions(trimId, guideInfo, RequiredCategory.POWER_TRAIN);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
@@ -304,14 +304,14 @@ class OptionServiceTest {
             int rate = 50;
 
             mockedTrim(optionIds, optionImages, optionDetails, guideInfo, powerTrainCounts, groupKeyword);
-            given(estimateRepository.calculateRate(trimId, 2L, 2L, SelectiveCategory.POWER_TRAIN))
+            given(estimateRepository.calculateRate(trimId, 2L, 2L, RequiredCategory.POWER_TRAIN))
                     .willReturn(rate);
             given(keywordRepository.findById(2L))
                     .willReturn(Optional.of(new Keyword(2L, "안전")));
 
             //when
             List<FindGuideOptionResponse> guideOptionResponses = optionService
-                    .findGuideOptions(trimId, guideInfo, SelectiveCategory.POWER_TRAIN);
+                    .findGuideOptions(trimId, guideInfo, RequiredCategory.POWER_TRAIN);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
@@ -361,7 +361,7 @@ class OptionServiceTest {
 
             //when
             List<FindGuideOptionResponse> guideOptionResponses = optionService
-                    .findGuideOptions(trimId, guideInfo, SelectiveCategory.POWER_TRAIN);
+                    .findGuideOptions(trimId, guideInfo, RequiredCategory.POWER_TRAIN);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
@@ -389,14 +389,14 @@ class OptionServiceTest {
                                 Map<Long, Long> powerTrainCounts, Map<Long, List<Keyword>> groupKeyword) {
             given(trimRepository.findById(trimId)).willReturn(Optional.of(mock(Trim.class)));
             given(optionRepository.
-                    findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, SelectiveCategory.POWER_TRAIN))
+                    findOptionsByTrimIdAndType(trimId, OptionType.REQUIRED, RequiredCategory.POWER_TRAIN))
                     .willReturn(List.of(diesel, gasoline));
             given(optionImageRepository.findByContainOptionIds(optionIds))
                     .willReturn(optionImages);
             given(optionDetailRepository.findWithSpecsByContainOptionIds(optionIds))
                     .willReturn(optionDetails);
             given(estimateRepository.countOptionsSimilarityUsers(trimId, optionIds,
-                    guideInfo, SelectiveCategory.POWER_TRAIN))
+                    guideInfo, RequiredCategory.POWER_TRAIN))
                     .willReturn(powerTrainCounts);
             given(keywordRepository.findByContainOptionIdsAndGroupKeywords(optionIds))
                     .willReturn(groupKeyword);
