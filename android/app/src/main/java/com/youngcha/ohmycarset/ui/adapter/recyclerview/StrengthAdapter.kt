@@ -2,20 +2,15 @@ package com.youngcha.ohmycarset.ui.adapter.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.PreliminariesShortButtonBinding
-import com.youngcha.ohmycarset.model.tag.Strength
+import com.youngcha.ohmycarset.model.tag.Tag
 import com.youngcha.ohmycarset.viewmodel.UserTagViewModel
 
-class StrengthAdapter(
-    private val viewModel: UserTagViewModel,
-    private val onItemClick: (Strength) -> Unit
-) :
+class StrengthAdapter(private val viewModel: UserTagViewModel) :
     RecyclerView.Adapter<StrengthAdapter.StrengthViewHolder>() {
 
-    var strengthList = emptyList<Strength>()
+    var strengthList = emptyList<Tag>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -23,34 +18,9 @@ class StrengthAdapter(
 
     inner class StrengthViewHolder(private val binding: PreliminariesShortButtonBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(pos: Int, strength: Strength) {
-            binding.tvData.text = strength.toString()
-
-            binding.root.setOnClickListener {
-                strength.isSelected = !strength.isSelected
-                notifyDataSetChanged()
-                onItemClick.invoke(strength)
-            }
-
-            if (strengthList[pos].isSelected) {
-                binding.vBackground.setBackgroundResource(R.drawable.btn_select_style)
-                binding.tvData.setTextColor(
-                    ContextCompat.getColor(
-                        itemView.context,
-                        R.color.cool_grey_black
-                    )
-                )
-                binding.ivSelect.setImageResource(R.drawable.ic_check_on)
-            } else {
-                binding.vBackground.setBackgroundResource(R.drawable.btn_unselect_style)
-                binding.tvData.setTextColor(
-                    ContextCompat.getColor(
-                        itemView.context,
-                        R.color.cool_grey_003
-                    )
-                )
-                binding.ivSelect.setImageResource(R.drawable.ic_check)
-            }
+        fun bind(tag: Tag) {
+            binding.tag=tag
+            binding.viewModel=viewModel
         }
     }
 
@@ -65,7 +35,7 @@ class StrengthAdapter(
     }
 
     override fun onBindViewHolder(holder: StrengthAdapter.StrengthViewHolder, position: Int) {
-        holder.bind(position, strengthList[position])
+        holder.bind(strengthList[position])
     }
 
     override fun getItemCount(): Int = strengthList.size
