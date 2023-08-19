@@ -2,6 +2,7 @@ package com.youngcha.ohmycarset.ui.adapter.binding
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.View.INVISIBLE
