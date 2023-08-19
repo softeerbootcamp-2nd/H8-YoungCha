@@ -20,6 +20,7 @@ import team.youngcha.domain.option.repository.OptionDetailRepository;
 import team.youngcha.domain.option.repository.OptionImageRepository;
 import team.youngcha.domain.option.repository.OptionRepository;
 import team.youngcha.domain.sell.repository.SellRepository;
+import team.youngcha.domain.sell.repository.SellSelectiveOptionRepository;
 import team.youngcha.domain.trim.repository.TrimRepository;
 
 import java.util.*;
@@ -36,6 +37,7 @@ public class OptionService {
     private final EstimateRepository estimateRepository;
     private final OptionImageRepository optionImageRepository;
     private final OptionDetailRepository optionDetailRepository;
+    private final SellSelectiveOptionRepository sellSelectiveOptionRepository;
 
     public List<FindSelfOptionResponse> findSelfRequiredOptions(Long trimId, RequiredCategory category) {
         trimRepository.findById(trimId)
@@ -52,6 +54,15 @@ public class OptionService {
                 .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
 
         return buildFindSelfRequiredOptionResponses(trimId, options, RequiredCategory.INTERIOR_COLOR);
+    }
+
+    public List<FindSelfOptionResponse> findSelfSelectiveOptions(Long trimId) {
+        trimRepository.findById(trimId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+
+        List<Option> options = optionRepository.findOptionsByTrimIdAndOptionType(trimId, OptionType.SELECTIVE);
+
+        return buildFindSelfSelectiveOptionResponses(trimId, options);
     }
 
     public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo, RequiredCategory category) {
@@ -83,17 +94,31 @@ public class OptionService {
     private List<FindSelfOptionResponse> buildFindSelfRequiredOptionResponses(Long trimId, List<Option> options,
                                                                               RequiredCategory category) {
         List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
-        Map<Long, Integer> sellRatio = getSellRatio(trimId, optionsIds, category);
+        Map<Long, Integer> sellRatio = getRequiredOptionSellRatio(trimId, optionsIds, category);
         Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
         Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsIds);
 
         return getSortedSelfOptionResponses(options, sellRatio, optionImagesGroup, optionDetailsGroup);
     }
 
-    private Map<Long, Integer> getSellRatio(Long trimId, List<Long> optionsIds, RequiredCategory category) {
+    private List<FindSelfOptionResponse> buildFindSelfSelectiveOptionResponses(Long trimId, List<Option> options) {
+        List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
+        Map<Long, Integer> sellRatio = getSelectiveOptionSellRatio(trimId, optionsIds);
+        Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
+        Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsIds);
+
+        return getSortedSelfOptionResponses(options, sellRatio, optionImagesGroup, optionDetailsGroup);
+    }
+
+    private Map<Long, Integer> getRequiredOptionSellRatio(Long trimId, List<Long> optionsIds, RequiredCategory category) {
         Map<Long, Long> optionCounts = sellRepository
                 .countOptionsByTrimIdAndContainOptionsIds(trimId, optionsIds, category);
         addMissingOptionIds(optionCounts, optionsIds);
+        return calculateOptionRatios(optionCounts);
+    }
+
+    private Map<Long, Integer> getSelectiveOptionSellRatio(Long trimId, List<Long> optionsIds) {
+        Map<Long, Long> optionCounts = sellSelectiveOptionRepository.countByOptionIdForTrim(trimId);
         return calculateOptionRatios(optionCounts);
     }
 
