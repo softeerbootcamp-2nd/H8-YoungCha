@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import team.youngcha.domain.category.enums.SelectiveCategory;
+import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.estimate.entity.Estimate;
 import team.youngcha.domain.option.dto.GuideInfo;
 
@@ -23,7 +23,7 @@ public class EstimateRepository {
     private final RowMapper<Estimate> estimateRowMapper = new EstimateRowMapper();
 
     public Map<Long, Long> countOptionsSimilarityUsers(Long trimId, List<Long> optionIds,
-                                                       GuideInfo guideInfo, SelectiveCategory category) {
+                                                       GuideInfo guideInfo, RequiredCategory category) {
         List<Map<String, Object>> results = queryCountSimilarityUser(namedParameterJdbcTemplate,
                 trimId, optionIds, guideInfo, category);
 
@@ -34,7 +34,7 @@ public class EstimateRepository {
                 ));
     }
 
-    public int calculateRate(Long trimId, Long optionId, Long keywordId, SelectiveCategory category) {
+    public int calculateRate(Long trimId, Long optionId, Long keywordId, RequiredCategory category) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
         params.addValue("keywordId", keywordId);
@@ -62,7 +62,7 @@ public class EstimateRepository {
 
     private List<Map<String, Object>> queryCountSimilarityUser(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                                                                Long trimId, List<Long> optionIds,
-                                                               GuideInfo guideInfo, SelectiveCategory category) {
+                                                               GuideInfo guideInfo, RequiredCategory category) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
         params.addValue("optionIds", optionIds);

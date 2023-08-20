@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import team.youngcha.domain.category.enums.SelectiveCategory;
+import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.option.dto.DefaultOptionSummary;
 import team.youngcha.domain.option.entity.Option;
 import team.youngcha.domain.option.enums.OptionType;
@@ -22,7 +22,7 @@ public class OptionRepository {
     private final RowMapper<Option> optionRowMapper = new OptionRowMapper();
     private final RowMapper<DefaultOptionSummary> defaultOptionSummaryRowMapper = new DefaultOptionSummaryRowMapper();
 
-    public List<Option> findOptionsByTrimIdAndType(Long trimId, OptionType type, SelectiveCategory name) {
+    public List<Option> findRequiredOptionsByTrimIdAndOptionType(Long trimId, OptionType type, RequiredCategory name) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("categoryName", name.getName());
         params.addValue("trimId", trimId);
@@ -37,9 +37,9 @@ public class OptionRepository {
 
     public List<Option> findInteriorColorsByTrimIdAndExteriorColorId(Long trimId, Long exteriorColorId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("categoryName", SelectiveCategory.INTERIOR_COLOR.getName());
+        params.addValue("categoryName", RequiredCategory.INTERIOR_COLOR.getName());
         params.addValue("trimId", trimId);
-        params.addValue("optionType", OptionType.OPTIONAL.getType());
+        params.addValue("optionType", OptionType.REQUIRED.getType());
         params.addValue("exteriorColorId", exteriorColorId);
 
         String baseQuery = "select options.id as id, options.name as name, options.price as price, " +
@@ -61,6 +61,20 @@ public class OptionRepository {
                     params, optionRowMapper);
         }
         return query;
+    }
+
+    public List<Option> findOptionsByTrimIdAndOptionType(Long trimId, OptionType type) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("trimId", trimId);
+        params.addValue("optionType", type.getType());
+
+        String sql = "SELECT * FROM options " +
+                "JOIN trim_options ON options.id = trim_options.options_id " +
+                "AND trim_options.trim_id = (:trimId) " +
+                "AND trim_options.type = (:optionType)";
+
+        return namedParameterJdbcTemplate.query(sql,
+                params, optionRowMapper);
     }
 
     private static class OptionRowMapper implements RowMapper<Option> {

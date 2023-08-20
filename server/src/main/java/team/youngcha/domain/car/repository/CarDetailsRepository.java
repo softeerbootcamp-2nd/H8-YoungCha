@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import team.youngcha.domain.car.dto.CarDetails;
-import team.youngcha.domain.category.enums.SelectiveCategory;
+import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.option.enums.OptionImageType;
 import team.youngcha.domain.option.enums.OptionType;
 
@@ -53,8 +53,8 @@ public class CarDetailsRepository {
         params.addValue("logo", OptionImageType.LOGO.getValue());
         params.addValue("carId", carId);
         params.addValue("mainOption", OptionType.CORE.getType());
-        params.addValue("exteriorColor", SelectiveCategory.EXTERIOR_COLOR.getName());
-        params.addValue("interiorColor", SelectiveCategory.INTERIOR_COLOR.getName());
+        params.addValue("exteriorColor", RequiredCategory.EXTERIOR_COLOR.getName());
+        params.addValue("interiorColor", RequiredCategory.INTERIOR_COLOR.getName());
         params.addValue("subImage", OptionImageType.SUB.getValue());
         params.addValue("iconImage", OptionImageType.ICON.getValue());
 

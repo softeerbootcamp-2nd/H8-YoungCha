@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import team.youngcha.common.exception.CustomException;
-import team.youngcha.domain.category.enums.SelectiveCategory;
+import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.estimate.repository.EstimateRepository;
 import team.youngcha.domain.keyword.dto.KeywordRate;
 import team.youngcha.domain.keyword.entity.Keyword;
@@ -20,6 +20,7 @@ import team.youngcha.domain.option.repository.OptionDetailRepository;
 import team.youngcha.domain.option.repository.OptionImageRepository;
 import team.youngcha.domain.option.repository.OptionRepository;
 import team.youngcha.domain.sell.repository.SellRepository;
+import team.youngcha.domain.sell.repository.SellSelectiveOptionRepository;
 import team.youngcha.domain.trim.repository.TrimRepository;
 
 import java.util.*;
@@ -36,13 +37,14 @@ public class OptionService {
     private final EstimateRepository estimateRepository;
     private final OptionImageRepository optionImageRepository;
     private final OptionDetailRepository optionDetailRepository;
+    private final SellSelectiveOptionRepository sellSelectiveOptionRepository;
 
-    public List<FindSelfOptionResponse> findSelfOptions(Long trimId, SelectiveCategory category) {
+    public List<FindSelfOptionResponse> findSelfRequiredOptions(Long trimId, RequiredCategory category) {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
-        List<Option> options = optionRepository.findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, category);
+        List<Option> options = optionRepository.findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, category);
 
-        return buildSelfOptionResponses(trimId, options, category);
+        return buildFindSelfRequiredOptionResponses(trimId, options, category);
     }
 
     public List<FindSelfOptionResponse> findSelfInteriorColors(Long trimId, Long exteriorColorId) {
@@ -51,14 +53,23 @@ public class OptionService {
         List<Option> options = optionRepository
                 .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
 
-        return buildSelfOptionResponses(trimId, options, SelectiveCategory.INTERIOR_COLOR);
+        return buildFindSelfRequiredOptionResponses(trimId, options, RequiredCategory.INTERIOR_COLOR);
     }
 
-    public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo, SelectiveCategory category) {
+    public List<FindSelfOptionResponse> findSelfSelectiveOptions(Long trimId) {
+        trimRepository.findById(trimId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+
+        List<Option> options = optionRepository.findOptionsByTrimIdAndOptionType(trimId, OptionType.SELECTIVE);
+
+        return buildFindSelfSelectiveOptionResponses(trimId, options);
+    }
+
+    public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo, RequiredCategory category) {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
         List<Option> options = optionRepository
-                .findOptionsByTrimIdAndType(trimId, OptionType.OPTIONAL, category);
+                .findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, category);
 
         List<Long> optionsId = options.stream().map(Option::getId).collect(Collectors.toList());
 
@@ -80,25 +91,40 @@ public class OptionService {
                 optionImagesGroup, optionDetailsGroup);
     }
 
-    private List<FindSelfOptionResponse> buildSelfOptionResponses(Long trimId, List<Option> options,
-                                                                  SelectiveCategory category) {
+    private List<FindSelfOptionResponse> buildFindSelfRequiredOptionResponses(Long trimId, List<Option> options,
+                                                                              RequiredCategory category) {
         List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
-        Map<Long, Integer> sellRatio = getSellRatio(trimId, optionsIds, category);
+        Map<Long, Integer> sellRatio = getRequiredOptionSellRatio(trimId, optionsIds, category);
         Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
         Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsIds);
 
         return getSortedSelfOptionResponses(options, sellRatio, optionImagesGroup, optionDetailsGroup);
     }
 
-    private Map<Long, Integer> getSellRatio(Long trimId, List<Long> optionsIds, SelectiveCategory category) {
+    private List<FindSelfOptionResponse> buildFindSelfSelectiveOptionResponses(Long trimId, List<Option> options) {
+        List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
+        Map<Long, Integer> sellRatio = getSelectiveOptionSellRatio(trimId, optionsIds);
+        Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
+        Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsIds);
+
+        return getSortedSelfOptionResponses(options, sellRatio, optionImagesGroup, optionDetailsGroup);
+    }
+
+    private Map<Long, Integer> getRequiredOptionSellRatio(Long trimId, List<Long> optionsIds, RequiredCategory category) {
         Map<Long, Long> optionCounts = sellRepository
                 .countOptionsByTrimIdAndContainOptionsIds(trimId, optionsIds, category);
         addMissingOptionIds(optionCounts, optionsIds);
         return calculateOptionRatios(optionCounts);
     }
 
+    private Map<Long, Integer> getSelectiveOptionSellRatio(Long trimId, List<Long> optionsIds) {
+        Map<Long, Long> optionCounts = sellSelectiveOptionRepository.countByOptionIdForTrim(trimId);
+        addMissingOptionIds(optionCounts, optionsIds);
+        return calculateOptionRatios(optionCounts);
+    }
+
     private Map<Long, Integer> getSimilarityUsersRatio(Long trimId, List<Long> optionsIds,
-                                                       GuideInfo guideInfo, SelectiveCategory category) {
+                                                       GuideInfo guideInfo, RequiredCategory category) {
         Map<Long, Long> optionCounts = estimateRepository
                 .countOptionsSimilarityUsers(trimId, optionsIds, guideInfo, category);
         addMissingOptionIds(optionCounts, optionsIds);
@@ -112,7 +138,7 @@ public class OptionService {
         for (Map.Entry<Long, Long> entry : optionCounts.entrySet()) {
             Long optionId = entry.getKey();
             Long count = entry.getValue();
-            double ratio = (double) count * 100 / total;
+            double ratio = total > 0? ((double) count * 100 / total) : 0L;
             optionRatios.put(optionId, Math.round((float) ratio));
         }
         return optionRatios;
@@ -129,8 +155,8 @@ public class OptionService {
     }
 
     private void addMissingOptionIds(Map<Long, Long> counts, List<Long> optionIds) {
-        for (Long engineId : optionIds) {
-            counts.putIfAbsent(engineId, 0L);
+        for (Long optionId : optionIds) {
+            counts.putIfAbsent(optionId, 0L);
         }
     }
 
@@ -149,7 +175,7 @@ public class OptionService {
     private Map<Long, List<KeywordRate>> findKeywordRateGroup(GuideInfo guideInfo,
                                                               Map<Long, List<Keyword>> optionIdKeywordGroup,
                                                               Long trimId,
-                                                              SelectiveCategory category) {
+                                                              RequiredCategory category) {
         Map<Long, List<KeywordRate>> keywordRateGroup = new HashMap<>();
 
         for (Long keywordId : guideInfo.getKeywordIds()) {
