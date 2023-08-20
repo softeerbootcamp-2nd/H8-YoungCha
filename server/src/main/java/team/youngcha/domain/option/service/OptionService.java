@@ -41,16 +41,16 @@ public class OptionService {
     private final SellSelectiveOptionRepository sellSelectiveOptionRepository;
 
     public List<FindSelfOptionResponse> findSelfRequiredOptions(Long trimId, RequiredCategory category) {
-        trimRepository.findById(trimId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+        verifyTrimId(trimId);
+
         List<Option> options = optionRepository.findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, category);
 
         return buildFindSelfRequiredOptionResponses(trimId, options, category);
     }
 
     public List<FindSelfOptionResponse> findSelfInteriorColors(Long trimId, Long exteriorColorId) {
-        trimRepository.findById(trimId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+        verifyTrimId(trimId);
+
         List<Option> options = optionRepository
                 .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
 
@@ -58,8 +58,7 @@ public class OptionService {
     }
 
     public List<FindSelfOptionResponse> findSelfSelectiveOptions(Long trimId) {
-        trimRepository.findById(trimId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+        verifyTrimId(trimId);
 
         List<Option> options = optionRepository.findOptionsByTrimIdAndOptionType(trimId, OptionType.SELECTIVE);
 
@@ -67,8 +66,8 @@ public class OptionService {
     }
 
     public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo, RequiredCategory category) {
-        trimRepository.findById(trimId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+        verifyTrimId(trimId);
+
         List<Option> options = optionRepository
                 .findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, category);
 
@@ -93,10 +92,9 @@ public class OptionService {
     }
 
     public List<FindGuideOptionResponse> findGuideModeExteriorColors(Long trimId, GuideInfo guideInfo) {
-        RequiredCategory category = RequiredCategory.EXTERIOR_COLOR;
+        verifyTrimId(trimId);
 
-        trimRepository.findById(trimId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+        RequiredCategory category = RequiredCategory.EXTERIOR_COLOR;
 
         List<Option> exteriorColors
                 = optionRepository.findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, RequiredCategory.EXTERIOR_COLOR);
@@ -210,7 +208,7 @@ public class OptionService {
         for (Map.Entry<Long, Long> entry : optionCounts.entrySet()) {
             Long optionId = entry.getKey();
             Long count = entry.getValue();
-            double ratio = total > 0? ((double) count * 100 / total) : 0L;
+            double ratio = total > 0 ? ((double) count * 100 / total) : 0L;
             optionRatios.put(optionId, Math.round((float) ratio));
         }
         return optionRatios;
@@ -372,5 +370,10 @@ public class OptionService {
         }
 
         return responses;
+    }
+
+    private void verifyTrimId(Long trimId) {
+        trimRepository.findById(trimId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
     }
 }
