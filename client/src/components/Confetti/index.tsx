@@ -9,7 +9,7 @@ import { Particle } from './particle';
 import { CircleParticle } from './circle-particle';
 
 interface ConfettiProps extends HTMLAttributes<HTMLCanvasElement> {
-  particlesCount?: number;
+  particleCount?: number;
   circleParticleCount?: number;
 }
 
@@ -19,7 +19,7 @@ const circleParticles: CircleParticle[] = [];
 
 function Confetti({
   className = '',
-  particlesCount = 0,
+  particleCount = 0,
   circleParticleCount = 0,
   ...props
 }: ConfettiProps) {
@@ -93,7 +93,7 @@ function Confetti({
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight - 108;
 
-    for (let i = 0; i < particlesCount; i++) {
+    for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle(canvas));
     }
     for (let i = 0; i < circleParticleCount; i++) {
