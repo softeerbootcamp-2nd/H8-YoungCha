@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import DetailOption from './DetailOption';
 import { mockBasicOptions } from '@/assets/mock/mock';
-import { BasicOptions } from '@/constant';
+import { BasicOptionsId } from '@/constant';
 import { BasicOptionFilterType } from '@/types';
 
 function DetailBasicOptionBox() {
@@ -10,8 +10,8 @@ function DetailBasicOptionBox() {
 
   function isSelectOption(categoryId: number) {
     return (
-      BasicOptions[selectedOptionFilter] === -1 ||
-      BasicOptions[selectedOptionFilter] === categoryId
+      BasicOptionsId[selectedOptionFilter] === -1 ||
+      BasicOptionsId[selectedOptionFilter] === categoryId
     );
   }
 
@@ -21,7 +21,7 @@ function DetailBasicOptionBox() {
         option={{ type: '기본 포함 품목', price: 0 }}
       ></DetailOption.Header>
       <DetailOption.Tabs
-        options={Object.keys(BasicOptions) as BasicOptionFilterType[]}
+        options={Object.keys(BasicOptionsId) as BasicOptionFilterType[]}
         selectedOption={selectedOptionFilter}
         onClick={(option) => setSelectedOptionFilter(option)}
       />

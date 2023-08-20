@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TrimType } from '@/assets/mock/mock.ts';
 import DetailCard from '@/components/MakingModeButton/DetailCard.tsx';
 import ChevronRight from '@/assets/icons/ChevronRight';
 import GuideModeDetailList from '@/components/MakingModeButton/GuideModeDetailList';
 import MainOptionList from '@/components/MakingModeButton/MainOptionList';
 import { getPriceTemplete } from '@/utils';
+import { TrimType } from '@/types';
 
 // TYPES
 export interface MakingModeButtonProps
-  extends Pick<TrimType, 'name' | 'hashtag' | 'minPrice' | 'description'> {
+  extends Pick<TrimType, 'name' | 'hashTag' | 'price' | 'description'> {
   children?: React.ReactNode;
   to: string;
 }
@@ -17,8 +17,8 @@ export interface MakingModeButtonProps
 function MakingModeButton({
   children,
   name = '',
-  hashtag = '#',
-  minPrice = 0,
+  hashTag = '#',
+  price = 0,
   description,
   to = '/#',
 }: MakingModeButtonProps) {
@@ -37,12 +37,10 @@ function MakingModeButton({
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="mb-8px">{hashtag}</div>
+          <div className="mb-8px">{hashTag}</div>
           <div className="title2 mb-16px">{name}</div>
           <div className="flex items-center justify-between">
-            <span className="opacity-80">
-              {getPriceTemplete(minPrice)} 부터
-            </span>
+            <span className="opacity-80">{getPriceTemplete(price)} 부터</span>
             <ChevronRight />
           </div>
         </button>

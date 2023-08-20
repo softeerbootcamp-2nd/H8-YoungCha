@@ -1,5 +1,4 @@
-import { TrimType } from '@/assets/mock/mock';
-import * as Icon from '../../assets/icons';
+import { TrimType } from '@/types';
 import OptionLayout from './OptionLayout';
 import { TITLE } from './constant';
 
@@ -10,14 +9,18 @@ interface ExteriorColorBoxProps {
 function ExteriorColorBox({ trims }: ExteriorColorBoxProps) {
   return (
     <OptionLayout title={TITLE.EXTERIR_COLOR}>
-      {trims.map(({ exteriorColor }, index) => (
+      {trims.map(({ exteriorColors }, index) => (
         <ul
           className="flex flex-col w-full gap-24px"
           key={`exterior-color-${index}`}
         >
-          {exteriorColor.map(({ code, name }) => (
+          {exteriorColors.map(({ imgUrl, name }) => (
             <li className="flex items-center gap-15px" key={name}>
-              <Icon.MainOutsideColor code={code} />
+              <img
+                src={imgUrl}
+                alt={name}
+                className="rounded-full w-20px h-20px"
+              />
               <p className="body2 text-grey-004">{name}</p>
             </li>
           ))}
