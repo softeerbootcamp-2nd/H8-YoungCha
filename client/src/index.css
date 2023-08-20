@@ -88,4 +88,12 @@
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
+
+  .bg-gradient-to-t-from-white-to-transparent {
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
 }

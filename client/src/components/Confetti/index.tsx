@@ -18,7 +18,7 @@ const confetti: Confetto[] = [];
 const sequins: Sequin[] = [];
 
 function Confetti({
-  className,
+  className = '',
   confettiCount = 0,
   sequinCount = 0,
   ...props
@@ -107,11 +107,13 @@ function Confetti({
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className={`absolute bottom-0 left-0 w-full pointer-events-none top-0 -z-10 ${className}`}
-      {...props}
-    />
+    <div className="absolute top-0 bottom-0 left-0 w-full pointer-events-none -z-10">
+      <canvas ref={canvasRef} className={`-z-0 ${className}`} {...props} />
+      <div className="absolute bottom-0 w-full h-1/2">
+        <div className="h-2/3 bg-gradient-to-t-from-white-to-transparent"></div>
+        <div className="bg-white h-1/3"></div>
+      </div>
+    </div>
   );
 }
 
