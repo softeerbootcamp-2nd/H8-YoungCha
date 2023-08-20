@@ -16,6 +16,7 @@ services:
       - "8080:8080"
     depends_on:
       - mysql
+      - redis
     networks:
       - local
 
@@ -37,6 +38,13 @@ services:
       - --collation-server=utf8mb4_unicode_ci
     networks:
       - local
+
+  redis:
+    container_name: redis
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
 
 networks:
   local:
