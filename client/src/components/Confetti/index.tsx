@@ -9,17 +9,17 @@ import { Particle } from './particle';
 import { CircleParticle } from './circle-particle';
 
 interface ConfettiProps extends HTMLAttributes<HTMLCanvasElement> {
-  confettiCount?: number;
+  particlesCount?: number;
   circlePrticleCount?: number;
 }
 
 // Canvas에 그릴 Particle/CircleParticle objects를 저장하는 배열
-const confetti: Particle[] = [];
+const particles: Particle[] = [];
 const circlePrticles: CircleParticle[] = [];
 
 function Confetti({
   className = '',
-  confettiCount = 0,
+  particlesCount = 0,
   circlePrticleCount = 0,
   ...props
 }: ConfettiProps) {
@@ -34,7 +34,7 @@ function Confetti({
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    confetti.forEach((particle) => {
+    particles.forEach((particle) => {
       const width = particle.dimensions.x * particle.scale.x;
       const height = particle.dimensions.y * particle.scale.y;
 
@@ -77,8 +77,8 @@ function Confetti({
 
     // 화면에서 떨어진 Praticle들을 제거
     // Praticle들을 제거하는 작업은 flickering을 방지하기 위해 따로 해야 함
-    confetti.forEach((particle, index) => {
-      if (particle.position.y >= canvas.height) confetti.splice(index, 1);
+    particles.forEach((particle, index) => {
+      if (particle.position.y >= canvas.height) particles.splice(index, 1);
     });
     circlePrticles.forEach((circlePrticle, index) => {
       if (circlePrticle.position.y >= canvas.height)
@@ -93,8 +93,8 @@ function Confetti({
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight - 108;
 
-    for (let i = 0; i < confettiCount; i++) {
-      confetti.push(new Particle(canvas));
+    for (let i = 0; i < particlesCount; i++) {
+      particles.push(new Particle(canvas));
     }
     for (let i = 0; i < circlePrticleCount; i++) {
       circlePrticles.push(new CircleParticle(canvas));
