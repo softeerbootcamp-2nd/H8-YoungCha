@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TrimType } from '@/assets/mock/mock.ts';
 import DetailCard from '@/components/MakingModeButton/DetailCard.tsx';
 import ChevronRight from '@/assets/icons/ChevronRight';
 import GuideModeDetailList from '@/components/MakingModeButton/GuideModeDetailList';
 import MainOptionList from '@/components/MakingModeButton/MainOptionList';
 import { getPriceTemplete } from '@/utils';
+import { TrimType } from '@/types';
 
 // TYPES
 export interface MakingModeButtonProps

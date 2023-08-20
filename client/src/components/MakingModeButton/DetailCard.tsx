@@ -1,4 +1,5 @@
-import { TrimType } from '@/assets/mock/mock.ts';
+import { TrimType } from '@/types';
+
 interface DetailCardProps extends Pick<TrimType, 'name' | 'description'> {
   children?: React.ReactNode;
 }
