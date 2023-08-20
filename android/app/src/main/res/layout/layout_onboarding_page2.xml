@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+
+    <TextView
+        android:id="@+id/on_boarding_step_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/hyundai_sans_head_kr_otf_bold"
+        android:text="@string/on_boarding_step_one"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/on_boarding_step_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hyundai_sans_head_kr_light"
+        android:text="@string/on_boarding_step_total"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toBottomOf="@id/on_boarding_step_one"
+        app:layout_constraintStart_toEndOf="@id/on_boarding_step_one"
+        app:layout_constraintTop_toTopOf="@id/on_boarding_step_one" />
+
+    <TextView
+        android:id="@+id/tv_main_script1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/hyundai_sans_head_kr_light"
+        android:text="@string/on_boarding_page2_main_text"
+        android:textColor="@color/cool_grey_black"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_sub_script"
+        app:layout_constraintTop_toBottomOf="@id/on_boarding_step_one" />
+
+    <TextView
+        android:id="@+id/tv_main_script2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/hyundai_sans_head_kr_otf_bold"
+        android:text="@string/use_guidemode"
+        android:textColor="@color/cool_grey_black"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_sub_script"
+        app:layout_constraintTop_toBottomOf="@id/tv_main_script1" />
+
+
+    <TextView
+        android:id="@+id/tv_sub_script"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/hyundai_sans_text_kr_regular"
+        android:lineSpacingMultiplier="1.5"
+        android:text="@string/on_boarding_page2_sub_text"
+        android:textColor="@color/cool_grey_003"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_main_script2" />
+
+    <ImageView
+        android:id="@+id/iv_onboarding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:contentDescription="@string/onboarding_image"
+        android:src="@drawable/img_onboarding_guide_mode"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="13dp"
+        android:background="@drawable/btn_main_style"
+        android:fontFamily="@font/hyundai_sans_text_kr_regular"
+        android:text="@string/on_boarding_page2_btn_next"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

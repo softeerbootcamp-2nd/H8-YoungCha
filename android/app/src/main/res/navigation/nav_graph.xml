@@ -3,37 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/onboardingPage1">
-
-    <fragment
-        android:id="@+id/onboardingPage1"
-        android:name="com.youngcha.ohmycarset.ui.fragment.OnBoardingFirstFragment"
-        android:label="fragment_onboarding_page1"
-        tools:layout="@layout/fragment_onboarding_page1">
-        <action
-            android:id="@+id/action_onboardingPage1_to_onboardingPage2"
-            app:destination="@id/onboardingPage2" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/onboardingPage2"
-        android:name="com.youngcha.ohmycarset.ui.fragment.OnBoardingSecondFragment"
-        android:label="fragment_onboarding_page2"
-        tools:layout="@layout/fragment_onboarding_page2">
-        <action
-            android:id="@+id/action_onboardingPage2_to_onboardingPage3"
-            app:destination="@id/onboardingPage3" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/onboardingPage3"
-        android:name="com.youngcha.ohmycarset.ui.fragment.OnBoardingThirdFragment"
-        android:label="fragment_onboarding_page3"
-        tools:layout="@layout/fragment_onboarding_page3">
-        <action
-            android:id="@+id/action_onboardingPage3_to_trimSelectFragment2"
-            app:destination="@id/trimSelectFragment" />
-    </fragment>
+    app:startDestination="@id/onBoardingFragment">
 
     <fragment
         android:id="@+id/trimSelectFragment"
@@ -51,5 +21,13 @@
         android:label="fragment_make_car_self_mode"
         tools:layout="@layout/fragment_car_customization">
 
+    </fragment>
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.OnBoardingFragment"
+        android:label="OnBoardingFragment" >
+        <action
+            android:id="@+id/action_onBoardingFragment_to_trimSelectFragment"
+            app:destination="@id/trimSelectFragment" />
     </fragment>
 </navigation>
