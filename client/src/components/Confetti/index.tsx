@@ -10,17 +10,17 @@ import { CircleParticle } from './circle-particle';
 
 interface ConfettiProps extends HTMLAttributes<HTMLCanvasElement> {
   particlesCount?: number;
-  circlePrticleCount?: number;
+  circleParticleCount?: number;
 }
 
 // Canvas에 그릴 Particle/CircleParticle objects를 저장하는 배열
 const particles: Particle[] = [];
-const circlePrticles: CircleParticle[] = [];
+const circleParticles: CircleParticle[] = [];
 
 function Confetti({
   className = '',
   particlesCount = 0,
-  circlePrticleCount = 0,
+  circleParticleCount = 0,
   ...props
 }: ConfettiProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -56,19 +56,19 @@ function Confetti({
       ctx.setTransform(1, 0, 0, 1, 0, 0);
     });
 
-    circlePrticles.forEach((circlePrticle) => {
-      // 캔버스에서 circlePrticle의 위치를 설정
-      ctx.translate(circlePrticle.position.x, circlePrticle.position.y);
+    circleParticles.forEach((circleParticle) => {
+      // 캔버스에서 circleParticle의 위치를 설정
+      ctx.translate(circleParticle.position.x, circleParticle.position.y);
 
-      // circlePrticle의 위치, 회전, 속도, 크기를 업데이트
-      circlePrticle.update();
+      // circleParticle의 위치, 회전, 속도, 크기를 업데이트
+      circleParticle.update();
 
-      // circlePrticle의 색상을 설정
-      ctx.fillStyle = circlePrticle.color;
+      // circleParticle의 색상을 설정
+      ctx.fillStyle = circleParticle.color;
 
-      // circlePrticle을 그리기
+      // circleParticle을 그리기
       ctx.beginPath();
-      ctx.arc(0, 0, circlePrticle.radius, 0, 2 * Math.PI);
+      ctx.arc(0, 0, circleParticle.radius, 0, 2 * Math.PI);
       ctx.fill();
 
       // transform matrix를 초기화
@@ -80,9 +80,9 @@ function Confetti({
     particles.forEach((particle, index) => {
       if (particle.position.y >= canvas.height) particles.splice(index, 1);
     });
-    circlePrticles.forEach((circlePrticle, index) => {
-      if (circlePrticle.position.y >= canvas.height)
-        circlePrticles.splice(index, 1);
+    circleParticles.forEach((circleParticle, index) => {
+      if (circleParticle.position.y >= canvas.height)
+        circleParticles.splice(index, 1);
     });
 
     setAnimationID(requestAnimationFrame(animate));
@@ -96,8 +96,8 @@ function Confetti({
     for (let i = 0; i < particlesCount; i++) {
       particles.push(new Particle(canvas));
     }
-    for (let i = 0; i < circlePrticleCount; i++) {
-      circlePrticles.push(new CircleParticle(canvas));
+    for (let i = 0; i < circleParticleCount; i++) {
+      circleParticles.push(new CircleParticle(canvas));
     }
 
     animate();
