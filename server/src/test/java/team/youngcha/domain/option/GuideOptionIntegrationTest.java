@@ -47,8 +47,8 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
                 "(4, 2, 2, 5, 3, 1, 1, 1, 1, 2, 3, 3, 1, '2023-01-01 12:12:12')," +
                 "(5, 2, 2, 5, 3, 1, 1, 1, 1, 2, 3, 3, 1, '2023-01-01 12:12:12')," +
                 "(6, 2, 2, 5, 3, 1, 1, 1, 1, 2, 4, 3, 1, '2023-01-01 12:12:12')," + // 유사 사용자 x
-                "(7, 2, 3, 6, 3, 1, 1, 1, 1, 2, 3, 3, 0, '2023-01-01 12:12:12')," + // 조회 되지 않아야 하는 데이터
-                "(8, 3, 2, 6, 3, 1, 1, 1, 1, 2, 3, 3, 1, '2023-01-01 12:12:12')," + // 조회 되지 않아야 하는 데이터
+                "(7, 2, 3, 6, 3, 1, 1, 1, 1, 2, 3, 3, 0, '2023-01-01 12:12:12')," +
+                "(8, 3, 2, 6, 3, 1, 1, 1, 1, 2, 3, 3, 1, '2023-01-01 12:12:12')," + // 조회 되지 않아야 하는 데이터(다른 트림)
                 "(9, 2, 2, 6, 3, 1, 1, 1, 1, 3, 4, 2, 1, '2023-01-01 12:12:12')"); // 유사 사용자 x
     }
 
@@ -96,7 +96,7 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
         FindOptionDetailResponse dieselDetail = FindOptionDetailResponse.builder()
                 .description("강력한 토크와 탁월한 효율로 여유있는 파워와 높은 연비를 제공하는 디젤엔진입니다.")
                 .specs(List.of(dieselSpec1, dieselSpec2)).build();
-        KeywordRate tag = new KeywordRate(83, "소음");
+        KeywordRate tag = new KeywordRate(71, "소음");
 
         FindGuideOptionResponse optionResponse1 = FindGuideOptionResponse.builder()
                 .id(1L).rate(20).price(1_480_000)
@@ -154,7 +154,7 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
                 .feedbackTitle("4WD는 파워풀해요!")
                 .feedbackDescription("힘있는 주행을 원하신다면, 탁월한 선택입니다.")
                 .name("4WD").checked(true)
-                .tags(List.of(new KeywordRate(100, "주행력")))
+                .tags(List.of(new KeywordRate(12, "주행력")))
                 .images(List.of(wd4Image))
                 .details(List.of(wd4Detail)).build();
 
