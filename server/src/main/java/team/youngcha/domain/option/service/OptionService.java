@@ -145,7 +145,7 @@ public class OptionService {
                 .collect(Collectors.toList());
 
         // 기본 휠 옵션을 응답에 포함
-        if(!responseWheelIds.contains(defaultWheel.getId())) {
+        if (!responseWheelIds.contains(defaultWheel.getId())) {
             responseWheelIds.add(defaultWheel.getId());
         }
 
@@ -180,51 +180,45 @@ public class OptionService {
     }
 
     private Option getDefaultWheel() {
-        String defaultWheelName = "20인치 알로이 휠";
-
-        return optionRepository.findByName(defaultWheelName)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "조회 실패"));
+        return findOptionByName("20인치 알로이 휠");
     }
 
     private String getRecommendedWheelName(Long trimId, Long exteriorColorId, List<Long> userSelectedKeywordIds) {
-        String defaultWheelName = "20인치 알로이 휠";
-        String alconWheelName = "알콘(alcon) 단조 브레이크 & 20인치 휠 패키지";
-        String darkSputteringWheelName = "20인치 다크 스퍼터링 휠";
-        String blacktoneWheelName = "20인치 블랙톤 전면 가공 휠";
-
-        Map<String, Long> keywords = new HashMap<>();
-        for (Keyword keyword : keywordRepository.findAll()) {
-            keywords.put(keyword.getName(), keyword.getId());
-        }
+        Map<String, Long> keywords = keywordRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(Keyword::getName, Keyword::getId));
 
         if (userSelectedKeywordIds.contains(keywords.get(KeywordName.DESIGN.getName()))) {
             if (userSelectedKeywordIds.contains(keywords.get(KeywordName.DRIVING_PERFORMANCE.getName())) ||
                     userSelectedKeywordIds.contains(keywords.get(KeywordName.SAFETY.getName()))) {
-                return alconWheelName;
+                return "알콘(alcon) 단조 브레이크 & 20인치 휠 패키지";
             }
 
-            Option darkSputteringWheel = optionRepository.findByName(darkSputteringWheelName)
-                    .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "조회 실패"));
-
-            Option blacktoneWheel = optionRepository.findByName(blacktoneWheelName)
-                    .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "조회 실패"));
-
-            List<Long> wheelIds = List.of(darkSputteringWheel.getId(), blacktoneWheel.getId());
-
-            Map<Long, Long> sellCounts = sellRepository
-                    .countByTrimIdAndExteriorColorForWheels(trimId, exteriorColorId, wheelIds);
-
-            Long darkSputteringWheelSellCount = sellCounts.get(darkSputteringWheel.getId());
-            Long blackToneWheelSellCount = sellCounts.get(blacktoneWheel.getId());
-
-            if (darkSputteringWheelSellCount > blackToneWheelSellCount) {
-                return darkSputteringWheelName;
-            }
-
-            return blacktoneWheelName;
+            return getRecommendedWheelNameBySellCount(trimId, exteriorColorId);
         }
 
-        return defaultWheelName;
+        return "20인치 알로이 휠";
+    }
+
+    private String getRecommendedWheelNameBySellCount(Long trimId, Long exteriorColorId) {
+        Option darkSputteringWheel = findOptionByName("20인치 다크 스퍼터링 휠");
+        Option blacktoneWheel = findOptionByName("20인치 블랙톤 전면 가공 휠");
+
+        Map<Long, Long> sellCounts = sellRepository.countByTrimIdAndExteriorColorForWheels(
+                trimId,
+                exteriorColorId,
+                List.of(darkSputteringWheel.getId(), blacktoneWheel.getId())
+        );
+
+        if (sellCounts.get(darkSputteringWheel.getId()) > sellCounts.get(blacktoneWheel.getId())) {
+            return darkSputteringWheel.getName();
+        }
+        return blacktoneWheel.getName();
+    }
+
+    private Option findOptionByName(String optionName) {
+        return optionRepository.findByName(optionName)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "옵션 조회 실패: " + optionName));
     }
 
     private List<FindGuideOptionResponse> getFindGuideColorOptionResponse(Long trimId, GuideInfo guideInfo, RequiredCategory category, List<Option> options) {
