@@ -48,8 +48,8 @@ function SelectOptionPage({ path }: SelectOptionPageProps) {
 function SelectOptionMessage({ step }: SelectOptionMessageProps) {
   return (
     <div className="font-hsans-head text-24px tracking-[-0.96px] mt-70px mb-30px ml-32px">
-      <strong className="font-medium">{OPTION_ORDER[step - 1]}</strong>
-      <span className="font-normal">을 선택해주세요.</span>
+      <span className="font-medium">{OPTION_ORDER[step - 1]}</span>
+      <span>을 선택해주세요.</span>
     </div>
   );
 }
