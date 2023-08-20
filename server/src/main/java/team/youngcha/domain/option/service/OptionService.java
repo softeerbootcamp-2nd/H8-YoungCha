@@ -106,8 +106,7 @@ public class OptionService {
     public List<FindGuideOptionResponse> findGuideModeInteriorColors(Long trimId, GuideInfo guideInfo, Long exteriorColorId) {
         RequiredCategory category = RequiredCategory.INTERIOR_COLOR;
 
-        trimRepository.findById(trimId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+        verifyTrimId(trimId);
 
         List<Option> interiorColors
                 = optionRepository.findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
