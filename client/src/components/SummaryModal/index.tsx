@@ -25,24 +25,25 @@ interface OptionProps extends HTMLAttributes<HTMLDivElement> {
 
 function SummaryModal({ render, onClose }: SummaryModalProps) {
   return (
-    <Transition
-      className="absolute bottom-0 z-10 flex items-center justify-center transform"
-      render={render}
-      from="translate-y-full opacity-0"
-      to="translate-y-0 opacity-100"
-      unmount
-    >
-      <div className="bg-white w-375px rounded-t-6px border-2px border-grey-001 drop-shadow-lg max-h-560px">
-        <div className="flex justify-end px-16px pt-16px">
+    <div className="relative h-0 select-none">
+      <Transition
+        className="absolute bottom-0 z-10 left-16px right-16px transform-gpu max-h-[calc(100vh-256px)] bg-white rounded-t-6px border-x-2px border-t-2px border-grey-001 drop-shadow-lg"
+        render={render}
+        from="translate-y-full opacity-0"
+        to="translate-y-0 opacity-100"
+        unmount
+      >
+        <div className="flex items-center justify-between px-20px py-16px">
+          <h3 className="font-medium text-main-blue title3">
+            {ESTIMATION_SUMMARY}
+          </h3>
           <button onClick={onClose}>
             <Close className="fill-grey-003" />
           </button>
         </div>
-        <div className="flex flex-col gap-y-16px">
-          <div className="flex items-center justify-between text-main-blue px-20px py-10px">
-            <h1 className="title3">{ESTIMATION_SUMMARY}</h1>
-          </div>
-          <div className="overflow-y-scroll max-h-360px mb-90px">
+
+        <div className="max-h-[calc(100vh-312px)] overflow-y-auto">
+          <div className="flex flex-col h-full">
             {Object.values(mockUserSelectedOptionData).map((optionGroup) => {
               const { title, options } = optionGroup as OptionGroupType;
               const totalPrice = Object.values(options).reduce(
@@ -73,14 +74,14 @@ function SummaryModal({ render, onClose }: SummaryModalProps) {
             })}
           </div>
         </div>
-      </div>
-    </Transition>
+      </Transition>
+    </div>
   );
 }
 
 function OptionTitle({ title, price }: OptionTitleProps) {
   return (
-    <div className="flex items-center justify-between text-main-blue bg-grey-001 px-20px pt-10px pb-8px title4">
+    <div className="flex items-center justify-between font-medium text-main-blue bg-grey-001 px-20px pt-10px pb-8px title4">
       <div>{title}</div>
       <div>{getPriceTemplete(price, true)}</div>
     </div>
