@@ -1,98 +1,56 @@
 // TODO: 실제 데이터로 변경
 
 import { UserSelectedOptionDataType } from '@/pages/making/type';
-
-export interface MainOptionType {
-  imgUrl: string;
-  description: string;
-}
-
-export interface ExteriorColorType {
-  code: string;
-  name: string;
-}
-
-export interface InternalColorType {
-  url: string;
-  name: string;
-}
-
-export interface TrimType {
-  id: number;
-  name: string;
-  backgroundImgUrl: string;
-  imgUrl: string;
-  hashtag: string;
-  description: string;
-  isBest: boolean;
-  minPrice: number;
-  mainOptions: MainOptionType[];
-  exteriorColor: ExteriorColorType[];
-  internalColor: InternalColorType[];
-}
-
-export interface BasicOptionType {
-  first: boolean;
-  last: boolean;
-  totalElements: number;
-  totalPages: number;
-  contents: [
-    {
-      name: string;
-      categoryId: number;
-      imgUrl: string;
-    },
-  ];
-}
+import { BasicOptionType, TrimType } from '@/types';
 
 export const mockLeblanc: TrimType = {
   id: 1,
   name: 'LeBlanc',
   backgroundImgUrl: '/src/assets/mock/images/main-background-car.png',
   imgUrl: '/src/assets/mock/images/palisade.png',
-  hashtag: '#베스트셀러',
+  hashTag: '#베스트셀러',
   description: '모두가 선택한 베스트셀러',
-  isBest: true,
-  minPrice: 10000000,
+  best: true,
+  price: 10000000,
   mainOptions: [
     {
       imgUrl: '/src/assets/mock/icons/main-navigation-option.svg',
-      description: '20인치\n 알로이 휠',
+      name: '20인치\n 알로이 휠',
     },
     {
       imgUrl: '/src/assets/mock/icons/main-navigation-option.svg',
-      description: '20인치\n 알로이 휠',
+      name: '20인치\n 알로이 휠',
     },
     {
       imgUrl: '/src/assets/mock/icons/main-navigation-option.svg',
-      description: '20인치\n 알로이 휠',
+      name: '20인치\n 알로이 휠',
     },
   ],
-  exteriorColor: [
+  exteriorColors: [
     {
-      code: '#ffffff',
+      imgUrl: '#ffffff',
       name: '펄화이트',
     },
     {
-      code: '#000000',
+      imgUrl: '#000000',
       name: '펄블랙',
     },
     {
-      code: '#ff0000',
+      imgUrl: '#ff0000',
       name: '펄레드',
     },
   ],
-  internalColor: [
+  interiorColors: [
     {
-      url: '/src/assets/mock/images/black-leather.png',
+      imgUrl: '/src/assets/mock/images/black-leather.png',
       name: '블랙',
     },
     {
-      url: '/src/assets/mock/images/black-leather.png',
+      imgUrl: '/src/assets/mock/images/black-leather.png',
       name: '블랙',
     },
     {
-      url: '/src/assets/mock/images/black-leather.png',
+      imgUrl: '/src/assets/mock/images/black-leather.png',
       name: '블랙',
     },
   ],
