@@ -73,7 +73,7 @@ function ProgressItem({
 function SelectedBar({ active, length }: SelectedBarProps) {
   return (
     <span
-      className="z-10 flex text-center duration-300 ease-in-out bg-main-blue h-2px"
+      className="z-10 flex text-center duration-300 ease-in-out bg-main-blue h-2px -mb-2px"
       style={{
         width: `${100 / length}%`,
         transform: `translateX(${active * 100}%)`,
