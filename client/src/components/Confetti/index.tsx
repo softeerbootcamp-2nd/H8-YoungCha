@@ -5,22 +5,22 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Confetto } from './confetto';
-import { Sequin } from './sequin';
+import { Particle } from './particle';
+import { CircleParticle } from './circle-particle';
 
 interface ConfettiProps extends HTMLAttributes<HTMLCanvasElement> {
   confettiCount?: number;
-  sequinCount?: number;
+  circlePrticleCount?: number;
 }
 
-// Canvas에 그릴 Confetto/Sequin objects를 저장하는 배열
-const confetti: Confetto[] = [];
-const sequins: Sequin[] = [];
+// Canvas에 그릴 Particle/CircleParticle objects를 저장하는 배열
+const confetti: Particle[] = [];
+const circlePrticles: CircleParticle[] = [];
 
 function Confetti({
   className = '',
   confettiCount = 0,
-  sequinCount = 0,
+  circlePrticleCount = 0,
   ...props
 }: ConfettiProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -34,54 +34,55 @@ function Confetti({
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    confetti.forEach((confetto) => {
-      const width = confetto.dimensions.x * confetto.scale.x;
-      const height = confetto.dimensions.y * confetto.scale.y;
+    confetti.forEach((particle) => {
+      const width = particle.dimensions.x * particle.scale.x;
+      const height = particle.dimensions.y * particle.scale.y;
 
-      // 캔버스에서 confetto의 위치와 회전을 설정
-      ctx.translate(confetto.position.x, confetto.position.y);
-      ctx.rotate(confetto.rotation);
+      // 캔버스에서 particle의 위치와 회전을 설정
+      ctx.translate(particle.position.x, particle.position.y);
+      ctx.rotate(particle.rotation);
 
-      // confetto의 위치, 회전, 속도, 크기를 업데이트
-      confetto.update();
+      // particle의 위치, 회전, 속도, 크기를 업데이트
+      particle.update();
 
-      // confetto의 색상을 설정
+      // particle의 색상을 설정
       ctx.fillStyle =
-        confetto.scale.y > 0 ? confetto.color.front : confetto.color.back;
+        particle.scale.y > 0 ? particle.color.front : particle.color.back;
 
-      // confetto를 그리기
+      // particle를 그리기
       ctx.fillRect(-width / 2, -height / 2, width, height);
 
       // transform matrix를 초기화
       ctx.setTransform(1, 0, 0, 1, 0, 0);
     });
 
-    sequins.forEach((sequin) => {
-      // 캔버스에서 sequin의 위치를 설정
-      ctx.translate(sequin.position.x, sequin.position.y);
+    circlePrticles.forEach((circlePrticle) => {
+      // 캔버스에서 circlePrticle의 위치를 설정
+      ctx.translate(circlePrticle.position.x, circlePrticle.position.y);
 
-      // sequin의 위치, 회전, 속도, 크기를 업데이트
-      sequin.update();
+      // circlePrticle의 위치, 회전, 속도, 크기를 업데이트
+      circlePrticle.update();
 
-      // sequin의 색상을 설정
-      ctx.fillStyle = sequin.color;
+      // circlePrticle의 색상을 설정
+      ctx.fillStyle = circlePrticle.color;
 
-      // sequin을 그리기
+      // circlePrticle을 그리기
       ctx.beginPath();
-      ctx.arc(0, 0, sequin.radius, 0, 2 * Math.PI);
+      ctx.arc(0, 0, circlePrticle.radius, 0, 2 * Math.PI);
       ctx.fill();
 
       // transform matrix를 초기화
       ctx.setTransform(1, 0, 0, 1, 0, 0);
     });
 
-    // 화면에서 떨어진 confetti와 sequin을 제거
-    // confetti와 sequin을 제거하는 작업은 flickering을 방지하기 위해 따로 해야 함
-    confetti.forEach((confetto, index) => {
-      if (confetto.position.y >= canvas.height) confetti.splice(index, 1);
+    // 화면에서 떨어진 Praticle들을 제거
+    // Praticle들을 제거하는 작업은 flickering을 방지하기 위해 따로 해야 함
+    confetti.forEach((particle, index) => {
+      if (particle.position.y >= canvas.height) confetti.splice(index, 1);
     });
-    sequins.forEach((sequin, index) => {
-      if (sequin.position.y >= canvas.height) sequins.splice(index, 1);
+    circlePrticles.forEach((circlePrticle, index) => {
+      if (circlePrticle.position.y >= canvas.height)
+        circlePrticles.splice(index, 1);
     });
 
     setAnimationID(requestAnimationFrame(animate));
@@ -93,10 +94,10 @@ function Confetti({
     canvas.height = window.innerHeight - 108;
 
     for (let i = 0; i < confettiCount; i++) {
-      confetti.push(new Confetto(canvas));
+      confetti.push(new Particle(canvas));
     }
-    for (let i = 0; i < sequinCount; i++) {
-      sequins.push(new Sequin(canvas));
+    for (let i = 0; i < circlePrticleCount; i++) {
+      circlePrticles.push(new CircleParticle(canvas));
     }
 
     animate();

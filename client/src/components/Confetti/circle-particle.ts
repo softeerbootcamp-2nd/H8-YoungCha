@@ -1,10 +1,10 @@
 import { colors } from './constant';
 import { randomInRange } from './helper';
 
-const gravitySequins = 0.1;
-const dragSequins = 0.02;
+const gravityCircleParticles = 0.1;
+const dragCircleParticles = 0.02;
 
-export class Sequin {
+export class CircleParticle {
   color: string;
   radius: number;
   position: { x: number; y: number };
@@ -27,11 +27,11 @@ export class Sequin {
   }
 
   update(): void {
-    // Sequin의 속도를 적용합니다.
-    this.velocity.x -= this.velocity.x * dragSequins;
-    this.velocity.y = this.velocity.y + gravitySequins;
+    // CircleParticle의 속도를 적용합니다.
+    this.velocity.x -= this.velocity.x * dragCircleParticles;
+    this.velocity.y = this.velocity.y + gravityCircleParticles;
 
-    // Sequin의 위치를 적용합니다.
+    // CircleParticle의 위치를 적용합니다.
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
   }

@@ -1,12 +1,12 @@
 import { colors, terminalVelocity } from './constant';
 import { randomInRange } from './helper';
 
-const gravityConfetti = 0.1;
-const dragConfetti = 0.075;
+const gravityParticles = 0.1;
+const dragParticles = 0.075;
 
 type RangeType = [number, number];
 
-export class Confetto {
+export class Particle {
   randomModifier: number;
   color: { front: string; back: string };
   dimensions: { x: number; y: number };
@@ -34,39 +34,39 @@ export class Confetto {
       x: 1,
       y: 1,
     };
-    this.velocity = initConfettoVelocity([-40, 40], [10, 22]);
+    this.velocity = initParticleVelocity([-40, 40], [10, 22]);
   }
 
   update(): void {
-    // Confetti의 속도를 적용합니다.
-    this.velocity.x -= this.velocity.x * dragConfetti;
+    // Particles의 속도를 적용합니다.
+    this.velocity.x -= this.velocity.x * dragParticles;
     this.velocity.y = Math.min(
-      this.velocity.y + gravityConfetti,
+      this.velocity.y + gravityParticles,
       terminalVelocity
     );
     this.velocity.x += Math.random() > 0.5 ? Math.random() : -Math.random();
 
-    // Confetti의 위치를 적용합니다.
+    // Particles의 위치를 적용합니다.
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
-    // Confetti의 회전을 적용합니다.
+    // Particles의 회전을 적용합니다.
     this.scale.y = Math.cos((this.position.y + this.randomModifier) * 0.09);
   }
 }
 
 /**
  * @description
- * Confetto의 초기 속도를 설정합니다.
+ * Particle의 초기 속도를 설정합니다.
  */
-function initConfettoVelocity(xRange: RangeType, yRange: RangeType) {
+function initParticleVelocity(xRange: RangeType, yRange: RangeType) {
   const x = randomInRange(xRange[0], xRange[1]);
   const range = yRange[1] - yRange[0] + 1;
   let y =
     yRange[1] -
     Math.abs(randomInRange(0, range) + randomInRange(0, range) - range);
 
-  // Confetto가 최대 범위보다 높아지는 경우
+  // Particle가 최대 범위보다 높아지는 경우
   if (y >= yRange[1] - 1) {
     y += Math.random() < 0.25 ? randomInRange(1, 3) : 0;
   }
