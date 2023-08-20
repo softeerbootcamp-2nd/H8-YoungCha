@@ -14,7 +14,7 @@ class RoundedBackgroundSpan(private val context: Context) : ReplacementSpan() {
     private val bgColor = ContextCompat.getColor(context, R.color.tag_sky_blue)
     private val textColor = ContextCompat.getColor(context, R.color.main_hyundai_blue)
     private val padding = 15
-    private val radius = 3
+    private val radius = 6
 
     override fun getSize(paint: Paint, text: CharSequence, start: Int, end: Int, fm: Paint.FontMetricsInt?): Int {
         return (2 * padding + paint.measureText(text, start, end)).toInt()
