@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_vp_selected"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_selected"
+    android:padding="18dp"
+    android:visibility="invisible"
+    app:layout_constraintBottom_toBottomOf="@id/vp_option_container"
+    app:layout_constraintEnd_toEndOf="@id/vp_option_container"
+    app:layout_constraintStart_toStartOf="@id/vp_option_container"
+    app:layout_constraintTop_toTopOf="@id/vp_option_container">
+
+    <ImageView
+        android:id="@+id/iv_face"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_face"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_good"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="3dp"
+        android:src="@drawable/ic_good"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@id/iv_face"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_main_feedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/hyundai_sans_head_medium"
+        android:text="alsdjkasldasjdlkd\nalsdjalskbw"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_face" />
+
+    <TextView
+        android:id="@+id/tv_sub_feedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:fontFamily="@font/hyundai_sans_text_regular"
+        android:text="adasdlkasjdaslkjds\nalskdaskldjasd"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_main_feedback" />
+</androidx.constraintlayout.widget.ConstraintLayout>
