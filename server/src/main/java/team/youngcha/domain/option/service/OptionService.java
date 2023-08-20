@@ -119,6 +119,7 @@ public class OptionService {
 
     private Map<Long, Integer> getSelectiveOptionSellRatio(Long trimId, List<Long> optionsIds) {
         Map<Long, Long> optionCounts = sellSelectiveOptionRepository.countByOptionIdForTrim(trimId);
+        addMissingOptionIds(optionCounts, optionsIds);
         return calculateOptionRatios(optionCounts);
     }
 
@@ -154,8 +155,8 @@ public class OptionService {
     }
 
     private void addMissingOptionIds(Map<Long, Long> counts, List<Long> optionIds) {
-        for (Long engineId : optionIds) {
-            counts.putIfAbsent(engineId, 0L);
+        for (Long optionId : optionIds) {
+            counts.putIfAbsent(optionId, 0L);
         }
     }
 
