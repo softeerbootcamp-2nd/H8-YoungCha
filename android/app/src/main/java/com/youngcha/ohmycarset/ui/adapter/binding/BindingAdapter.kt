@@ -2,10 +2,13 @@ package com.youngcha.ohmycarset.ui.adapter.binding
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableStringBuilder
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
 import android.widget.TextView
@@ -25,6 +28,7 @@ import com.youngcha.ohmycarset.ui.customview.CircleView
 import com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
 import com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
 import com.youngcha.ohmycarset.ui.interfaces.OnHyundaiButtonClickListener
+import com.youngcha.ohmycarset.util.RoundedBackgroundSpan
 
 
 @BindingAdapter("imageUrl")
@@ -312,4 +316,35 @@ fun setTitle(view: HeaderToolBarView, title: String?) {
 fun HyundaiButtonView.borderAnimation(currentType: String?, visible: Int) {
     if (currentType == "GuideMode" && visible == 1)
         this.animateBorder()
+}
+
+@BindingAdapter(value = ["currentTypeForTag", "visibleForTag", "tagData"], requireAll = false)
+fun setTag(textView: TextView, currentTypeForTag: String?, visible: Int, tags: List<String>?) {
+    if (tags == null) return  // null 체크
+    val spannable = SpannableStringBuilder()
+    for (word in tags) {
+        val start = spannable.length
+        spannable.append(word)
+        spannable.append("   ") // 각 단어 사이에 공백 추가
+        spannable.setSpan(
+            RoundedBackgroundSpan(textView.context),
+            start,
+            start + word.length,
+            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+        )
+    }
+
+    when (visible) {
+        1 -> {
+            textView.visibility = VISIBLE
+            when (currentTypeForTag) {
+                "GuideMode" -> {
+                    textView.text = spannable
+                }
+            }
+        }
+        else -> {
+            textView.visibility = INVISIBLE
+        }
+    }
 }
