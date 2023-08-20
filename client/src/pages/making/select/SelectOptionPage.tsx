@@ -11,10 +11,8 @@ interface SelectOptionPageProps {
 }
 
 function SelectOptionPage({ path }: SelectOptionPageProps) {
-  const { step, id } = useParams() as { step: string; id: string };
+  const { step } = useParams() as { step: string; id: string };
   const currentStep = Number(step);
-
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   return (
     <div
@@ -44,51 +42,65 @@ function SelectOptionPage({ path }: SelectOptionPageProps) {
               디젤 2.2 box
             </div>
           </div>
-          <div className="flex flex-col">
-            <div className="z-10 flex justify-between bg-whit p-20px">
-              <div className="flex flex-col gap-5px">
-                <div
-                  className="flex gap-5px"
-                  onClick={() => setIsBottomSheetOpen((value) => !value)}
-                  onKeyDown={(event) =>
-                    event.key === 'enter' && setIsBottomSheetOpen(true)
-                  }
-                >
-                  <span className="body2 text-grey-003">총 견적금액</span>
-                  <button
-                    className={`transition bg-grey-001 rounded-6px ${
-                      isBottomSheetOpen ? 'rotate-180' : ''
-                    }`}
-                  >
-                    <DownArrow className="fill-grey-003" />
-                  </button>
-                </div>
-                <span className="title1 text-grey-black">47,200,000원</span>
-              </div>
-              <div className="flex items-center gap-21px">
-                {currentStep !== 1 && (
-                  <Link
-                    to={`/model/${id}/making/${path}/${Number(step) - 1}`}
-                    className="body2 text-grey-003 "
-                  >
-                    이전
-                  </Link>
-                )}
-                <Link to={`/model/${id}/making/${path}/${Number(step) + 1}`}>
-                  <Button size="sm">선택 완료</Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className="relative h-0 -z-0">
-            <EstimationSummary
-              render={isBottomSheetOpen}
-              onClose={() => setIsBottomSheetOpen(false)}
-            />
-          </div>
+          <OptionFooter path={path} />
         </div>
       </div>
     </div>
+  );
+}
+
+function OptionFooter({ path }: SelectOptionPageProps) {
+  const { step, id } = useParams() as { step: string; id: string };
+  const currentStep = Number(step);
+
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+
+  return (
+    <>
+      <div className="sticky bottom-0 z-10 min-h-120px">
+        {/* <div className="relative before:absolute before:bottom-0 before:pointer-events-none before:gradient-from-white-to-transparent before:contents-[''] before:w-full before:h-100px"></div> */}
+        <div className="flex justify-between w-full bg-white pt-24px pb-40px px-32px">
+          <div className="flex flex-col gap-5px">
+            <div
+              className="flex gap-5px"
+              onClick={() => setIsBottomSheetOpen((value) => !value)}
+              onKeyDown={(event) =>
+                event.key === 'enter' && setIsBottomSheetOpen(true)
+              }
+            >
+              <span className="body2 text-grey-003">총 견적금액</span>
+              <button
+                className={`transition bg-grey-001 rounded-6px ${
+                  isBottomSheetOpen ? 'rotate-180' : ''
+                }`}
+              >
+                <DownArrow className="fill-grey-003" />
+              </button>
+            </div>
+            <span className="title1 text-grey-black">47,200,000원</span>
+          </div>
+          <div className="flex items-center gap-21px">
+            {currentStep !== 1 && (
+              <Link
+                to={`/model/${id}/making/${path}/${Number(step) - 1}`}
+                className="body2 text-grey-003 "
+              >
+                이전
+              </Link>
+            )}
+            <Link to={`/model/${id}/making/${path}/${Number(step) + 1}`}>
+              <Button size="sm">선택 완료</Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+      <div className="relative h-0 -z-0">
+        <EstimationSummary
+          render={isBottomSheetOpen}
+          onClose={() => setIsBottomSheetOpen(false)}
+        />
+      </div>
+    </>
   );
 }
 
