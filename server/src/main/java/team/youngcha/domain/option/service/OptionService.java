@@ -210,7 +210,7 @@ public class OptionService {
         for (Map.Entry<Long, Long> entry : optionCounts.entrySet()) {
             Long optionId = entry.getKey();
             Long count = entry.getValue();
-            double ratio = (double) count * 100 / total;
+            double ratio = total > 0? ((double) count * 100 / total) : 0L;
             optionRatios.put(optionId, Math.round((float) ratio));
         }
         return optionRatios;
