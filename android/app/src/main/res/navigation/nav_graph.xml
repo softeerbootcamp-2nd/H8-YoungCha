@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_trimSelectFragment_to_makeCarSelfModeFragment"
             app:destination="@id/makeCarSelfModeFragment"/>
+        <action
+            android:id="@+id/action_trimSelectFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment" />
     </fragment>
 
     <fragment
@@ -21,6 +24,13 @@
         android:label="fragment_make_car_self_mode"
         tools:layout="@layout/fragment_car_customization">
 
+        <action
+            android:id="@+id/action_makeCarSelfModeFragment_to_trimSelectFragment"
+            app:destination="@id/trimSelectFragment" />
+
+        <argument
+            android:name="mode"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/onBoardingFragment"
@@ -29,5 +39,22 @@
         <action
             android:id="@+id/action_onBoardingFragment_to_trimSelectFragment"
             app:destination="@id/trimSelectFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.LoadingFragment"
+        android:label="LoadingFragment" >
+        <action
+            android:id="@+id/action_loadingFragment_to_makeCarSelfModeFragment"
+            app:destination="@id/makeCarSelfModeFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+
+        <argument
+            android:name="mode"
+            app:argType="string" />
     </fragment>
 </navigation>
