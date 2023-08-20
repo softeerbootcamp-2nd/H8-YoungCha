@@ -90,7 +90,7 @@ function Confetti({
   useEffect(() => {
     const canvas = canvasRef.current!;
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.height = window.innerHeight - 108;
 
     for (let i = 0; i < confettiCount; i++) {
       confetti.push(new Confetto(canvas));
@@ -107,7 +107,7 @@ function Confetti({
   }, []);
 
   return (
-    <div className="absolute top-0 bottom-0 left-0 w-full pointer-events-none -z-10">
+    <div className="absolute bottom-0 left-0 w-full pointer-events-none top-108px -z-10">
       <canvas ref={canvasRef} className={`-z-0 ${className}`} {...props} />
       <div className="absolute bottom-0 w-full h-1/2">
         <div className="h-2/3 bg-gradient-to-t-from-white-to-transparent"></div>
