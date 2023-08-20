@@ -3,6 +3,7 @@ package team.youngcha.domain.option.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import team.youngcha.common.enums.AgeRange;
 import team.youngcha.common.enums.Gender;
 import team.youngcha.common.exception.CustomException;
 import team.youngcha.domain.category.enums.RequiredCategory;
@@ -126,12 +127,8 @@ public class OptionService {
         // 유사 사용자 비율
         Map<Long, Integer> similarityUsersRatio = getSimilarityUsersRatio(trimId, optionIds, guideInfo, category);
 
-        // 연령대별 판매량
-        Map<Long, Long> sellCountByAgeRange
-                = sellRepository.countOptionsByTrimIdAndAgeRange(trimId, category, guideInfo.getAgeRange());
-
-        // 연령대별 판매율
-        Map<Long, Integer> sellRatioByAgeRange = calculateOptionRatios(sellCountByAgeRange);
+        // 동일 연령대의 옵션별 구매율
+        Map<Long, Integer> sellRatioByAgeRange = getOptionSellRatioByTrimIdAndCategoryAndAgeRange(trimId, category, guideInfo.getAgeRange());
 
         // 성별을 선택하지 않은 경우, 동일 연령대를 기준으로 가장 많이 판매된 옵션을 추천
         if (guideInfo.getGender() == Gender.NONE) {
@@ -141,24 +138,49 @@ public class OptionService {
                     keywordRateGroup, exteriorColorImagesGroup, exteriorColorDetailsGroup);
         }
 
-        // 성별별 판매량
-        Map<Long, Long> sellCountByGender
-                = sellRepository.countOptionsByTrimIdAndGender(trimId, category, guideInfo.getGender());
-
-        // 성별별 판매율
-        Map<Long, Integer> sellRatioByGender = calculateOptionRatios(sellCountByGender);
+        // 동일 성별의 옵션별 구매율
+        Map<Long, Integer> sellRatioByGender = getOptionSellRatioByTrimIdAndCategoryAndGender(trimId, category, guideInfo.getGender());
 
         // 키워드 그룹
         Map<Long, List<KeywordRate>> keywordRateGroup = getKeywordGroupOfAgeRangeAndGender(guideInfo, optionIds, sellRatioByAgeRange, sellRatioByGender);
 
-        // 성별 및 연령대별 옵션 판매량
-        Map<Long, Long> sellCountByAgeRangeAndGender
-                = sellRepository.countOptionsByTrimIdAndAgeRangeAndGender(trimId, category, guideInfo.getAgeRange(), guideInfo.getGender());
-        Map<Long, Integer> sellRatioByAgeRangeAndGender = calculateOptionRatios(sellCountByAgeRangeAndGender);
+        // 동일 성별 및 연령대의 옵션별 구매율
+        Map<Long, Integer> sellRatioByAgeRangeAndGender =
+                getOptionSellRatioByTrimIdAndCategoryAndAgeRangeAndGender(trimId, category, guideInfo.getAgeRange(), guideInfo.getGender());
 
         // 동일 성별 및 연령대를 기준으로 가장 많이 판매된 옵션을 추천
         return buildFindGuideOptionResponseSortedBySellRatio(options, sellRatioByAgeRangeAndGender, similarityUsersRatio,
                 keywordRateGroup, exteriorColorImagesGroup, exteriorColorDetailsGroup);
+    }
+
+    private Map<Long, Integer> getOptionSellRatioByTrimIdAndCategoryAndAgeRange(Long trimId, RequiredCategory category, AgeRange ageRange) {
+        // 동일 연령대의 옵션별 구매량
+        Map<Long, Long> sellCountByAgeRange
+                = sellRepository.countOptionsByTrimIdAndAgeRange(trimId, category, ageRange);
+
+        // 동일 연령대의 옵션별 구매율
+        return calculateOptionRatios(sellCountByAgeRange);
+    }
+
+    private Map<Long, Integer> getOptionSellRatioByTrimIdAndCategoryAndGender(Long trimId, RequiredCategory category, Gender gender) {
+        // 동일 성별의 옵션별 구매량
+        Map<Long, Long> sellCountByGender
+                = sellRepository.countOptionsByTrimIdAndGender(trimId, category, gender);
+
+        // 동일 성별의 옵션별 구매율
+        return calculateOptionRatios(sellCountByGender);
+    }
+
+    private Map<Long, Integer> getOptionSellRatioByTrimIdAndCategoryAndAgeRangeAndGender(Long trimId,
+                                                                                         RequiredCategory category,
+                                                                                         AgeRange ageRange,
+                                                                                         Gender gender) {
+        // 동일 성별 및 연령대의 옵션별 구매량
+        Map<Long, Long> sellCountByAgeRangeAndGender
+                = sellRepository.countOptionsByTrimIdAndAgeRangeAndGender(trimId, category, ageRange, gender);
+
+        // 동일 성별 및 연령대의 옵션별 구매율
+        return calculateOptionRatios(sellCountByAgeRangeAndGender);
     }
 
     private List<FindSelfOptionResponse> buildFindSelfRequiredOptionResponses(Long trimId, List<Option> options,
