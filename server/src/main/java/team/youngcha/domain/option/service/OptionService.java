@@ -175,7 +175,7 @@ public class OptionService {
 
     private List<FindSelfOptionResponse> buildFindSelfSelectiveOptionResponses(Long trimId, List<Option> options) {
         List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
-        Map<Long, Integer> sellRatio = getSelectiveOptionSellRatio(trimId);
+        Map<Long, Integer> sellRatio = getSelectiveOptionSellRatio(trimId, optionsIds);
         Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
         Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsIds);
 
@@ -189,7 +189,7 @@ public class OptionService {
         return calculateOptionRatios(optionCounts);
     }
 
-    private Map<Long, Integer> getSelectiveOptionSellRatio(Long trimId) {
+    private Map<Long, Integer> getSelectiveOptionSellRatio(Long trimId, List<Long> optionsIds) {
         Map<Long, Long> optionCounts = sellSelectiveOptionRepository.countByOptionIdForTrim(trimId);
         addMissingOptionIds(optionCounts, optionsIds);
         return calculateOptionRatios(optionCounts);
