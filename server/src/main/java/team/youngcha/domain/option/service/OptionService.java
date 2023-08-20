@@ -10,6 +10,7 @@ import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.estimate.repository.EstimateRepository;
 import team.youngcha.domain.keyword.dto.KeywordRate;
 import team.youngcha.domain.keyword.entity.Keyword;
+import team.youngcha.domain.keyword.enums.KeywordName;
 import team.youngcha.domain.keyword.repository.KeywordRepository;
 import team.youngcha.domain.option.dto.FindGuideOptionResponse;
 import team.youngcha.domain.option.dto.FindSelfOptionResponse;
@@ -112,6 +113,118 @@ public class OptionService {
                 = optionRepository.findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
 
         return getFindGuideColorOptionResponse(trimId, guideInfo, category, interiorColors);
+    }
+
+    public List<FindGuideOptionResponse> findGuideModeWheel(Long trimId, GuideInfo guideInfo, Long exteriorColorId) {
+        RequiredCategory wheelCategory = RequiredCategory.WHEEL;
+
+        // 트림 아이디 검증
+        verifyTrimId(trimId);
+
+        // 사용자 선택 키워드
+        List<Long> userKeywordIds = guideInfo.getKeywordIds();
+
+        // 트림의 모든 휠 옵션
+        Map<Long, Option> trimWheels = optionRepository.findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, wheelCategory)
+                .stream()
+                .collect(Collectors.toMap(Option::getId, option -> option));
+
+        // 기본 휠 옵션
+        Option defaultWheel = getDefaultWheel();
+
+        // 트림별 키워드 그룹
+        Map<Long, List<Keyword>> keywordGroups = keywordRepository
+                .findByContainOptionIdsAndGroupKeywords(new ArrayList<>(trimWheels.keySet()));
+
+        // 응답에 포함될 휠 옵션의 아이디 목록
+        // 사용자가 선택한 키워드에 해당하는 모든 옵션을 응답에 포함
+        List<Long> responseWheelIds = keywordGroups.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().stream().anyMatch(keyword -> userKeywordIds.contains(keyword.getId())))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        // 기본 휠 옵션을 응답에 포함
+        if(!responseWheelIds.contains(defaultWheel.getId())) {
+            responseWheelIds.add(defaultWheel.getId());
+        }
+
+        // 유사 사용자의 휠 옵션 선택 비율
+        Map<Long, Integer> similarityUsersRatio = getSimilarityUsersRatio(trimId, responseWheelIds, guideInfo, wheelCategory);
+
+        // 휠 옵션 상세정보
+        Map<Long, List<OptionDetail>> optionDetailGroup = getOptionDetailGroup(responseWheelIds);
+
+        // 휠 옵션 이미지
+        Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(responseWheelIds);
+
+        // 사용자 선택 키워드를 기반으로 추천할 휠의 이름을 조회
+        String recommendedWheelName = getRecommendedWheelName(trimId, exteriorColorId, userKeywordIds);
+
+        // 옵션별 응답 DTO를 생성하여 추천하는 휠을 첫번째로, 그 외에는 유사 사용자의 옵션 선택 비율을 기준으로 내림차순으로 정렬하여 응답
+        return responseWheelIds.stream()
+                .map(id -> {
+                    Option option = trimWheels.get(id);
+                    boolean checked = option.getName().equals(recommendedWheelName);
+                    return new FindGuideOptionResponse(
+                            option,
+                            checked,
+                            similarityUsersRatio.get(id),
+                            null,
+                            optionImagesGroup.get(id),
+                            optionDetailGroup.get(id));
+                })
+                .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> response.isChecked() ? 0 : 1)
+                        .thenComparing((FindGuideOptionResponse response) -> -response.getRate()))
+                .collect(Collectors.toList());
+    }
+
+    private Option getDefaultWheel() {
+        String defaultWheelName = "20인치 알로이 휠";
+
+        return optionRepository.findByName(defaultWheelName)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "조회 실패"));
+    }
+
+    private String getRecommendedWheelName(Long trimId, Long exteriorColorId, List<Long> userSelectedKeywordIds) {
+        String defaultWheelName = "20인치 알로이 휠";
+        String alconWheelName = "알콘(alcon) 단조 브레이크 & 20인치 휠 패키지";
+        String darkSputteringWheelName = "20인치 다크 스퍼터링 휠";
+        String blacktoneWheelName = "20인치 블랙톤 전면 가공 휠";
+
+        Map<String, Long> keywords = new HashMap<>();
+        for (Keyword keyword : keywordRepository.findAll()) {
+            keywords.put(keyword.getName(), keyword.getId());
+        }
+
+        if (userSelectedKeywordIds.contains(keywords.get(KeywordName.DESIGN.getName()))) {
+            if (userSelectedKeywordIds.contains(keywords.get(KeywordName.DRIVING_PERFORMANCE.getName())) ||
+                    userSelectedKeywordIds.contains(keywords.get(KeywordName.SAFETY.getName()))) {
+                return alconWheelName;
+            }
+
+            Option darkSputteringWheel = optionRepository.findByName(darkSputteringWheelName)
+                    .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "조회 실패"));
+
+            Option blacktoneWheel = optionRepository.findByName(blacktoneWheelName)
+                    .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "조회 실패"));
+
+            List<Long> wheelIds = List.of(darkSputteringWheel.getId(), blacktoneWheel.getId());
+
+            Map<Long, Long> sellCounts = sellRepository
+                    .countByTrimIdAndExteriorColorForWheels(trimId, exteriorColorId, wheelIds);
+
+            Long darkSputteringWheelSellCount = sellCounts.get(darkSputteringWheel.getId());
+            Long blackToneWheelSellCount = sellCounts.get(blacktoneWheel.getId());
+
+            if (darkSputteringWheelSellCount > blackToneWheelSellCount) {
+                return darkSputteringWheelName;
+            }
+
+            return blacktoneWheelName;
+        }
+
+        return defaultWheelName;
     }
 
     private List<FindGuideOptionResponse> getFindGuideColorOptionResponse(Long trimId, GuideInfo guideInfo, RequiredCategory category, List<Option> options) {
