@@ -15,7 +15,7 @@
   font-family: 'Hyundai Sans Head KR';
   font-weight: 500;
   src:
-    local('Hyundai Sans Head KR'),
+    local('Hyundai Sans Head KR Medium'),
     url('../src/assets/font/HyundaiSansHeadKRMedium.woff2') format('woff2'),
     url('../src/assets/font/HyundaiSansHeadKRMedium.ttf') format('truetype');
 }
@@ -33,7 +33,7 @@
   font-family: 'Hyundai Sans Text KR';
   font-weight: 500;
   src:
-    local('Hyundai Sans Text KR'),
+    local('Hyundai Sans Text KR Medium'),
     url('../src/assets/font/HyundaiSansTextKRMedium.woff2') format('woff2'),
     url('../src/assets/font/HyundaiSansTextKRMedium.ttf') format('truetype');
 }
