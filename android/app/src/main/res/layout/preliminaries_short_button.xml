@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="60dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <View
-        android:id="@+id/v_background"
+    <data>
+        <variable
+            name="tag"
+            type="com.youngcha.ohmycarset.model.tag.Tag" />
+        <variable
+            name="viewModel"
+            type="com.youngcha.ohmycarset.viewmodel.UserTagViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/btn_unselect_style" />
+        android:layout_height="60dp">
 
-    <TextView
-        android:id="@+id/tv_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text=""
-        android:textColor="@color/cool_grey_003"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/v_background"
-        app:layout_constraintStart_toStartOf="@id/v_background"
-        app:layout_constraintTop_toTopOf="@id/v_background"
-        app:layout_constraintVertical_bias="0.5" />
+        <View
+            android:id="@+id/v_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="@{() -> viewModel.onTagShortItemClick(tag)}"
+            android:background="@{tag.isSelected ? @drawable/btn_select_style : @drawable/btn_unselect_style}" />
 
-    <ImageView
-        android:id="@+id/iv_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
-        android:src="@drawable/ic_circle"
-        app:layout_constraintBottom_toBottomOf="@id/v_background"
-        app:layout_constraintEnd_toEndOf="@id/v_background"
-        app:layout_constraintTop_toTopOf="@id/v_background"
-        app:layout_constraintVertical_bias="0.5" />
+        <TextView
+            android:id="@+id/tv_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@{tag.name}"
+            android:textColor="@{tag.isSelected ? @color/cool_grey_black: @color/cool_grey_003}"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/v_background"
+            app:layout_constraintStart_toStartOf="@id/v_background"
+            app:layout_constraintTop_toTopOf="@id/v_background"
+            app:layout_constraintVertical_bias="0.5" />
 
+        <ImageView
+            android:id="@+id/iv_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:src="@{tag.isSelected ? @drawable/ic_check_on : @drawable/ic_check_off}"
+            app:layout_constraintBottom_toBottomOf="@id/v_background"
+            app:layout_constraintEnd_toEndOf="@id/v_background"
+            app:layout_constraintTop_toTopOf="@id/v_background"
+            app:layout_constraintVertical_bias="0.5" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
