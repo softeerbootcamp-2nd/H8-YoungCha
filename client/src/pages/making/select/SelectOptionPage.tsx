@@ -10,9 +10,12 @@ interface SelectOptionPageProps {
   path: 'self' | 'guide';
 }
 
+interface SelectOptionMessageProps {
+  step: number;
+}
+
 function SelectOptionPage({ path }: SelectOptionPageProps) {
   const { step } = useParams() as { step: string; id: string };
-  const currentStep = Number(step);
 
   return (
     <div
@@ -25,14 +28,7 @@ function SelectOptionPage({ path }: SelectOptionPageProps) {
         />
       </div>
       <div className="flex flex-col justify-center w-375px gap-30px">
-        <div className="flex gap-12px">
-          <h1 className="font-hsans-head text-24px tracking-[-0.96px]">
-            <strong className="font-medium">
-              {OPTION_ORDER[currentStep - 1]}
-            </strong>
-            을 선택해주세요.
-          </h1>
-        </div>
+        <SelectOptionMessage step={Number(step)} />
         <div>
           <div className="flex flex-col items-center gap-12px h-400px">
             <div className="flex items-center justify-center border rounded-lg border-main-blue w-375px h-150px">
@@ -45,6 +41,15 @@ function SelectOptionPage({ path }: SelectOptionPageProps) {
           <OptionFooter path={path} />
         </div>
       </div>
+    </div>
+  );
+}
+
+function SelectOptionMessage({ step }: SelectOptionMessageProps) {
+  return (
+    <div className="font-hsans-head text-24px tracking-[-0.96px] mt-70px mb-30px ml-32px">
+      <strong className="font-medium">{OPTION_ORDER[step - 1]}</strong>
+      <span className="font-normal">을 선택해주세요.</span>
     </div>
   );
 }
