@@ -67,7 +67,7 @@ public class OptionService {
         return buildFindSelfSelectiveOptionResponses(trimId, options);
     }
 
-    public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo, RequiredCategory category) {
+    public List<FindGuideOptionResponse> findGuideRequiredOptions(Long trimId, GuideInfo guideInfo, RequiredCategory category) {
         verifyTrimId(trimId);
 
         List<Option> options = optionRepository

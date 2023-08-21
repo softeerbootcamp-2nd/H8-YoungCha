@@ -43,7 +43,7 @@ public class GuideOptionController {
     ) {
         GuideInfo guideInfo =
                 new GuideInfo(gender, ageRange, List.of(keyword1Id, keyword2Id, keyword3Id));
-        return findGuideOptions(trimId, guideInfo, RequiredCategory.POWER_TRAIN);
+        return findGuideRequiredOptions(trimId, guideInfo, RequiredCategory.POWER_TRAIN);
     }
 
     @Operation(summary = "구동 방식 가이드 모드 옵션 조회",
@@ -65,7 +65,7 @@ public class GuideOptionController {
     ) {
         GuideInfo guideInfo =
                 new GuideInfo(gender, ageRange, List.of(keyword1Id, keyword2Id, keyword3Id));
-        return findGuideOptions(trimId, guideInfo, RequiredCategory.DRIVING_SYSTEM);
+        return findGuideRequiredOptions(trimId, guideInfo, RequiredCategory.DRIVING_SYSTEM);
     }
 
     @Operation(summary = "바디 타입 가이드 모드 옵션 조회",
@@ -86,7 +86,7 @@ public class GuideOptionController {
             @RequestParam Long keyword3Id
     ) {
         GuideInfo guideInfo = new GuideInfo(gender, ageRange, List.of(keyword1Id, keyword2Id, keyword3Id));
-        return findGuideOptions(trimId, guideInfo, RequiredCategory.BODY_TYPE);
+        return findGuideRequiredOptions(trimId, guideInfo, RequiredCategory.BODY_TYPE);
     }
 
     @Operation(summary = "외장 색상 가이드 모드 옵션 조회",
@@ -162,11 +162,11 @@ public class GuideOptionController {
         return ResponseEntity.ok(successResponse);
     }
 
-    private ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findGuideOptions(Long trimId,
-                                                                                            GuideInfo guideInfo,
-                                                                                            RequiredCategory category) {
+    private ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findGuideRequiredOptions(Long trimId,
+                                                                                                    GuideInfo guideInfo,
+                                                                                                    RequiredCategory category) {
         List<FindGuideOptionResponse> findGuideOptionResponses = optionService
-                .findGuideOptions(trimId, guideInfo, category);
+                .findGuideRequiredOptions(trimId, guideInfo, category);
         SuccessResponse<List<FindGuideOptionResponse>> successResponse =
                 new SuccessResponse<>(findGuideOptionResponses);
         return ResponseEntity.ok(successResponse);

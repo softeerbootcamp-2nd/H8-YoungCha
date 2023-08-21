@@ -255,7 +255,7 @@ class OptionServiceTest {
 
             //when
             List<FindGuideOptionResponse> guideOptionResponses = optionService
-                    .findGuideOptions(trimId, guideInfo, RequiredCategory.POWER_TRAIN);
+                    .findGuideRequiredOptions(trimId, guideInfo, RequiredCategory.POWER_TRAIN);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
@@ -311,7 +311,7 @@ class OptionServiceTest {
 
             //when
             List<FindGuideOptionResponse> guideOptionResponses = optionService
-                    .findGuideOptions(trimId, guideInfo, RequiredCategory.POWER_TRAIN);
+                    .findGuideRequiredOptions(trimId, guideInfo, RequiredCategory.POWER_TRAIN);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
@@ -361,7 +361,7 @@ class OptionServiceTest {
 
             //when
             List<FindGuideOptionResponse> guideOptionResponses = optionService
-                    .findGuideOptions(trimId, guideInfo, RequiredCategory.POWER_TRAIN);
+                    .findGuideRequiredOptions(trimId, guideInfo, RequiredCategory.POWER_TRAIN);
 
             //then
             FindGuideOptionResponse expected1 = FindGuideOptionResponse.builder()
