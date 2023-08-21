@@ -6,6 +6,7 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
   color?: ColorType;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 const buttonSize = {
@@ -29,12 +30,20 @@ function Button({
   size = 'md',
   color = 'main-blue',
   onClick,
+  disabled = false,
   ...restProps
 }: ButtonProps) {
-  const className = `flex justify-center items-center rounded-[6px] font-medium body2 cursor-pointer ${buttonSize[size]} ${buttonColor[color]}`;
+  const className = `flex justify-center items-center rounded-[6px] font-medium body2 cursor-pointer ${
+    buttonSize[size]
+  } ${buttonColor[color]} ${disabled ? 'opacity-60 cursor-not-allowed' : ''}`;
 
   return (
-    <button className={className} onClick={onClick} {...restProps}>
+    <button
+      className={className}
+      onClick={onClick}
+      disabled={disabled}
+      {...restProps}
+    >
       {children}
     </button>
   );
