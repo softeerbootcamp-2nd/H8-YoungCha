@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 
-type ColorType = 'main-blue' | 'white' | 'grey';
+type ColorType = 'main-blue' | 'sub-blue' | 'white' | 'grey';
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
@@ -19,6 +19,7 @@ const buttonSize = {
 
 const buttonColor = {
   'main-blue': 'bg-main-blue text-white',
+  'sub-blue': 'bg-[#EDF2FA] text-grey-003',
   'white': 'bg-white text-black border border-black',
   'grey': 'bg-grey-001 text-main-blue',
 };
