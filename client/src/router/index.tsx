@@ -4,6 +4,7 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Guide from '@/pages/guide';
 import Making from '@/pages/making';
 import FullScreenLayout from '@/components/layout/FullScreenLayout';
+import CompleteOptionPage from '@/pages/making/complete/CompleteOptionPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -48,7 +49,15 @@ const router = createBrowserRouter([
                 path: 'self/:step',
                 element: <Making path="self" />,
               },
+              {
+                path: 'self/8',
+                element: <CompleteOptionPage />,
+              },
               { path: 'guide/:step', element: <Making path="self" /> },
+              {
+                path: 'guide/8',
+                element: <CompleteOptionPage />,
+              },
             ],
           },
         ],
