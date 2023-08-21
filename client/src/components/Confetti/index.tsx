@@ -86,7 +86,7 @@ function Confetti({
     });
 
     setAnimationID(requestAnimationFrame(animate));
-  }, [canvasRef, setAnimationID]);
+  }, [canvasRef]);
 
   useEffect(() => {
     const canvas = canvasRef.current!;
