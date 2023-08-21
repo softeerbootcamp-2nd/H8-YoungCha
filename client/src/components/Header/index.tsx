@@ -51,15 +51,15 @@ function Header({ mode, setMode }: HeaderProps) {
           </Link>
           <span>|</span>
 
-          <div
-            className={`flex font-medium title3 gap-8px ${
-              mode === 'guide' ? 'text-sub-blue' : ''
-            }`}
-          >
-            <span>{TEXT_MAKING_MY_CAR}</span>
+          <div className={`flex font-medium title3 gap-8px `}>
+            <span className={`${mode === 'guide' ? 'text-sub-blue' : ''}`}>
+              {TEXT_MAKING_MY_CAR}
+            </span>
             {mode !== 'none' && (
               <>
-                <span>-</span>
+                <span className={`${mode === 'guide' ? 'text-sub-blue' : ''}`}>
+                  -
+                </span>
                 <ModeChangeButton />
               </>
             )}
