@@ -57,3 +57,5 @@ export interface BasicOptionType {
   totalPages: number;
   contents: ContentsType[];
 }
+
+export type ModeType = 'guide' | 'self' | null;
