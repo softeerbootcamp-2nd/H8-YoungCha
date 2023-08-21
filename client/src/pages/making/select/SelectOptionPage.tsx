@@ -17,7 +17,7 @@ interface SelectOptionMessageProps {
 }
 
 function SelectOptionPage({ path }: SelectOptionPageProps) {
-  const { step } = useParams() as { step: string; id: string };
+  const { step } = useParams() as { step: string };
 
   return (
     <main className="relative flex-grow">
