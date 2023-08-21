@@ -32,7 +32,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
     @DisplayName("트림의 파워 트레인 옵션을 셀프 모드로 조회한다.")
     void findSelfPowerTrain() {
         //given
-        jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
+        jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, " +
+                "exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
                 "values (1, 2, 2, 1, 1, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(2, 2, 1, 1, 1, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(3, 2, 2, 1, 1, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
@@ -91,7 +92,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
     @DisplayName("트림의 구동 방식 옵션을 셀프 모드로 조회한다.")
     void findSelfDrivingSystem() {
         //given
-        jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
+        jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, " +
+                "exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
                 "values (1, 2, 1, 1, 3, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(2, 2, 1, 1, 4, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(3, 2, 1, 1, 3, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
@@ -139,7 +141,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
     @DisplayName("트림의 바디 타입 옵션을 셀프 모드로 조회한다.")
     void findSelfBodyType() {
         //given
-        jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
+        jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, " +
+                "exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
                 "values (1, 2, 1, 6, 1, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(2, 2, 1, 5, 1, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(3, 2, 1, 5, 1, 1, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
@@ -188,7 +191,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
     @DisplayName("트림의 외장 색상 옵션을 셀프 모드로 조회한다.")
     void findSelfExteriorColor() {
         //given
-        jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
+        jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, " +
+                "exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
                 "values (1, 2, 1, 1, 1, 7, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(2, 2, 1, 1, 1, 10, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(3, 2, 1, 1, 1, 10, 1, 1, 50, 0, '2023-01-01 12:12:12')," +
@@ -274,7 +278,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
     @DisplayName("트림의 내장 색상 옵션을 셀프 모드로 조회한다.")
     void findSelfInteriorColor() {
         //given
-        jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
+        jdbcTemplate.update("insert into sell (id, trim_id, engine_id, body_type_id, driving_system_id, " +
+                "exterior_color_id, interior_color_id, wheel_id, age, gender, create_date) " +
                 "values (1, 2, 1, 1, 1, 1, 13, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(2, 2, 1, 1, 1, 1, 14, 1, 50, 0, '2023-01-01 12:12:12')," +
                 "(3, 2, 1, 1, 1, 1, 13, 1, 50, 0, '2023-01-01 12:12:12')," +
@@ -316,7 +321,8 @@ public class SelfOptionIntegrationTest extends IntegrationTestBase {
         assertResponseAndExpected(response, List.of(black, gray));
     }
 
-    private void assertResponseAndExpected(ExtractableResponse<Response> response, List<FindSelfOptionResponse> expectedResponses) {
+    private void assertResponseAndExpected(ExtractableResponse<Response> response,
+                                           List<FindSelfOptionResponse> expectedResponses) {
         SuccessResponse<List<FindSelfOptionResponse>> successResponse = response.body().as(new TypeRef<>() {
         });
         softAssertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
