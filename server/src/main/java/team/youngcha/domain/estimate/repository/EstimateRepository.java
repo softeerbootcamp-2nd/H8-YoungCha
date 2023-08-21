@@ -84,6 +84,16 @@ public class EstimateRepository {
                         "group by estimate." + optionIdColumn, params);
     }
 
+    public List<Long> findIdsByTrimIdAndKeywordId(Long trimId, Long keywordId) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("trimId", trimId);
+        params.addValue("keywordId", keywordId);
+
+        return namedParameterJdbcTemplate.queryForList("SELECT id FROM estimate " +
+                "WHERE trim_id = :trimId " +
+                "AND (keyword1_id = :keywordId OR keyword2_id = :keywordId OR keyword3_id = :keywordId)", params, Long.class);
+    }
+
     private static class EstimateRowMapper implements RowMapper<Estimate> {
         @Override
         public Estimate mapRow(ResultSet resultSet, int rowNum) throws SQLException {
