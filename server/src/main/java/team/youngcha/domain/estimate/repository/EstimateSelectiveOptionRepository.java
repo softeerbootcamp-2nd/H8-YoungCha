@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import team.youngcha.domain.estimate.entity.EstimateSelectiveOption;
-import team.youngcha.domain.option.entity.Option;
 
 import java.util.List;
 
@@ -20,10 +19,10 @@ public class EstimateSelectiveOptionRepository {
             = BeanPropertyRowMapper.newInstance(EstimateSelectiveOption.class);
 
 
-    public Long countIfEstimateIncludeOption(List<Long> estimateIds, Option option) {
+    public Long countIfEstimateContainsOption(List<Long> estimateIds, Long optionId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("estimateIds", estimateIds);
-        params.addValue("optionId", option.getId());
+        params.addValue("optionId", optionId);
 
         String sql = "SELECT COUNT(*) FROM estimate_selective_options e " +
                 "WHERE e.estimate_id IN (:estimateIds) " +
