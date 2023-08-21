@@ -22,4 +22,21 @@ public enum AgeRange {
                 .filter(ageRange -> ageRange.getRange() == range)
                 .findAny().orElseThrow(() -> new IllegalArgumentException("일치하는 age가 없습니다."));
     }
+
+    public int getMinAge() {
+        return this.range * 10;
+    }
+
+    public int getMaxAge() {
+        return this.range * 10 + 9;
+    }
+
+    public String toKeyword() {
+        String keywordName = this.range * 10 + "대";
+        if(this.range == 7) {
+            keywordName += " 이상";
+        }
+
+        return keywordName;
+    }
 }

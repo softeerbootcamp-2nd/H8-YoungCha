@@ -3,6 +3,8 @@ package team.youngcha.domain.option.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import team.youngcha.common.enums.AgeRange;
+import team.youngcha.common.enums.Gender;
 import team.youngcha.common.exception.CustomException;
 import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.estimate.repository.EstimateRepository;
@@ -40,16 +42,16 @@ public class OptionService {
     private final SellSelectiveOptionRepository sellSelectiveOptionRepository;
 
     public List<FindSelfOptionResponse> findSelfRequiredOptions(Long trimId, RequiredCategory category) {
-        trimRepository.findById(trimId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+        verifyTrimId(trimId);
+
         List<Option> options = optionRepository.findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, category);
 
         return buildFindSelfRequiredOptionResponses(trimId, options, category);
     }
 
     public List<FindSelfOptionResponse> findSelfInteriorColors(Long trimId, Long exteriorColorId) {
-        trimRepository.findById(trimId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+        verifyTrimId(trimId);
+
         List<Option> options = optionRepository
                 .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
 
@@ -57,8 +59,7 @@ public class OptionService {
     }
 
     public List<FindSelfOptionResponse> findSelfSelectiveOptions(Long trimId) {
-        trimRepository.findById(trimId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+        verifyTrimId(trimId);
 
         List<Option> options = optionRepository.findOptionsByTrimIdAndOptionType(trimId, OptionType.SELECTIVE);
 
@@ -66,8 +67,8 @@ public class OptionService {
     }
 
     public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo, RequiredCategory category) {
-        trimRepository.findById(trimId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+        verifyTrimId(trimId);
+
         List<Option> options = optionRepository
                 .findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, category);
 
@@ -89,6 +90,96 @@ public class OptionService {
 
         return getSortedGuideOptionResponses(options, similarityUsersRatio, keywordRateGroup,
                 optionImagesGroup, optionDetailsGroup);
+    }
+
+    public List<FindGuideOptionResponse> findGuideModeExteriorColors(Long trimId, GuideInfo guideInfo) {
+        verifyTrimId(trimId);
+
+        RequiredCategory category = RequiredCategory.EXTERIOR_COLOR;
+
+        List<Option> exteriorColors
+                = optionRepository.findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, RequiredCategory.EXTERIOR_COLOR);
+
+        return getFindGuideColorOptionResponse(trimId, guideInfo, category, exteriorColors);
+    }
+
+    public List<FindGuideOptionResponse> findGuideModeInteriorColors(Long trimId, GuideInfo guideInfo, Long exteriorColorId) {
+        RequiredCategory category = RequiredCategory.INTERIOR_COLOR;
+
+        verifyTrimId(trimId);
+
+        List<Option> interiorColors
+                = optionRepository.findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
+
+        return getFindGuideColorOptionResponse(trimId, guideInfo, category, interiorColors);
+    }
+
+    private List<FindGuideOptionResponse> getFindGuideColorOptionResponse(Long trimId, GuideInfo guideInfo, RequiredCategory category, List<Option> options) {
+        List<Long> optionIds = options.stream().map(Option::getId).collect(Collectors.toList());
+
+        // 옵션 이미지
+        Map<Long, List<OptionImage>> exteriorColorImagesGroup = getOptionImagesGroup(optionIds);
+
+        // 옵션 상세설명
+        Map<Long, List<OptionDetail>> exteriorColorDetailsGroup = getOptionDetailGroup(optionIds);
+
+        // 유사 사용자 비율
+        Map<Long, Integer> similarityUsersRatio = getSimilarityUsersRatio(trimId, optionIds, guideInfo, category);
+
+        // 동일 연령대의 옵션별 구매율
+        Map<Long, Integer> sellRatioByAgeRange = getOptionSellRatioByTrimIdAndCategoryAndAgeRange(trimId, category, guideInfo.getAgeRange());
+
+        // 성별을 선택하지 않은 경우, 동일 연령대를 기준으로 가장 많이 판매된 옵션을 추천
+        if (guideInfo.getGender() == Gender.NONE) {
+            Map<Long, List<KeywordRate>> keywordRateGroup = getKeywordGroupOfAgeRange(guideInfo, optionIds, sellRatioByAgeRange);
+
+            return buildFindGuideOptionResponseSortedBySellRatio(options, sellRatioByAgeRange, similarityUsersRatio,
+                    keywordRateGroup, exteriorColorImagesGroup, exteriorColorDetailsGroup);
+        }
+
+        // 동일 성별의 옵션별 구매율
+        Map<Long, Integer> sellRatioByGender = getOptionSellRatioByTrimIdAndCategoryAndGender(trimId, category, guideInfo.getGender());
+
+        // 키워드 그룹
+        Map<Long, List<KeywordRate>> keywordRateGroup = getKeywordGroupOfAgeRangeAndGender(guideInfo, optionIds, sellRatioByAgeRange, sellRatioByGender);
+
+        // 동일 성별 및 연령대의 옵션별 구매율
+        Map<Long, Integer> sellRatioByAgeRangeAndGender =
+                getOptionSellRatioByTrimIdAndCategoryAndAgeRangeAndGender(trimId, category, guideInfo.getAgeRange(), guideInfo.getGender());
+
+        // 동일 성별 및 연령대를 기준으로 가장 많이 판매된 옵션을 추천
+        return buildFindGuideOptionResponseSortedBySellRatio(options, sellRatioByAgeRangeAndGender, similarityUsersRatio,
+                keywordRateGroup, exteriorColorImagesGroup, exteriorColorDetailsGroup);
+    }
+
+    private Map<Long, Integer> getOptionSellRatioByTrimIdAndCategoryAndAgeRange(Long trimId, RequiredCategory category, AgeRange ageRange) {
+        // 동일 연령대의 옵션별 구매량
+        Map<Long, Long> sellCountByAgeRange
+                = sellRepository.countOptionsByTrimIdAndAgeRange(trimId, category, ageRange);
+
+        // 동일 연령대의 옵션별 구매율
+        return calculateOptionRatios(sellCountByAgeRange);
+    }
+
+    private Map<Long, Integer> getOptionSellRatioByTrimIdAndCategoryAndGender(Long trimId, RequiredCategory category, Gender gender) {
+        // 동일 성별의 옵션별 구매량
+        Map<Long, Long> sellCountByGender
+                = sellRepository.countOptionsByTrimIdAndGender(trimId, category, gender);
+
+        // 동일 성별의 옵션별 구매율
+        return calculateOptionRatios(sellCountByGender);
+    }
+
+    private Map<Long, Integer> getOptionSellRatioByTrimIdAndCategoryAndAgeRangeAndGender(Long trimId,
+                                                                                         RequiredCategory category,
+                                                                                         AgeRange ageRange,
+                                                                                         Gender gender) {
+        // 동일 성별 및 연령대의 옵션별 구매량
+        Map<Long, Long> sellCountByAgeRangeAndGender
+                = sellRepository.countOptionsByTrimIdAndAgeRangeAndGender(trimId, category, ageRange, gender);
+
+        // 동일 성별 및 연령대의 옵션별 구매율
+        return calculateOptionRatios(sellCountByAgeRangeAndGender);
     }
 
     private List<FindSelfOptionResponse> buildFindSelfRequiredOptionResponses(Long trimId, List<Option> options,
@@ -138,7 +229,7 @@ public class OptionService {
         for (Map.Entry<Long, Long> entry : optionCounts.entrySet()) {
             Long optionId = entry.getKey();
             Long count = entry.getValue();
-            double ratio = total > 0? ((double) count * 100 / total) : 0L;
+            double ratio = total > 0 ? ((double) count * 100 / total) : 0L;
             optionRatios.put(optionId, Math.round((float) ratio));
         }
         return optionRatios;
@@ -236,5 +327,74 @@ public class OptionService {
             similarityUsersRatio.put(optionId, Integer.MAX_VALUE);
         }
         return isMaxRate;
+    }
+
+    private Map<Long, List<KeywordRate>> getKeywordGroupOfAgeRange(GuideInfo guideInfo, List<Long> exteriorColorIds, Map<Long, Integer> sellRatioByAgeRange) {
+        // 연령대 키워드 이름
+        String keywordAgeRange = guideInfo.getAgeRange().toKeyword();
+
+        Map<Long, KeywordRate> ageRangeKeywordRate = sellRatioByAgeRange.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> new KeywordRate(entry.getValue(), keywordAgeRange)));
+
+        return exteriorColorIds.stream()
+                .collect(Collectors.toMap(
+                        id -> id,
+                        id -> List.of(ageRangeKeywordRate.get(id))
+                ));
+    }
+
+    private Map<Long, List<KeywordRate>> getKeywordGroupOfAgeRangeAndGender(GuideInfo guideInfo, List<Long> exteriorColorIds, Map<Long, Integer> sellRatioByAgeRange, Map<Long, Integer> sellRatioByGender) {
+        // 연령대 키워드 이름
+        String keywordAgeRange = guideInfo.getAgeRange().toKeyword();
+
+        // 성별 키워드 이름
+        String keywordGender = guideInfo.getGender().toKeyword();
+
+        Map<Long, KeywordRate> ageRangeKeywordRate = sellRatioByAgeRange.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> new KeywordRate(entry.getValue(), keywordAgeRange)));
+
+        Map<Long, KeywordRate> genderKeywordRate = sellRatioByGender.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> new KeywordRate(entry.getValue(), keywordGender)));
+
+        return exteriorColorIds.stream()
+                .collect(Collectors.toMap(
+                        id -> id,
+                        id -> List.of(ageRangeKeywordRate.get(id),
+                                genderKeywordRate.get(id))
+                ));
+    }
+
+    private List<FindGuideOptionResponse> buildFindGuideOptionResponseSortedBySellRatio(List<Option> options,
+                                                                                        Map<Long, Integer> sellRatio,
+                                                                                        Map<Long, Integer> similarityUsersRatio,
+                                                                                        Map<Long, List<KeywordRate>> keywordRateGroup,
+                                                                                        Map<Long, List<OptionImage>> optionImagesGroup,
+                                                                                        Map<Long, List<OptionDetail>> optionDetailsGroup) {
+        List<FindGuideOptionResponse> responses = options.stream()
+                .map(option -> {
+                    Integer ratio = similarityUsersRatio.get(option.getId());
+                    boolean isSelected = false;
+                    return new FindGuideOptionResponse(
+                            option,
+                            isSelected,
+                            ratio,
+                            keywordRateGroup.getOrDefault(option.getId(), new ArrayList<>()),
+                            optionImagesGroup.getOrDefault(option.getId(), new ArrayList<>()),
+                            optionDetailsGroup.getOrDefault(option.getId(), new ArrayList<>())
+                    );
+                })
+                .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> -sellRatio.get(response.getId())))
+                .collect(Collectors.toList());
+
+        if (!responses.isEmpty()) {
+            responses.get(0).setChecked(true);
+        }
+
+        return responses;
+    }
+
+    private void verifyTrimId(Long trimId) {
+        trimRepository.findById(trimId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
     }
 }
