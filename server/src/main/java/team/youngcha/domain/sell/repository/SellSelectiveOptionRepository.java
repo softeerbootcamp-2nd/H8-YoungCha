@@ -24,7 +24,7 @@ public class SellSelectiveOptionRepository {
                 "FROM sell_selective_options AS sso use index(options_id)" +
                 "WHERE EXISTS(" +
                 "SELECT 1 FROM sell AS s " +
-                "WHERE sso.sell_id = s.id AND s.trim_id = (:trim_id))" +
+                "WHERE sso.sell_id = s.id AND s.trim_id = (:trimId))" +
                 "GROUP BY options_id";
 
         return namedParameterJdbcTemplate.queryForList(sql, params)
