@@ -1,10 +1,9 @@
 import Button from '@/components/Button';
 import { HTMLAttributes } from 'react';
 
-interface PopUpButtonProps extends HTMLAttributes<HTMLDivElement> {
+interface PopUpButtonProps extends HTMLAttributes<HTMLButtonElement> {
   greyButtonContent: string;
   blueButtonContent: string;
-  onClick?: () => void;
   onClose?: () => void;
 }
 
