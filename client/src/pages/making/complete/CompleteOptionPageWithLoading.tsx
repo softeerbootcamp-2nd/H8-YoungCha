@@ -7,9 +7,10 @@ function CompleteOptionPageWithLoading() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
+    const loadingTime = setTimeout(() => {
       setIsLoading(false);
     }, LOADING_DURATION);
+    return () => clearTimeout(loadingTime);
   }, []);
 
   return (
