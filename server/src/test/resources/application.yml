@@ -7,6 +7,9 @@ spring:
   sql:
     init:
       mode: always
+  redis:
+    host: localhost
+    port: 6379
   origin: http://localhost:8080
 logging:
   level:

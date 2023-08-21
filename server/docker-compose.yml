@@ -11,6 +11,7 @@ services:
       - "8081:8080"
     depends_on:
       - nginx
+      - redis
     networks:
       - youngcha
 
@@ -24,6 +25,7 @@ services:
       - "8082:8080"
     depends_on:
       - nginx
+      - redis
     networks:
       - youngcha
 
@@ -41,6 +43,13 @@ services:
       - TZ=Asia/Seoul
     networks:
       - youngcha
+
+  redis:
+    container_name: redis
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
 
 networks:
   youngcha:
