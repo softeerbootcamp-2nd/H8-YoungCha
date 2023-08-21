@@ -12,6 +12,7 @@ import com.youngcha.ohmycarset.model.car.Car
 import com.youngcha.ohmycarset.model.car.ImageInfo
 import com.youngcha.ohmycarset.model.car.OptionInfo
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
+import kotlin.random.Random
 
 class CarCustomizationViewModel : ViewModel() {
     // 자동차 정보 관련 변수들
@@ -29,6 +30,9 @@ class CarCustomizationViewModel : ViewModel() {
     // 관련된 변수: currentType
     private val _currentType = MutableLiveData<String>("SelfMode")
     val currentType: LiveData<String> = _currentType
+
+    // 현재 선택된 옵션
+    val currentSelectedOption = MutableLiveData<OptionInfo>()
 
     // 옵션 선택 UI 관련 변수들
     // 관련된 변수: componentOption1Visibility, componentOption2Visibility, horizontalButtonVisible, swipeButtonVisible, subOptionButtonVisible, subOptionViewTypeChangeButton, subOptionViewType
@@ -75,6 +79,11 @@ class CarCustomizationViewModel : ViewModel() {
 
     val currentOptionList = MediatorLiveData<List<OptionInfo>>()
 
+    // 선택 완료 시 애니메이션 관련 변수
+    private val _startAnimationEvent = MutableLiveData<String>()
+    val startAnimationEvent: LiveData<String>
+        get() = _startAnimationEvent
+
 
     // 초기화 블록
     init {
@@ -110,6 +119,56 @@ class CarCustomizationViewModel : ViewModel() {
         _currentEstimateSubTabs.value = estimateTabs
 
     }
+
+    // --- 프래그먼트 초기 시점 함수 ---
+
+    /**
+     *  초기 시작 지점
+     *  가이드 모드일 경우 부품 미리 생성
+     */
+    fun initCarCustomizationViewModel(currentType: String) {
+        _currentType.value = currentType
+        randomizeParts()
+        when(currentType) {
+            "GuideMode" -> {
+                val lastTab = currentMainTabs.value?.lastOrNull()
+                if (lastTab == "견적 내기") {
+                    val position = currentMainTabs.value?.indexOf(lastTab)
+                    _estimateViewVisible.value = 1
+                    _currentTabPosition.value = position!!
+                }
+            }
+        }
+    }
+
+    fun randomizeParts() {
+        val randomizedParts = mutableListOf<Map<String, List<OptionInfo>>>()
+
+        // 주 옵션에서 무작위로 선택
+        _selectedCar.value?.mainOptions?.forEach { mainOptionMap ->
+            val randomizedMainOptions = mainOptionMap.map { entry ->
+                val randomOption = entry.value.random()
+                entry.key to listOf(randomOption)
+            }.toMap()
+
+            randomizedParts.add(randomizedMainOptions)
+        }
+
+        // 부 옵션에서 무작위로 선택
+        _selectedCar.value?.subOptions?.forEach { subOptionMap ->
+            val randomizedSubOptions = subOptionMap.map { entry ->
+                val randomOption = entry.value.random()
+                entry.key to listOf(randomOption)
+            }.toMap()
+
+            randomizedParts.add(randomizedSubOptions)
+        }
+
+        _customizedParts.value = randomizedParts
+    }
+
+
+
 
     // --- UI 업데이트 관련 함수 ---
 
@@ -226,6 +285,8 @@ class CarCustomizationViewModel : ViewModel() {
     ) {
         val updatedList = _customizedParts.value?.toMutableList() ?: mutableListOf()
 
+        currentSelectedOption.value = option
+
         val keyName = subOptionName ?: componentName
         val index = updatedList.indexOfFirst { it.containsKey(keyName) }
 
@@ -238,6 +299,7 @@ class CarCustomizationViewModel : ViewModel() {
             if (componentName == OPTION_SELECTION) {
                 existingOptions.add(option)
                 existingComponent[keyName] = existingOptions
+
             } else {
                 // 여기에는 값을 덮어써야함 즉 최신 값으로 벨류를 업데이트
                 existingComponent[keyName] = listOf(option)
@@ -343,6 +405,7 @@ class CarCustomizationViewModel : ViewModel() {
      */
     private fun loadCarData(carName: String) {
         _selectedCar.value = createCarData(carName)
+        updateTabInfo(_selectedCar.value!!)
     }
 
     // --- 기타 헬퍼 함수 ---
@@ -479,6 +542,24 @@ class CarCustomizationViewModel : ViewModel() {
         _estimateMainOptions.value = map
     }
 
+
+    // 선택 완료 시
+    fun executeRandomAnimation() {
+        if (currentType.value == "GuideMode") {
+            handleTabChange(1)
+            return
+        }
+
+        if (getOptionSize(currentComponentName.value!!) <= 2) {
+            if (componentOption1Visibility.value == 1) {
+                _startAnimationEvent.value = "fv_component_option_1"
+            } else if (componentOption2Visibility.value == 1) {
+                _startAnimationEvent.value = "fv_component_option_2"
+            }
+        } else {
+            _startAnimationEvent.value = "fv_vp_container"
+        }
+    }
 
     // Test Data
     private fun createCarData(carName: String): Car {
@@ -623,7 +704,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "20인치 다크 스퍼터링 휠",
                     "+ 4,280,000원",
                     ImageInfo(ImageType.NONE, 0),
-                    listOf("프리미엄 선택")
+                    listOf("20대 61%",  "여성 65%")
                 ),
                 OptionInfo(
                     "main",

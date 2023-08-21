@@ -1,17 +1,28 @@
 package com.youngcha.ohmycarset.ui.fragment
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.opengl.Visibility
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -29,6 +40,7 @@ import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class CarCustomizationFragment : Fragment() {
     private var _binding: FragmentCarCustomizationBinding? = null
@@ -37,6 +49,8 @@ class CarCustomizationFragment : Fragment() {
     private val detailAdapterMain = EstimateDetailAdapter()
     private val detailAdapterSub = EstimateDetailAdapter()
     private val carViewModel: CarCustomizationViewModel by viewModels()
+
+    private lateinit var mode: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +62,7 @@ class CarCustomizationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mode = arguments?.getString("mode") ?: ""
         setupViews()
     }
 
@@ -64,13 +79,14 @@ class CarCustomizationFragment : Fragment() {
             estimateSubTabs()
         }
         binding.vMainTabLayoutOverlay.setOnTouchListener { _, _ -> true }
+        carViewModel.initCarCustomizationViewModel(mode)
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupListener() {
         binding.htbHeaderToolbar.listener = object : OnHeaderToolbarClickListener {
             override fun onExitClick() {
-                showSnackbar("Exit clicked!")
+                findNavController().navigate(R.id.action_makeCarSelfModeFragment_to_trimSelectFragment)
             }
 
             override fun onModeChangeClick() {
@@ -112,10 +128,58 @@ class CarCustomizationFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        carViewModel.startAnimationEvent.observe(viewLifecycleOwner) { feedbackViewId ->
+            val targetView = when (feedbackViewId) {
+                "fv_component_option_1" -> binding.fvComponentOption1
+                "fv_component_option_2" -> binding.fvComponentOption2
+                "fv_vp_container" -> binding.fvVpContainer
+                else -> null
+            }
+
+            val fadeOutAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
+            fadeOutAnimation.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {}
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    targetView?.visibility = View.INVISIBLE
+                    carViewModel.handleTabChange(1)
+                }
+
+                override fun onAnimationRepeat(animation: Animation?) {}
+            })
+
+            targetView?.onAnimationEndListener = {
+                targetView?.startAnimation(fadeOutAnimation)
+            }
+
+            when (feedbackViewId) {
+                "fv_component_option_1" -> {
+                    binding.fvComponentOption1.visibility = View.VISIBLE
+                    binding.fvComponentOption1.startFeedbackAnimation()
+                }
+
+                "fv_component_option_2" -> {
+                    binding.fvComponentOption2.visibility = View.VISIBLE
+                    binding.fvComponentOption2.startFeedbackAnimation()
+                }
+
+                "fv_vp_container" -> {
+                    binding.fvVpContainer.visibility = View.VISIBLE
+                    binding.fvVpContainer.startFeedbackAnimation()
+                }
+            }
+        }
+
+
         carViewModel.selectedCar.observe(viewLifecycleOwner) { car ->
-            carViewModel.updateTabInfo(car)
+            //  carViewModel.updateTabInfo(car)
+            //  val firstKey = car.mainOptions.first().keys.firstOrNull()
+            //  carViewModel.setCurrentComponentName(firstKey!!)
             val firstKey = car.mainOptions.first().keys.firstOrNull()
-            carViewModel.setCurrentComponentName(firstKey!!)
+            if (carViewModel.currentType.value != "GuideMode") {
+                carViewModel.setCurrentComponentName(firstKey!!)
+            }
+
         }
 
         carViewModel.subOptionViewType.observe(viewLifecycleOwner) {

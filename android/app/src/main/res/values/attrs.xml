@@ -10,4 +10,5 @@
         <attr name="title" format="string"/>
         <attr name="modeChangeValid" format="integer"/>
     </declare-styleable>
+
 </resources>
