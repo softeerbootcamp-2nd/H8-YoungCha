@@ -1,27 +1,17 @@
 import { useParams } from 'react-router-dom';
 import CompleteOptionPage from './complete/CompleteOptionPage';
 import SelectOptionPage from './select/SelectOptionPage';
-import ProgressBar from '@/components/ProgressBar';
 import { LAST_STEP } from './constant';
 
-interface MakingPageProps {
-  path: 'self' | 'guide';
-}
+function MakingPage() {
+  const { mode, step } = useParams() as {
+    mode: 'self' | 'guide';
+    step: string;
+  };
 
-function MakingPage({ path }: MakingPageProps) {
-  const { step, id } = useParams() as { step: string; id: string };
-  const currentStep = Number(step);
+  if (Number(step) === LAST_STEP) return <CompleteOptionPage />;
 
-  return (
-    <div className="flex flex-col w-full h-full">
-      <ProgressBar step={currentStep} mode={path} id={id} />
-      {currentStep < LAST_STEP ? (
-        <SelectOptionPage path={path} />
-      ) : (
-        <CompleteOptionPage />
-      )}
-    </div>
-  );
+  return <SelectOptionPage path={mode} />;
 }
 
 export default MakingPage;
