@@ -29,6 +29,13 @@ class MainActivity : AppCompatActivity() {
 //
 //                    }
                 }
+                val responseMain = apiService.getMainPageData(2)
+                if(responseMain.isSuccessful)
+                {
+                    Log.d("API", "success")
+                    val main = responseMain.body()
+                    Log.d("BODY", main.toString())
+                }
             } catch (e: Exception) {
                 // 처리
             }
