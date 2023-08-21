@@ -80,6 +80,7 @@ function Confetti({
     particles.forEach((particle, index) => {
       if (particle.position.y >= canvas.height) particles.splice(index, 1);
     });
+
     circleParticles.forEach((circleParticle, index) => {
       if (circleParticle.position.y >= canvas.height)
         circleParticles.splice(index, 1);
@@ -93,12 +94,15 @@ function Confetti({
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight - 80;
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle(canvas));
-    }
-    for (let i = 0; i < circleParticleCount; i++) {
-      circleParticles.push(new CircleParticle(canvas));
-    }
+    particles.push(
+      ...Array.from({ length: particleCount }, () => new Particle(canvas))
+    );
+    circleParticles.push(
+      ...Array.from(
+        { length: circleParticleCount },
+        () => new CircleParticle(canvas)
+      )
+    );
 
     animate();
 
