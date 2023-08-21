@@ -1,8 +1,9 @@
+import { DictionaryContext } from '@/App';
 import * as Icon from '../../assets/icons';
-import { useState } from 'react';
+import { useContext } from 'react';
 
 function DictionaryToggleButton() {
-  const [dictionaryOn, setDictionaryOn] = useState(false);
+  const { dictionaryOn, setDictionaryOn } = useContext(DictionaryContext);
 
   function toggleDictionary() {
     setDictionaryOn((prevState) => !prevState);

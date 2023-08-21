@@ -59,3 +59,8 @@ export interface BasicOptionType {
 }
 
 export type ModeType = 'guide' | 'self' | 'none';
+
+export interface DictionaryContextType {
+  dictionaryOn: boolean;
+  setDictionaryOn: React.Dispatch<React.SetStateAction<boolean>>;
+}
