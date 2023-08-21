@@ -1,8 +1,8 @@
 import { COLORS } from './constant';
 import { randomInRange } from './helper';
 
-const gravityCircleParticles = 0.1;
-const dragCircleParticles = 0.02;
+const GRAVITY_CIRCLE_PARTICLES = 0.1;
+const DRAG_CIRCLE_PARTICLES = 0.02;
 
 export class CircleParticle {
   color: string;
@@ -28,8 +28,8 @@ export class CircleParticle {
 
   update(): void {
     // CircleParticle의 속도를 적용합니다.
-    this.velocity.x -= this.velocity.x * dragCircleParticles;
-    this.velocity.y = this.velocity.y + gravityCircleParticles;
+    this.velocity.x -= this.velocity.x * DRAG_CIRCLE_PARTICLES;
+    this.velocity.y = this.velocity.y + GRAVITY_CIRCLE_PARTICLES;
 
     // CircleParticle의 위치를 적용합니다.
     this.position.x += this.velocity.x;

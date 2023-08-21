@@ -1,8 +1,8 @@
 import { COLORS } from './constant';
 import { randomInRange } from './helper';
 
-const gravityParticles = 0.1;
-const dragParticles = 0.075;
+const GRAVITY_PARTICLES = 0.1;
+const DRAG_PARTICLES = 0.075;
 const TERMINAL_VELOCITY = 3;
 
 type RangeType = [number, number];
@@ -40,9 +40,9 @@ export class Particle {
 
   update(): void {
     // Particles의 속도를 적용합니다.
-    this.velocity.x -= this.velocity.x * dragParticles;
+    this.velocity.x -= this.velocity.x * DRAG_PARTICLES;
     this.velocity.y = Math.min(
-      this.velocity.y + gravityParticles,
+      this.velocity.y + GRAVITY_PARTICLES,
       TERMINAL_VELOCITY
     );
     this.velocity.x += Math.random() > 0.5 ? Math.random() : -Math.random();
