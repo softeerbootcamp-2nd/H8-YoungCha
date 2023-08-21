@@ -21,6 +21,9 @@ public class FindGuideOptionResponse {
     @Schema(description = "옵션 아이디")
     private Long id;
 
+    @Schema(description = "카테고리 아이디")
+    private Long categoryId;
+
     @Schema(description = "추천 유무")
     private boolean checked;
 
@@ -50,6 +53,7 @@ public class FindGuideOptionResponse {
 
     public FindGuideOptionResponse(Option option, boolean checked, int rate, List<KeywordRate> tags, List<OptionImage> optionImages, List<OptionDetail> optionDetails) {
         this.id = option.getId();
+        this.categoryId = option.getCategoryId();
         this.checked = checked;
         this.rate = rate;
         this.price = option.getPrice();
@@ -66,12 +70,13 @@ public class FindGuideOptionResponse {
     }
 
     @Builder
-    public FindGuideOptionResponse(Long id, boolean checked, int rate, int price, String name,
+    public FindGuideOptionResponse(Long id, Long categoryId, boolean checked, int rate, int price, String name,
                                    String feedbackTitle, String feedbackDescription,
                                    List<KeywordRate> tags,
                                    List<FindOptionDetailResponse> details,
                                    List<FindOptionImageResponse> images) {
         this.id = id;
+        this.categoryId = categoryId;
         this.checked = checked;
         this.rate = rate;
         this.price = price;
