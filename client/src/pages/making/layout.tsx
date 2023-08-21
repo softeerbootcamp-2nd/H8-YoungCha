@@ -2,10 +2,8 @@ import { Outlet, useParams } from 'react-router-dom';
 import ProgressBar from '@/components/ProgressBar';
 
 function MakingPageLayout() {
-  const { mode, step, id } = useParams() as {
+  const { mode } = useParams() as {
     mode: 'self' | 'guide';
-    step: string;
-    id: string;
   };
 
   if (mode !== 'self' && mode !== 'guide')
@@ -13,7 +11,7 @@ function MakingPageLayout() {
 
   return (
     <div className="min-h-full pt-80px min-w-768px flex flex-col">
-      <ProgressBar step={Number(step)} mode={mode} id={id} />
+      <ProgressBar />
       <Outlet />
     </div>
   );

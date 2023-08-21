@@ -1,14 +1,12 @@
-import { Link, LinkProps } from 'react-router-dom';
+import { LinkProps, NavLink, useParams } from 'react-router-dom';
+import { PathParamsType } from '@/types/router.ts';
 
 interface ProgressBarProps {
-  step: number;
   mode: 'self' | 'guide';
   id: string;
 }
 
-interface ProgressItemProps extends LinkProps {
-  active: boolean;
-}
+interface ProgressItemProps extends LinkProps {}
 
 interface SelectedBarProps {
   active: number;
@@ -26,47 +24,46 @@ const PROGRESS_LIST = [
   '견적 내기',
 ];
 
-function ProgressBar({ step, mode, id }: ProgressBarProps) {
+function ProgressBar() {
+  const { step: _step, mode, id } = useParams() as PathParamsType;
+  const step = Number(_step);
+
   return (
     <nav className="z-10 text-center min-w-768px title5 border-b-2px border-grey-002 px-32px">
       <div className="max-w-5xl mx-auto xl:px-96px xl:max-w-none">
-        <div className="flex h-full whitespace-nowrap">
-          <ProgressList {...{ step, mode, id }} />
-        </div>
+        <ProgressList {...{ mode, id }} />
         <SelectedBar active={step - 1} length={PROGRESS_LIST.length} />
       </div>
     </nav>
   );
 }
 
-function ProgressList({ step, mode, id }: ProgressBarProps) {
-  return PROGRESS_LIST.map((item: string, index: number) => (
-    <ProgressItem
-      active={index + 1 === step}
-      to={`/model/${id}/making/${mode}/${index + 1}`}
-      key={`ProgressItem-${index}`}
-    >
-      {`${(index + 1).toString().padStart(2, '0')} ${item}`}
-    </ProgressItem>
-  ));
+function ProgressList({ mode, id }: ProgressBarProps) {
+  return (
+    <div className="flex h-full whitespace-nowrap">
+      {PROGRESS_LIST.map((item: string, index: number) => (
+        <ProgressItem
+          to={`/model/${id}/making/${mode}/${index + 1}`}
+          key={`ProgressItem-${index}`}
+        >
+          {`${(index + 1).toString().padStart(2, '0')} ${item}`}
+        </ProgressItem>
+      ))}
+    </div>
+  );
 }
 
-function ProgressItem({
-  children,
-  to,
-  active = false,
-  ...props
-}: ProgressItemProps) {
+function ProgressItem({ children, ...props }: ProgressItemProps) {
   return (
-    <Link
-      to={to}
-      className={`flex-1 flex justify-center items-center h-26px ${
-        active ? 'text-main-blue font-medium' : 'text-grey-002'
-      }`}
+    <NavLink
+      className={({ isActive }) =>
+        `flex-1 flex justify-center items-center h-26px 
+        ${isActive ? 'text-main-blue font-medium' : 'text-grey-002'}`
+      }
       {...props}
     >
       {children}
-    </Link>
+    </NavLink>
   );
 }
 
