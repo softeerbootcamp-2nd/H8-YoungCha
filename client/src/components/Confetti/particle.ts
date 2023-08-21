@@ -1,4 +1,4 @@
-import { colors } from './constant';
+import { COLORS } from './constant';
 import { randomInRange } from './helper';
 
 const gravityParticles = 0.1;
@@ -18,7 +18,7 @@ export class Particle {
 
   constructor(canvas: HTMLCanvasElement) {
     this.randomModifier = randomInRange(0, 99);
-    this.color = colors[Math.floor(randomInRange(0, colors.length))];
+    this.color = COLORS[Math.floor(randomInRange(0, COLORS.length))];
     this.dimensions = {
       x: randomInRange(5, 9),
       y: randomInRange(8, 15),

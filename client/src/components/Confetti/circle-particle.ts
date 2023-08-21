@@ -1,4 +1,4 @@
-import { colors } from './constant';
+import { COLORS } from './constant';
 import { randomInRange } from './helper';
 
 const gravityCircleParticles = 0.1;
@@ -11,7 +11,7 @@ export class CircleParticle {
   velocity: { x: number; y: number };
 
   constructor(canvas: HTMLCanvasElement) {
-    this.color = colors[Math.floor(randomInRange(0, colors.length))].back;
+    this.color = COLORS[Math.floor(randomInRange(0, COLORS.length))].back;
     this.radius = randomInRange(2, 6);
     this.position = {
       x: [
