@@ -325,7 +325,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
             <include
-                android:id="@+id/fragment_estimate"
+                android:id="@+id/layout_estimate"
                 layout="@layout/layout_estimate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
