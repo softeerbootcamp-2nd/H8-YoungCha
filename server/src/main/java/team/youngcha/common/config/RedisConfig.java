@@ -41,7 +41,7 @@ public class RedisConfig {
                         .fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair
                         .fromSerializer(new GenericJackson2JsonRedisSerializer()))
-                .entryTtl(Duration.ofMinutes(1L)); // 1시간 캐시
+                .entryTtl(Duration.ofHours(1L)); // 1시간 캐시
 
         return buildCacheManager(cf, redisCacheConfiguration);
     }
@@ -55,7 +55,7 @@ public class RedisConfig {
                         .fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair
                         .fromSerializer(new CustomSerializer(Map.class)))
-                .entryTtl(Duration.ofMinutes(1L)); // 1시간 캐시
+                .entryTtl(Duration.ofHours(1L)); // 1시간 캐시
 
         return buildCacheManager(cf, redisCacheConfiguration);
     }
