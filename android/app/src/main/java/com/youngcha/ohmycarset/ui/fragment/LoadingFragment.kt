@@ -25,8 +25,6 @@ class LoadingFragment : Fragment() {
     private var imageAnimationCoroutine: Job? = null
     private var imageAndTextAnimationCoroutine: Job? = null
 
-    private lateinit var mode: String
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,8 +37,6 @@ class LoadingFragment : Fragment() {
     @OptIn(DelicateCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        mode = arguments?.getString("mode") ?: ""
 
         val animator = ValueAnimator.ofInt(0, 100)
         animator.duration = 3000
@@ -112,7 +108,7 @@ class LoadingFragment : Fragment() {
                 var bundle: Bundle?
 
                 bundle = Bundle().apply {
-                    putString("mode", mode)
+                    putString("mode", "GuideMode")
                 }
                 findNavController().navigate(
                     R.id.action_loadingFragment_to_makeCarSelfModeFragment,

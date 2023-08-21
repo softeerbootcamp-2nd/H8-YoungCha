@@ -158,7 +158,7 @@
                 app:layout_constraintStart_toStartOf="@id/btn_component_option_1"
                 app:layout_constraintTop_toTopOf="@id/btn_component_option_1"
                 app:mainFeedbackText="@{viewModel.currentSelectedOption.name}"
-                app:subFeedbackText="@{viewModel.currentSelectedOption.price}" />
+                app:subFeedbackText='@{"+ " + String.valueOf(viewModel.currentSelectedOption.price) + "원"}' />
 
             <com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
                 android:id="@+id/btn_component_option_2"
@@ -196,7 +196,7 @@
                 app:layout_constraintStart_toStartOf="@id/btn_component_option_2"
                 app:layout_constraintTop_toTopOf="@id/btn_component_option_2"
                 app:mainFeedbackText="@{viewModel.currentSelectedOption.name}"
-                app:subFeedbackText="@{viewModel.currentSelectedOption.price}" />
+                app:subFeedbackText='@{"+ " + String.valueOf(viewModel.currentSelectedOption.price) + "원"}' />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -307,7 +307,6 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="42dp"
                 android:fontFamily="@font/hyundai_sans_head_kr_medium"
-                android:text="42,000,000원"
                 android:textColor="@color/cool_grey_black"
                 android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -367,8 +366,18 @@
             app:layout_constraintStart_toStartOf="@id/vp_option_container"
             app:layout_constraintTop_toTopOf="@id/vp_option_container"
             app:mainFeedbackText="@{viewModel.currentSelectedOption.name}"
-            app:subFeedbackText="@{viewModel.currentSelectedOption.price}" />
+            app:subFeedbackText='@{"+ " + String.valueOf(viewModel.currentSelectedOption.price) + "원"}' />
 
+
+        <FrameLayout
+            android:id="@+id/fl_particle_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

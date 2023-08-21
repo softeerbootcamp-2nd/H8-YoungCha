@@ -33,13 +33,11 @@ class FeedbackView @JvmOverloads constructor(
     }
 
     fun startFeedbackAnimation() {
-        binding.ivGood.visibility = View.INVISIBLE
         binding.ivFace.setImageResource(R.drawable.ic_face)
         binding.clVpSelected.visibility = View.VISIBLE
-
+        binding.ivGood.clearAnimation() // 이전 애니메이션 제거
+        binding.ivGood.visibility = View.INVISIBLE
         val fadeInInitial = AnimationUtils.loadAnimation(context, R.anim.fade_in)
-        val fadeOutForFace = AnimationUtils.loadAnimation(context, R.anim.fade_out)
-        val fadeInForFace = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         val fadeInForGood = AnimationUtils.loadAnimation(context, R.anim.fade_in)
 
         // First Animation
@@ -47,39 +45,20 @@ class FeedbackView @JvmOverloads constructor(
             override fun onAnimationStart(animation: Animation?) {}
 
             override fun onAnimationEnd(animation: Animation?) {
-                binding.ivFace.startAnimation(fadeOutForFace)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.ivFace.setImageResource(R.drawable.ic_smile)
+                    binding.ivGood.startAnimation(fadeInForGood)
+                }, 500) // 0.5초 후 실행
             }
 
             override fun onAnimationRepeat(animation: Animation?) {}
         })
 
         // Second Animation
-        fadeOutForFace.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {}
-
-            override fun onAnimationEnd(animation: Animation?) {
-                binding.ivFace.setImageResource(R.drawable.ic_smile)
-                binding.ivFace.startAnimation(fadeInForFace)
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {}
-        })
-
-        // Third Animation
-        fadeInForFace.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {}
-
-            override fun onAnimationEnd(animation: Animation?) {
-                binding.ivGood.visibility = View.VISIBLE
-                binding.ivGood.startAnimation(fadeInForGood)
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {}
-        })
-
-        // Final Animation
         fadeInForGood.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationStart(animation: Animation?) {
+                binding.ivGood.visibility = View.VISIBLE
+            }
 
             override fun onAnimationEnd(animation: Animation?) {
                 Handler(Looper.getMainLooper()).postDelayed({
@@ -90,7 +69,8 @@ class FeedbackView @JvmOverloads constructor(
             override fun onAnimationRepeat(animation: Animation?) {}
         })
 
+
         binding.clVpSelected.startAnimation(fadeInInitial)
     }
-
 }
+
