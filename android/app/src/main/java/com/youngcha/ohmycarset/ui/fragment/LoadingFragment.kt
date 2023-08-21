@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import com.youngcha.ohmycarset.databinding.FragmentLoadingBinding
 import android.animation.ValueAnimator
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.youngcha.ohmycarset.R
+import com.youngcha.ohmycarset.enums.TrimType
 import kotlinx.coroutines.*
 
 class LoadingFragment : Fragment() {
@@ -22,6 +24,8 @@ class LoadingFragment : Fragment() {
     private var currentIndex = 0
     private var imageAnimationCoroutine: Job? = null
     private var imageAndTextAnimationCoroutine: Job? = null
+
+    private lateinit var mode: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +39,8 @@ class LoadingFragment : Fragment() {
     @OptIn(DelicateCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        mode = arguments?.getString("mode") ?: ""
 
         val animator = ValueAnimator.ofInt(0, 100)
         animator.duration = 3000
@@ -103,6 +109,15 @@ class LoadingFragment : Fragment() {
         animator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 //화면 전환 : 견적보기 애니메이션으로 전환
+                var bundle: Bundle?
+
+                bundle = Bundle().apply {
+                    putString("mode", mode)
+                }
+                findNavController().navigate(
+                    R.id.action_loadingFragment_to_makeCarSelfModeFragment,
+                    bundle
+                )
             }
         })
     }

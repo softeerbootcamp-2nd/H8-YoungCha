@@ -16,6 +16,7 @@ import com.youngcha.ohmycarset.model.car.Car
 import com.youngcha.ohmycarset.model.car.ImageInfo
 import com.youngcha.ohmycarset.model.car.OptionInfo
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
+import kotlin.random.Random
 
 class CarCustomizationViewModel : ViewModel() {
     // 자동차 정보 관련 변수들
@@ -107,6 +108,56 @@ class CarCustomizationViewModel : ViewModel() {
         _currentSubTabs.value = getSubOptionKeys()
     }
 
+    // --- 프래그먼트 초기 시점 함수 ---
+
+    /**
+     *  초기 시작 지점
+     *  가이드 모드일 경우 부품 미리 생성
+     */
+    fun initCarCustomizationViewModel(currentType: String) {
+        _currentType.value = currentType
+        randomizeParts()
+        when(currentType) {
+            "GuideMode" -> {
+                val lastTab = currentMainTabs.value?.lastOrNull()
+                if (lastTab == "견적 내기") {
+                    val position = currentMainTabs.value?.indexOf(lastTab)
+                    _estimateViewVisible.value = 1
+                    _currentTabPosition.value = position!!
+                }
+            }
+        }
+    }
+
+    fun randomizeParts() {
+        val randomizedParts = mutableListOf<Map<String, List<OptionInfo>>>()
+
+        // 주 옵션에서 무작위로 선택
+        _selectedCar.value?.mainOptions?.forEach { mainOptionMap ->
+            val randomizedMainOptions = mainOptionMap.map { entry ->
+                val randomOption = entry.value.random()
+                entry.key to listOf(randomOption)
+            }.toMap()
+
+            randomizedParts.add(randomizedMainOptions)
+        }
+
+        // 부 옵션에서 무작위로 선택
+        _selectedCar.value?.subOptions?.forEach { subOptionMap ->
+            val randomizedSubOptions = subOptionMap.map { entry ->
+                val randomOption = entry.value.random()
+                entry.key to listOf(randomOption)
+            }.toMap()
+
+            randomizedParts.add(randomizedSubOptions)
+        }
+
+        _customizedParts.value = randomizedParts
+    }
+
+
+
+
     // --- UI 업데이트 관련 함수 ---
 
     /**
@@ -162,7 +213,6 @@ class CarCustomizationViewModel : ViewModel() {
                 else -> handleMainTab()
             }
         }
-
     }
 
     /**
@@ -342,6 +392,7 @@ class CarCustomizationViewModel : ViewModel() {
      */
     private fun loadCarData(carName: String) {
         _selectedCar.value = createCarData(carName)
+        updateTabInfo(_selectedCar.value!!)
     }
 
     // --- 기타 헬퍼 함수 ---

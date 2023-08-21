@@ -22,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -46,6 +47,8 @@ class CarCustomizationFragment : Fragment() {
 
     private val carViewModel: CarCustomizationViewModel by viewModels()
 
+    private lateinit var mode: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,6 +59,7 @@ class CarCustomizationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mode = arguments?.getString("mode") ?: ""
         setupViews()
     }
 
@@ -71,19 +75,23 @@ class CarCustomizationFragment : Fragment() {
             setupListener()
         }
         binding.vMainTabLayoutOverlay.setOnTouchListener { _, _ -> true }
+        carViewModel.initCarCustomizationViewModel(mode)
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupListener() {
-        binding.htbHeaderToolbar.listener  = object: OnHeaderToolbarClickListener {
+        binding.htbHeaderToolbar.listener = object : OnHeaderToolbarClickListener {
             override fun onExitClick() {
-                showSnackbar("Exit clicked!")
+                findNavController().navigate(R.id.action_makeCarSelfModeFragment_to_trimSelectFragment)
             }
 
             override fun onModeChangeClick() {
-                val dialog = ButtonDialogView(requireContext(), ButtonDialog("Vertical", R.drawable.ic_change, "모드를 변경하시겠어요?", ButtonHorizontal(
-                    "", 1, "", ""), ButtonVertical(carViewModel.currentType.value!!)
-                )
+                val dialog = ButtonDialogView(
+                    requireContext(), ButtonDialog(
+                        "Vertical", R.drawable.ic_change, "모드를 변경하시겠어요?", ButtonHorizontal(
+                            "", 1, "", ""
+                        ), ButtonVertical(carViewModel.currentType.value!!)
+                    )
                 )
 
                 dialog.setOnVerticalButtonClickListener { value ->
@@ -145,10 +153,12 @@ class CarCustomizationFragment : Fragment() {
                     binding.fvComponentOption1.visibility = View.VISIBLE
                     binding.fvComponentOption1.startFeedbackAnimation()
                 }
+
                 "fv_component_option_2" -> {
                     binding.fvComponentOption2.visibility = View.VISIBLE
                     binding.fvComponentOption2.startFeedbackAnimation()
                 }
+
                 "fv_vp_container" -> {
                     binding.fvVpContainer.visibility = View.VISIBLE
                     binding.fvVpContainer.startFeedbackAnimation()
@@ -158,9 +168,14 @@ class CarCustomizationFragment : Fragment() {
 
 
         carViewModel.selectedCar.observe(viewLifecycleOwner) { car ->
-            carViewModel.updateTabInfo(car)
+            //  carViewModel.updateTabInfo(car)
+            //  val firstKey = car.mainOptions.first().keys.firstOrNull()
+            //  carViewModel.setCurrentComponentName(firstKey!!)
             val firstKey = car.mainOptions.first().keys.firstOrNull()
-            carViewModel.setCurrentComponentName(firstKey!!)
+            if (carViewModel.currentType.value != "GuideMode") {
+                carViewModel.setCurrentComponentName(firstKey!!)
+            }
+
         }
 
         carViewModel.subOptionViewType.observe(viewLifecycleOwner) {
@@ -178,7 +193,7 @@ class CarCustomizationFragment : Fragment() {
             }
         }
 
-        carViewModel.currentSubTabs.observe(viewLifecycleOwner) {tabs ->
+        carViewModel.currentSubTabs.observe(viewLifecycleOwner) { tabs ->
             tabs.forEach { tabName ->
                 binding.tlSubOptionTab.addTab(createCustomTab(tabName))
             }
@@ -251,6 +266,7 @@ class CarCustomizationFragment : Fragment() {
                 carViewModel.currentSubTabPosition.value = tab.position
                 carViewModel.updateDataContainer()
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab) {}
 
             override fun onTabReselected(tab: TabLayout.Tab) {}
@@ -270,7 +286,13 @@ class CarCustomizationFragment : Fragment() {
     private fun displayOnRecyclerView(optionInfos: List<OptionInfo>, tabName: String) {
         val adapter = CarOptionPagerAdapter(carViewModel)
         binding.rvSubOptionList.adapter = adapter
-        adapter.setOptions(optionInfos, OPTION_SELECTION, tabName, false, carViewModel.currentType.value)
+        adapter.setOptions(
+            optionInfos,
+            OPTION_SELECTION,
+            tabName,
+            false,
+            carViewModel.currentType.value
+        )
     }
 
     // main & sub 전부 가능
@@ -282,7 +304,13 @@ class CarCustomizationFragment : Fragment() {
             optionInfos.indexOfFirst { it == selectedOptions.firstOrNull() }.takeIf { it != -1 }
                 ?: 0
         binding.vpOptionContainer.setCurrentItem(position, false)
-        adapter.setOptions(optionInfos, OPTION_SELECTION, tabName, true, carViewModel.currentType.value)
+        adapter.setOptions(
+            optionInfos,
+            OPTION_SELECTION,
+            tabName,
+            true,
+            carViewModel.currentType.value
+        )
     }
 
     private fun particleAnimation() {
