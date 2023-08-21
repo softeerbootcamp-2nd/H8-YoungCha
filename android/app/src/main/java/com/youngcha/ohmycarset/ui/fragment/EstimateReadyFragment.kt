@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.youngcha.ohmycarset.R
@@ -37,6 +38,7 @@ class EstimateReadyFragment : Fragment() {
     private lateinit var strengthAdapter: StrengthAdapter
     private lateinit var importantAdapter: ImportantAdapter
     private lateinit var useAdapter: UseAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -211,6 +213,14 @@ class EstimateReadyFragment : Fragment() {
             userTagViewModel.resetSelection()
             //로딩 프래그먼트로 전환
             handlePreliminariesStep(PreliminariesStepType.KEYWORD)
+        }
+
+        binding.layoutEstimateReady.btnNext.setOnClickListener {
+
+        }
+
+        binding.layoutEstimateReady.btnSkip.setOnClickListener {
+            findNavController().navigate(R.id.action_estimateReadyFragment_to_loadingFragment)
         }
     }
 }

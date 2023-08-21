@@ -14,8 +14,8 @@
             android:id="@+id/action_trimSelectFragment_to_makeCarSelfModeFragment"
             app:destination="@id/makeCarSelfModeFragment"/>
         <action
-            android:id="@+id/action_trimSelectFragment_to_loadingFragment"
-            app:destination="@id/loadingFragment" />
+            android:id="@+id/action_trimSelectFragment_to_estimateReadyFragment"
+            app:destination="@id/estimateReadyFragment" />
     </fragment>
 
     <fragment
@@ -39,6 +39,23 @@
         <action
             android:id="@+id/action_onBoardingFragment_to_trimSelectFragment"
             app:destination="@id/trimSelectFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/estimateReadyFragment"
+        android:name="com.youngcha.ohmycarset.ui.fragment.EstimateReadyFragment"
+        android:label="LoadingFragment" >
+        <action
+            android:id="@+id/action_estimateReadyFragment_to_loadingFragment"
+            app:destination="@id/loadingFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+
+        <argument
+            android:name="mode"
+            app:argType="string" />
     </fragment>
 
     <fragment
