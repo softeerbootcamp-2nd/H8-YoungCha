@@ -26,6 +26,7 @@ function Home() {
   const trims = loading ? [] : data?.trims.filter((trim) => trim.id !== 5);
 
   const secondPageRef = useRef<HTMLDivElement>(null);
+
   return (
     <div>
       {!loading && (

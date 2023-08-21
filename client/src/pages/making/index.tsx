@@ -3,9 +3,10 @@ import CompleteOptionPage from './complete/CompleteOptionPage';
 import SelectOptionPage from './select/SelectOptionPage';
 import ProgressBar from '@/components/ProgressBar';
 import { LAST_STEP } from './constant';
+import { ModeType } from '@/types';
 
 interface MakingPageProps {
-  path: 'self' | 'guide';
+  path: ModeType;
 }
 
 function MakingPage({ path }: MakingPageProps) {

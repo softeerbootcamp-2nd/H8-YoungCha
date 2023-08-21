@@ -58,4 +58,4 @@ export interface BasicOptionType {
   contents: ContentsType[];
 }
 
-export type ModeType = 'guide' | 'self' | null;
+export type ModeType = 'guide' | 'self' | 'none';
