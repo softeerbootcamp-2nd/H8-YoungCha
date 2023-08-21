@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import team.youngcha.common.enums.Gender;
 import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.estimate.entity.Estimate;
 import team.youngcha.domain.option.dto.GuideInfo;
@@ -92,6 +93,27 @@ public class EstimateRepository {
         return namedParameterJdbcTemplate.queryForList("SELECT id FROM estimate " +
                 "WHERE trim_id = :trimId " +
                 "AND (keyword1_id = :keywordId OR keyword2_id = :keywordId OR keyword3_id = :keywordId)", params, Long.class);
+    }
+
+    public List<Long> findEstimateIdsOfSimilarUsers(Long trimId, GuideInfo guideInfo) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("trimId", trimId);
+        params.addValue("ageRange", guideInfo.getAgeRange().getRange());
+        params.addValue("gender", guideInfo.getGender().getType());
+        params.addValue("keywords", guideInfo.getKeywordIds());
+
+        String sql = "select id from estimate " +
+                "WHERE estimate.trim_id = (:trimId) " +
+                "and estimate.age_range = (:ageRange) " +
+                "and estimate.keyword1_id in (:keywords) " +
+                "and estimate.keyword2_id in (:keywords) " +
+                "and estimate.keyword3_id in (:keywords)";
+
+        if(guideInfo.getGender() != Gender.NONE) {
+            sql += "and estimate.gender = (:gender)";
+        }
+
+        return namedParameterJdbcTemplate.queryForList(sql, params, Long.class);
     }
 
     private static class EstimateRowMapper implements RowMapper<Estimate> {
