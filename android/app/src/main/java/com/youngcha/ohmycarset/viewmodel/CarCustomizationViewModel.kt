@@ -1,14 +1,10 @@
 package com.youngcha.ohmycarset.viewmodel
 
-import android.util.Log
 import android.view.View
-import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.enums.AdditionalTab
 import com.youngcha.ohmycarset.enums.ImageType
@@ -51,12 +47,21 @@ class CarCustomizationViewModel : ViewModel() {
     // 탭 UI 관련 변수들
     // 관련된 변수: currentTabName, currentTabPosition, currentSubTabPosition, currentMainTabs, currentSubTabs
     val currentTabName = MutableLiveData<String>()
-    private val _currentTabPosition =  MutableLiveData<Int>(0)
+    private val _currentTabPosition = MutableLiveData<Int>(0)
     val currentTabPosition: LiveData<Int> = _currentTabPosition
     val currentSubTabPosition = MutableLiveData<Int>(0)
     val currentMainTabs = MutableLiveData<List<String>>()
     private val _currentSubTabs = MutableLiveData<List<String>>()
     val currentSubTabs: LiveData<List<String>> = _currentSubTabs
+
+    private val _currentEstimateSubTabs = MutableLiveData<List<String>>()
+    val currentEstimateSubTabs: LiveData<List<String>> = _currentEstimateSubTabs
+
+    private val _estimateSubOptions = MutableLiveData<Map<String,List<OptionInfo>>?>()
+    val estimateSubOptions: LiveData<Map<String,List<OptionInfo>>?> = _estimateSubOptions
+
+    private val _estimateMainOptions = MutableLiveData<Map<String,List<OptionInfo>>?>()
+    val estimateMainOptions: LiveData<Map<String,List<OptionInfo>>?> = _estimateMainOptions
 
     // 뷰페이지 및 리사이클러뷰 표시 관련 변수
     // 관련된 변수: displayOnRecyclerViewOnViewPager
@@ -106,6 +111,13 @@ class CarCustomizationViewModel : ViewModel() {
         }
 
         _currentSubTabs.value = getSubOptionKeys()
+
+        val subOptionKeys = getSubOptionKeys()
+        val estimateTabs = mutableListOf<String>()
+        estimateTabs.add("전체")
+        estimateTabs.addAll(subOptionKeys)
+        _currentEstimateSubTabs.value = estimateTabs
+
     }
 
     // --- 프래그먼트 초기 시점 함수 ---
@@ -163,8 +175,8 @@ class CarCustomizationViewModel : ViewModel() {
     /**
      * 견적 색상 버튼 업데이트
      */
-    fun updateEstimateColorButton(view:View) {
-        exteriorButtonChange.value = if(exteriorButtonChange.value==1) 0 else 1
+    fun updateEstimateColorButton(view: View) {
+        exteriorButtonChange.value = if (exteriorButtonChange.value == 1) 0 else 1
     }
 
     /**
@@ -207,7 +219,7 @@ class CarCustomizationViewModel : ViewModel() {
             // 탭 변경 로직
             val tabName = currentMainTabs.value!![nextTabIndex]
             setCurrentComponentName(tabName)
-            _currentTabPosition.value  = nextTabIndex
+            _currentTabPosition.value = nextTabIndex
             when (tabName) {
                 OPTION_SELECTION -> handleSubTab()
                 else -> handleMainTab()
@@ -349,7 +361,7 @@ class CarCustomizationViewModel : ViewModel() {
         val index = car?.indexOfFirst { it.containsKey(tabName) }
 
         if (index != -1) {
-            val myCarToMap = index?.let { car?.get(it) }
+            val myCarToMap = index?.let { car[it] }
             return myCarToMap?.get(tabName)
         }
         return null
@@ -379,6 +391,7 @@ class CarCustomizationViewModel : ViewModel() {
             onComponentOption1Selected()
         }
     }
+
     /**
      * 데이터 컨테이너 업데이트
      */
@@ -492,6 +505,43 @@ class CarCustomizationViewModel : ViewModel() {
         }
         return keys
     }
+
+    fun filterSubOptions(tabName: String) {
+        val map: MutableMap<String, List<OptionInfo>> = mutableMapOf()
+
+        if (tabName == "전체") {
+            val size = _currentEstimateSubTabs.value?.size
+
+            for (i in 1 until (size ?: 0)) {
+                val key = _currentEstimateSubTabs.value?.get(i).toString()
+                val subOptionInfoList = _customizedParts.value?.firstOrNull { it.containsKey(key) }?.get(key)
+                if (subOptionInfoList != null) {
+                    map[key] = subOptionInfoList
+                }
+            }
+
+            _estimateSubOptions.value = map
+        } else {
+            _customizedParts.value?.firstOrNull { it.containsKey(tabName) }?.get(tabName)
+                ?.let { map[tabName] = it }
+            _estimateSubOptions.value = map
+        }
+    }
+
+    fun filteredMainSub() {
+        val size = currentMainTabs.value?.size
+        val map: MutableMap<String, List<OptionInfo>> = mutableMapOf()
+
+        for (i in 0 until (size ?: 0)) {
+            val key = currentMainTabs.value?.get(i).toString()
+            val mainOptionInfoList = _customizedParts.value?.firstOrNull { it.containsKey(key) }?.get(key)
+            if (mainOptionInfoList != null) {
+                map[key] = mainOptionInfoList
+            }
+        }
+        _estimateMainOptions.value = map
+    }
+
 
     // 선택 완료 시
     fun executeRandomAnimation() {

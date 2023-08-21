@@ -346,6 +346,18 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+            <include
+                android:id="@+id/layout_estimate"
+                layout="@layout/layout_estimate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.estimateViewVisible == 1 ?View.VISIBLE:View.INVISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
+                app:viewModel="@{viewModel}" />
+
         <com.youngcha.ohmycarset.ui.customview.FeedbackView
             android:id="@+id/fv_vp_container"
             android:layout_width="0dp"
@@ -357,16 +369,6 @@
             app:mainFeedbackText="@{viewModel.currentSelectedOption.name}"
             app:subFeedbackText="@{viewModel.currentSelectedOption.price}" />
 
-        <include
-            android:id="@+id/fragment_estimate"
-            layout="@layout/layout_estimate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="@{viewModel.estimateViewVisible == 1 ?View.VISIBLE:View.INVISIBLE}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
-            app:viewModel="@{viewModel}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
