@@ -1,6 +1,7 @@
 package team.youngcha.domain.option.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -13,6 +14,7 @@ import team.youngcha.domain.option.enums.OptionType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -77,20 +79,6 @@ public class OptionRepository {
                 params, optionRowMapper);
     }
 
-    private static class OptionRowMapper implements RowMapper<Option> {
-        @Override
-        public Option mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            return Option.builder()
-                    .id(resultSet.getLong("id"))
-                    .name(resultSet.getString("name"))
-                    .price(resultSet.getInt("price"))
-                    .feedbackTitle(resultSet.getString("feedback_title"))
-                    .feedbackDescription(resultSet.getString("feedback_description"))
-                    .categoryId(resultSet.getLong("category_id"))
-                    .build();
-        }
-    }
-
     public int countDefaultOptionsByTrimIdAndCategoryId(Long trimId, Long categoryId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimOptionType", OptionType.BASIC.getType());
@@ -133,6 +121,32 @@ public class OptionRepository {
                 "ORDER BY options.id LIMIT :size OFFSET :offset";
 
         return namedParameterJdbcTemplate.query(sql, params, defaultOptionSummaryRowMapper);
+    }
+
+    public Optional<Option> findByName(String name) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("name", name);
+
+        try {
+            Option option = namedParameterJdbcTemplate.queryForObject("SELECT * FROM options WHERE name = :name", params, optionRowMapper);
+            return Optional.ofNullable(option);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    private static class OptionRowMapper implements RowMapper<Option> {
+        @Override
+        public Option mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            return Option.builder()
+                    .id(resultSet.getLong("id"))
+                    .name(resultSet.getString("name"))
+                    .price(resultSet.getInt("price"))
+                    .feedbackTitle(resultSet.getString("feedback_title"))
+                    .feedbackDescription(resultSet.getString("feedback_description"))
+                    .categoryId(resultSet.getLong("category_id"))
+                    .build();
+        }
     }
 
     private static class DefaultOptionSummaryRowMapper implements RowMapper<DefaultOptionSummary> {

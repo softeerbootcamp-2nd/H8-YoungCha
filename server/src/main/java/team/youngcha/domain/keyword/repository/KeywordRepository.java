@@ -36,6 +36,10 @@ public class KeywordRepository {
         }
     }
 
+    public List<Keyword> findAll() {
+        return namedParameterJdbcTemplate.query("SELECT * FROM keyword", keywordRowMapper);
+    }
+
     public Map<Long, List<Keyword>> findByContainOptionIdsAndGroupKeywords(List<Long> optionIds) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("optionIds", optionIds);
