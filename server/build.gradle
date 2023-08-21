@@ -63,6 +63,7 @@ jacocoTestReport {
             fileTree(dir: it, excludes: [
                     "**/*Application*",
                     "**/common/dto/**",
+                    "**/common/config/**",
                     "**/common/exception/**"
             ])
         }))
@@ -83,6 +84,7 @@ tasks.jacocoTestCoverageVerification {
             excludes = [
                     "**/*Application*",
                     "**/common/dto/**",
+                    "**/common/config/**",
                     "**/common/exception/**"
             ]
         }
