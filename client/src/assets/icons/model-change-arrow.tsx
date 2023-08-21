@@ -1,4 +1,4 @@
-function ModelChangeArrow() {
+function ModelChangeArrow({ fill = '#202732' }: { fill?: string }) {
   return (
     <svg
       width="18"
@@ -11,7 +11,7 @@ function ModelChangeArrow() {
         <path
           id="Vector"
           d="M9 11.998L4.5 7.49805L13.5 7.49805L9 11.998Z"
-          fill="#202732"
+          fill={fill}
         />
       </g>
     </svg>
