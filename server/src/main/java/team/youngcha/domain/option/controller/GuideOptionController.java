@@ -27,7 +27,7 @@ public class GuideOptionController {
     @Operation(summary = "가이드 모드 - 파워 트레인 옵션 조회",
             description = "가이드 모드에서 파워 트레인 옵션을 유사 사용자의 옵션 선택률과 함께 조회합니다.")
     @GetMapping("/power-train")
-    public ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findGuidePowerTrains(
+    public ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findPowerTrains(
             @Schema(description = "트림 아이디")
             @PathVariable Long trimId,
             @Schema(description = "성별 (남자: 0, 여자: 1, 선택 안함: 2)")
@@ -49,7 +49,7 @@ public class GuideOptionController {
     @Operation(summary = "가이드 모드 - 구동 방식 옵션 조회",
             description = "가이드 모드에서 구동 방식 옵션을 유사 사용자의 옵션 선택률과 함께 조회합니다.")
     @GetMapping("/driving-system")
-    public ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findGuideDrivingSystem(
+    public ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findDrivingSystem(
             @Schema(description = "트림 아이디")
             @PathVariable Long trimId,
             @Schema(description = "성별 (남자: 0, 여자: 1, 선택 안함: 2)")
@@ -71,7 +71,7 @@ public class GuideOptionController {
     @Operation(summary = "가이드 모드 - 바디 타입 옵션 조회",
             description = "가이드 모드에서 바디 타입 옵션을 유사 사용자의 옵션 선택률과 함께 조회합니다.")
     @GetMapping("/body-type")
-    public ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findGuideBodyType(
+    public ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findBodyType(
             @Schema(description = "트림 아이디")
             @PathVariable Long trimId,
             @Schema(description = "성별 (남자: 0, 여자: 1, 선택 안함: 2)")

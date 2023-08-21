@@ -24,25 +24,25 @@ public class SelfOptionController {
     @Operation(summary = "셀프 모드 - 파워 트레인 옵션 조회", 
             description = "셀프 모드에서 파워 트레인 옵션을 판매율과 함께 조회합니다.")
     @GetMapping("/power-train")
-    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfPowerTrains(
+    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findPowerTrains(
             @PathVariable Long trimId
     ) {
-        return findSelfRequiredOptions(trimId, RequiredCategory.POWER_TRAIN);
+        return findRequiredOptions(trimId, RequiredCategory.POWER_TRAIN);
     }
 
     @Operation(summary = "셀프 모드 - 구동 방식 옵션 조회", 
             description = "셀프 모드에서 구동 방식 옵션을 판매율과 함께 조회합니다.")
     @GetMapping("/driving-system")
-    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfDrivingSystem(
+    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findDrivingSystem(
             @PathVariable Long trimId
     ) {
-        return findSelfRequiredOptions(trimId, RequiredCategory.DRIVING_SYSTEM);
+        return findRequiredOptions(trimId, RequiredCategory.DRIVING_SYSTEM);
     }
 
-    @Operation(summary = "가이드 모드 - 바디 타입 옵션 조회", 
+    @Operation(summary = "셀프 모드 - 바디 타입 옵션 조회", 
             description = "셀프 모드에서 바디 타입 옵션을 판매율과 함께 조회합니다.")
     @GetMapping("/body-type")
-    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfBodyType(
+    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findBodyType(
             @PathVariable Long trimId
     ) {
         List<FindSelfOptionResponse> findSelfOptionResponses = optionService
@@ -51,19 +51,19 @@ public class SelfOptionController {
         return ResponseEntity.ok(successResponse);
     }
 
-    @Operation(summary = "가이드 모드 - 외장 색상 옵션 조회",
+    @Operation(summary = "셀프 모드 - 외장 색상 옵션 조회",
             description = "셀프 모드에서 외장 색상 옵션을 판매율과 함께 조회합니다.")
     @GetMapping("/exterior-color")
-    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfExteriorColor(
+    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findExteriorColor(
             @PathVariable Long trimId
     ) {
-        return findSelfRequiredOptions(trimId, RequiredCategory.EXTERIOR_COLOR);
+        return findRequiredOptions(trimId, RequiredCategory.EXTERIOR_COLOR);
     }
 
-    @Operation(summary = "가이드 모드 - 내장 색상 옵션 조회",
+    @Operation(summary = "가이 모드 - 내장 색상 옵션 조회",
             description = "셀프 모드에서 내장 색상 옵션을 판매율과 함께 조회합니다.")
     @GetMapping("/interior-color")
-    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfExteriorColor(
+    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findInteriorColor(
             @PathVariable Long trimId,
             @Schema(description = "외장 색상 아이디")
             @RequestParam Long exteriorColorId
@@ -74,23 +74,23 @@ public class SelfOptionController {
         return ResponseEntity.ok(successResponse);
     }
 
-    @Operation(summary = "가이드 모드 - 휠 옵션 조회",
+    @Operation(summary = "셀프 모드 - 휠 옵션 조회",
             description = "셀프 모드에서 휠 옵션을 판매율과 함께 조회합니다.")
     @GetMapping("/wheel")
     public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findWheel(@PathVariable Long trimId) {
-        return findSelfRequiredOptions(trimId, RequiredCategory.WHEEL);
+        return findRequiredOptions(trimId, RequiredCategory.WHEEL);
     }
 
-    @Operation(summary = "가이드 모드 - 선택 옵션 조회",
+    @Operation(summary = "셀프 모드 - 선택 옵션 조회",
             description = "셀프 모드에서 선택 옵션을 판매율과 함께 조회합니다.")
     @GetMapping("/options")
-    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findOptions(@PathVariable Long trimId) {
+    public ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelectiveOptions(@PathVariable Long trimId) {
         List<FindSelfOptionResponse> findSelfOptionResponses = optionService.findSelfSelectiveOptions(trimId);
         SuccessResponse<List<FindSelfOptionResponse>> successResponse = new SuccessResponse<>(findSelfOptionResponses);
         return ResponseEntity.ok(successResponse);
     }
 
-    private ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findSelfRequiredOptions(Long trimId, RequiredCategory category) {
+    private ResponseEntity<SuccessResponse<List<FindSelfOptionResponse>>> findRequiredOptions(Long trimId, RequiredCategory category) {
         List<FindSelfOptionResponse> findSelfOptionResponses = optionService.findSelfRequiredOptions(trimId, category);
         SuccessResponse<List<FindSelfOptionResponse>> successResponse = new SuccessResponse<>(findSelfOptionResponses);
         return ResponseEntity.ok(successResponse);
