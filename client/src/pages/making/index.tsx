@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
-import CompleteOptionPage from './complete/CompleteOptionPage';
 import SelectOptionPage from './select/SelectOptionPage';
 import ProgressBar from '@/components/ProgressBar';
 import { LAST_STEP } from './constant';
+import CompleteOptionPageWithLoading from './complete/CompleteOptionPageWithLoading';
 
 interface MakingPageProps {
   path: 'self' | 'guide';
@@ -18,7 +18,7 @@ function MakingPage({ path }: MakingPageProps) {
       {currentStep < LAST_STEP ? (
         <SelectOptionPage path={path} />
       ) : (
-        <CompleteOptionPage />
+        <CompleteOptionPageWithLoading />
       )}
     </div>
   );
