@@ -103,8 +103,10 @@ public class SellRepository {
         params.addValue("optionIds", optionIds);
 
         String column = category.getColumn() + "_id";
+        String index = "idx_" + category.getColumn() + "_trim";
         return namedParameterJdbcTemplate.queryForList(
-                "select sell." + column + ", COUNT(*) as count from sell " +
+                "select sell." + column + ", COUNT(*) as count " +
+                        "from sell use index(" + index + ") " +
                         "where sell." + column + " in (:optionIds) and sell.trim_id = (:trimId) " +
                         "group by sell." + column,
                 params);
