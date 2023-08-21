@@ -1,4 +1,4 @@
-import HyundaiLogo from './hyundai-logo';
+import HDLogo from './logo/HDLogo';
 import CarIcon from './car-icon';
 import ModelChangeArrow from './model-change-arrow';
 import DictionaryOffIcon from './dictionary-off-icon';
@@ -25,7 +25,7 @@ import ThumbsUpIcon from './ThumbsUpIcon';
 import NPerformance from '@/assets/mock/icons/NPerformance';
 
 export {
-  HyundaiLogo,
+  HDLogo,
   CarIcon,
   ModelChangeArrow,
   DictionaryOffIcon,

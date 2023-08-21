@@ -1,94 +1,153 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import Button from '@/components/Button';
 import { Link, useParams } from 'react-router-dom';
 import { OPTION_ORDER } from '../constant';
 import EstimationSummary from '@/components/SummaryModal';
-import { useState } from 'react';
+import { HTMLAttributes, useState } from 'react';
 import { DownArrow } from '@/assets/icons';
+import { OptionCardProvider } from '@/store/useOptionCardContext';
+import OptionCard from '@/components/OptionCard';
+import { powerTrainMock } from '@/assets/mock/optionMock';
 
 interface SelectOptionPageProps {
   path: 'self' | 'guide';
 }
 
-function SelectOptionPage({ path }: SelectOptionPageProps) {
-  const { step, id } = useParams() as { step: string; id: string };
-  const currentStep = Number(step);
+interface SelectOptionMessageProps {
+  step: number;
+}
 
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+function SelectOptionPage({ path }: SelectOptionPageProps) {
+  const { step } = useParams() as { step: string };
 
   return (
-    <div
-      className={`m-auto max-w-7xl pr-128px flex justify-between items-center w-full  flex-1 gap-60px`}
-    >
-      <div className="flex w-full">
-        <img
-          src="https://www.hyundai.com/contents/spec/LX24/gasoline3.8.jpg"
-          alt="palisade"
-        />
-      </div>
-      <div className="flex flex-col justify-center w-375px gap-30px">
-        <div className="flex gap-12px">
-          <h1 className="font-hsans-head text-24px tracking-[-0.96px]">
-            <strong className="font-medium">
-              {OPTION_ORDER[currentStep - 1]}
-            </strong>
-            을 선택해주세요.
-          </h1>
+    <main className="relative flex-grow">
+      <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
+        {/* 이미지 영역 */}
+        <div className="lg:col-span-7">
+          <img
+            src="https://www.hyundai.com/contents/spec/LX24/gasoline3.8.jpg"
+            className="object-cover w-full h-full"
+            alt="palisade"
+          />
         </div>
-        <div>
-          <div className="flex flex-col items-center gap-12px h-400px">
-            <div className="flex items-center justify-center border rounded-lg border-main-blue w-375px h-150px">
-              디젤 2.2 box
-            </div>
-            <div className="flex items-center justify-center border rounded-lg border-main-blue w-375px h-150px">
-              디젤 2.2 box
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <div className="z-10 flex justify-between bg-whit p-20px">
-              <div className="flex flex-col gap-5px">
-                <div
-                  className="flex gap-5px"
-                  onClick={() => setIsBottomSheetOpen((value) => !value)}
-                  onKeyDown={(event) =>
-                    event.key === 'enter' && setIsBottomSheetOpen(true)
-                  }
-                >
-                  <span className="body2 text-grey-003">총 견적금액</span>
-                  <button
-                    className={`transition bg-grey-001 rounded-6px ${
-                      isBottomSheetOpen ? 'rotate-180' : ''
-                    }`}
-                  >
-                    <DownArrow className="fill-grey-003" />
-                  </button>
-                </div>
-                <span className="title1 text-grey-black">47,200,000원</span>
-              </div>
-              <div className="flex items-center gap-21px">
-                {currentStep !== 1 && (
-                  <Link
-                    to={`/model/${id}/making/${path}/${Number(step) - 1}`}
-                    className="body2 text-grey-003 "
-                  >
-                    이전
-                  </Link>
-                )}
-                <Link to={`/model/${id}/making/${path}/${Number(step) + 1}`}>
-                  <Button size="sm">선택 완료</Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className="relative h-0 -z-0">
-            <EstimationSummary
-              render={isBottomSheetOpen}
-              onClose={() => setIsBottomSheetOpen(false)}
-            />
-          </div>
+        {/* 옵션 선택 영역 */}
+        <div className="flex flex-col max-w-md lg:col-span-5">
+          <SelectOptionMessage step={Number(step)} />
+          <SelectOptionListContainer>
+            <OptionCardProvider>
+              <OptionCard
+                tags={powerTrainMock.tags}
+                imgUrl={powerTrainMock.details[0].imgUrl}
+                price={powerTrainMock.price}
+                step={Number(step)}
+              >
+                <OptionCard.SummarySection details={powerTrainMock.details} />
+                <OptionCard.FunctionDetailBox
+                  details={powerTrainMock.details}
+                />
+              </OptionCard>
+            </OptionCardProvider>
+            <OptionCardProvider>
+              <OptionCard
+                tags={powerTrainMock.tags}
+                imgUrl={powerTrainMock.details[0].imgUrl}
+                price={powerTrainMock.price}
+                step={Number(step)}
+              >
+                <OptionCard.SummarySection details={powerTrainMock.details} />
+                <OptionCard.FunctionDetailBox
+                  details={powerTrainMock.details}
+                />
+              </OptionCard>
+            </OptionCardProvider>
+            <OptionCardProvider>
+              <OptionCard
+                tags={powerTrainMock.tags}
+                imgUrl={powerTrainMock.details[0].imgUrl}
+                price={powerTrainMock.price}
+                step={Number(step)}
+              >
+                <OptionCard.SummarySection details={powerTrainMock.details} />
+                <OptionCard.FunctionDetailBox
+                  details={powerTrainMock.details}
+                />
+              </OptionCard>
+            </OptionCardProvider>
+          </SelectOptionListContainer>
+          <SelectOptionFooter path={path} />
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function SelectOptionMessage({ step }: SelectOptionMessageProps) {
+  return (
+    <div className="font-hsans-head text-24px tracking-[-0.96px] pt-64px pb-32px px-32px">
+      <span className="font-medium">{OPTION_ORDER[step - 1]}</span>
+      <span>을 선택해주세요.</span>
+    </div>
+  );
+}
+
+function SelectOptionListContainer({
+  children,
+}: HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div className="relative flex-grow">
+      <div className="absolute top-0 bottom-0 w-full overflow-auto">
+        <div className="flex flex-col items-center justify-center gap-12px">
+          {children}
         </div>
       </div>
     </div>
+  );
+}
+
+function SelectOptionFooter({ path }: SelectOptionPageProps) {
+  const { step, id } = useParams() as { step: string; id: string };
+  const currentStep = Number(step);
+
+  const [isEstimationSummaryOpen, setIsEstimationSummaryOpen] = useState(false);
+
+  return (
+    <>
+      <EstimationSummary
+        render={isEstimationSummaryOpen}
+        onClose={() => setIsEstimationSummaryOpen(false)}
+      />
+      <div className="z-10 flex items-end justify-between w-full bg-white pt-24px pb-40px px-32px">
+        <div className="flex flex-col gap-5px">
+          <button
+            className="flex gap-5px"
+            onClick={() => setIsEstimationSummaryOpen((value) => !value)}
+          >
+            <span className="body2 text-grey-003">총 견적금액</span>
+            <span className="bg-grey-001 rounded-4px">
+              <DownArrow
+                className={`fill-grey-003 transition ${
+                  isEstimationSummaryOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </span>
+          </button>
+          <span className="title1 text-grey-black">47,200,000원</span>
+        </div>
+        <div className="flex items-center gap-21px">
+          {currentStep > 1 && (
+            <Link
+              to={`/model/${id}/making/${path}/${Number(step) - 1}`}
+              className="body2 text-grey-003"
+            >
+              이전
+            </Link>
+          )}
+          <Link to={`/model/${id}/making/${path}/${Number(step) + 1}`}>
+            <Button size="sm">선택 완료</Button>
+          </Link>
+        </div>
+      </div>
+    </>
   );
 }
 
