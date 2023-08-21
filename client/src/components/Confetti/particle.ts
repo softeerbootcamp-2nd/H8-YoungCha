@@ -1,8 +1,9 @@
-import { colors, terminalVelocity } from './constant';
+import { colors } from './constant';
 import { randomInRange } from './helper';
 
 const gravityParticles = 0.1;
 const dragParticles = 0.075;
+const TERMINAL_VELOCITY = 3;
 
 type RangeType = [number, number];
 
@@ -42,7 +43,7 @@ export class Particle {
     this.velocity.x -= this.velocity.x * dragParticles;
     this.velocity.y = Math.min(
       this.velocity.y + gravityParticles,
-      terminalVelocity
+      TERMINAL_VELOCITY
     );
     this.velocity.x += Math.random() > 0.5 ? Math.random() : -Math.random();
 
