@@ -217,7 +217,6 @@ class CarCustomizationViewModel : ViewModel() {
      * 탭 변경 핸들러
      */
     fun handleTabChange(increment: Int) {
-
         val currentTabIndex = currentTabPosition.value ?: 0
         val nextTabIndex = currentTabIndex + increment
 
@@ -566,7 +565,6 @@ class CarCustomizationViewModel : ViewModel() {
         }
         _estimateMainOptions.value = map
     }
-
 
     // 선택 완료 시
     fun executeRandomAnimation() {

@@ -187,7 +187,7 @@ class CarCustomizationFragment : Fragment() {
                 "estimate_summary" -> {
                     //  Coroutine을 사용하여 일정 시간 후에 handleTabChange(1)을 호출
                     lifecycleScope.launch {
-                        delay(1500) // 2초 대기
+                        delay(1000) // 1초 대기
                         carViewModel.handleTabChange(1)
                     }
                 }

@@ -334,7 +334,7 @@
                 android:layout_marginEnd="27dp"
                 android:background="@drawable/btn_main_style"
                 android:fontFamily="@font/hyundai_sans_text_kr_regular"
-                android:onClick="@{() -> viewModel.handleTabChange(1)}"
+                android:onClick="@{() -> viewModel.executeRandomAnimation()}"
                 android:text="@string/selection_complete_button_label"
                 android:textColor="@color/white"
                 android:textSize="14sp"
