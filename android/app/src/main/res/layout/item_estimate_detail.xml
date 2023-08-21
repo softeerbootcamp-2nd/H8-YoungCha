@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="component_name"
-            type="String" />
-
-        <variable
             name="option_info"
             type="com.youngcha.ohmycarset.model.car.OptionInfo" />
     </data>
@@ -21,19 +17,21 @@
 
         <TextView
             android:id="@+id/tv_detail_name"
+            android:visibility="@{option_info.optionType.equalsIgnoreCase(`sub`) ? android.view.View.GONE : android.view.View.VISIBLE}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="32dp"
-            android:text="@{component_name}"
+            android:text=""
             android:textColor="@color/cool_grey_black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="트림"/>
+            tools:text="트림" />
 
         <TextView
             android:id="@+id/tv_detail_price"
+            android:visibility="@{option_info.optionType.equalsIgnoreCase(`sub`) ? android.view.View.GONE : android.view.View.VISIBLE}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -43,10 +41,11 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="41,200,000원"/>
+            tools:text="41,200,000원" />
 
         <View
             android:id="@+id/v_bar"
+            android:visibility="@{option_info.optionType.equalsIgnoreCase(`sub`) ? android.view.View.GONE : android.view.View.VISIBLE}"
             android:layout_width="0dp"
             android:layout_height="2dp"
             android:layout_marginHorizontal="16dp"
@@ -65,8 +64,7 @@
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/v_bar"
-            app:testImageSource="@{option_info.image.source}"
-            />
+            app:testImageSource="@{option_info.image.source}" />
 
         <TextView
             android:id="@+id/tv_type_name"
@@ -84,6 +82,7 @@
             android:id="@+id/tv_type_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:text="@{option_info.price}"
             android:textColor="@color/cool_grey_black"
             android:textSize="14sp"

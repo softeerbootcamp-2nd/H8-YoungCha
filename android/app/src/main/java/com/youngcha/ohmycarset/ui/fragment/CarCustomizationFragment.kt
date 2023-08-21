@@ -40,6 +40,7 @@ import com.youngcha.ohmycarset.model.car.OptionInfo
 import com.youngcha.ohmycarset.model.dialog.ButtonDialog
 import com.youngcha.ohmycarset.model.dialog.ButtonHorizontal
 import com.youngcha.ohmycarset.model.dialog.ButtonVertical
+import com.youngcha.ohmycarset.ui.adapter.recyclerview.EstimateDetailAdapter
 import com.youngcha.ohmycarset.ui.adapter.viewpager.CarOptionPagerAdapter
 import com.youngcha.ohmycarset.ui.customview.ButtonDialogView
 import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
@@ -55,6 +56,8 @@ class CarCustomizationFragment : Fragment() {
     private var _binding: FragmentCarCustomizationBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding is null.")
 
+    private val detailAdapterMain = EstimateDetailAdapter()
+    private val detailAdapterSub = EstimateDetailAdapter()
     private val carViewModel: CarCustomizationViewModel by viewModels()
 
     private lateinit var mode: String
@@ -62,7 +65,7 @@ class CarCustomizationFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCarCustomizationBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -83,6 +86,7 @@ class CarCustomizationFragment : Fragment() {
             setupSubTabs()
             observeViewModel()
             setupListener()
+            estimateSubTabs()
         }
         binding.vMainTabLayoutOverlay.setOnTouchListener { _, _ -> true }
         carViewModel.initCarCustomizationViewModel(mode)
@@ -216,6 +220,12 @@ class CarCustomizationFragment : Fragment() {
             }
         }
 
+        carViewModel.currentEstimateSubTabs.observe(viewLifecycleOwner) { tabs ->
+            tabs.forEach { tabName ->
+                binding.layoutEstimate.lyDetail.tlOption.addTab(createCustomTabInEstimate(tabName))
+            }
+        }
+
         carViewModel.estimateViewVisible.observe(viewLifecycleOwner) {
             if (it == 1) {
                 view?.viewTreeObserver?.addOnGlobalLayoutListener(object: ViewTreeObserver.OnGlobalLayoutListener{
@@ -226,6 +236,8 @@ class CarCustomizationFragment : Fragment() {
                         view?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
                     }
                 })
+                carViewModel.filteredMainSub()
+                carViewModel.filterSubOptions("전체")
             }
         }
 
@@ -264,6 +276,19 @@ class CarCustomizationFragment : Fragment() {
 
             carViewModel.totalPrice.value?.plus(value)?.let { carViewModel.updateTotalPrice(it) }
         }
+
+
+        carViewModel.estimateSubOptions.observe(viewLifecycleOwner) { subOptions ->
+            val emptySubOptions: Map<String, List<OptionInfo>> = emptyMap()
+            detailAdapterSub.updateOptionInfo(subOptions ?: emptySubOptions)
+        }
+
+        carViewModel.estimateMainOptions.observe(viewLifecycleOwner) { mainOptions ->
+            val emptyMainOptions: Map<String, List<OptionInfo>> = emptyMap()
+            detailAdapterMain.updateOptionInfo(mainOptions ?: emptyMainOptions)
+        }
+
+
     }
 
     // 현재 선택한 탭의 옵션 리스트를 ViewPager에 연결
@@ -297,6 +322,16 @@ class CarCustomizationFragment : Fragment() {
 
         // 초기 어댑터 설정 (옵션 데이터가 없는 초기 상태)
         binding.rvSubOptionList.adapter = CarOptionPagerAdapter(carViewModel)
+
+
+        val linearLayoutManagerForMainOption = LinearLayoutManager(requireContext())
+        binding.layoutEstimate.lyDetail.rvMainOption.layoutManager = linearLayoutManagerForMainOption
+        binding.layoutEstimate.lyDetail.rvMainOption.adapter = detailAdapterMain
+
+        val linearLayoutManagerForSubOption = LinearLayoutManager(requireContext())
+        binding.layoutEstimate.lyDetail.rvSubOption.layoutManager = linearLayoutManagerForSubOption
+        binding.layoutEstimate.lyDetail.rvSubOption.adapter = detailAdapterSub
+
     }
 
     private fun setupSubTabs() {
@@ -311,6 +346,29 @@ class CarCustomizationFragment : Fragment() {
 
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
+    }
+
+    private fun estimateSubTabs() {
+        binding.layoutEstimate.lyDetail.tlOption.addOnTabSelectedListener(object :
+            TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val customView = tab.customView
+                val tvTabName = customView?.findViewById<TextView>(R.id.tv_tab_name)
+                val tabName = tvTabName?.text.toString()
+                carViewModel.filterSubOptions(tabName)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+    }
+
+    private fun createCustomTabInEstimate(name: String): TabLayout.Tab {
+        val tab = binding.layoutEstimate.lyDetail.tlOption.newTab()
+        val customView = layoutInflater.inflate(R.layout.view_custom_tab_name, null)
+        customView.findViewById<TextView>(R.id.tv_tab_name).text = name
+        tab.customView = customView
+        return tab
     }
 
     private fun createCustomTab(name: String): TabLayout.Tab {
