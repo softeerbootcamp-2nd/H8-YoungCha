@@ -140,6 +140,7 @@ class CarCustomizationViewModel : ViewModel() {
                 val lastTab = currentMainTabs.value?.lastOrNull()
                 randomizeParts()
                 if (lastTab == "견적 내기") {
+                    totalPrice.value = totalPrice.value?.plus(getMyCarTotalPrice())
                     val position = currentMainTabs.value?.indexOf(lastTab)
                     _estimateViewVisible.value = 1
                     _currentTabPosition.value = position!!

@@ -15,8 +15,4 @@
         android:id="@+id/layout_preliminaries_keyword"
         layout="@layout/layout_preliminaries_keyword"/>
 
-    <include
-        android:id="@+id/layout_estimate_ready"
-        layout="@layout/layout_estimate_ready"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
