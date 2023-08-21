@@ -1,6 +1,7 @@
 package team.youngcha.domain.option.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -126,8 +127,12 @@ public class OptionRepository {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("name", name);
 
-        Option option = namedParameterJdbcTemplate.queryForObject("SELECT * FROM options WHERE name = :name", params, optionRowMapper);
-        return Optional.ofNullable(option);
+        try {
+            Option option = namedParameterJdbcTemplate.queryForObject("SELECT * FROM options WHERE name = :name", params, optionRowMapper);
+            return Optional.ofNullable(option);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     private static class OptionRowMapper implements RowMapper<Option> {
