@@ -1,6 +1,7 @@
 package team.youngcha.domain.sell.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,6 +19,7 @@ public class SellRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    @Cacheable(value = "sell", cacheManager = "mapCacheManager")
     public Map<Long, Long> countOptionsByTrimIdAndContainOptionsIds(Long trimId, List<Long> optionIds,
                                                                     RequiredCategory category) {
         List<Map<String, Object>> results = querySellCounts(namedParameterJdbcTemplate, trimId,
@@ -95,23 +97,6 @@ public class SellRepository {
         ));
     }
 
-    private List<Map<String, Object>> querySellCounts(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-                                                      Long trimId, List<Long> optionIds,
-                                                      RequiredCategory category) {
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("trimId", trimId);
-        params.addValue("optionIds", optionIds);
-
-        String column = category.getColumn() + "_id";
-        String index = "idx_" + category.getColumn() + "_trim";
-        return namedParameterJdbcTemplate.queryForList(
-                "select sell." + column + ", COUNT(*) as count " +
-                        "from sell use index(" + index + ") " +
-                        "where sell." + column + " in (:optionIds) and sell.trim_id = (:trimId) " +
-                        "group by sell." + column,
-                params);
-    }
-
     public Map<Long, Long> countByTrimIdAndExteriorColorForWheels(Long trimId, Long exteriorColorId,
                                                                   List<Long> wheelIds) {
         MapSqlParameterSource params = new MapSqlParameterSource();
@@ -129,5 +114,22 @@ public class SellRepository {
                 row -> (Long) row.get("wheel_id"),
                 row -> (Long) row.get("count")
         ));
+    }
+
+    private List<Map<String, Object>> querySellCounts(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+                                                      Long trimId, List<Long> optionIds,
+                                                      RequiredCategory category) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("trimId", trimId);
+        params.addValue("optionIds", optionIds);
+
+        String column = category.getColumn() + "_id";
+        String index = "idx_" + category.getColumn() + "_trim";
+        return namedParameterJdbcTemplate.queryForList(
+                "select sell." + column + ", COUNT(*) as count " +
+                        "from sell use index(" + index + ") " +
+                        "where sell." + column + " in (:optionIds) and sell.trim_id = (:trimId) " +
+                        "group by sell." + column,
+                params);
     }
 }
