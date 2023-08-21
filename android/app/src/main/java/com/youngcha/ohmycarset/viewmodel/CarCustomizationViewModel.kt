@@ -17,6 +17,7 @@ import com.youngcha.ohmycarset.model.car.ImageInfo
 import com.youngcha.ohmycarset.model.car.OptionInfo
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import kotlin.random.Random
+
 class CarCustomizationViewModel : ViewModel() {
     // 자동차 정보 관련 변수들
     // 관련된 변수: selectedCar, currentComponentName, customizedParts
@@ -51,7 +52,7 @@ class CarCustomizationViewModel : ViewModel() {
     // 탭 UI 관련 변수들
     // 관련된 변수: currentTabName, currentTabPosition, currentSubTabPosition, currentMainTabs, currentSubTabs
     val currentTabName = MutableLiveData<String>()
-    private val _currentTabPosition =  MutableLiveData<Int>(0)
+    private val _currentTabPosition = MutableLiveData<Int>(0)
     val currentTabPosition: LiveData<Int> = _currentTabPosition
     val currentSubTabPosition = MutableLiveData<Int>(0)
     val currentMainTabs = MutableLiveData<List<String>>()
@@ -80,7 +81,7 @@ class CarCustomizationViewModel : ViewModel() {
         get() = _startAnimationEvent
 
 
-    // 현재 가격 에니메이션
+    // 현재 가격 애니메이션 관련 변수
     private val _totalPrice = MutableLiveData<Int>(0)
     val totalPrice: LiveData<Int> = _totalPrice
 
@@ -123,7 +124,7 @@ class CarCustomizationViewModel : ViewModel() {
      */
     fun initCarCustomizationViewModel(currentType: String) {
         _currentType.value = currentType
-        when(currentType) {
+        when (currentType) {
             "GuideMode" -> {
                 val lastTab = currentMainTabs.value?.lastOrNull()
                 randomizeParts()
@@ -168,8 +169,8 @@ class CarCustomizationViewModel : ViewModel() {
     /**
      * 견적 색상 버튼 업데이트
      */
-    fun updateEstimateColorButton(view:View) {
-        exteriorButtonChange.value = if(exteriorButtonChange.value==1) 0 else 1
+    fun updateEstimateColorButton(view: View) {
+        exteriorButtonChange.value = if (exteriorButtonChange.value == 1) 0 else 1
     }
 
     /**
@@ -207,7 +208,6 @@ class CarCustomizationViewModel : ViewModel() {
     fun handleTabChange(increment: Int) {
         if (increment <= 0) {
             undoPreviousAddition()
-            //_totalPrice.value = prevPrice.value?.let { _totalPrice.value?.minus(it) }
         }
         val currentTabIndex = currentTabPosition.value ?: 0
         val nextTabIndex = currentTabIndex + increment
@@ -217,7 +217,7 @@ class CarCustomizationViewModel : ViewModel() {
             // 탭 변경 로직
             val tabName = currentMainTabs.value!![nextTabIndex]
             setCurrentComponentName(tabName)
-            _currentTabPosition.value  = nextTabIndex
+            _currentTabPosition.value = nextTabIndex
             when (tabName) {
                 OPTION_SELECTION -> handleSubTab()
                 else -> handleMainTab()
@@ -311,7 +311,7 @@ class CarCustomizationViewModel : ViewModel() {
             newComponentMap[keyName] = listOf(option)
             updatedList.add(newComponentMap)
         }
-      //  _totalPrice.value = _totalPrice.value?.plus(option.price)
+        //  _totalPrice.value = _totalPrice.value?.plus(option.price)
         _customizedParts.value = updatedList
     }
 
@@ -514,6 +514,15 @@ class CarCustomizationViewModel : ViewModel() {
             return
         }
 
+        val nextTabPosition = _currentTabPosition.value?.plus(1)
+        val nextTabName = currentMainTabs.value?.getOrNull(nextTabPosition ?: -1)
+
+        // "견적 내기"와 일치하는지 확인
+        if (nextTabName == "견적 내기") {
+            _startAnimationEvent.value = "estimate_summary"
+            return
+        }
+
         previousComponentName = _currentComponentName.value
         if (getOptionSize(currentComponentName.value!!) <= 2) {
             if (componentOption1Visibility.value == 1) {
@@ -539,7 +548,8 @@ class CarCustomizationViewModel : ViewModel() {
         val previousTabName = currentMainTabs.value?.getOrNull(tabPosition ?: -1)
 
         val optionList = if (previousTabName != null) {
-            _customizedParts.value?.firstOrNull { it.containsKey(previousTabName) }?.get(previousTabName)
+            _customizedParts.value?.firstOrNull { it.containsKey(previousTabName) }
+                ?.get(previousTabName)
         } else {
             null
         }
@@ -551,6 +561,7 @@ class CarCustomizationViewModel : ViewModel() {
         }
         _pay.value = -prevTotalPrice
     }
+
     fun updateTotalPrice(totalPrice: Int) {
         _totalPrice.value = totalPrice
     }
@@ -699,7 +710,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "20인치 다크 스퍼터링 휠",
                     4280000,
                     ImageInfo(ImageType.NONE, 0),
-                    listOf("20대 61%",  "여성 65%")
+                    listOf("20대 61%", "여성 65%")
                 ),
                 OptionInfo(
                     "main",

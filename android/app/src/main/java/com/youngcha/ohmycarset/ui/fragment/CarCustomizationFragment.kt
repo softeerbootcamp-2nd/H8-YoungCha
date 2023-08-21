@@ -47,6 +47,7 @@ import com.youngcha.ohmycarset.util.AnimationUtils.animateValueChange
 import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -171,6 +172,18 @@ class CarCustomizationFragment : Fragment() {
                 "fv_vp_container" -> {
                     binding.fvVpContainer.visibility = View.VISIBLE
                     binding.fvVpContainer.startFeedbackAnimation()
+                }
+
+                "estimate_summary" -> {
+                    //  Coroutine을 사용하여 일정 시간 후에 handleTabChange(1)을 호출
+                    lifecycleScope.launch {
+                        delay(1500) // 2초 대기
+                        carViewModel.handleTabChange(1)
+                    }
+                }
+
+                null -> {
+
                 }
             }
         }

@@ -45,9 +45,9 @@
             android:id="@+id/iv_check"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:scaleType="fitXY"
             android:layout_marginStart="17dp"
             android:layout_marginTop="20dp"
+            android:scaleType="fitXY"
             app:currentTypeForIcon="@{current_type}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -59,16 +59,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            android:gravity="center|start"
             android:textColor="@color/main_hyundai_blue"
             android:textSize="10sp"
-            android:gravity="center|start"
             app:currentTypeForTag="@{current_type}"
-            app:visibleForTag="@{is_visible}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:tagData="@{option_info.guideModeDescription}"
             app:layout_constraintBottom_toBottomOf="@id/iv_check"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_check"
             app:layout_constraintTop_toTopOf="@id/iv_check"
+            app:tagData="@{option_info.guideModeDescription}"
+            app:visibleForTag="@{is_visible}"
             tools:ignore="SmallSp" />
 
         <TextView
@@ -103,7 +103,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="@font/hyundai_sans_head_kr_regular"
-            android:text="@{option_info.price}"
+            android:text='@{"+ " + String.valueOf(option_info.price) + "원"}'
             android:textColor="@{is_visible == 1 ? @color/cool_grey_black :@color/cool_grey_003}"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -160,8 +160,8 @@
             android:id="@+id/v_bottom_line"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
             android:background="@drawable/shape_bottom_border_line"
+            android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -170,8 +170,8 @@
             android:id="@+id/v_right_line"
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
             android:background="@drawable/shape_right_border_line"
+            android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -180,8 +180,8 @@
             android:id="@+id/v_top_line"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
             android:background="@drawable/shape_top_border_line"
+            android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -190,8 +190,8 @@
             android:id="@+id/v_left_line"
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
             android:background="@drawable/shape_left_border_line"
+            android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
