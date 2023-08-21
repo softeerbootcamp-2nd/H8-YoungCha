@@ -2,8 +2,11 @@ package com.youngcha.ohmycarset.ui.fragment
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
@@ -13,9 +16,13 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
+import android.view.animation.DecelerateInterpolator
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -36,6 +43,8 @@ import com.youngcha.ohmycarset.model.dialog.ButtonVertical
 import com.youngcha.ohmycarset.ui.adapter.viewpager.CarOptionPagerAdapter
 import com.youngcha.ohmycarset.ui.customview.ButtonDialogView
 import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
+import com.youngcha.ohmycarset.util.AnimationUtils.animateValueChange
+import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import kotlinx.coroutines.launch
@@ -166,16 +175,11 @@ class CarCustomizationFragment : Fragment() {
             }
         }
 
-
         carViewModel.selectedCar.observe(viewLifecycleOwner) { car ->
-            //  carViewModel.updateTabInfo(car)
-            //  val firstKey = car.mainOptions.first().keys.firstOrNull()
-            //  carViewModel.setCurrentComponentName(firstKey!!)
             val firstKey = car.mainOptions.first().keys.firstOrNull()
             if (carViewModel.currentType.value != "GuideMode") {
                 carViewModel.setCurrentComponentName(firstKey!!)
             }
-
         }
 
         carViewModel.subOptionViewType.observe(viewLifecycleOwner) {
@@ -201,7 +205,14 @@ class CarCustomizationFragment : Fragment() {
 
         carViewModel.estimateViewVisible.observe(viewLifecycleOwner) {
             if (it == 1) {
-                particleAnimation()
+                view?.viewTreeObserver?.addOnGlobalLayoutListener(object: ViewTreeObserver.OnGlobalLayoutListener{
+                    override fun onGlobalLayout() {
+                        // parent의 너비와 높이는 0이상인경우
+                        explodeView(binding.flParticleContainer)
+                        //리스너 제거
+                        view?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+                    }
+                })
             }
         }
 
@@ -221,8 +232,24 @@ class CarCustomizationFragment : Fragment() {
             binding.tlMainOptionTab.getTabAt(it)?.select()
         }
 
-        carViewModel.customizedParts.observe(viewLifecycleOwner) {
-            Log.d("로그1", it.toString())
+        carViewModel.customizedParts.observe(viewLifecycleOwner) { customized ->
+            Log.d("로그", customized.toString())
+            Log.d("로그", carViewModel.getSubOptionKeys().toString())
+            val systemOptions: List<OptionInfo>? = customized?.firstOrNull { it.containsKey("시스템") }?.get("시스템")
+            Log.d("로그", systemOptions.toString())
+            Log.d("로그", carViewModel.currentMainTabs.toString())
+        }
+
+        carViewModel.pay.observe(viewLifecycleOwner) { value ->
+            val prevTotalPrice = carViewModel.totalPrice.value!!
+            animateValueChange(
+                binding.tvEstimatePrice,
+                prevTotalPrice,
+                prevTotalPrice + value,
+                requireContext().resources
+            ).start()
+
+            carViewModel.totalPrice.value?.plus(value)?.let { carViewModel.updateTotalPrice(it) }
         }
     }
 
@@ -311,20 +338,6 @@ class CarCustomizationFragment : Fragment() {
             true,
             carViewModel.currentType.value
         )
-    }
-
-    private fun particleAnimation() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            val slideInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_down)
-            val fadeInAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
-
-            val animationSet = AnimationSet(true)
-            animationSet.addAnimation(slideInAnimation)
-            animationSet.addAnimation(fadeInAnimation)
-
-            binding.fragmentEstimate.ivParticle.visibility = View.VISIBLE
-            binding.fragmentEstimate.ivParticle.startAnimation(animationSet)
-        }
     }
 
     override fun onDestroyView() {
