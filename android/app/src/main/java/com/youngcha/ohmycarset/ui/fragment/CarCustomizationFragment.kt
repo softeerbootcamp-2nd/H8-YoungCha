@@ -47,7 +47,9 @@ import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.util.AnimationUtils.animateValueChange
 import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
+import com.youngcha.ohmycarset.util.blockTouchEvents
 import com.youngcha.ohmycarset.util.setupImageSwipeWithScrollView
+import com.youngcha.ohmycarset.util.unblockTouchEvents
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -145,6 +147,13 @@ class CarCustomizationFragment : Fragment() {
 
     private fun observeViewModel() {
         carViewModel.startAnimationEvent.observe(viewLifecycleOwner) { feedbackViewId ->
+            binding.btnNext.isEnabled = false
+            binding.btnPrev.isEnabled = false
+            binding.vpOptionContainer.isEnabled = false
+            binding.rvSubOptionList.isEnabled = false
+            binding.btnComponentOption1.isEnabled = false
+            binding.btnComponentOption2.isEnabled = false
+
             val targetView = when (feedbackViewId) {
                 "fv_component_option_1" -> binding.fvComponentOption1
                 "fv_component_option_2" -> binding.fvComponentOption2
@@ -159,6 +168,12 @@ class CarCustomizationFragment : Fragment() {
                 override fun onAnimationEnd(animation: Animation?) {
                     targetView?.visibility = View.INVISIBLE
                     carViewModel.handleTabChange(1)
+                    binding.btnNext.isEnabled = true
+                    binding.btnPrev.isEnabled = true
+                    binding.vpOptionContainer.isEnabled = true
+                    binding.rvSubOptionList.isEnabled = true
+                    binding.btnComponentOption1.isEnabled = true
+                    binding.btnComponentOption2.isEnabled = true
                 }
 
                 override fun onAnimationRepeat(animation: Animation?) {}
@@ -190,10 +205,6 @@ class CarCustomizationFragment : Fragment() {
                         delay(1000) // 1초 대기
                         carViewModel.handleTabChange(1)
                     }
-                }
-
-                null -> {
-
                 }
             }
         }
