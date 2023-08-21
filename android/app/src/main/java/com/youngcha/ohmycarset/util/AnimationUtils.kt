@@ -108,4 +108,40 @@ object AnimationUtils {
         }
     }
 
+    fun animateValueChange(
+        textView: TextView,
+        previousValue: Int,
+        currentValue: Int,
+        resources: Resources
+    ): ValueAnimator {
+        val startValue = previousValue
+        val endValue = currentValue
+        val valueAnimator = ValueAnimator.ofInt(startValue, endValue)
+        valueAnimator.duration = 2500L
+        valueAnimator.interpolator = DecelerateInterpolator(1.5f)
+
+        valueAnimator.addUpdateListener { animator ->
+            val newValue = animator.animatedValue as Int
+            textView.text = formatToCurrency(newValue)
+
+            if (endValue < startValue) { // 현재 값이 이전 값보다 작은 경우
+                textView.setTextColor(resources.getColor(R.color.main_hyundai_blue, null))
+            } else if (endValue > startValue) { // 현재 값이 이전 값보다 큰 경우
+                textView.setTextColor(Color.RED)
+            }
+            // 만약 두 값이 동일하다면, 아무런 색상 변경 없이 진행됩니다.
+        }
+
+        valueAnimator.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                textView.setTextColor(resources.getColor(android.R.color.black, null))
+            }
+        })
+
+        return valueAnimator
+    }
+
+    private fun formatToCurrency(value: Int): String {
+        return "%,d원".format(value)
+    }
 }
