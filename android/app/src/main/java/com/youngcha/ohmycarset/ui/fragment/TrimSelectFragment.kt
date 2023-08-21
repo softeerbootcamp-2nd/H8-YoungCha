@@ -165,17 +165,11 @@ class TrimSelectFragment : Fragment() {
         }
 
         binding.btnTrimSelected.setOnClickListener {
-
-
-
             var bundle: Bundle?
 
             when(trimSelectViewModel.trimCategoryState.value!!.currTrimCategory.type) {
                 TrimType.GUIDE -> {
-                    bundle = Bundle().apply {
-                        putString("mode", "GuideMode")
-                    }
-                    findNavController().navigate(R.id.action_trimSelectFragment_to_loadingFragment, bundle)
+                    findNavController().navigate(R.id.action_trimSelectFragment_to_estimateReadyFragment)
                 }
 
                 TrimType.SELF -> {
