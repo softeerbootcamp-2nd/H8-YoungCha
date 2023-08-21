@@ -17,13 +17,13 @@ import com.youngcha.ohmycarset.model.car.ImageInfo
 import com.youngcha.ohmycarset.model.car.OptionInfo
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import kotlin.random.Random
-
 class CarCustomizationViewModel : ViewModel() {
     // 자동차 정보 관련 변수들
     // 관련된 변수: selectedCar, currentComponentName, customizedParts
     private val _selectedCar = MutableLiveData<Car>()
     val selectedCar: LiveData<Car> = _selectedCar
 
+    private var previousComponentName: String? = null
     private val _currentComponentName = MutableLiveData<String>()
     val currentComponentName: LiveData<String> = _currentComponentName
 
@@ -80,11 +80,18 @@ class CarCustomizationViewModel : ViewModel() {
         get() = _startAnimationEvent
 
 
+    // 현재 가격 에니메이션
+    private val _totalPrice = MutableLiveData<Int>(0)
+    val totalPrice: LiveData<Int> = _totalPrice
+
+    private val _pay = MutableLiveData<Int>(0)
+    val pay: LiveData<Int> = _pay
+
     // 초기화 블록
     init {
         loadCarData("팰리세이드")
         _currentComponentName.value = selectedCar.value?.mainOptions?.get(0)?.keys?.first()
-
+        _totalPrice.value = 36000000
         /*
         addSource 메서드를 사용하여 다른 LiveData (_currentComponentName)의 업데이트를 감지합니다.
         al optionList = ...: _selectedCar.value?.mainOptions?... 이 부분은 _selectedCar의 현재 값을 가져와서 그 안의 mainOptions를 검색하고, 그 안에서 componentName 키를 가진 첫 번째 항목을 찾습니다.
@@ -116,10 +123,10 @@ class CarCustomizationViewModel : ViewModel() {
      */
     fun initCarCustomizationViewModel(currentType: String) {
         _currentType.value = currentType
-        randomizeParts()
         when(currentType) {
             "GuideMode" -> {
                 val lastTab = currentMainTabs.value?.lastOrNull()
+                randomizeParts()
                 if (lastTab == "견적 내기") {
                     val position = currentMainTabs.value?.indexOf(lastTab)
                     _estimateViewVisible.value = 1
@@ -156,8 +163,6 @@ class CarCustomizationViewModel : ViewModel() {
     }
 
 
-
-
     // --- UI 업데이트 관련 함수 ---
 
     /**
@@ -175,6 +180,7 @@ class CarCustomizationViewModel : ViewModel() {
         _currentTabPosition.value = 0
         currentTabName.value = currentMainTabs.value!![0]
         currentSubTabPosition.value = 0
+        _totalPrice.value = 36000000
         _customizedParts.value = emptyList()
         setCurrentComponentName(currentTabName.value!!)
     }
@@ -199,6 +205,10 @@ class CarCustomizationViewModel : ViewModel() {
      * 탭 변경 핸들러
      */
     fun handleTabChange(increment: Int) {
+        if (increment <= 0) {
+            undoPreviousAddition()
+            //_totalPrice.value = prevPrice.value?.let { _totalPrice.value?.minus(it) }
+        }
         val currentTabIndex = currentTabPosition.value ?: 0
         val nextTabIndex = currentTabIndex + increment
 
@@ -223,7 +233,7 @@ class CarCustomizationViewModel : ViewModel() {
         subOptionViewType.value = if (subOptionViewType.value == 1) 0 else 1
     }
 
-// --- 데이터 설정 및 조회 관련 함수 ---
+    // --- 데이터 설정 및 조회 관련 함수 ---
 
     /**
      * 현재 컴포넌트 이름 설정
@@ -288,6 +298,7 @@ class CarCustomizationViewModel : ViewModel() {
                 existingOptions.add(option)
                 existingComponent[keyName] = existingOptions
 
+
             } else {
                 // 여기에는 값을 덮어써야함 즉 최신 값으로 벨류를 업데이트
                 existingComponent[keyName] = listOf(option)
@@ -300,6 +311,7 @@ class CarCustomizationViewModel : ViewModel() {
             newComponentMap[keyName] = listOf(option)
             updatedList.add(newComponentMap)
         }
+      //  _totalPrice.value = _totalPrice.value?.plus(option.price)
         _customizedParts.value = updatedList
     }
 
@@ -309,7 +321,6 @@ class CarCustomizationViewModel : ViewModel() {
     fun removeCarComponents(keyName: String, option: OptionInfo) {
         val updatedList = _customizedParts.value?.toMutableList() ?: return
         val index = updatedList.indexOfFirst { it.containsKey(keyName) }
-
         if (index != -1) {
             val existingComponent = updatedList[index].toMutableMap()
             val existingOptions = existingComponent[keyName]?.toMutableList()
@@ -355,7 +366,7 @@ class CarCustomizationViewModel : ViewModel() {
         return null
     }
 
-// --- 데이터 헬퍼 함수 ---
+    // --- 데이터 헬퍼 함수 ---
 
     /**
      * 이미 선택된 컴포넌트 처리
@@ -379,6 +390,7 @@ class CarCustomizationViewModel : ViewModel() {
             onComponentOption1Selected()
         }
     }
+
     /**
      * 데이터 컨테이너 업데이트
      */
@@ -484,7 +496,7 @@ class CarCustomizationViewModel : ViewModel() {
         return getOptionsForComponent(componentName)?.getOrNull(index)
     }
 
-    private fun getSubOptionKeys(): List<String> {
+    fun getSubOptionKeys(): List<String> {
         val keys = mutableListOf<String>()
         val car = _selectedCar.value
         car?.subOptions?.forEach { map ->
@@ -495,11 +507,14 @@ class CarCustomizationViewModel : ViewModel() {
 
     // 선택 완료 시
     fun executeRandomAnimation() {
+        addCurrentToTotal()
+
         if (currentType.value == "GuideMode") {
             handleTabChange(1)
             return
         }
 
+        previousComponentName = _currentComponentName.value
         if (getOptionSize(currentComponentName.value!!) <= 2) {
             if (componentOption1Visibility.value == 1) {
                 _startAnimationEvent.value = "fv_component_option_1"
@@ -511,6 +526,36 @@ class CarCustomizationViewModel : ViewModel() {
         }
     }
 
+    /**
+     *  현재 가격 애니메이션
+     */
+    fun addCurrentToTotal() {
+        _pay.value = currentSelectedOption.value?.price!!
+    }
+
+    fun undoPreviousAddition() {
+        // _currentTabPosition에서 1을 뺀 값에 해당하는 탭의 이름 가져오기
+        val tabPosition = _currentTabPosition.value?.minus(1)
+        val previousTabName = currentMainTabs.value?.getOrNull(tabPosition ?: -1)
+
+        val optionList = if (previousTabName != null) {
+            _customizedParts.value?.firstOrNull { it.containsKey(previousTabName) }?.get(previousTabName)
+        } else {
+            null
+        }
+
+        var prevTotalPrice = 0
+
+        optionList?.forEach {
+            prevTotalPrice = prevTotalPrice.plus(it.price)
+        }
+        _pay.value = -prevTotalPrice
+    }
+    fun updateTotalPrice(totalPrice: Int) {
+        _totalPrice.value = totalPrice
+    }
+
+
     // Test Data
     private fun createCarData(carName: String): Car {
         val mainOptions = mapOf(
@@ -519,7 +564,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "main",
                     "63%",
                     "디젤 2.2",
-                    "+ 1,480,000원",
+                    1480000,
                     ImageInfo(ImageType.NONE, 0),
                     emptyList()
                 ),
@@ -527,32 +572,32 @@ class CarCustomizationViewModel : ViewModel() {
                     "main",
                     "72%",
                     "가솔린 3.8",
-                    "+ 0원",
+                    0,
                     ImageInfo(ImageType.NONE, 0),
                     emptyList()
                 )
             ),
             "구동 방식" to listOf(
-                OptionInfo("main", "72%", "2WD", "+ 0원", ImageInfo(ImageType.NONE, 0), emptyList()),
+                OptionInfo("main", "72%", "2WD", 0, ImageInfo(ImageType.NONE, 0), emptyList()),
                 OptionInfo(
                     "main",
                     "28%",
                     "4WD",
-                    "+ 2,370,000원",
+                    2370000,
                     ImageInfo(ImageType.NONE, 0),
                     emptyList()
                 )
             ),
             "바디 타입" to listOf(
-                OptionInfo("main", "85%", "7인승", "+ 0원", ImageInfo(ImageType.NONE, 0), emptyList()),
-                OptionInfo("main", "15%", "8인승", "+ 0원", ImageInfo(ImageType.NONE, 0), emptyList())
+                OptionInfo("main", "85%", "7인승", 0, ImageInfo(ImageType.NONE, 0), emptyList()),
+                OptionInfo("main", "15%", "8인승", 0, ImageInfo(ImageType.NONE, 0), emptyList())
             ),
             "외장 색상" to listOf(
                 OptionInfo(
                     "color",
                     "50%",
                     "크리미 화이트 펄",
-                    "+ 100,000원",
+                    1000000,
                     ImageInfo(ImageType.CIRCLE, R.color.black),
                     emptyList()
                 ),
@@ -560,7 +605,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "color",
                     "30%",
                     "어비스 플랙펄",
-                    "+ 0",
+                    0,
                     ImageInfo(ImageType.CIRCLE, R.color.cool_grey_001),
                     emptyList()
                 ),
@@ -568,7 +613,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "color",
                     "25%",
                     "그라파이트 그레이 메탈릭",
-                    "+ 0",
+                    0,
                     ImageInfo(ImageType.CIRCLE, R.color.cool_grey_002),
                     emptyList()
                 ),
@@ -576,7 +621,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "color",
                     "7%",
                     "쉬머링 실버 메탈릭",
-                    "+ 0",
+                    0,
                     ImageInfo(ImageType.CIRCLE, R.color.cool_grey_003),
                     emptyList()
                 ),
@@ -584,15 +629,15 @@ class CarCustomizationViewModel : ViewModel() {
                     "color",
                     "3%",
                     "문라이트 블루 펄",
-                    "+ 0",
+                    0,
                     ImageInfo(ImageType.CIRCLE, R.color.cool_grey_004),
                     emptyList()
                 ),
                 OptionInfo(
                     "color",
                     "2%",
-                    "가이아ㅁㄴㅇ 브라운 펄",
-                    "+ 0",
+                    "가이아미 브라운 펄",
+                    0,
                     ImageInfo(ImageType.CIRCLE, R.color.active_blue),
                     emptyList()
                 )
@@ -602,7 +647,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "color",
                     "57%",
                     "퀄팅 천연 (블랙)",
-                    "+ 0원",
+                    0,
                     ImageInfo(ImageType.RECTANGLE, R.drawable.img_test_make_car_option_01),
                     emptyList()
                 ),
@@ -610,23 +655,23 @@ class CarCustomizationViewModel : ViewModel() {
                     "color",
                     "43%",
                     "쿨그레이",
-                    "+ 0원",
+                    0,
                     ImageInfo(ImageType.RECTANGLE, R.drawable.img_test_make_car_option_02),
                     emptyList()
                 ),
                 OptionInfo(
                     "color",
                     "57%",
-                    "퀄팅 ㅋㄴㅇ천연 (블랙)",
-                    "+ 0원",
+                    "하하하 천연 (블랙)",
+                    0,
                     ImageInfo(ImageType.RECTANGLE, R.drawable.img_test_make_car_option_01),
                     emptyList()
                 ),
                 OptionInfo(
                     "color",
                     "57%",
-                    "퀄팅 천연ㅁㄴㅇ (블랙)",
-                    "+ 0원",
+                    "테스트입니다(블랙)",
+                    0,
                     ImageInfo(ImageType.RECTANGLE, R.drawable.img_test_make_car_option_01),
                     emptyList()
                 ),
@@ -634,7 +679,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "color",
                     "57%",
                     "퀄팅 천연 123(블랙)",
-                    "+ 0원",
+                    2334560,
                     ImageInfo(ImageType.RECTANGLE, R.drawable.img_test_make_car_option_01),
                     emptyList()
                 )
@@ -644,7 +689,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "main",
                     "30%",
                     "20인치 알로이 휠 & 타이어",
-                    "+ 2,280,000원",
+                    2280000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("스탠다드 선택")
                 ),
@@ -652,7 +697,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "main",
                     "20%",
                     "20인치 다크 스퍼터링 휠",
-                    "+ 4,280,000원",
+                    4280000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("20대 61%",  "여성 65%")
                 ),
@@ -660,23 +705,23 @@ class CarCustomizationViewModel : ViewModel() {
                     "main",
                     "20%",
                     "20인치 다12크 스퍼터링 휠",
-                    "+ 4,280,000원",
+                    4280000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("프리미엄 선택")
                 ),
                 OptionInfo(
                     "main",
                     "20%",
-                    "20인치 다크 ㅋㅌㅇㄷ스퍼터링 휠",
-                    "+ 4,280,000원",
+                    "28인치 다크 휠",
+                    5600000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("프리미엄 선택")
                 ),
                 OptionInfo(
                     "main",
                     "20%",
-                    "20인치 ㅁㄴ다크 스퍼터링 휠",
-                    "+ 4,28ㅁㄴㅇ0,000원",
+                    "32인치 더블 휠",
+                    6570000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("프리미엄 선택")
                 )
@@ -697,7 +742,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "sub",
                     "60%",
                     "최신 시스템",
-                    "+ 1,880,000원",
+                    1880000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("최신 인21포테인먼트 시스템")
                 ),
@@ -705,7 +750,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "sub",
                     "60%",
                     "test123",
-                    "+ 10,000원",
+                    100000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("최신 인포테인먼트 시스템")
                 ),
@@ -713,7 +758,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "sub",
                     "60%",
                     "tttasdasdjaslkd",
-                    "+ 1,8810,000원",
+                    18810000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("최신 인포테인먼트 시스템")
                 )
@@ -723,7 +768,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "sub",
                     "40%",
                     "자동 온도 조절",
-                    "+ 980,000원",
+                    980000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("자동 온도 조절 기능")
                 ),
@@ -731,7 +776,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "sub",
                     "20%",
                     "자동12 조절",
-                    "+ 980,000원",
+                    1980000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("자동 온도 조절 기능")
                 ),
@@ -739,7 +784,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "sub",
                     "10%",
                     "온도 조절",
-                    "+ 980,000원",
+                    440000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("자동 온도 조절 기능")
                 )
@@ -749,7 +794,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "sub",
                     "50%",
                     "외부 디바이스 호환",
-                    "+ 1,280,000원",
+                    1280000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("USB, Bluetooth 연결 가능")
                 ),
@@ -757,7 +802,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "sub",
                     "10%",
                     "soqn 디바이스 호환",
-                    "+ 1,280,000원",
+                    120000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("USB, Bluetooth 연결 가능")
                 ),
@@ -765,7 +810,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "sub",
                     "20%",
                     "내부 디바이스 호환",
-                    "+ 1,280,000원",
+                    3200000,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("USB, Bluetooth 연결 가능")
                 )
@@ -775,7 +820,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "sub",
                     "50%",
                     "프리미엄 사운드",
-                    "+ 780,000원",
+                    677700,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("높은 품질의 사운드 시스템")
                 ),
@@ -783,7 +828,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "sub",
                     "4%",
                     "사운드",
-                    "+ 780,000원",
+                    349090,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("높은 품질의 사운드 시스템")
                 ),
@@ -791,7 +836,7 @@ class CarCustomizationViewModel : ViewModel() {
                     "sub",
                     "1000%",
                     "그냥 사운드",
-                    "+ 780,000원",
+                    1999999,
                     ImageInfo(ImageType.NONE, 0),
                     listOf("높은 품질의 사운드 시스템")
                 )
