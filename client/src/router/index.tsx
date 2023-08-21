@@ -55,10 +55,11 @@ const router = createBrowserRouter([
         ],
       },
     ],
+    errorElement: <ErrorPage />,
   },
   {
     path: '*',
-    element: <ErrorPage />,
+    element: <ErrorPage errorType="404" />,
   },
 ]);
 
