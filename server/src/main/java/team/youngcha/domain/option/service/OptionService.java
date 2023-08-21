@@ -8,6 +8,7 @@ import team.youngcha.common.enums.Gender;
 import team.youngcha.common.exception.CustomException;
 import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.estimate.repository.EstimateRepository;
+import team.youngcha.domain.estimate.repository.EstimateSelectiveOptionRepository;
 import team.youngcha.domain.keyword.dto.KeywordRate;
 import team.youngcha.domain.keyword.entity.Keyword;
 import team.youngcha.domain.keyword.enums.KeywordName;
@@ -41,6 +42,7 @@ public class OptionService {
     private final OptionImageRepository optionImageRepository;
     private final OptionDetailRepository optionDetailRepository;
     private final SellSelectiveOptionRepository sellSelectiveOptionRepository;
+    private final EstimateSelectiveOptionRepository estimateSelectiveOptionRepository;
 
     public List<FindSelfOptionResponse> findSelfRequiredOptions(Long trimId, RequiredCategory category) {
         verifyTrimId(trimId);
@@ -62,7 +64,7 @@ public class OptionService {
     public List<FindSelfOptionResponse> findSelfSelectiveOptions(Long trimId) {
         verifyTrimId(trimId);
 
-        List<Option> options = optionRepository.findOptionsByTrimIdAndOptionType(trimId, OptionType.SELECTIVE);
+        List<Option> options = optionRepository.findByTrimIdAndOptionType(trimId, OptionType.SELECTIVE);
 
         return buildFindSelfSelectiveOptionResponses(trimId, options);
     }
@@ -177,6 +179,100 @@ public class OptionService {
                 .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> response.isChecked() ? 0 : 1)
                         .thenComparing((FindGuideOptionResponse response) -> -response.getRate()))
                 .collect(Collectors.toList());
+    }
+
+    public List<FindGuideOptionResponse> findGuideSelectiveOptions(Long trimId, GuideInfo guideInfo) {
+        // 사용자 선택 키워드 목록
+        List<Long> userKeywordIds = guideInfo.getKeywordIds();
+
+        // 키워드 이름 정보
+        Map<Long, String> keywordNames = keywordRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(
+                        Keyword::getId,
+                        Keyword::getName
+                ));
+
+        // 트림의 선택 옵션 목록
+        List<Option> selectiveOptions
+                = optionRepository.findByTrimIdAndOptionType(trimId, OptionType.SELECTIVE);
+
+        // 선택 옵션의 키워드 목록
+        Map<Long, List<Keyword>> optionKeywords = keywordRepository.findByContainOptionIdsAndGroupKeywords(
+                selectiveOptions.stream().map(Option::getId).collect(Collectors.toList()));
+
+        // 키워드별 해당 견적 아이디 목록 (estimateIds.get(0) : 1순위 키워드가 포함되는 견적 아이디)
+        Map<Long, List<Long>> estimateIds = userKeywordIds.stream()
+                .collect(Collectors.toMap(
+                        keywordId -> keywordId,
+                        keywordId -> estimateRepository.findIdsByTrimIdAndKeywordId(trimId, keywordId)));
+
+        // 유사 사용자의 견적 목록
+        List<Long> estimateIdsOfSimilarUsers =
+                estimateRepository.findEstimateIdsOfSimilarUsers(trimId, guideInfo);
+
+        // 응답에 포함될 선택 옵션 목록
+        List<Option> responseOptions = new ArrayList<>();
+
+        // 옵션의 키워드별 선택률
+        Map<Long, List<KeywordRate>> keywordRateGroup = new HashMap<>();
+
+        // 옵션의 유사 사용자 선택률
+        Map<Long, Integer> similarUserRatios = new HashMap<>();
+
+        // 트림의 모든 선택 옵션에 대해 우선순위가 높은 키워드부터 해당 옵션에 포함되는지 확인
+        // 옵션에 키워드가 포함된다면 '해당 키워드의 옵션 선택률'과 '유사 사용자의 옵션 선택률'을 계산하여 응답에 포함
+        //   '키워드 옵션 선택률' : (특정 키워드와 옵션이 포함된 견적의 수) / (해당 키워드가 포함된 견적의 수)
+        //   '유사 사용자의 옵션 선택률' : (특정 옵션이 포함된 유사 유저의 견적 수) / (유사 유저의 전체 견적 수)
+        for (Option option : selectiveOptions) {
+            Long optionId = option.getId();
+            boolean isKeywordMatched = false;
+
+            // 옵션의 키워드 목록
+            List<Long> optionKeywordIds = optionKeywords.get(optionId)
+                    .stream()
+                    .map(Keyword::getId)
+                    .collect(Collectors.toList());
+
+            // 우선 순위가 높은 키워드부터 해당 옵션에 포함되는지 확인
+            for (Long userKeywordId : userKeywordIds) {
+                if (optionKeywordIds.contains(userKeywordId)) {
+                    isKeywordMatched = true;
+
+                    // 키워드의 옵션 선택률
+                    Long sellCount = estimateSelectiveOptionRepository
+                            .countIfEstimateIncludeOption(estimateIds.get(userKeywordId), option);
+                    int keywordRate = Math.toIntExact(100 * sellCount / estimateIds.get(userKeywordId).size());
+
+                    // 유사 사용자의 옵션 선택률
+                    Long sellCountOfSimilarUser = estimateSelectiveOptionRepository.countIfEstimateIncludeOption(estimateIdsOfSimilarUsers, option);
+                    int similarRate = Math.toIntExact(100 * sellCountOfSimilarUser / estimateIdsOfSimilarUsers.size());
+
+                    // 응답에 옵션 정보와 키워드 및 유사 사용자 기준 선택률을 포함
+                    responseOptions.add(option);
+                    similarUserRatios.put(optionId, similarRate);
+
+                    List<KeywordRate> optionKeywordRates = keywordRateGroup.computeIfAbsent(optionId, o -> new ArrayList<>());
+                    optionKeywordRates.add(new KeywordRate(keywordRate, keywordNames.get(userKeywordId)));
+                }
+
+                // 우선 순위가 높은 키워드가 옵션에 포함되어 이미 처리되었다면, 나머지 키워드는 생략
+                if (isKeywordMatched) {
+                    break;
+                }
+            }
+        }
+
+        // 응답에 포함될 옵션의 목록
+        List<Long> responseOptionIds = responseOptions.stream().map(Option::getId).collect(Collectors.toList());
+
+        // 옵션 이미지
+        Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(responseOptionIds);
+
+        // 옵션 상세정보
+        Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(responseOptionIds);
+
+        return getSortedGuideOptionResponses(responseOptions, similarUserRatios, keywordRateGroup, optionImagesGroup, optionDetailsGroup);
     }
 
     private Option getDefaultWheel() {
