@@ -10,7 +10,6 @@
             type="com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel" />
     </data>
 
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="500dp"
@@ -50,7 +49,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_estimate_summary_title"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="46,030,000원" />
+                app:formattedCurrency="@{viewModel.totalPrice}" />
 
             <View
                 android:id="@+id/v_main_option_view"

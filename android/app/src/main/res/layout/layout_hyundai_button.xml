@@ -103,7 +103,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="@font/hyundai_sans_head_kr_regular"
-            android:text='@{"+ " + String.valueOf(option_info.price) + "원"}'
+            app:formattedCurrency="@{option_info.price}"
             android:textColor="@{is_visible == 1 ? @color/cool_grey_black :@color/cool_grey_003}"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"

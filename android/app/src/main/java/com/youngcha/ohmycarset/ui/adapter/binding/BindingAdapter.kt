@@ -361,3 +361,8 @@ fun setFeedbackText(view: FeedbackView, mainFeedbackText: String?, subFeedbackTe
         view.setSubFeedbackText(it)
     }
 }
+
+@BindingAdapter("formattedCurrency")
+fun bindFormattedCurrency(view: TextView, value: Int) {
+    view.text = "%,d원".format(value)
+}
