@@ -1,10 +1,9 @@
 import ActiveCheck from '@/assets/icons/select-check';
 import InactiveCheck from '@/assets/icons/select-check-inactive';
 import SelectButton from '@/components/SelectButton';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-
-type AgeType = '20대' | '30대' | '40대' | '50대' | '60대' | '70대';
+import { AgeType } from '../type';
+import { Fragment, useState } from 'react';
+import { useTagSelectContext } from '@/store/useTagSelectContext';
 
 const ageSelectArray: Array<AgeType> = [
   '20대',
@@ -17,24 +16,39 @@ const ageSelectArray: Array<AgeType> = [
 
 function AgeSelectButtonsBox() {
   const [hoveredAge, setHoveredAge] = useState<AgeType | ''>('');
+  const { selectedAge, setSelectedAge } = useTagSelectContext();
+
+  function handleOnclick(age: AgeType) {
+    setSelectedAge(age);
+  }
 
   return (
     <div className={`flex flex-col w-343px gap-12px justify-center mt-98px`}>
       {ageSelectArray.map((age: AgeType) => {
         const isHovered = hoveredAge === age;
+        const isSelected = selectedAge === age;
 
         return (
-          <Link to="/model/LX06/guide/gender" key={age}>
+          <Fragment key={age}>
             <SelectButton
-              type={isHovered ? 'iconActive' : 'default'}
+              type={
+                isSelected ? 'iconActive' : isHovered ? 'iconActive' : 'default'
+              }
               size={'lg'}
               onMouseEnter={() => setHoveredAge(age)}
               onMouseLeave={() => setHoveredAge('')}
+              onClick={() => handleOnclick(age)}
             >
               {age}
-              {isHovered ? <ActiveCheck /> : <InactiveCheck />}
+              {isSelected ? (
+                <ActiveCheck />
+              ) : isHovered ? (
+                <ActiveCheck />
+              ) : (
+                <InactiveCheck />
+              )}
             </SelectButton>
-          </Link>
+          </Fragment>
         );
       })}
     </div>
