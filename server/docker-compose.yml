@@ -40,6 +40,8 @@ services:
       - ~/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ~/nginx/conf.d/application.conf:/etc/nginx/conf.d/application.conf
       - ~/nginx/conf.d/service-url.inc:/etc/nginx/conf.d/service-url.inc
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
     environment:
       - TZ=Asia/Seoul
     networks:
