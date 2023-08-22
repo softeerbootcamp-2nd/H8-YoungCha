@@ -1,4 +1,4 @@
-export interface OptionType {
+export interface AllOptionType {
   id: number;
   categoryId: number;
   rate: number;

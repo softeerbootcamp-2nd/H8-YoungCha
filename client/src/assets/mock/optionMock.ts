@@ -1,7 +1,7 @@
 import { OptionType } from '@/types/option';
 
 export const powerTrainMock: OptionType = {
-  rate: '63',
+  rate: 63,
   price: 1480000,
   name: '디젤 2.2',
   feedback: [
