@@ -2,8 +2,8 @@ import App from '@/App';
 import Home from '@/pages/home';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Guide from '@/pages/guide';
-import Making from '@/pages/making';
 import FullScreenLayout from '@/components/layout/FullScreenLayout';
+import MakingPage, { MakingPageLayout } from '@/pages/making';
 import ErrorPage from '@/pages/error';
 
 const router = createBrowserRouter([
@@ -42,14 +42,13 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: 'making',
-            element: <FullScreenLayout />,
+            path: 'making/:mode',
+            element: <MakingPageLayout />,
             children: [
               {
-                path: 'self/:step',
-                element: <Making path="self" />,
+                path: ':step',
+                element: <MakingPage />,
               },
-              { path: 'guide/:step', element: <Making path="self" /> },
             ],
           },
         ],

@@ -1,13 +1,12 @@
-import { useOptionCardContext } from '@/store/useOptionCardContext';
-import { PowerTrainDetails } from '@/assets/mock/optionMock';
+import { OptionDetailType } from '@/types/option';
 
-interface ImgSectionProps extends Pick<PowerTrainDetails, 'imgUrl'> {
+interface ImgSectionProps extends Pick<OptionDetailType, 'imgUrl'> {
+  isActive: boolean;
   imgUrl: string;
   step: number;
 }
 
-function ImgSection({ imgUrl, step }: ImgSectionProps) {
-  const { isActive } = useOptionCardContext();
+function ImgSection({ imgUrl, step, isActive }: ImgSectionProps) {
   const imgElement = [
     ...Array(4).fill(null),
     <div

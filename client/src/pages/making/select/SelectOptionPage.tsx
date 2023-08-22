@@ -1,84 +1,83 @@
-import Button from '@/components/Button';
-import { Link, useParams } from 'react-router-dom';
-import { OPTION_ORDER } from '../constant';
-import EstimationSummary from '@/components/SummaryModal';
 import { HTMLAttributes, useState } from 'react';
-import { DownArrow } from '@/assets/icons';
-import { OptionCardProvider } from '@/store/useOptionCardContext';
+import { Link, useParams } from 'react-router-dom';
+import Button from '@/components/Button';
 import OptionCard from '@/components/OptionCard';
-import { powerTrainMock } from '@/assets/mock/optionMock';
-import { ModeType } from '@/types';
-
-interface SelectOptionPageProps {
-  path: ModeType;
-}
+import EstimationSummary from '@/components/SummaryModal';
+import { DownArrow } from '@/assets/icons';
+import { INTERIOR_COLOR_STEP, PROGRESS_LIST } from './constant';
+import { OptionType } from '@/types/option';
+import { OPTION_ORDER } from '../constant';
+import useFetch from '@/hooks/useFetch.ts';
+import { PathParamsType } from '@/types/router';
 
 interface SelectOptionMessageProps {
   step: number;
 }
 
-function SelectOptionPage({ path }: SelectOptionPageProps) {
-  const { step } = useParams() as { step: string };
+interface SelectOptionFooterProps extends PathParamsType {}
+
+function SelectOptionPage() {
+  const { step, mode, id } = useParams() as PathParamsType;
+  const url = `/car-make/2/${mode}/${PROGRESS_LIST[Number(step) - 1].path}`;
+  const { data, loading } = useFetch<OptionType[]>({
+    url,
+    params:
+      Number(step) === INTERIOR_COLOR_STEP
+        ? {
+            exteriorColorId: '13',
+          }
+        : undefined,
+  });
+
+  // 선택 아이템 인덳스
+  const [selectedItem, setSelectedItem] = useState(0);
 
   return (
-    <main className="relative flex-grow">
-      <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
-        {/* 이미지 영역 */}
-        <div className="lg:col-span-7">
-          <img
-            src="https://www.hyundai.com/contents/spec/LX24/gasoline3.8.jpg"
-            className="object-cover w-full h-full"
-            alt="palisade"
-          />
+    !loading && (
+      <main className="relative flex-grow">
+        <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
+          {/* 이미지 영역 */}
+          <div className="lg:col-span-7">
+            <img
+              src={data?.[selectedItem].images[0].imgUrl ?? ''}
+              className="object-cover w-full h-full"
+              alt="palisade"
+            />
+          </div>
+          {/* 옵션 선택 영역 */}
+          <div className="flex flex-col max-w-md lg:col-span-5">
+            <SelectOptionMessage step={Number(step)} />
+            <SelectOptionListContainer>
+              {data?.map((item: OptionType, index) => (
+                <button className="text-left" key={item.name}>
+                  <OptionCard
+                    isActive={selectedItem === index}
+                    onClick={() => {
+                      setSelectedItem(index);
+                    }}
+                    item={item}
+                    tags={item.tags ?? []}
+                    imgUrl={item.details[0]?.imgUrl ?? ''}
+                    price={item.price}
+                    step={Number(step)}
+                  >
+                    <OptionCard.SummarySection
+                      details={item.details}
+                      isActive={selectedItem === index}
+                    />
+                    <OptionCard.FunctionDetailBox
+                      details={item.details}
+                      isActive={selectedItem === index}
+                    />
+                  </OptionCard>
+                </button>
+              ))}
+            </SelectOptionListContainer>
+            <SelectOptionFooter {...{ mode, id, step }} />
+          </div>
         </div>
-        {/* 옵션 선택 영역 */}
-        <div className="flex flex-col max-w-md lg:col-span-5">
-          <SelectOptionMessage step={Number(step)} />
-          <SelectOptionListContainer>
-            <OptionCardProvider>
-              <OptionCard
-                tags={powerTrainMock.tags}
-                imgUrl={powerTrainMock.details[0].imgUrl}
-                price={powerTrainMock.price}
-                step={Number(step)}
-              >
-                <OptionCard.SummarySection details={powerTrainMock.details} />
-                <OptionCard.FunctionDetailBox
-                  details={powerTrainMock.details}
-                />
-              </OptionCard>
-            </OptionCardProvider>
-            <OptionCardProvider>
-              <OptionCard
-                tags={powerTrainMock.tags}
-                imgUrl={powerTrainMock.details[0].imgUrl}
-                price={powerTrainMock.price}
-                step={Number(step)}
-              >
-                <OptionCard.SummarySection details={powerTrainMock.details} />
-                <OptionCard.FunctionDetailBox
-                  details={powerTrainMock.details}
-                />
-              </OptionCard>
-            </OptionCardProvider>
-            <OptionCardProvider>
-              <OptionCard
-                tags={powerTrainMock.tags}
-                imgUrl={powerTrainMock.details[0].imgUrl}
-                price={powerTrainMock.price}
-                step={Number(step)}
-              >
-                <OptionCard.SummarySection details={powerTrainMock.details} />
-                <OptionCard.FunctionDetailBox
-                  details={powerTrainMock.details}
-                />
-              </OptionCard>
-            </OptionCardProvider>
-          </SelectOptionListContainer>
-          <SelectOptionFooter path={path} />
-        </div>
-      </div>
-    </main>
+      </main>
+    )
   );
 }
 
@@ -105,8 +104,7 @@ function SelectOptionListContainer({
   );
 }
 
-function SelectOptionFooter({ path }: SelectOptionPageProps) {
-  const { step, id } = useParams() as { step: string; id: string };
+function SelectOptionFooter({ mode, id, step }: SelectOptionFooterProps) {
   const currentStep = Number(step);
 
   const [isEstimationSummaryOpen, setIsEstimationSummaryOpen] = useState(false);
@@ -137,13 +135,13 @@ function SelectOptionFooter({ path }: SelectOptionPageProps) {
         <div className="flex items-center gap-21px">
           {currentStep > 1 && (
             <Link
-              to={`/model/${id}/making/${path}/${Number(step) - 1}`}
+              to={`/model/${id}/making/${mode}/${Number(step) - 1}`}
               className="body2 text-grey-003"
             >
               이전
             </Link>
           )}
-          <Link to={`/model/${id}/making/${path}/${Number(step) + 1}`}>
+          <Link to={`/model/${id}/making/${mode}/${Number(step) + 1}`}>
             <Button size="sm">선택 완료</Button>
           </Link>
         </div>

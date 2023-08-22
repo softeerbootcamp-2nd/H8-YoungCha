@@ -20,7 +20,7 @@ function BasicOptionLists({
   const [basicOptions, setBasicOptions] = useState<BasicOptionType>(
     {} as BasicOptionType
   );
-  const url = `${import.meta.env.VITE_API_URL}/trims/${id}/default-components?`;
+  const url = `/trims/${id}/default-components`;
   const currentPage = Math.floor((currentSize - 1) / OPTION_SIZE) + 1;
   const params = {
     categoryId: String(categoryId),
