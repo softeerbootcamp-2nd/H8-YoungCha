@@ -1,7 +1,8 @@
 import ChevronRight from '@/assets/icons/ChevronRight';
 import { SELF_MODE, GUIDE_MODE, PROGRESSING_NOW } from '../constant';
+import { HTMLAttributes } from 'react';
 
-interface ModeSelectCardProps {
+interface ModeSelectCardProps extends HTMLAttributes<HTMLDivElement> {
   currentMode: string;
   mode: string;
   description: string;
@@ -11,6 +12,7 @@ function ModeSelectCard({
   currentMode,
   mode,
   description,
+  ...props
 }: ModeSelectCardProps) {
   const borderColor =
     mode === SELF_MODE
@@ -21,22 +23,23 @@ function ModeSelectCard({
 
   return (
     <div
-      className={`${borderColor} rounded-6px w-301px h-116px border-1px pt-18px pb-24px pl-18px pr-10px m-4px`}
+      className={`${borderColor} rounded-6px w-301px h-116px border-1px pt-18px pb-24px pl-18px pr-10px m-4px `}
+      {...props}
     >
       <div className="flex">
         <span className={`${titleTextColor} title5 font-medium`}>{mode}</span>
         {mode === SELF_MODE && currentMode === 'self' && (
-          <span className="text-main-blue text-10px font-medium rounded-2px bg-tag-skyblue py-2px px-5px ml-5px">
+          <span className="font-medium text-main-blue text-10px rounded-2px bg-tag-skyblue py-2px px-5px ml-5px">
             {PROGRESSING_NOW}
           </span>
         )}
         {mode === GUIDE_MODE && currentMode === 'guide' && (
-          <span className="text-main-blue text-10px font-medium rounded-2px bg-tag-skyblue py-2px px-5px ml-5px opacity-80">
+          <span className="font-medium text-main-blue text-10px rounded-2px bg-tag-skyblue py-2px px-5px ml-5px opacity-80">
             {PROGRESSING_NOW}
           </span>
         )}
       </div>
-      <div className="mt-10px flex flex-wrap">
+      <div className="flex flex-wrap mt-10px">
         <div className={`${tagTextColor} body3`}>
           <p className="whitespace-pre-wrap">{description}</p>
         </div>

@@ -1,19 +1,21 @@
 import Button from '@/components/Button';
 import { TEXT } from './constant';
 import { Link, useParams } from 'react-router-dom';
+import Confetti from '@/components/Confetti';
 
 function CompleteGuide() {
   const { id } = useParams();
 
   return (
-    <div className="flex flex-col items-center w-full gap-16px">
-      <img
-        src="/src/assets/mock/images/palisade.png"
-        alt="palisade"
-        width={400}
-        height={300}
-      />
-
+    <>
+      <Confetti particleCount={120} circleParticleCount={60} />
+      <div className="flex flex-col items-center w-full gap-16px">
+        <img
+          src="/src/assets/mock/images/palisade.png"
+          alt="palisade"
+          width={400}
+          height={300}
+        />
       <h1 className="font-hsans-head text-32px font-medium leading-[44.8px] tracking-[-1.28px]">
         {TEXT.TITLE.complete}
       </h1>
@@ -28,19 +30,23 @@ function CompleteGuide() {
         <span>옵션을 차례로 살펴보며 변경할 수 있어요.</span>
       </div>
       <div className="flex gap-12px mt-20px w-700px h-55px">
-        <Link to={`/model/${id}/making/guide/8`} className="w-full">
+        <Link
+          to={`/model/${id}/making/guide/8`}
+          state={{ isGuide: true }}
+          className="w-full"
+        >
           <Button color="main-blue" size="full">
             완성된 견적을 바로 볼게요
           </Button>
         </Link>
-
-        <Link to={`/model/${id}/making/guide/1`} className="w-full">
-          <Button color="grey" size="full">
-            옵션을 하나씩 살펴볼래요
-          </Button>
-        </Link>
+          <Link to={`/model/${id}/making/guide/1`} className="w-full">
+            <Button color="grey" size="full">
+              옵션을 하나씩 살펴볼래요
+            </Button>
+          </Link>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

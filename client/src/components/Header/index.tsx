@@ -1,18 +1,37 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import DictionaryToggleButton from './DictionaryToggleButton';
 import ModelChangeButton from './ModelChangeButton';
 import * as Icon from '../../assets/icons';
+import ModeChangeButton from './ModeChangeButton';
+import { ModeType } from '@/types';
+
+interface HeaderProps {
+  mode: ModeType;
+  setMode: React.Dispatch<React.SetStateAction<ModeType>>;
+}
 
 const TEXT_MAKING_MY_CAR = '내 차 만들기';
 
-function Header() {
+function Header({ mode, setMode }: HeaderProps) {
   const [backgroundColor, setBackgroundColor] = useState('');
 
   const handleScroll = useCallback(() => {
     if (window.scrollY === 0) setBackgroundColor('');
     else if (window.scrollY > 0) setBackgroundColor('bg-grey-001');
   }, [setBackgroundColor]);
+
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname.indexOf('guide') > 0) {
+      setMode('guide');
+    } else if (pathname.indexOf('self') > 0) {
+      setMode('self');
+    } else {
+      setMode('none');
+    }
+  }, [pathname]);
 
   useEffect(() => {
     document.addEventListener('scroll', handleScroll);
@@ -31,10 +50,24 @@ function Header() {
             <Icon.HDLogo className="w-45px lg:w-166px h-23px" />
           </Link>
           <span>|</span>
-          <span className="font-medium title3">{TEXT_MAKING_MY_CAR}</span>
+
+          <div className={`flex font-medium title3 gap-8px `}>
+            <span className={`${mode === 'guide' ? 'text-sub-blue' : ''}`}>
+              {TEXT_MAKING_MY_CAR}
+            </span>
+            {mode !== 'none' && (
+              <>
+                <span className={`${mode === 'guide' ? 'text-sub-blue' : ''}`}>
+                  -
+                </span>
+                <ModeChangeButton />
+              </>
+            )}
+          </div>
         </div>
         <div className="flex gap-20px">
           <DictionaryToggleButton />
+
           <span>|</span>
           <ModelChangeButton />
         </div>
