@@ -17,11 +17,20 @@ class GenderAdapter(
             field = value
             notifyDataSetChanged()
         }
+
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
     inner class GenderViewHolder(private val binding: PreliminariesLongButtonBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(tag:Tag) {
-            binding.tag=tag
-            binding.viewModel=viewModel
+        fun bind(tag: Tag) {
+            binding.tag = tag
+            binding.viewModel = viewModel
         }
     }
 

@@ -1,6 +1,5 @@
 package com.youngcha.ohmycarset.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,46 +22,13 @@ class UserTagViewModel : ViewModel() {
     private val _useList = MutableLiveData<List<Tag>>()
     val useList: LiveData<List<Tag>> = _useList
 
-    private val selectedTag = MutableLiveData<Tag?>()
-    
-    fun onTagLongItemClick(tag: Tag) {
-        when (tag.tagType) {
-            "Age" -> updateSelectedAge(tag)
-            "Gender" -> updateSelectedGender(tag)
-        }
-        selectedTag.value = tag
-    }
+    private val _selectedTag = MutableLiveData<Tag?>()
 
-    fun onTagShortItemClick(tag: Tag) {
-        Log.d("Tag", "Clicked")
-        when (tag.tagType) {
-            "Strength" -> {
-                updateSelectedStrength(tag)
-                Log.d("Tag", "Strength")
-                Log.d("Strength", cnt.toString())
-                Log.d("Strength", isChange.value.toString())
 
-            }
+    private var cnt = 0
+    val isChange = MutableLiveData<Int>(0)
 
-            "Important" -> {
-                updateSelectedImportant(tag)
-                Log.d("Tag", "Important")
-                Log.d("Important", cnt.toString())
-                Log.d("Strength", isChange.value.toString())
-
-            }
-
-            "Use" -> {
-                updateSelectedUse(tag)
-                Log.d("Tag", "Use")
-                Log.d("Use", cnt.toString())
-                Log.d("Strength", isChange.value.toString())
-
-            }
-        }
-        selectedTag.value = tag
-    }
-
+    var selectedList = mutableListOf<Tag>()
 
     private var selectedAge: Tag? = null
     private var selectedGender: Tag? = null
@@ -76,35 +42,35 @@ class UserTagViewModel : ViewModel() {
 
     private fun initData() {
         val tempAgeList = listOf(
-            Tag("Age", "20대", isSelected = false),
-            Tag("Age", "30대", isSelected = false),
-            Tag("Age", "40대", isSelected = false),
-            Tag("Age", "50대", isSelected = false),
-            Tag("Age", "60대", isSelected = false),
-            Tag("Age", "70대 이상", isSelected = false)
+            Tag("0", "Age", "20대", isSelected = false),
+            Tag("0", "Age", "30대", isSelected = false),
+            Tag("0", "Age", "40대", isSelected = false),
+            Tag("0", "Age", "50대", isSelected = false),
+            Tag("0", "Age", "60대", isSelected = false),
+            Tag("0", "Age", "70대 이상", isSelected = false)
         )
         val tempGenderList = listOf(
-            Tag("Gender", "여성", isSelected = false),
-            Tag("Gender", "남성", isSelected = false),
-            Tag("Gender", "선택 안함", isSelected = false)
+            Tag("0", "Gender", "여성", isSelected = false),
+            Tag("0", "Gender", "남성", isSelected = false),
+            Tag("0", "Gender", "선택 안함", isSelected = false)
         )
         val tempStrength = listOf(
-            Tag("Strength", "주행력", isSelected = false),
-            Tag("Strength", "소음", isSelected = false),
-            Tag("Strength", "효율", isSelected = false),
-            Tag("Strength", "파워", isSelected = false),
+            Tag("0", "Strength", "주행력", isSelected = false),
+            Tag("0", "Strength", "소음", isSelected = false),
+            Tag("0", "Strength", "효율", isSelected = false),
+            Tag("0", "Strength", "파워", isSelected = false),
         )
         val tempImportant = listOf(
-            Tag("Important", "디자인", isSelected = false),
-            Tag("Important", "차량 보호", isSelected = false),
-            Tag("Important", "온도 조절", isSelected = false),
-            Tag("Important", "건강", isSelected = false),
-            Tag("Important", "신기술", isSelected = false),
-            Tag("Important", "안전", isSelected = false)
+            Tag("0", "Important", "디자인", isSelected = false),
+            Tag("0", "Important", "차량 보호", isSelected = false),
+            Tag("0", "Important", "온도 조절", isSelected = false),
+            Tag("0", "Important", "건강", isSelected = false),
+            Tag("0", "Important", "신기술", isSelected = false),
+            Tag("0", "Important", "안전", isSelected = false)
         )
         val tempUse = listOf(
-            Tag("Use", "차박", isSelected = false),
-            Tag("Use", "가족여행", isSelected = false)
+            Tag("0", "Use", "차박", isSelected = false),
+            Tag("0", "Use", "가족여행", isSelected = false)
         )
 
         _ageList.value = tempAgeList
@@ -112,6 +78,40 @@ class UserTagViewModel : ViewModel() {
         _strengthList.value = tempStrength
         _importantList.value = tempImportant
         _useList.value = tempUse
+    }
+
+
+    fun onTagLongItemClick(tag: Tag) {
+        when (tag.tagType) {
+            "Age" -> updateSelectedAge(tag)
+            "Gender" -> updateSelectedGender(tag)
+        }
+        _selectedTag.value = tag
+    }
+
+    fun onTagShortItemClick(tag: Tag) {
+        if (isChange.value == 1 && !tag.isSelected) {
+            return
+        }
+        when (tag.tagType) {
+            "Strength" -> updateSelectedStrength(tag)
+            "Important" -> updateSelectedImportant(tag)
+            "Use" -> updateSelectedUse(tag)
+        }
+        if (tag.isSelected) {
+            selectedList.add(tag)
+            tag.tagOrder = (selectedList.indexOf(tag) + 1).toString()
+        } else {
+            selectedList.remove(tag)
+            for (i in selectedList.indices) {
+                if (selectedList[i].tagOrder != "1") {
+                    selectedList[i].tagOrder = (selectedList[i].tagOrder.toInt() - 1).toString()
+                    tag.tagOrder = selectedList[i].tagOrder
+                }
+            }
+        }
+        updateTag()
+        _selectedTag.value = tag
     }
 
     private fun updateSelectedAge(age: Tag) {
@@ -127,11 +127,6 @@ class UserTagViewModel : ViewModel() {
         selectedGender = gender
         _genderList.value = _genderList.value
     }
-
-    private var cnt = 0
-    val isChange = MutableLiveData<Int>(0)
-
-    // ... (기존 코드)
 
     private fun updateSelectedStrength(strength: Tag) {
         strength.isSelected = !strength.isSelected
@@ -169,9 +164,9 @@ class UserTagViewModel : ViewModel() {
         isChange.value = if (cnt == 3) 1 else 0
     }
 
-    fun resetSelection() {
-        selectedStrength?.isSelected = false
-        selectedImportant?.isSelected = false
-        selectedUse?.isSelected = false
+    fun updateTag() {
+        _strengthList.value = _strengthList.value
+        _importantList.value = _importantList.value
+        _useList.value = _useList.value
     }
 }

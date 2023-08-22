@@ -203,7 +203,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_sub_option_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="450dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
@@ -229,7 +229,7 @@
             android:id="@+id/tb_option_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
+            android:layout_marginTop="-10dp"
             android:background="@null"
             android:visibility="@{(viewModel.swipeButtonVisible == 1 &amp;&amp; viewModel.subOptionButtonVisible == 1) ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -305,11 +305,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginBottom="42dp"
+                android:layout_marginBottom="20dp"
                 android:fontFamily="@font/hyundai_sans_head_kr_medium"
                 android:textColor="@color/cool_grey_black"
                 android:textSize="22sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/cl_button_container"
                 app:layout_constraintStart_toStartOf="@id/cl_button_container" />
 
             <TextView
@@ -373,8 +373,10 @@
             android:clipChildren="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
