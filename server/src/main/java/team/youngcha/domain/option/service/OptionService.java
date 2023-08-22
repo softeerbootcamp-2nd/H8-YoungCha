@@ -45,7 +45,7 @@ public class OptionService {
     public List<FindSelfOptionResponse> findSelfRequiredOptions(Long trimId, RequiredCategory category) {
         verifyTrimId(trimId);
 
-        List<Option> options = optionRepository.findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, category);
+        List<Option> options = optionRepository.findRequiredOptionsByTrimIdAndCategory(trimId, category);
 
         return buildFindSelfRequiredOptionResponses(trimId, options, category);
     }
@@ -54,7 +54,7 @@ public class OptionService {
         verifyTrimId(trimId);
 
         List<Option> options = optionRepository
-                .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
+                .findRequiredOptionsByTrimIdAndExteriorColorId(trimId, RequiredCategory.INTERIOR_COLOR, exteriorColorId);
 
         return buildFindSelfRequiredOptionResponses(trimId, options, RequiredCategory.INTERIOR_COLOR);
     }
@@ -71,7 +71,7 @@ public class OptionService {
         verifyTrimId(trimId);
 
         List<Option> options = optionRepository
-                .findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, category);
+                .findRequiredOptionsByTrimIdAndCategory(trimId, category);
 
         List<Long> optionsId = getOptionIds(options);
 
@@ -99,7 +99,7 @@ public class OptionService {
         RequiredCategory category = RequiredCategory.EXTERIOR_COLOR;
 
         List<Option> exteriorColors
-                = optionRepository.findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, RequiredCategory.EXTERIOR_COLOR);
+                = optionRepository.findRequiredOptionsByTrimIdAndCategory(trimId, RequiredCategory.EXTERIOR_COLOR);
 
         return getFindGuideColorOptionResponse(trimId, guideInfo, category, exteriorColors);
     }
@@ -110,74 +110,47 @@ public class OptionService {
         verifyTrimId(trimId);
 
         List<Option> interiorColors
-                = optionRepository.findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
+                = optionRepository.findRequiredOptionsByTrimIdAndExteriorColorId(trimId, RequiredCategory.INTERIOR_COLOR, exteriorColorId);
 
         return getFindGuideColorOptionResponse(trimId, guideInfo, category, interiorColors);
     }
 
     public List<FindGuideOptionResponse> findGuideModeWheel(Long trimId, GuideInfo guideInfo, Long exteriorColorId) {
-        RequiredCategory wheelCategory = RequiredCategory.WHEEL;
-
         // 트림 아이디 검증
         verifyTrimId(trimId);
 
-        // 사용자 선택 키워드
         List<Long> userKeywordIds = guideInfo.getKeywordIds();
 
         // 트림의 모든 휠 옵션
-        Map<Long, Option> trimWheels = optionRepository.findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, wheelCategory)
-                .stream()
-                .collect(Collectors.toMap(Option::getId, option -> option));
+        List<Option> trimWheels = optionRepository
+                .findRequiredOptionsByTrimIdAndExteriorColorId(trimId, RequiredCategory.WHEEL, exteriorColorId);
 
-        // 기본 휠 옵션
-        Option defaultWheel = getDefaultWheel();
+        List<Long> wheelIds = trimWheels.stream().map(Option::getId).collect(Collectors.toList());
 
-        // 트림별 키워드 그룹
-        Map<Long, List<Keyword>> keywordGroups = keywordRepository
-                .findByContainOptionIdsAndGroupKeywords(new ArrayList<>(trimWheels.keySet()));
+        Map<Long, Integer> similarityUsersRatio = getSimilarityUsersRatio(trimId, wheelIds, guideInfo, RequiredCategory.WHEEL);
 
-        // 응답에 포함될 휠 옵션의 아이디 목록
-        // 사용자가 선택한 키워드에 해당하는 모든 옵션을 응답에 포함
-        List<Long> responseWheelIds = keywordGroups.entrySet()
-                .stream()
-                .filter(entry -> entry.getValue().stream().anyMatch(keyword -> userKeywordIds.contains(keyword.getId())))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-
-        // 기본 휠 옵션을 응답에 포함
-        if (!responseWheelIds.contains(defaultWheel.getId())) {
-            responseWheelIds.add(defaultWheel.getId());
-        }
-
-        // 유사 사용자의 휠 옵션 선택 비율
-        Map<Long, Integer> similarityUsersRatio = getSimilarityUsersRatio(trimId, responseWheelIds, guideInfo, wheelCategory);
-
-        // 휠 옵션 상세정보
-        Map<Long, List<OptionDetail>> optionDetailGroup = getOptionDetailGroup(responseWheelIds);
-
-        // 휠 옵션 이미지
-        Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(responseWheelIds);
+        Map<Long, List<OptionDetail>> optionDetailGroup = getOptionDetailGroup(wheelIds);
+        Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(wheelIds);
 
         // 사용자 선택 키워드를 기반으로 추천할 휠의 이름을 조회
-        String recommendedWheelName = getRecommendedWheelName(trimId, exteriorColorId, userKeywordIds);
+        String recommendedWheelName = getRecommendedWheelName(similarityUsersRatio, userKeywordIds);
 
         // 옵션별 응답 DTO를 생성하여 추천하는 휠을 첫번째로, 그 외에는 유사 사용자의 옵션 선택 비율을 기준으로 내림차순으로 정렬하여 응답
-        return responseWheelIds.stream()
-                .map(id -> {
-                    Option option = trimWheels.get(id);
+        return trimWheels.stream().map(option -> {
                     boolean checked = option.getName().equals(recommendedWheelName);
                     return new FindGuideOptionResponse(
                             option,
                             checked,
-                            similarityUsersRatio.get(id),
+                            similarityUsersRatio.get(option.getId()),
                             null,
-                            optionImagesGroup.get(id),
-                            optionDetailGroup.get(id));
+                            optionImagesGroup.get(option.getId()),
+                            optionDetailGroup.get(option.getId()));
                 })
                 .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> response.isChecked() ? 0 : 1)
                         .thenComparing((FindGuideOptionResponse response) -> -response.getRate()))
                 .collect(Collectors.toList());
     }
+
 
     public List<FindGuideOptionResponse> findGuideSelectiveOptions(Long trimId, GuideInfo guideInfo) {
         verifyTrimId(trimId);
@@ -203,7 +176,9 @@ public class OptionService {
 
         Map<Long, List<OptionDetail>> optionDetailGroup = getOptionDetailGroup(responseOptionIds);
 
-        List<FindGuideOptionResponse> findGuideOptionResponses = getSortedGuideOptionResponses(responseOptions, similarityUsersRatio, keywordRateGroup, optionImagesGroup, optionDetailGroup);
+        List<FindGuideOptionResponse> findGuideOptionResponses =
+                getSortedGuideOptionResponses(responseOptions,
+                        similarityUsersRatio, keywordRateGroup, optionImagesGroup, optionDetailGroup);
 
         for (FindGuideOptionResponse f : findGuideOptionResponses) {
             f.setChecked(false);
@@ -212,7 +187,8 @@ public class OptionService {
         return findGuideOptionResponses;
     }
 
-    private Map<Long, List<KeywordRate>> getGuideModeSelectiveOptionKeywordRateGroup(Long trimId, GuideInfo guideInfo, Map<Long, List<Long>> mapKeywordIdToMatchedOptionsIds) {
+    private Map<Long, List<KeywordRate>> getGuideModeSelectiveOptionKeywordRateGroup(Long trimId, GuideInfo guideInfo,
+                                                                                     Map<Long, List<Long>> mapKeywordIdToMatchedOptionsIds) {
         Map<Long, List<KeywordRate>> keywordRateGroup = new HashMap<>();
 
         Map<Long, String> keywordNames = keywordRepository.findAll()
@@ -268,38 +244,29 @@ public class OptionService {
         return mapKeywordIdToMatchedOptionsIds;
     }
 
-    private Option getDefaultWheel() {
-        return findOptionByName("20인치 알로이 휠");
-    }
-
-    private String getRecommendedWheelName(Long trimId, Long exteriorColorId, List<Long> userSelectedKeywordIds) {
+    private String getRecommendedWheelName(Map<Long, Integer> similarityUsersRatio, List<Long> userSelectedKeywordIds) {
         Map<String, Long> keywords = keywordRepository.findAll()
                 .stream()
                 .collect(Collectors.toMap(Keyword::getName, Keyword::getId));
 
-        if (userSelectedKeywordIds.contains(keywords.get(KeywordName.DESIGN.getName()))) {
-            if (userSelectedKeywordIds.contains(keywords.get(KeywordName.DRIVING_PERFORMANCE.getName())) ||
-                    userSelectedKeywordIds.contains(keywords.get(KeywordName.SAFETY.getName()))) {
-                return "알콘(alcon) 단조 브레이크 & 20인치 휠 패키지";
-            }
+        boolean containDesign = userSelectedKeywordIds.contains(keywords.get(KeywordName.DESIGN.getName()));
+        boolean containDrivingPerformance = userSelectedKeywordIds.contains(keywords.get(KeywordName.DRIVING_PERFORMANCE.getName()));
+        boolean containSafety = userSelectedKeywordIds.contains(keywords.get(KeywordName.SAFETY.getName()));
 
-            return getRecommendedWheelNameBySellCount(trimId, exteriorColorId);
+        if (!containDesign && !containDrivingPerformance && !containSafety) {
+            return "20인치 알로이 휠";
         }
-
-        return "20인치 알로이 휠";
+        if (containDrivingPerformance || containSafety) {
+            return "알콘(alcon) 단조 브레이크 & 20인치 휠 패키지";
+        }
+        return getRecommendedWheelNameBySimilarity(similarityUsersRatio);
     }
 
-    private String getRecommendedWheelNameBySellCount(Long trimId, Long exteriorColorId) {
+    private String getRecommendedWheelNameBySimilarity(Map<Long, Integer> similarityUsersRatio) {
         Option darkSputteringWheel = findOptionByName("20인치 다크 스퍼터링 휠");
         Option blacktoneWheel = findOptionByName("20인치 블랙톤 전면 가공 휠");
 
-        Map<Long, Long> sellCounts = sellRepository.countByTrimIdAndExteriorColorForWheels(
-                trimId,
-                exteriorColorId,
-                List.of(darkSputteringWheel.getId(), blacktoneWheel.getId())
-        );
-
-        if (sellCounts.get(darkSputteringWheel.getId()) > sellCounts.get(blacktoneWheel.getId())) {
+        if (similarityUsersRatio.get(darkSputteringWheel.getId()) > similarityUsersRatio.get(blacktoneWheel.getId())) {
             return darkSputteringWheel.getName();
         }
         return blacktoneWheel.getName();
@@ -310,7 +277,8 @@ public class OptionService {
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "옵션 조회 실패: " + optionName));
     }
 
-    private List<FindGuideOptionResponse> getFindGuideColorOptionResponse(Long trimId, GuideInfo guideInfo, RequiredCategory category, List<Option> options) {
+    private List<FindGuideOptionResponse> getFindGuideColorOptionResponse(Long trimId, GuideInfo guideInfo,
+                                                                          RequiredCategory category, List<Option> options) {
         List<Long> optionIds = options.stream().map(Option::getId).collect(Collectors.toList());
 
         // 옵션 이미지
@@ -337,7 +305,8 @@ public class OptionService {
         Map<Long, Integer> sellRatioByGender = getOptionSellRatioByTrimIdAndCategoryAndGender(trimId, category, guideInfo.getGender());
 
         // 키워드 그룹
-        Map<Long, List<KeywordRate>> keywordRateGroup = getKeywordGroupOfAgeRangeAndGender(guideInfo, optionIds, sellRatioByAgeRange, sellRatioByGender);
+        Map<Long, List<KeywordRate>> keywordRateGroup =
+                getKeywordGroupOfAgeRangeAndGender(guideInfo, optionIds, sellRatioByAgeRange, sellRatioByGender);
 
         // 동일 성별 및 연령대의 옵션별 구매율
         Map<Long, Integer> sellRatioByAgeRangeAndGender =
@@ -525,7 +494,8 @@ public class OptionService {
         return isMaxRate;
     }
 
-    private Map<Long, List<KeywordRate>> getKeywordGroupOfAgeRange(GuideInfo guideInfo, List<Long> exteriorColorIds, Map<Long, Integer> sellRatioByAgeRange) {
+    private Map<Long, List<KeywordRate>> getKeywordGroupOfAgeRange(GuideInfo guideInfo, List<Long> exteriorColorIds,
+                                                                   Map<Long, Integer> sellRatioByAgeRange) {
         // 연령대 키워드 이름
         String keywordAgeRange = guideInfo.getAgeRange().toKeyword();
 
@@ -539,7 +509,10 @@ public class OptionService {
                 ));
     }
 
-    private Map<Long, List<KeywordRate>> getKeywordGroupOfAgeRangeAndGender(GuideInfo guideInfo, List<Long> exteriorColorIds, Map<Long, Integer> sellRatioByAgeRange, Map<Long, Integer> sellRatioByGender) {
+    private Map<Long, List<KeywordRate>> getKeywordGroupOfAgeRangeAndGender(GuideInfo guideInfo,
+                                                                            List<Long> exteriorColorIds,
+                                                                            Map<Long, Integer> sellRatioByAgeRange,
+                                                                            Map<Long, Integer> sellRatioByGender) {
         // 연령대 키워드 이름
         String keywordAgeRange = guideInfo.getAgeRange().toKeyword();
 

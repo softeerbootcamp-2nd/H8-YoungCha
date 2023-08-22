@@ -97,24 +97,24 @@ public class SellRepository {
         ));
     }
 
-    public Map<Long, Long> countByTrimIdAndExteriorColorForWheels(Long trimId, Long exteriorColorId,
-                                                                  List<Long> wheelIds) {
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("trimId", trimId);
-        params.addValue("exteriorColorId", exteriorColorId);
-        params.addValue("wheelIds", wheelIds);
-
-        List<Map<String, Object>> result = namedParameterJdbcTemplate.queryForList(
-                "SELECT wheel_id, COUNT(*) AS count FROM sell " +
-                        "WHERE trim_id = :trimId " +
-                        "AND wheel_id IN (:wheelIds) AND exterior_color_id = :exteriorColorId " +
-                        "GROUP BY wheel_id", params);
-
-        return result.stream().collect(Collectors.toMap(
-                row -> (Long) row.get("wheel_id"),
-                row -> (Long) row.get("count")
-        ));
-    }
+//    public Map<Long, Long> countByTrimIdAndExteriorColorForWheels(Long trimId, Long exteriorColorId,
+//                                                                  List<Long> wheelIds) {
+//        MapSqlParameterSource params = new MapSqlParameterSource();
+//        params.addValue("trimId", trimId);
+//        params.addValue("exteriorColorId", exteriorColorId);
+//        params.addValue("wheelIds", wheelIds);
+//
+//        List<Map<String, Object>> result = namedParameterJdbcTemplate.queryForList(
+//                "SELECT wheel_id, COUNT(*) AS count FROM sell " +
+//                        "WHERE trim_id = :trimId " +
+//                        "AND wheel_id IN (:wheelIds) AND exterior_color_id = :exteriorColorId " +
+//                        "GROUP BY wheel_id", params);
+//
+//        return result.stream().collect(Collectors.toMap(
+//                row -> (Long) row.get("wheel_id"),
+//                row -> (Long) row.get("count")
+//        ));
+//    }
 
     private List<Map<String, Object>> querySellCounts(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                                                       Long trimId, List<Long> optionIds,
