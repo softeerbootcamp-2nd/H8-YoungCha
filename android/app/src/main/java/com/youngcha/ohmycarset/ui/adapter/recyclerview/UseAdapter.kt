@@ -28,6 +28,7 @@ class UseAdapter(private val viewModel: UserTagViewModel) :
         fun bind(tag: Tag) {
             binding.tag = tag
             binding.viewModel = viewModel
+            binding.executePendingBindings()
         }
 
     }
