@@ -18,3 +18,5 @@ export const PROGRESS_LIST: ProgressType[] = [
   { title: '옵션 선택', path: 'options' },
   { title: '견적 내기', path: '' },
 ];
+
+export const INTERIOR_COLOR_STEP = 6;

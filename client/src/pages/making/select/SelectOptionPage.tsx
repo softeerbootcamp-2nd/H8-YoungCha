@@ -4,7 +4,7 @@ import Button from '@/components/Button';
 import OptionCard from '@/components/OptionCard';
 import EstimationSummary from '@/components/SummaryModal';
 import { DownArrow } from '@/assets/icons';
-import { PROGRESS_LIST } from './constant';
+import { INTERIOR_COLOR_STEP, PROGRESS_LIST } from './constant';
 import { OptionType } from '@/types/option';
 import { OPTION_ORDER } from '../constant';
 import useFetch from '@/hooks/useFetch.ts';
@@ -23,7 +23,7 @@ function SelectOptionPage({ path }: SelectOptionPageProps) {
   const { data, loading } = useFetch<OptionType[]>({
     url,
     params:
-      Number(step) === 6
+      Number(step) === INTERIOR_COLOR_STEP
         ? {
             exteriorColorId: '13',
           }
