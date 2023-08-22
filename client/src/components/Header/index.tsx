@@ -7,13 +7,13 @@ import ModeChangeButton from './ModeChangeButton';
 import { ModeType } from '@/types';
 
 interface HeaderProps {
-  mode: ModeType;
-  setMode: React.Dispatch<React.SetStateAction<ModeType>>;
+  mode?: ModeType;
+  setMode?: React.Dispatch<React.SetStateAction<ModeType>>;
 }
 
 const TEXT_MAKING_MY_CAR = '내 차 만들기';
 
-function Header({ mode, setMode }: HeaderProps) {
+function Header({ mode = 'none', setMode = () => {} }: HeaderProps) {
   const [backgroundColor, setBackgroundColor] = useState('');
 
   const handleScroll = useCallback(() => {
