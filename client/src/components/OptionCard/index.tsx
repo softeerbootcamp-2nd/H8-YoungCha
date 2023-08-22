@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import MoreDetailsButton from './MoreDetailsButton';
 import SummarySection from './AdditionalContents/SummarySection';
 import FunctionDetailBox from './AdditionalContents/FunctionDetailBox';
@@ -6,26 +8,36 @@ import SubOptions from './AdditionalContents/SubOptions';
 import SubOptionDescription from './AdditionalContents/SubOptionDescription';
 import ImgSection from './ImgSection';
 import CheckIcon from './CheckIcon';
-import { useOptionCardContext } from '@/store/useOptionCardContext';
-import {
-  PowerTrain,
-  PowerTrainDetails,
-  powerTrainMock,
-} from '@/assets/mock/optionMock';
 import Tags from './Tags';
+import { OptionDetailType, OptionType } from '@/types/option';
 
 interface OptionCardProps
-  extends Pick<PowerTrain, 'tags'>,
-    Pick<PowerTrainDetails, 'imgUrl'> {
+  extends Pick<OptionType, 'tags'>,
+    Pick<OptionDetailType, 'imgUrl'> {
+  item: OptionType;
   imgUrl: string;
   step: number;
   price: number;
   children?: React.ReactNode;
+  isActive?: boolean;
+  onClick?: () => void;
 }
 
-function OptionCard({ tags, imgUrl, step, price, children }: OptionCardProps) {
-  const { isActive, setIsActive, isExpanded, isSelfMode } =
-    useOptionCardContext();
+function OptionCard({
+  isActive = false,
+  item,
+  tags,
+  imgUrl,
+  step,
+  price,
+  children,
+  onClick,
+}: OptionCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const { mode } = useParams() as { mode: string };
+  const isSelfMode = mode === 'self';
+
   const stepsWithDetail = new Set([1, 2, 3, 4, 7]);
 
   const totalDivColor = isActive
@@ -33,11 +45,13 @@ function OptionCard({ tags, imgUrl, step, price, children }: OptionCardProps) {
       ? 'bg-white border-main-blue'
       : 'bg-white border-sub-blue'
     : 'bg-[#EDF2FA] border-[#EDF2FA] hover:border-grey-003';
+
   const rateTextColor = isActive
     ? isSelfMode
       ? 'text-main-blue'
       : 'text-sub-blue'
     : 'text-grey-003';
+
   const nameTextColor = isActive ? 'text-grey-black' : 'text-grey-003';
 
   function hasDetail(step: number) {
@@ -45,7 +59,9 @@ function OptionCard({ tags, imgUrl, step, price, children }: OptionCardProps) {
   }
 
   function handleIsActive() {
-    setIsActive((prevState) => !prevState);
+    // setIsActive((prevState) => !prevState);
+    onClick?.();
+    if (isActive) setIsExpanded((prevState) => !prevState);
   }
 
   return (
@@ -53,12 +69,12 @@ function OptionCard({ tags, imgUrl, step, price, children }: OptionCardProps) {
       className={`relative border-2 rounded-6px w-375px p-20px cursor-pointer 
       ${totalDivColor} ${
         isExpanded ? 'max-h-750px' : 'max-h-150px'
-      } transition-all ease-in-out duration-500`}
+      } transition-all ease-in duration-500`}
       onClick={handleIsActive}
       role="none"
     >
       <div className="flex">
-        <CheckIcon />
+        <CheckIcon {...{ isActive, isSelfMode }} />
         {!isSelfMode && <Tags tags={tags} />}
       </div>
       <div
@@ -66,26 +82,31 @@ function OptionCard({ tags, imgUrl, step, price, children }: OptionCardProps) {
          body2 mt-10px mb-4px`}
       >
         {isSelfMode
-          ? `구매자의 ${powerTrainMock.rate}%가 선택했어요!`
-          : `나와 비슷한 ${powerTrainMock.rate}%가 선택한`}
+          ? `구매자의 ${item.rate}%가 선택했어요!`
+          : `나와 비슷한 ${item.rate}%가 선택한`}
       </div>
       <div className={`${nameTextColor} font-medium text-20px mb-10px`}>
-        {powerTrainMock.name}
+        {item.name}
       </div>
-      <ImgSection imgUrl={imgUrl} step={step} />
+      <ImgSection isActive={isActive} imgUrl={imgUrl} step={step} />
       <div
         className={`${
-          isExpanded
-            ? 'max-h-400px opacity-100'
-            : 'max-h-0px overflow-hidden opacity-0'
-        } transition-all ease-in-out duration-500`}
+          isExpanded ? 'max-h-400px opacity-100' : 'max-h-0 opacity-0'
+        } transition-all ease-in-out duration-500 origin-top overflow-hidden`}
       >
         <div className="bg-grey-001 w-334 h-1px"></div>
         <div className="my-12px">{children}</div>
       </div>
       <div className="flex justify-between">
         <PriceSection price={price} isActive={isActive} />
-        {hasDetail(step) ? <MoreDetailsButton /> : ''}
+        {hasDetail(step) ? (
+          <MoreDetailsButton
+            isExpanded={isExpanded}
+            setIsExpanded={setIsExpanded}
+          />
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );

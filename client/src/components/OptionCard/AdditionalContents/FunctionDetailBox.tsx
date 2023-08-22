@@ -1,17 +1,17 @@
-import { PowerTrain } from '@/assets/mock/optionMock';
-import { useOptionCardContext } from '@/store/useOptionCardContext';
+import { OptionType } from '@/types/option';
 
-interface FunctionDetailBoxProps extends Pick<PowerTrain, 'details'> {}
+interface FunctionDetailBoxProps extends Pick<OptionType, 'details'> {
+  isActive: boolean;
+}
 
-function FunctionDetailBox({ details }: FunctionDetailBoxProps) {
-  const { isActive } = useOptionCardContext();
+function FunctionDetailBox({ details, isActive }: FunctionDetailBoxProps) {
   return (
     <div
       className={`${
         isActive ? 'bg-[#f3f3f3]' : 'bg-grey-001'
       }  rounded-6px pt-4px pb-12px mt-12px`}
     >
-      {details[0].specs.map((item, index) => (
+      {details[0]?.specs?.map((item, index) => (
         <div
           key={`FunctionDetail-${index}`}
           className={`${
