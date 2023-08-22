@@ -47,9 +47,7 @@ import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.util.AnimationUtils.animateValueChange
 import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
-import com.youngcha.ohmycarset.util.blockTouchEvents
 import com.youngcha.ohmycarset.util.setupImageSwipeWithScrollView
-import com.youngcha.ohmycarset.util.unblockTouchEvents
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

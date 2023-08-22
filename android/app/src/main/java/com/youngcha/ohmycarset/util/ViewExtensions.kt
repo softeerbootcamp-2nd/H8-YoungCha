@@ -26,11 +26,3 @@ fun View.slideOutLeft() {
         }
         .start()
 }
-
-fun View.blockTouchEvents() {
-    this.setOnTouchListener { _, _ -> true }
-}
-
-fun View.unblockTouchEvents() {
-    this.setOnTouchListener(null)
-}
