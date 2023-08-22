@@ -16,6 +16,13 @@ class UseAdapter(private val viewModel: UserTagViewModel) :
             notifyDataSetChanged()
         }
 
+    init {
+        setHasStableIds(true)
+    }
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
     inner class UseViewHolder(private val binding: PreliminariesShortButtonBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(tag: Tag) {

@@ -16,6 +16,15 @@ class AgeAdapter(private val viewModel: UserTagViewModel) :
             notifyDataSetChanged()
         }
 
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+
     inner class AgeViewHolder(private val binding: PreliminariesLongButtonBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(tag: Tag) {
