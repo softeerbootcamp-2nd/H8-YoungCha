@@ -1,28 +1,18 @@
 package com.youngcha.ohmycarset.util
 
 import android.view.View
+import android.view.animation.AlphaAnimation
 
 fun View.fadeIn() {
     this.visibility = View.VISIBLE
-    this.animate().alpha(1f).setDuration(500).start()
+    val fadeIn = AlphaAnimation(0f, 1f)
+    fadeIn.duration = 1000
+    this.startAnimation(fadeIn)
 }
 
 fun View.fadeOut() {
-    this.animate().alpha(0f).setDuration(500).withEndAction {
-        this.visibility = View.GONE
-    }.start()
-}
-fun View.slideInRight() {
-    this.visibility = View.VISIBLE // visibility 값을 VISIBLE로 변경
-    this.animate().translationX(this.width.toFloat()).setDuration(700).start()
-}
-
-fun View.slideOutLeft() {
-    this.animate()
-        .translationX(-this.width.toFloat())
-        .setDuration(700)
-        .withEndAction {
-            this.visibility = View.GONE
-        }
-        .start()
+    val fadeOut = AlphaAnimation(1f, 0f)
+    fadeOut.duration = 200
+    this.startAnimation(fadeOut)
+    this.visibility = View.GONE
 }
