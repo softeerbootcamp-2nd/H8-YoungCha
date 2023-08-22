@@ -40,15 +40,52 @@ class LoadingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        clickListener()
+        setupClickListener()
+        setupAnimations()
+    }
 
+    private fun setupClickListener() {
+        binding.layoutEstimateReady.btnNext.setOnClickListener {
+            var bundle: Bundle?
+            bundle = Bundle().apply {
+                putString("mode", "GuideMode")
+            }
+            findNavController().navigate(
+                R.id.action_loadingFragment_to_makeCarFragment,
+                bundle
+            )
+
+        }
+
+        binding.layoutEstimateReady.btnSkip.setOnClickListener {
+
+        }
+
+    }
+
+    private fun setupAnimations() {
+        startProgressAnimation()
+        startImageChangeAnimation()
+        startImageAndTextAnimation()
+    }
+
+    private fun startProgressAnimation() {
         val animator = ValueAnimator.ofInt(0, 100)
         animator.duration = 3000
         animator.addUpdateListener { valueAnimator ->
             val progress = valueAnimator.animatedValue as Int
             binding.pbProgressbar.progress = progress
         }
+        animator.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                fadeOutViews()
+                fadeInEstimateReady()
+            }
+        })
         animator.start()
+    }
+
+    private fun startImageChangeAnimation() {
         imageAnimationCoroutine = GlobalScope.launch {
             while (isActive) {
                 withContext(Dispatchers.Main) {
@@ -58,7 +95,9 @@ class LoadingFragment : Fragment() {
                 delay(1000)
             }
         }
+    }
 
+    private fun startImageAndTextAnimation() {
         imageAndTextAnimationCoroutine = GlobalScope.launch(Dispatchers.Main) {
             while (isActive) {
                 // 엔진
@@ -104,32 +143,6 @@ class LoadingFragment : Fragment() {
                 delay(500)
             }
         }
-
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                fadeOutViews()
-                fadeInEstimateReady()
-            }
-        })
-    }
-
-    private fun clickListener() {
-        binding.layoutEstimateReady.btnNext.setOnClickListener {
-            var bundle: Bundle?
-            bundle = Bundle().apply {
-                putString("mode", "GuideMode")
-            }
-            findNavController().navigate(
-                R.id.action_loadingFragment_to_makeCarFragment,
-                bundle
-            )
-
-        }
-
-        binding.layoutEstimateReady.btnSkip.setOnClickListener {
-
-        }
-
     }
 
     private fun fadeOutViews() {
@@ -148,7 +161,6 @@ class LoadingFragment : Fragment() {
 
     private fun fadeInEstimateReady() {
         val fadeInDuration = 500L
-
         binding.layoutEstimateReady.root.visibility = View.VISIBLE
         binding.layoutEstimateReady.root.alpha = 0f
         binding.layoutEstimateReady.root.animate().alpha(1f).setDuration(fadeInDuration).start()
@@ -163,7 +175,6 @@ class LoadingFragment : Fragment() {
             }
         })
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
