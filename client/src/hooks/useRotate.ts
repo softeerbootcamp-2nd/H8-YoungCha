@@ -4,20 +4,22 @@ type Action =
   | { type: 'MOUSE_DOWN'; payload: number }
   | { type: 'MOUSE_MOVE'; payload: number }
   | { type: 'MOUSE_UP' };
-type State = {
+
+interface StateType {
   nowImgIdx: number;
   nextImgIdx: number;
   mouseX: number;
   isMouseDown: boolean;
-};
-const initState: State = {
+}
+
+const initState: StateType = {
   nowImgIdx: 0,
   nextImgIdx: 0,
   mouseX: 0,
   isMouseDown: false,
 };
 
-function reducer(state: State, action: Action): State {
+function reducer(state: StateType, action: Action): StateType {
   const ROTATE_SENSITIVITY = 15;
   const IMG_CNT = 60;
 
