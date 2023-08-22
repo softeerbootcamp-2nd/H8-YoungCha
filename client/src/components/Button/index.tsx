@@ -5,7 +5,6 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
   color?: ColorType;
-  onClick?: () => void;
 }
 
 const buttonSize = {

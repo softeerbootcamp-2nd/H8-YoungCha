@@ -7,9 +7,10 @@ import { DownArrow } from '@/assets/icons';
 import { OptionCardProvider } from '@/store/useOptionCardContext';
 import OptionCard from '@/components/OptionCard';
 import { powerTrainMock } from '@/assets/mock/optionMock';
+import { ModeType } from '@/types';
 
 interface SelectOptionPageProps {
-  path: 'self' | 'guide';
+  path: ModeType;
 }
 
 interface SelectOptionMessageProps {

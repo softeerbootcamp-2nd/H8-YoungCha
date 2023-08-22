@@ -1,8 +1,9 @@
+import { ModeType } from '@/types';
 import { Link, LinkProps } from 'react-router-dom';
 
 interface ProgressBarProps {
   step: number;
-  mode: 'self' | 'guide';
+  mode: ModeType;
   id: string;
 }
 
