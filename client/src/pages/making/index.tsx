@@ -14,4 +14,5 @@ function MakingPage() {
   return <SelectOptionPage path={mode} />;
 }
 
+export { default as MakingPageLayout } from './layout.tsx';
 export default MakingPage;

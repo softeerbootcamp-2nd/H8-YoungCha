@@ -3,8 +3,7 @@ import Home from '@/pages/home';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Guide from '@/pages/guide';
 import FullScreenLayout from '@/components/layout/FullScreenLayout';
-import MakingPageLayout from '@/pages/making/layout';
-import MakingPage from '@/pages/making';
+import MakingPage, { MakingPageLayout } from '@/pages/making';
 
 const router = createBrowserRouter([
   {
