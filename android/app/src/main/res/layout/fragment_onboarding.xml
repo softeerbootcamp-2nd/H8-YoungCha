@@ -4,28 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/btn_prev"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/ic_arrow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/tv_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/hyundai_sans_text_kr_regular"
         android:text="@string/skip"
         android:textColor="@color/cool_grey_003"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/btn_prev"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btn_prev" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <include
         android:id="@+id/layout_onboarding_page1"
@@ -35,7 +25,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_prev" />
+        app:layout_constraintTop_toBottomOf="@id/tv_skip" />
 
     <include
         android:id="@+id/layout_onboarding_page2"
@@ -46,7 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_prev" />
+        app:layout_constraintTop_toBottomOf="@id/tv_skip" />
 
     <include
         android:id="@+id/layout_onboarding_page3"
@@ -57,6 +47,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_prev" />
+        app:layout_constraintTop_toBottomOf="@id/tv_skip" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
