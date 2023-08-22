@@ -151,7 +151,6 @@ public class OptionService {
                 .collect(Collectors.toList());
     }
 
-
     public List<FindGuideOptionResponse> findGuideSelectiveOptions(Long trimId, GuideInfo guideInfo) {
         verifyTrimId(trimId);
 

@@ -164,10 +164,6 @@ public class GuideOptionController {
     public ResponseEntity<SuccessResponse<List<FindGuideOptionResponse>>> findSelectiveOptions(
             @Schema(description = "트림 아이디")
             @PathVariable Long trimId,
-            @Schema(description = "성별 (남자: 0, 여자: 1, 선택 안함: 2)")
-            @RequestParam Gender gender,
-            @Schema(description = "나이 (20대 ~ 70대 이상, 2, 3,..., 7)")
-            @RequestParam(name = "age") AgeRange ageRange,
             @Schema(description = "1순위 키워드 아이디")
             @RequestParam Long keyword1Id,
             @Schema(description = "2순위 키워드 아이디")
@@ -176,7 +172,7 @@ public class GuideOptionController {
             @RequestParam Long keyword3Id
     ) {
         GuideInfo guideInfo =
-                new GuideInfo(gender, ageRange, List.of(keyword1Id, keyword2Id, keyword3Id));
+                new GuideInfo(null, null, List.of(keyword1Id, keyword2Id, keyword3Id));
         List<FindGuideOptionResponse> findGuideOptionResponses = optionService.findGuideSelectiveOptions(trimId, guideInfo);
         SuccessResponse<List<FindGuideOptionResponse>> successResponse = new SuccessResponse<>(findGuideOptionResponses);
         return ResponseEntity.ok(successResponse);
