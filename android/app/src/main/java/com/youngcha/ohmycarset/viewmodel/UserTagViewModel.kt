@@ -24,44 +24,9 @@ class UserTagViewModel : ViewModel() {
     val useList: LiveData<List<Tag>> = _useList
 
     private val selectedTag = MutableLiveData<Tag?>()
-    
-    fun onTagLongItemClick(tag: Tag) {
-        when (tag.tagType) {
-            "Age" -> updateSelectedAge(tag)
-            "Gender" -> updateSelectedGender(tag)
-        }
-        selectedTag.value = tag
-    }
 
-    fun onTagShortItemClick(tag: Tag) {
-        Log.d("Tag", "Clicked")
-        when (tag.tagType) {
-            "Strength" -> {
-                updateSelectedStrength(tag)
-                Log.d("Tag", "Strength")
-                Log.d("Strength", cnt.toString())
-                Log.d("Strength", isChange.value.toString())
-
-            }
-
-            "Important" -> {
-                updateSelectedImportant(tag)
-                Log.d("Tag", "Important")
-                Log.d("Important", cnt.toString())
-                Log.d("Strength", isChange.value.toString())
-
-            }
-
-            "Use" -> {
-                updateSelectedUse(tag)
-                Log.d("Tag", "Use")
-                Log.d("Use", cnt.toString())
-                Log.d("Strength", isChange.value.toString())
-
-            }
-        }
-        selectedTag.value = tag
-    }
+    private var cnt = 0
+    val isChange = MutableLiveData<Int>(0)
 
 
     private var selectedAge: Tag? = null
@@ -114,6 +79,25 @@ class UserTagViewModel : ViewModel() {
         _useList.value = tempUse
     }
 
+
+    fun onTagLongItemClick(tag: Tag) {
+        when (tag.tagType) {
+            "Age" -> updateSelectedAge(tag)
+            "Gender" -> updateSelectedGender(tag)
+        }
+        selectedTag.value = tag
+    }
+
+    fun onTagShortItemClick(tag: Tag) {
+        Log.d("Tag", "Clicked")
+        when (tag.tagType) {
+            "Strength" -> updateSelectedStrength(tag)
+            "Important" -> updateSelectedImportant(tag)
+            "Use" -> updateSelectedUse(tag)
+        }
+        selectedTag.value = tag
+    }
+
     private fun updateSelectedAge(age: Tag) {
         selectedAge?.isSelected = false
         age.isSelected = true
@@ -127,11 +111,6 @@ class UserTagViewModel : ViewModel() {
         selectedGender = gender
         _genderList.value = _genderList.value
     }
-
-    private var cnt = 0
-    val isChange = MutableLiveData<Int>(0)
-
-    // ... (기존 코드)
 
     private fun updateSelectedStrength(strength: Tag) {
         strength.isSelected = !strength.isSelected
@@ -167,11 +146,5 @@ class UserTagViewModel : ViewModel() {
         }
         _useList.value = _useList.value
         isChange.value = if (cnt == 3) 1 else 0
-    }
-
-    fun resetSelection() {
-        selectedStrength?.isSelected = false
-        selectedImportant?.isSelected = false
-        selectedUse?.isSelected = false
     }
 }
