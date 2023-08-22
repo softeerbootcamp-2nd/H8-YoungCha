@@ -1,3 +1,4 @@
+import { ModeType } from '@/types';
 import { LAST_STEP } from './constant';
 import { useLocation, useParams } from 'react-router-dom';
 import SelectOptionPage from './select/SelectOptionPage';
@@ -6,7 +7,7 @@ import CompleteOptionPageWithLoading from './complete/CompleteOptionPageWithLoad
 import CompleteOptionPage from './complete/CompleteOptionPage';
 
 interface MakingPageProps {
-  path: 'self' | 'guide';
+  path: ModeType;
 }
 
 function MakingPage({ path }: MakingPageProps) {

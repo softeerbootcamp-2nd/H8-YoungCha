@@ -10,5 +10,5 @@ export default meta;
 type Story = StoryObj<typeof ProgressBar>;
 
 export const FirstStory: Story = {
-  args: { step: 1, path: 'self', id: 'LX06' },
+  args: { step: 1, mode: 'self', id: 'LX06' },
 };
