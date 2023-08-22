@@ -14,7 +14,7 @@ function CompleteOptionPageWithLoading() {
   }, []);
 
   return (
-    <div className="complete-option-page-wrapper h-full">
+    <div className="h-full">
       {isLoading ? <Loading /> : <CompleteOptionPage />}
     </div>
   );
