@@ -92,7 +92,6 @@ class CarCustomizationFragment : Fragment() {
             estimateSubTabs()
         }
         binding.vMainTabLayoutOverlay.setOnTouchListener { _, _ -> true }
-        carViewModel.initCarCustomizationViewModel(mode, startPoint)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -147,12 +146,7 @@ class CarCustomizationFragment : Fragment() {
 
     private fun observeViewModel() {
         carViewModel.startAnimationEvent.observe(viewLifecycleOwner) { feedbackViewId ->
-            binding.btnNext.isEnabled = false
-            binding.btnPrev.isEnabled = false
-            binding.vpOptionContainer.isEnabled = false
-            binding.rvSubOptionList.isEnabled = false
-            binding.btnComponentOption1.isEnabled = false
-            binding.btnComponentOption2.isEnabled = false
+            toggleButtonsState(false)
 
             val targetView = when (feedbackViewId) {
                 "fv_component_option_1" -> binding.fvComponentOption1
@@ -168,12 +162,7 @@ class CarCustomizationFragment : Fragment() {
                 override fun onAnimationEnd(animation: Animation?) {
                     targetView?.visibility = View.INVISIBLE
                     carViewModel.handleTabChange(1)
-                    binding.btnNext.isEnabled = true
-                    binding.btnPrev.isEnabled = true
-                    binding.vpOptionContainer.isEnabled = true
-                    binding.rvSubOptionList.isEnabled = true
-                    binding.btnComponentOption1.isEnabled = true
-                    binding.btnComponentOption2.isEnabled = true
+                    toggleButtonsState(true)
                 }
 
                 override fun onAnimationRepeat(animation: Animation?) {}
@@ -204,6 +193,7 @@ class CarCustomizationFragment : Fragment() {
                     lifecycleScope.launch {
                         delay(1000) // 1초 대기
                         carViewModel.handleTabChange(1)
+                        toggleButtonsState(true)
                     }
                 }
             }
@@ -211,8 +201,15 @@ class CarCustomizationFragment : Fragment() {
 
         carViewModel.selectedCar.observe(viewLifecycleOwner) { car ->
             val firstKey = car.mainOptions.first().keys.firstOrNull()
+            if (mode == "GuideMode") {
+                carViewModel.initCarCustomizationViewModel(mode, startPoint)
+                startPoint = "null"
+            }
+
             if (carViewModel.currentType.value != "GuideMode") {
                 carViewModel.setCurrentComponentName(firstKey!!)
+            } else {
+
             }
         }
 
@@ -275,11 +272,7 @@ class CarCustomizationFragment : Fragment() {
         }
 
         carViewModel.customizedParts.observe(viewLifecycleOwner) { customized ->
-            Log.d("로그", customized.toString())
-            Log.d("로그", carViewModel.getSubOptionKeys().toString())
             val systemOptions: List<OptionInfo>? = customized?.firstOrNull { it.containsKey("시스템") }?.get("시스템")
-            Log.d("로그", systemOptions.toString())
-            Log.d("로그", carViewModel.currentMainTabs.toString())
         }
 
         carViewModel.estimateSubOptions.observe(viewLifecycleOwner) { subOptions ->
@@ -293,6 +286,17 @@ class CarCustomizationFragment : Fragment() {
         }
 
         carViewModel.customizedParts.observe(viewLifecycleOwner) {
+            var totalPrice: Int = 0
+            it.forEach { map ->
+                Log.d("로그12345", map.keys.toString() + " " + map.values.toString())
+                map.values.forEach { optionInfos ->
+                    optionInfos.forEach { optionInfo ->
+                        totalPrice = totalPrice.plus(optionInfo.price)
+
+                    }
+                }
+            }
+
             val prevTotalPrice = carViewModel.prevPrice.value
             val currentTotalPrice = carViewModel.totalPrice.value?.plus(carViewModel.getMyCarTotalPrice())
 
@@ -423,6 +427,15 @@ class CarCustomizationFragment : Fragment() {
             true,
             carViewModel.currentType.value
         )
+    }
+
+    fun Fragment.toggleButtonsState(isEnabled: Boolean) {
+        binding.btnNext.isEnabled = isEnabled
+        binding.btnPrev.isEnabled = isEnabled
+        binding.vpOptionContainer.isEnabled = isEnabled
+        binding.rvSubOptionList.isEnabled = isEnabled
+        binding.btnComponentOption1.isEnabled = isEnabled
+        binding.btnComponentOption2.isEnabled = isEnabled
     }
 
     override fun onDestroyView() {
