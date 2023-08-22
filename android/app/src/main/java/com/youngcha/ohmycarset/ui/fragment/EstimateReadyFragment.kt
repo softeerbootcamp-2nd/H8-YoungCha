@@ -209,11 +209,6 @@ class EstimateReadyFragment : Fragment() {
                 handlePreliminariesStep(PreliminariesStepType.KEYWORD)
             }
         }
-        binding.layoutPreliminariesKeyword.tvSkip.setOnClickListener {
-            userTagViewModel.resetSelection()
-            //로딩 프래그먼트로 전환
-            handlePreliminariesStep(PreliminariesStepType.KEYWORD)
-        }
 
         binding.layoutPreliminariesKeyword.btnNext.setOnClickListener {
             findNavController().navigate(R.id.action_estimateReadyFragment_to_loadingFragment)
