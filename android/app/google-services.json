@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "232971596208",
+    "project_id": "ohmycarset",
+    "storage_bucket": "ohmycarset.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232971596208:android:b0baf0540fa31df2292675",
+        "android_client_info": {
+          "package_name": "com.youngcha.ohmycarset"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "232971596208-4g47v9pblternr0hova49h79cbbao7f9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVi7q7GZRq-lc8f_ECV5X1QVj7O9MEUlQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "232971596208-4g47v9pblternr0hova49h79cbbao7f9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

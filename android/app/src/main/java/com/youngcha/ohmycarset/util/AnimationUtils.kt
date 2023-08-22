@@ -123,13 +123,6 @@ object AnimationUtils {
         valueAnimator.addUpdateListener { animator ->
             val newValue = animator.animatedValue as Int
             textView.text = formatToCurrency(newValue)
-
-            if (endValue < startValue) { // 현재 값이 이전 값보다 작은 경우
-                textView.setTextColor(resources.getColor(R.color.main_hyundai_blue, null))
-            } else if (endValue > startValue) { // 현재 값이 이전 값보다 큰 경우
-                textView.setTextColor(Color.RED)
-            }
-            // 만약 두 값이 동일하다면, 아무런 색상 변경 없이 진행됩니다.
         }
 
         valueAnimator.addListener(object : AnimatorListenerAdapter() {
