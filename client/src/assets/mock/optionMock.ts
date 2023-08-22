@@ -1,35 +1,6 @@
-export interface PowerTrainSpecs {
-  name: string | null;
-  description: string | null;
-}
+import { OptionType } from '@/types/option';
 
-export interface PowerTrainDetails {
-  name?: string | null;
-  description?: string | null;
-  imgUrl: string;
-  specs: PowerTrainSpecs[];
-}
-
-export interface PowerTrainTags {
-  rate: number;
-  name: string;
-}
-
-export interface PowerTrainFeedBack {
-  title: string;
-  description: string;
-}
-
-export interface PowerTrain {
-  rate: string;
-  price: number;
-  name: string;
-  feedback: PowerTrainFeedBack[];
-  tags: PowerTrainTags[];
-  details: PowerTrainDetails[];
-}
-
-export const powerTrainMock: PowerTrain = {
+export const powerTrainMock: OptionType = {
   rate: '63',
   price: 1480000,
   name: '디젤 2.2',
@@ -58,7 +29,7 @@ export const powerTrainMock: PowerTrain = {
   ],
 };
 
-export const optionCardMock: PowerTrain[] = [
+export const optionCardMock: OptionType[] = [
   powerTrainMock,
   powerTrainMock,
   powerTrainMock,
