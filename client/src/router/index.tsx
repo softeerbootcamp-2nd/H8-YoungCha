@@ -4,6 +4,7 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Guide from '@/pages/guide';
 import FullScreenLayout from '@/components/layout/FullScreenLayout';
 import MakingPage, { MakingPageLayout } from '@/pages/making';
+import ErrorPage from '@/pages/error';
 
 const router = createBrowserRouter([
   {
@@ -53,10 +54,11 @@ const router = createBrowserRouter([
         ],
       },
     ],
+    errorElement: <ErrorPage />,
   },
   {
     path: '*',
-    element: <div>404</div>,
+    element: <ErrorPage errorType="404" />,
   },
 ]);
 

@@ -1,0 +1,42 @@
+name: build check
+
+on:
+  pull_request:
+    paths: 'client/**'
+
+jobs:
+  build-test:
+    name: build test
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: client
+        
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Check Node version
+        run: node -v
+
+      - name: Set environment variables
+        run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env.production
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+          cache-dependency-path: './client'
+
+      - name: Install dependaecies
+        run: pnpm install
+
+      - name: Build project
+        run: pnpm run build

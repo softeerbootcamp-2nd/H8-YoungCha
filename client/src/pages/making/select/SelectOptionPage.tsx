@@ -8,17 +8,16 @@ import { INTERIOR_COLOR_STEP, PROGRESS_LIST } from './constant';
 import { OptionType } from '@/types/option';
 import { OPTION_ORDER } from '../constant';
 import useFetch from '@/hooks/useFetch.ts';
-
-interface SelectOptionPageProps {
-  path: 'self' | 'guide';
-}
+import { PathParamsType } from '@/types/router';
 
 interface SelectOptionMessageProps {
   step: number;
 }
 
-function SelectOptionPage({ path }: SelectOptionPageProps) {
-  const { step, mode } = useParams() as { step: string; mode: string };
+interface SelectOptionFooterProps extends PathParamsType {}
+
+function SelectOptionPage() {
+  const { step, mode, id } = useParams() as PathParamsType;
   const url = `/car-make/2/${mode}/${PROGRESS_LIST[Number(step) - 1].path}`;
   const { data, loading } = useFetch<OptionType[]>({
     url,
@@ -74,8 +73,7 @@ function SelectOptionPage({ path }: SelectOptionPageProps) {
                 </button>
               ))}
             </SelectOptionListContainer>
-
-            <SelectOptionFooter path={path} />
+            <SelectOptionFooter {...{ mode, id, step }} />
           </div>
         </div>
       </main>
@@ -106,8 +104,7 @@ function SelectOptionListContainer({
   );
 }
 
-function SelectOptionFooter({ path }: SelectOptionPageProps) {
-  const { step, id } = useParams() as { step: string; id: string };
+function SelectOptionFooter({ mode, id, step }: SelectOptionFooterProps) {
   const currentStep = Number(step);
 
   const [isEstimationSummaryOpen, setIsEstimationSummaryOpen] = useState(false);
@@ -138,13 +135,13 @@ function SelectOptionFooter({ path }: SelectOptionPageProps) {
         <div className="flex items-center gap-21px">
           {currentStep > 1 && (
             <Link
-              to={`/model/${id}/making/${path}/${Number(step) - 1}`}
+              to={`/model/${id}/making/${mode}/${Number(step) - 1}`}
               className="body2 text-grey-003"
             >
               이전
             </Link>
           )}
-          <Link to={`/model/${id}/making/${path}/${Number(step) + 1}`}>
+          <Link to={`/model/${id}/making/${mode}/${Number(step) + 1}`}>
             <Button size="sm">선택 완료</Button>
           </Link>
         </div>
