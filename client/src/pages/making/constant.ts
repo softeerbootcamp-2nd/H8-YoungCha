@@ -19,3 +19,7 @@ export const CAR_COLOR: { text: ColorTextType; type: ColorType }[] = [
   { text: '외부', type: 'exterior' },
   { text: '내부', type: 'interior' },
 ];
+
+export const test = {
+  test: 1,
+};
