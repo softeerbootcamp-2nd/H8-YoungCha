@@ -9,6 +9,8 @@ springdoc:
   api-docs:
     groups:
       enabled: true
+server:
+  shutdown: graceful
 
 --- # local
 spring:
