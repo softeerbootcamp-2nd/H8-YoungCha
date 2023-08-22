@@ -62,18 +62,18 @@ public class OptionService {
     public List<FindSelfOptionResponse> findSelfSelectiveOptions(Long trimId) {
         verifyTrimId(trimId);
 
-        List<Option> options = optionRepository.findOptionsByTrimIdAndOptionType(trimId, OptionType.SELECTIVE);
+        List<Option> options = optionRepository.findByTrimIdAndOptionType(trimId, OptionType.SELECTIVE);
 
         return buildFindSelfSelectiveOptionResponses(trimId, options);
     }
 
-    public List<FindGuideOptionResponse> findGuideOptions(Long trimId, GuideInfo guideInfo, RequiredCategory category) {
+    public List<FindGuideOptionResponse> findGuideRequiredOptions(Long trimId, GuideInfo guideInfo, RequiredCategory category) {
         verifyTrimId(trimId);
 
         List<Option> options = optionRepository
                 .findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, category);
 
-        List<Long> optionsId = options.stream().map(Option::getId).collect(Collectors.toList());
+        List<Long> optionsId = getOptionIds(options);
 
         Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsId);
         Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsId);
@@ -177,6 +177,95 @@ public class OptionService {
                 .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> response.isChecked() ? 0 : 1)
                         .thenComparing((FindGuideOptionResponse response) -> -response.getRate()))
                 .collect(Collectors.toList());
+    }
+
+    public List<FindGuideOptionResponse> findGuideSelectiveOptions(Long trimId, GuideInfo guideInfo) {
+        verifyTrimId(trimId);
+
+        Map<Long, Option> selectiveOptions = optionRepository.findByTrimIdAndOptionType(trimId, OptionType.SELECTIVE)
+                .stream().collect(Collectors.toMap(
+                        Option::getId, row -> row));
+
+        Map<Long, List<Long>> mapKeywordIdToMatchedOptionsIds =
+                getMapKeywordIdToMatchedOptionsIds(new ArrayList<>(selectiveOptions.keySet()), guideInfo.getKeywordIds());
+
+        List<Option> responseOptions = getGuideModeSelectiveResponseOptions(selectiveOptions, mapKeywordIdToMatchedOptionsIds);
+
+        Map<Long, List<KeywordRate>> keywordRateGroup =
+                getGuideModeSelectiveOptionKeywordRateGroup(trimId, guideInfo, mapKeywordIdToMatchedOptionsIds);
+
+        List<Long> responseOptionIds = getOptionIds(responseOptions);
+
+        Map<Long, Integer> similarityUsersRatio =
+                estimateRepository.calculateSelectiveOptionsSimilarUserRate(responseOptionIds, guideInfo.getKeywordIds(), trimId);
+
+        Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(responseOptionIds);
+
+        Map<Long, List<OptionDetail>> optionDetailGroup = getOptionDetailGroup(responseOptionIds);
+
+        List<FindGuideOptionResponse> findGuideOptionResponses = getSortedGuideOptionResponses(responseOptions, similarityUsersRatio, keywordRateGroup, optionImagesGroup, optionDetailGroup);
+
+        for (FindGuideOptionResponse f : findGuideOptionResponses) {
+            f.setChecked(false);
+        }
+
+        return findGuideOptionResponses;
+    }
+
+    private Map<Long, List<KeywordRate>> getGuideModeSelectiveOptionKeywordRateGroup(Long trimId, GuideInfo guideInfo, Map<Long, List<Long>> mapKeywordIdToMatchedOptionsIds) {
+        Map<Long, List<KeywordRate>> keywordRateGroup = new HashMap<>();
+
+        Map<Long, String> keywordNames = keywordRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(
+                        Keyword::getId,
+                        Keyword::getName));
+
+        for (Long keywordId : guideInfo.getKeywordIds()) {
+            Map<Long, Integer> rates = estimateRepository
+                    .calculateSelectiveOptionsKeywordRate(trimId, mapKeywordIdToMatchedOptionsIds.get(keywordId), keywordId);
+            for (Map.Entry<Long, Integer> entry : rates.entrySet()) {
+                List<KeywordRate> keywordRates = keywordRateGroup.computeIfAbsent(entry.getKey(), e -> new ArrayList<>());
+                keywordRates.add(new KeywordRate(entry.getValue(), keywordNames.get(keywordId)));
+            }
+        }
+
+        return keywordRateGroup;
+    }
+
+    private List<Option> getGuideModeSelectiveResponseOptions(Map<Long, Option> selectiveOptions, Map<Long, List<Long>> keywordIdToOptionsIds) {
+        List<Option> responseOptions = new ArrayList<>();
+
+        for (List<Long> optionIds : keywordIdToOptionsIds.values()) {
+            for (Long optionId : optionIds) {
+                responseOptions.add(selectiveOptions.get(optionId));
+            }
+        }
+        return responseOptions;
+    }
+
+    private Map<Long, List<Long>> getMapKeywordIdToMatchedOptionsIds(List<Long> optionIds, List<Long> userKeywordIds) {
+        Map<Long, List<Long>> mapKeywordIdToMatchedOptionsIds = new HashMap<>();
+
+        Map<Long, List<Keyword>> optionKeywords =
+                keywordRepository.findByContainOptionIdsAndGroupKeywords(optionIds);
+
+        for (Long optionId : optionIds) {
+            List<Long> optionKeywordIds = optionKeywords.get(optionId)
+                    .stream()
+                    .map(Keyword::getId)
+                    .collect(Collectors.toList());
+
+            for (Long userKeywordId : userKeywordIds) {
+                if (optionKeywordIds.contains(userKeywordId)) {
+                    List<Long> matchedOptionIds = mapKeywordIdToMatchedOptionsIds.computeIfAbsent(userKeywordId, u -> new ArrayList<>());
+                    matchedOptionIds.add(optionId);
+                    break;
+                }
+            }
+        }
+
+        return mapKeywordIdToMatchedOptionsIds;
     }
 
     private Option getDefaultWheel() {
@@ -503,5 +592,11 @@ public class OptionService {
     private void verifyTrimId(Long trimId) {
         trimRepository.findById(trimId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 트림입니다."));
+    }
+
+    private List<Long> getOptionIds(List<Option> options) {
+        return options.stream()
+                .map(Option::getId)
+                .collect(Collectors.toList());
     }
 }

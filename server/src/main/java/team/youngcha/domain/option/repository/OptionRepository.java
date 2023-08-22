@@ -65,7 +65,7 @@ public class OptionRepository {
         return query;
     }
 
-    public List<Option> findOptionsByTrimIdAndOptionType(Long trimId, OptionType type) {
+    public List<Option> findByTrimIdAndOptionType(Long trimId, OptionType type) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
         params.addValue("optionType", type.getType());

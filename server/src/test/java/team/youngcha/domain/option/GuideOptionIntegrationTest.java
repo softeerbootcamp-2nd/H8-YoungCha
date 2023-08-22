@@ -99,7 +99,8 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
         KeywordRate tag = new KeywordRate(71, "소음");
 
         FindGuideOptionResponse optionResponse1 = FindGuideOptionResponse.builder()
-                .id(1L).rate(20).price(1_480_000)
+                .id(1L).categoryId(1L)
+                .rate(20).price(1_480_000)
                 .name("디젤 2.2").checked(false)
                 .feedbackTitle("디젤 엔진은 효율이 좋아요!")
                 .feedbackDescription("효율을 중시한다면, 탁월한 선택입니다.")
@@ -107,7 +108,8 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
                 .images(List.of(dieselImage))
                 .details(List.of(dieselDetail)).build();
         FindGuideOptionResponse optionResponse2 = FindGuideOptionResponse.builder()
-                .id(2L).rate(80).price(0)
+                .id(2L).categoryId(1L)
+                .rate(80).price(0)
                 .feedbackTitle("가솔린 엔진은 조용해요!")
                 .feedbackDescription("조용한 주행을 원하신다면, 탁월한 선택입니다.")
                 .name("가솔린 3.8").checked(true)
@@ -135,7 +137,8 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
                 .description("엔진에서 전달되는 동력이 전/후륜 바퀴 중 한쪽으로만 전달되어 차량을 움직이는 방식입니다.<br>차체가 가벼워 연료 효율이 높습니다.")
                 .specs(List.of()).build();
         FindGuideOptionResponse optionResponse1 = FindGuideOptionResponse.builder()
-                .id(3L).rate(80).price(0)
+                .id(3L).categoryId(2L)
+                .rate(80).price(0)
                 .feedbackTitle("2WD는 효율이 좋아요!")
                 .feedbackDescription("효율을 중시한다면, 탁월한 선택입니다.")
                 .name("2WD").checked(false)
@@ -150,7 +153,8 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
                 .description("전자식 상시 4륜 구동 시스템 입니다.<br>도로의 상황이나 주행 환경에 맞춰 전후륜 구동력을 자동배분하여 주행 안전성을 높여줍니다.")
                 .specs(List.of()).build();
         FindGuideOptionResponse optionResponse2 = FindGuideOptionResponse.builder()
-                .id(4L).rate(20).price(2_370_000)
+                .id(4L).categoryId(2L)
+                .rate(20).price(2_370_000)
                 .feedbackTitle("4WD는 파워풀해요!")
                 .feedbackDescription("힘있는 주행을 원하신다면, 탁월한 선택입니다.")
                 .name("4WD").checked(true)
@@ -179,7 +183,8 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
                         "3열 탑승객의 승하차가 편리합니다.")
                 .specs(List.of()).build();
         FindGuideOptionResponse optionResponse1 = FindGuideOptionResponse.builder()
-                .id(5L).rate(100).price(0)
+                .id(5L).categoryId(3L)
+                .rate(100).price(0)
                 .feedbackTitle("통로가 있어 쾌적해요!")
                 .feedbackDescription("쾌적함을 원하신다면, 탁월한 선택입니다.")
                 .name("7인승").checked(true)
@@ -194,7 +199,8 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
                 .description("1열 2명, 2열 3명, 3열 3명이 탑승할 수 있는 구조로, 많은 인원이 탑승할 수 있도록 배려하였습니다.")
                 .specs(List.of()).build();
         FindGuideOptionResponse optionResponse2 = FindGuideOptionResponse.builder()
-                .id(6L).rate(0).price(0)
+                .id(6L).categoryId(3L)
+                .rate(0).price(0)
                 .feedbackTitle("많은 사람이 탑승할 수 있어요!")
                 .feedbackDescription("공간 활용을 원하신다면, 탁월한 선택입니다.")
                 .name("8인승").checked(false)
