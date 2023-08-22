@@ -21,7 +21,7 @@ interface TrimsDataType {
 }
 function Home() {
   const { data, loading } = useFetch<TrimsDataType>({
-    url: `${import.meta.env.VITE_API_URL}/cars/1/details`,
+    url: '/cars/1/details',
   });
   const trims = loading ? [] : data?.trims.filter((trim) => trim.id !== 5);
 
