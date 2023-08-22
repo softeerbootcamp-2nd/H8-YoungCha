@@ -25,6 +25,7 @@ import com.youngcha.ohmycarset.model.dialog.ButtonDialog
 import com.youngcha.ohmycarset.model.dialog.ButtonHorizontal
 import com.youngcha.ohmycarset.model.dialog.ButtonVertical
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.EstimateDetailAdapter
+import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeOptionAdapter
 import com.youngcha.ohmycarset.ui.adapter.viewpager.CarOptionPagerAdapter
 import com.youngcha.ohmycarset.ui.customview.ButtonDialogView
 import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
@@ -41,6 +42,7 @@ class CarCustomizationFragment : Fragment() {
 
     private lateinit var detailAdapterMain: EstimateDetailAdapter
     private lateinit var detailAdapterSub: EstimateDetailAdapter
+    private lateinit var trimSelfModeOptionAdapter: TrimSelfModeOptionAdapter
     private val carViewModel: CarCustomizationViewModel by viewModels()
 
     private lateinit var mode: String
@@ -215,6 +217,7 @@ class CarCustomizationFragment : Fragment() {
         }
 
         carViewModel.currentEstimateSubTabs.observe(viewLifecycleOwner) { tabs ->
+            binding.layoutEstimate.lyDetail.tlOption.removeAllTabs()
             tabs.forEach { tabName ->
                 binding.layoutEstimate.lyDetail.tlOption.addTab(createCustomTabInEstimate(tabName))
             }
@@ -346,8 +349,6 @@ class CarCustomizationFragment : Fragment() {
             // optionInfo에 해당하는 탭으로 이동
             val position = carViewModel.currentMainTabs.value?.indexOf(optionInfo)
 
-
-            Log.d("로깅", optionInfo + " 이건또뭐냐?" + carViewModel.currentMainTabs.value.toString())
             // 찾은 위치로 _currentTabPosition를 업데이트합니다.
             if (position != null && position != -1) {
                 carViewModel.updateTapPosition(position, optionInfo)
@@ -380,7 +381,11 @@ class CarCustomizationFragment : Fragment() {
                 val customView = tab.customView
                 val tvTabName = customView?.findViewById<TextView>(R.id.tv_tab_name)
                 val tabName = tvTabName?.text.toString()
-                carViewModel.filterSubOptions(tabName)
+
+                when (carViewModel.estimateSubTabType.value) {
+                    "selectOption" -> carViewModel.filterOptionsByTabName(tabName)
+                    "basicOption" -> carViewModel.filterSubOptions(tabName)
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
