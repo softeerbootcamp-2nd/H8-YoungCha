@@ -1,6 +1,5 @@
 package com.youngcha.ohmycarset.viewmodel
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -179,6 +178,19 @@ class CarCustomizationViewModel : ViewModel() {
         _customizedParts.value = randomizedParts
     }
 
+    fun updateTapPosition(position: Int, tabName: String) {
+        _currentTabPosition.value = position
+        _currentComponentName.value = tabName
+
+        prevPrice.value = totalPrice.value?.minus(getMyCarTotalPrice())
+        totalPrice.value = 36000000
+        setCurrentComponentName(tabName)
+
+        if (OPTION_SELECTION == tabName)  handleSubTab()
+
+       // setCurrentComponentName(currentComponentName.value!!)
+    }
+
 
     // --- UI 업데이트 관련 함수 ---
 
@@ -223,19 +235,15 @@ class CarCustomizationViewModel : ViewModel() {
      * 탭 변경 핸들러
      */
     fun handleTabChange(increment: Int) {
-        Log.d("로깅", increment.toString() + "!!!!!")
         val currentTabIndex = currentTabPosition.value ?: 0
         val nextTabIndex = currentTabIndex + increment
 
-        Log.d("로깅", nextTabIndex.toString())
         // 범위 확인
         if (nextTabIndex in 0 until currentMainTabs.value!!.size) {
             // 탭 변경 로직
             val tabName = currentMainTabs.value!![nextTabIndex]
             setCurrentComponentName(tabName)
-            Log.d("로깅", tabName + "ㅁㅇㄴㅁㅇㄴㄴㅁ")
             _currentTabPosition.value = nextTabIndex
-            Log.d("로깅",  nextTabIndex.toString() + "ㅁㅇ12123123ㄴㅁㅇㄴㄴㅁ")
             when (tabName) {
                 OPTION_SELECTION -> handleSubTab()
                 else -> handleMainTab()
@@ -271,7 +279,6 @@ class CarCustomizationViewModel : ViewModel() {
      */
     fun setCurrentComponentName(componentName: String) {
         _currentComponentName.value = componentName
-
         if (componentName == "견적 내기") {
             totalPrice.value = totalPrice.value?.plus(getMyCarTotalPrice())
             _estimateViewVisible.value = 1
@@ -574,7 +581,6 @@ class CarCustomizationViewModel : ViewModel() {
 
     // 선택 완료 시
     fun executeRandomAnimation() {
-        Log.d("로깅", currentType.value.toString() + "!!")
         if (currentType.value == "GuideMode") {
             handleTabChange(1)
             return
