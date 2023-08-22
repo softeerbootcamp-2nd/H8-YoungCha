@@ -3,6 +3,7 @@ package com.youngcha.ohmycarset.util
 import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.widget.ImageView
+import androidx.core.widget.NestedScrollView
 
 /*
 이미지 뷰에 터치 리스너를 설정하여 사용자가 화면을 좌우로 스와이프할 때마다 이미지를 변경하는 기능을 구현합니다.
@@ -17,7 +18,7 @@ val images = List(60) { id ->
 binding.fragmentEstimate.ivEstimateDone.setupImageSwipe(images)
  */
 @SuppressLint("ClickableViewAccessibility")
-fun ImageView.setupImageSwipe(images: List<Int>) {
+fun ImageView.setupImageSwipeWithScrollView(images: List<Int>) {
     var downX = 0f
     var index = 0
     this.setImageResource(images[index])
@@ -33,6 +34,8 @@ fun ImageView.setupImageSwipe(images: List<Int>) {
                 val moveIndex = (distance / this.width * images.size).toInt()
                 index = ((index + moveIndex) % images.size + images.size) % images.size
                 this.setImageResource(images[index])
+            }
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
             }
         }
         true

@@ -70,7 +70,7 @@ class EstimateReadyFragment : Fragment() {
         binding.layoutPreliminariesAge.clRootView.visibility = View.VISIBLE
         binding.layoutPreliminariesGender.clRootView.visibility = View.GONE
         binding.layoutPreliminariesKeyword.clRootView.visibility = View.GONE
-        binding.layoutEstimateReady.clRootView.visibility = View.GONE
+//        binding.layoutEstimateReady.clRootView.visibility = View.GONE
     }
 
 
@@ -85,8 +85,8 @@ class EstimateReadyFragment : Fragment() {
             animationSet.addAnimation(slideInAnimation)
             animationSet.addAnimation(fadeInAnimation)
 
-            binding.layoutEstimateReady.ivParticle.visibility = View.VISIBLE
-            binding.layoutEstimateReady.ivParticle.startAnimation(animationSet)
+//            binding.layoutEstimateReady.ivParticle.visibility = View.VISIBLE
+//            binding.layoutEstimateReady.ivParticle.startAnimation(animationSet)
         }
     }
 
@@ -105,7 +105,7 @@ class EstimateReadyFragment : Fragment() {
             PreliminariesStepType.KEYWORD -> {
                 binding.layoutPreliminariesKeyword.clRootView.visibility = View.GONE
                 //원래는 로딩 프래그먼트로 전환
-                binding.layoutEstimateReady.clRootView.visibility = View.VISIBLE
+                //binding.layoutEstimateReady.clRootView.visibility = View.VISIBLE
             }
 
             PreliminariesStepType.READY -> {
@@ -210,12 +210,12 @@ class EstimateReadyFragment : Fragment() {
             }
         }
 
-        binding.layoutEstimateReady.btnNext.setOnClickListener {
-
-        }
-
-        binding.layoutEstimateReady.btnSkip.setOnClickListener {
+        binding.layoutPreliminariesKeyword.btnNext.setOnClickListener {
             findNavController().navigate(R.id.action_estimateReadyFragment_to_loadingFragment)
         }
+
+//        binding.layoutEstimateReady.btnSkip.setOnClickListener {
+//            findNavController().navigate(R.id.action_estimateReadyFragment_to_loadingFragment)
+//        }
     }
 }

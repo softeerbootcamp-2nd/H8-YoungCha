@@ -9,20 +9,22 @@
             type="com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel" />
     </data>
 
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ncv_scroll_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/tv_estimate_done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="26dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/estimate_main_text"
                 android:textAlignment="center"
                 android:textColor="@color/cool_grey_black"
@@ -34,22 +36,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/iv_particle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:src="@drawable/img_particle"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
                 android:id="@+id/iv_estimate_done"
                 android:layout_width="0dp"
-                android:layout_height="190dp"
-                android:layout_marginTop="42dp"
+                android:layout_height="170dp"
+                android:layout_marginTop="22dp"
                 android:src="@drawable/image_01"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -60,7 +50,7 @@
                 android:id="@+id/btn_exterior"
                 android:layout_width="88dp"
                 android:layout_height="38dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:background="@{viewModel.exteriorButtonChange == 1 ? @color/main_hyundai_blue : @color/cool_grey_001}"
                 android:onClick="@{viewModel.updateEstimateColorButton}"
                 android:text="@string/exterior"
@@ -88,6 +78,7 @@
                 app:layout_constraintStart_toEndOf="@id/btn_exterior"
                 app:layout_constraintTop_toTopOf="@id/btn_exterior" />
 
+
             <include
                 android:id="@+id/ly_summary"
                 layout="@layout/layout_estimate_summary"
@@ -95,7 +86,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_exterior"
+                app:layout_constraintTop_toBottomOf="@id/btn_interior"
                 app:viewModel="@{viewModel}" />
 
             <androidx.appcompat.widget.AppCompatButton

@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/hyundai_sans_text_kr_regular"
             android:gravity="end"
-            android:text='@{"+ " + String.valueOf(option_info.price) + "원"}'
+            app:formattedCurrency="@{option_info.price}"
             android:textColor="@color/cool_grey_black"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"

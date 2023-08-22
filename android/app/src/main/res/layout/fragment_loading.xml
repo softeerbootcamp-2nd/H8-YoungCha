@@ -113,4 +113,10 @@
         app:layout_constraintStart_toEndOf="@id/iv_load_option"
         app:layout_constraintTop_toTopOf="@id/iv_load_option" />
 
+
+    <include
+        android:id="@+id/layout_estimate_ready"
+        layout="@layout/layout_estimate_ready"
+        android:visibility="invisible"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

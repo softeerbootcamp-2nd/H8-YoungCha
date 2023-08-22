@@ -47,6 +47,7 @@ import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.util.AnimationUtils.animateValueChange
 import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
+import com.youngcha.ohmycarset.util.setupImageSwipeWithScrollView
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -61,6 +62,7 @@ class CarCustomizationFragment : Fragment() {
     private val carViewModel: CarCustomizationViewModel by viewModels()
 
     private lateinit var mode: String
+    private lateinit var startPoint: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,6 +75,7 @@ class CarCustomizationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mode = arguments?.getString("mode") ?: ""
+        startPoint = arguments?.getString("startPoint") ?: ""
         setupViews()
     }
 
@@ -89,14 +92,18 @@ class CarCustomizationFragment : Fragment() {
             estimateSubTabs()
         }
         binding.vMainTabLayoutOverlay.setOnTouchListener { _, _ -> true }
-        carViewModel.initCarCustomizationViewModel(mode)
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupListener() {
+        val images = List(60) { id ->
+            resources.getIdentifier("image_0${id + 1}", "drawable", requireContext().packageName)
+        }
+        binding.layoutEstimate.ivEstimateDone.setupImageSwipeWithScrollView(images)
+
         binding.htbHeaderToolbar.listener = object : OnHeaderToolbarClickListener {
             override fun onExitClick() {
-                findNavController().navigate(R.id.action_makeCarSelfModeFragment_to_trimSelectFragment)
+                findNavController().navigate(R.id.action_makeCarFragment_to_trimSelectFragment)
             }
 
             override fun onModeChangeClick() {
@@ -139,6 +146,8 @@ class CarCustomizationFragment : Fragment() {
 
     private fun observeViewModel() {
         carViewModel.startAnimationEvent.observe(viewLifecycleOwner) { feedbackViewId ->
+            toggleButtonsState(false)
+
             val targetView = when (feedbackViewId) {
                 "fv_component_option_1" -> binding.fvComponentOption1
                 "fv_component_option_2" -> binding.fvComponentOption2
@@ -153,6 +162,7 @@ class CarCustomizationFragment : Fragment() {
                 override fun onAnimationEnd(animation: Animation?) {
                     targetView?.visibility = View.INVISIBLE
                     carViewModel.handleTabChange(1)
+                    toggleButtonsState(true)
                 }
 
                 override fun onAnimationRepeat(animation: Animation?) {}
@@ -181,21 +191,25 @@ class CarCustomizationFragment : Fragment() {
                 "estimate_summary" -> {
                     //  Coroutine을 사용하여 일정 시간 후에 handleTabChange(1)을 호출
                     lifecycleScope.launch {
-                        delay(1500) // 2초 대기
+                        delay(1000) // 1초 대기
                         carViewModel.handleTabChange(1)
+                        toggleButtonsState(true)
                     }
-                }
-
-                null -> {
-
                 }
             }
         }
 
         carViewModel.selectedCar.observe(viewLifecycleOwner) { car ->
             val firstKey = car.mainOptions.first().keys.firstOrNull()
+            if (mode == "GuideMode") {
+                carViewModel.initCarCustomizationViewModel(mode, startPoint)
+                startPoint = "null"
+            }
+
             if (carViewModel.currentType.value != "GuideMode") {
                 carViewModel.setCurrentComponentName(firstKey!!)
+            } else {
+
             }
         }
 
@@ -258,25 +272,8 @@ class CarCustomizationFragment : Fragment() {
         }
 
         carViewModel.customizedParts.observe(viewLifecycleOwner) { customized ->
-            Log.d("로그", customized.toString())
-            Log.d("로그", carViewModel.getSubOptionKeys().toString())
             val systemOptions: List<OptionInfo>? = customized?.firstOrNull { it.containsKey("시스템") }?.get("시스템")
-            Log.d("로그", systemOptions.toString())
-            Log.d("로그", carViewModel.currentMainTabs.toString())
         }
-
-        carViewModel.pay.observe(viewLifecycleOwner) { value ->
-            val prevTotalPrice = carViewModel.totalPrice.value!!
-            animateValueChange(
-                binding.tvEstimatePrice,
-                prevTotalPrice,
-                prevTotalPrice + value,
-                requireContext().resources
-            ).start()
-
-            carViewModel.totalPrice.value?.plus(value)?.let { carViewModel.updateTotalPrice(it) }
-        }
-
 
         carViewModel.estimateSubOptions.observe(viewLifecycleOwner) { subOptions ->
             val emptySubOptions: Map<String, List<OptionInfo>> = emptyMap()
@@ -288,6 +285,27 @@ class CarCustomizationFragment : Fragment() {
             detailAdapterMain.updateOptionInfo(mainOptions ?: emptyMainOptions)
         }
 
+        carViewModel.customizedParts.observe(viewLifecycleOwner) {
+            var totalPrice: Int = 0
+            it.forEach { map ->
+                Log.d("로그12345", map.keys.toString() + " " + map.values.toString())
+                map.values.forEach { optionInfos ->
+                    optionInfos.forEach { optionInfo ->
+                        totalPrice = totalPrice.plus(optionInfo.price)
+
+                    }
+                }
+            }
+
+            val prevTotalPrice = carViewModel.prevPrice.value
+            val currentTotalPrice = carViewModel.totalPrice.value?.plus(carViewModel.getMyCarTotalPrice())
+
+            animateValueChange(binding.tvEstimatePrice,
+                prevTotalPrice!!,
+                currentTotalPrice!!,
+                requireContext().resources).start()
+            carViewModel.prevPrice.value = currentTotalPrice
+        }
 
     }
 
@@ -409,6 +427,15 @@ class CarCustomizationFragment : Fragment() {
             true,
             carViewModel.currentType.value
         )
+    }
+
+    fun Fragment.toggleButtonsState(isEnabled: Boolean) {
+        binding.btnNext.isEnabled = isEnabled
+        binding.btnPrev.isEnabled = isEnabled
+        binding.vpOptionContainer.isEnabled = isEnabled
+        binding.rvSubOptionList.isEnabled = isEnabled
+        binding.btnComponentOption1.isEnabled = isEnabled
+        binding.btnComponentOption2.isEnabled = isEnabled
     }
 
     override fun onDestroyView() {

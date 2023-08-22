@@ -1,5 +1,6 @@
 package com.youngcha.ohmycarset.viewmodel
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -20,7 +21,6 @@ class CarCustomizationViewModel : ViewModel() {
     private val _selectedCar = MutableLiveData<Car>()
     val selectedCar: LiveData<Car> = _selectedCar
 
-    private var previousComponentName: String? = null
     private val _currentComponentName = MutableLiveData<String>()
     val currentComponentName: LiveData<String> = _currentComponentName
 
@@ -87,17 +87,15 @@ class CarCustomizationViewModel : ViewModel() {
 
 
     // 현재 가격 애니메이션 관련 변수
-    private val _totalPrice = MutableLiveData<Int>(0)
-    val totalPrice: LiveData<Int> = _totalPrice
-
-    private val _pay = MutableLiveData<Int>(0)
-    val pay: LiveData<Int> = _pay
+    val totalPrice = MutableLiveData<Int>(0)
+    val prevPrice = MutableLiveData<Int>(0)
 
     // 초기화 블록
     init {
         loadCarData("팰리세이드")
         _currentComponentName.value = selectedCar.value?.mainOptions?.get(0)?.keys?.first()
-        _totalPrice.value = 36000000
+        totalPrice.value = 36000000
+        prevPrice.value = 36000000
         /*
         addSource 메서드를 사용하여 다른 LiveData (_currentComponentName)의 업데이트를 감지합니다.
         al optionList = ...: _selectedCar.value?.mainOptions?... 이 부분은 _selectedCar의 현재 값을 가져와서 그 안의 mainOptions를 검색하고, 그 안에서 componentName 키를 가진 첫 번째 항목을 찾습니다.
@@ -134,16 +132,22 @@ class CarCustomizationViewModel : ViewModel() {
      *  초기 시작 지점
      *  가이드 모드일 경우 부품 미리 생성
      */
-    fun initCarCustomizationViewModel(currentType: String) {
+    fun initCarCustomizationViewModel(currentType: String, startPoint: String) {
         _currentType.value = currentType
         when (currentType) {
             "GuideMode" -> {
                 val lastTab = currentMainTabs.value?.lastOrNull()
                 randomizeParts()
-                if (lastTab == "견적 내기") {
-                    val position = currentMainTabs.value?.indexOf(lastTab)
-                    _estimateViewVisible.value = 1
-                    _currentTabPosition.value = position!!
+                if (startPoint == "start") {
+                    currentTabName.value = currentMainTabs.value!![0]
+                    setCurrentComponentName(currentTabName.value!!)
+                } else {
+                    if (lastTab == "견적 내기") {
+                        totalPrice.value = totalPrice.value?.plus(getMyCarTotalPrice())
+                        val position = currentMainTabs.value?.indexOf(lastTab)
+                        _estimateViewVisible.value = 1
+                        _currentTabPosition.value = position!!
+                    }
                 }
             }
         }
@@ -193,8 +197,9 @@ class CarCustomizationViewModel : ViewModel() {
         _currentTabPosition.value = 0
         currentTabName.value = currentMainTabs.value!![0]
         currentSubTabPosition.value = 0
-        _totalPrice.value = 36000000
+        totalPrice.value = 36000000
         _customizedParts.value = emptyList()
+
         setCurrentComponentName(currentTabName.value!!)
     }
 
@@ -218,23 +223,37 @@ class CarCustomizationViewModel : ViewModel() {
      * 탭 변경 핸들러
      */
     fun handleTabChange(increment: Int) {
-        if (increment <= 0) {
-            undoPreviousAddition()
-        }
+        Log.d("로깅", increment.toString() + "!!!!!")
         val currentTabIndex = currentTabPosition.value ?: 0
         val nextTabIndex = currentTabIndex + increment
 
+        Log.d("로깅", nextTabIndex.toString())
         // 범위 확인
         if (nextTabIndex in 0 until currentMainTabs.value!!.size) {
             // 탭 변경 로직
             val tabName = currentMainTabs.value!![nextTabIndex]
             setCurrentComponentName(tabName)
+            Log.d("로깅", tabName + "ㅁㅇㄴㅁㅇㄴㄴㅁ")
             _currentTabPosition.value = nextTabIndex
+            Log.d("로깅",  nextTabIndex.toString() + "ㅁㅇ12123123ㄴㅁㅇㄴㄴㅁ")
             when (tabName) {
                 OPTION_SELECTION -> handleSubTab()
                 else -> handleMainTab()
             }
         }
+    }
+
+    fun getMyCarTotalPrice(): Int {
+        var totalPrice = 0
+
+        customizedParts.value?.forEach { map ->
+            map.values.forEach { list ->
+                list.forEach { optionInfo ->
+                    totalPrice += optionInfo.price
+                }
+            }
+        }
+        return totalPrice
     }
 
     /**
@@ -254,6 +273,7 @@ class CarCustomizationViewModel : ViewModel() {
         _currentComponentName.value = componentName
 
         if (componentName == "견적 내기") {
+            totalPrice.value = totalPrice.value?.plus(getMyCarTotalPrice())
             _estimateViewVisible.value = 1
         } else {
             _estimateViewVisible.value = 0
@@ -391,7 +411,6 @@ class CarCustomizationViewModel : ViewModel() {
             // 이미 선택된 값들이 있다면
             val myCarToList = car[index]
             val myCarToMap = myCarToList[componentName] // 선택된 값
-
             val option = getOption(componentName, 0) ?: return // 0번 인덱스 옵션 가져오기
             if (option == myCarToMap?.get(0)) {
                 onComponentOption1Selected()
@@ -553,11 +572,9 @@ class CarCustomizationViewModel : ViewModel() {
         _estimateMainOptions.value = map
     }
 
-
     // 선택 완료 시
     fun executeRandomAnimation() {
-        addCurrentToTotal()
-
+        Log.d("로깅", currentType.value.toString() + "!!")
         if (currentType.value == "GuideMode") {
             handleTabChange(1)
             return
@@ -572,7 +589,6 @@ class CarCustomizationViewModel : ViewModel() {
             return
         }
 
-        previousComponentName = _currentComponentName.value
         if (getOptionSize(currentComponentName.value!!) <= 2) {
             if (componentOption1Visibility.value == 1) {
                 _startAnimationEvent.value = "fv_component_option_1"
@@ -583,38 +599,6 @@ class CarCustomizationViewModel : ViewModel() {
             _startAnimationEvent.value = "fv_vp_container"
         }
     }
-
-    /**
-     *  현재 가격 애니메이션
-     */
-    fun addCurrentToTotal() {
-        _pay.value = currentSelectedOption.value?.price!!
-    }
-
-    fun undoPreviousAddition() {
-        // _currentTabPosition에서 1을 뺀 값에 해당하는 탭의 이름 가져오기
-        val tabPosition = _currentTabPosition.value?.minus(1)
-        val previousTabName = currentMainTabs.value?.getOrNull(tabPosition ?: -1)
-
-        val optionList = if (previousTabName != null) {
-            _customizedParts.value?.firstOrNull { it.containsKey(previousTabName) }
-                ?.get(previousTabName)
-        } else {
-            null
-        }
-
-        var prevTotalPrice = 0
-
-        optionList?.forEach {
-            prevTotalPrice = prevTotalPrice.plus(it.price)
-        }
-        _pay.value = -prevTotalPrice
-    }
-
-    fun updateTotalPrice(totalPrice: Int) {
-        _totalPrice.value = totalPrice
-    }
-
 
     // Test Data
     private fun createCarData(carName: String): Car {

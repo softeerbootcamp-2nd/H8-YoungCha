@@ -9,10 +9,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.youngcha.ohmycarset.databinding.FragmentLoadingBinding
 import android.animation.ValueAnimator
+import android.util.Log
+import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.enums.TrimType
+import com.youngcha.ohmycarset.util.AnimationUtils
 import kotlinx.coroutines.*
 
 class LoadingFragment : Fragment() {
@@ -38,23 +41,70 @@ class LoadingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupClickListener()
+        setupAnimations()
+    }
+
+    private fun setupClickListener() {
+        var bundle: Bundle?
+        binding.layoutEstimateReady.btnNext.setOnClickListener {
+            bundle = Bundle().apply {
+                putString("mode", "GuideMode")
+                putString("startPoint", "start")
+            }
+            findNavController().navigate(
+                R.id.action_loadingFragment_to_makeCarFragment,
+                bundle
+            )
+        }
+
+        binding.layoutEstimateReady.btnSkip.setOnClickListener {
+            bundle = Bundle().apply {
+                putString("mode", "GuideMode")
+                putString("startPoint", "end")
+            }
+            findNavController().navigate(
+                R.id.action_loadingFragment_to_makeCarFragment,
+                bundle
+            )
+        }
+    }
+
+    private fun setupAnimations() {
+        startProgressAnimation()
+        startImageChangeAnimation()
+        startImageAndTextAnimation()
+    }
+
+    private fun startProgressAnimation() {
         val animator = ValueAnimator.ofInt(0, 100)
         animator.duration = 3000
         animator.addUpdateListener { valueAnimator ->
             val progress = valueAnimator.animatedValue as Int
             binding.pbProgressbar.progress = progress
         }
+        animator.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                fadeOutViews()
+                fadeInEstimateReady()
+            }
+        })
         animator.start()
+    }
+
+    private fun startImageChangeAnimation() {
         imageAnimationCoroutine = GlobalScope.launch {
             while (isActive) {
                 withContext(Dispatchers.Main) {
                     binding.ivAnimation.setImageResource(imageResources[currentIndex])
                     currentIndex = (currentIndex + 1) % imageResources.size
                 }
-                delay(1000) // 1초마다 이미지 변경
+                delay(1000)
             }
         }
+    }
 
+    private fun startImageAndTextAnimation() {
         imageAndTextAnimationCoroutine = GlobalScope.launch(Dispatchers.Main) {
             while (isActive) {
                 // 엔진
@@ -100,20 +150,35 @@ class LoadingFragment : Fragment() {
                 delay(500)
             }
         }
+    }
 
+    private fun fadeOutViews() {
+        val fadeOutDuration = 500L
 
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                //화면 전환 : 견적보기 애니메이션으로 전환
-                var bundle: Bundle?
+        binding.pbProgressbar.animate().alpha(0f).setDuration(fadeOutDuration).start()
+        binding.ivAnimation.animate().alpha(0f).setDuration(fadeOutDuration).start()
+        binding.tvDescription.animate().alpha(0f).setDuration(fadeOutDuration).start()
+        binding.ivLoadEngine.animate().alpha(0f).setDuration(fadeOutDuration).start()
+        binding.tvLoadEngine.animate().alpha(0f).setDuration(fadeOutDuration).start()
+        binding.ivLoadColor.animate().alpha(0f).setDuration(fadeOutDuration).start()
+        binding.tvLoadColor.animate().alpha(0f).setDuration(fadeOutDuration).start()
+        binding.ivLoadOption.animate().alpha(0f).setDuration(fadeOutDuration).start()
+        binding.tvLoadOption.animate().alpha(0f).setDuration(fadeOutDuration).start()
+    }
 
-                bundle = Bundle().apply {
-                    putString("mode", "GuideMode")
-                }
-                findNavController().navigate(
-                    R.id.action_loadingFragment_to_makeCarSelfModeFragment,
-                    bundle
-                )
+    private fun fadeInEstimateReady() {
+        val fadeInDuration = 500L
+        binding.layoutEstimateReady.root.visibility = View.VISIBLE
+        binding.layoutEstimateReady.root.alpha = 0f
+        binding.layoutEstimateReady.root.animate().alpha(1f).setDuration(fadeInDuration).start()
+
+        view?.viewTreeObserver?.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // parent의 너비와 높이는 0이상인경우
+                AnimationUtils.explodeView(binding.layoutEstimateReady.flParticleContainer)
+                //리스너 제거
+                view?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
             }
         })
     }

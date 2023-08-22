@@ -12,7 +12,6 @@
             type="com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel" />
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -342,9 +341,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/cl_button_container"
                 app:layout_constraintEnd_toEndOf="@id/cl_button_container"
                 app:layout_constraintTop_toTopOf="@id/cl_button_container" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <include
             android:id="@+id/layout_estimate"
@@ -357,6 +354,7 @@
             app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
             app:viewModel="@{viewModel}" />
 
+
         <com.youngcha.ohmycarset.ui.customview.FeedbackView
             android:id="@+id/fv_vp_container"
             android:layout_width="0dp"
@@ -367,7 +365,6 @@
             app:layout_constraintTop_toTopOf="@id/vp_option_container"
             app:mainFeedbackText="@{viewModel.currentSelectedOption.name}"
             app:subFeedbackText='@{"+ " + String.valueOf(viewModel.currentSelectedOption.price) + "원"}' />
-
 
         <FrameLayout
             android:id="@+id/fl_particle_container"
