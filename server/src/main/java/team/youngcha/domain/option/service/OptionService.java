@@ -8,7 +8,6 @@ import team.youngcha.common.enums.Gender;
 import team.youngcha.common.exception.CustomException;
 import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.estimate.repository.EstimateRepository;
-import team.youngcha.domain.estimate.repository.EstimateSelectiveOptionRepository;
 import team.youngcha.domain.keyword.dto.KeywordRate;
 import team.youngcha.domain.keyword.entity.Keyword;
 import team.youngcha.domain.keyword.enums.KeywordName;
@@ -42,7 +41,6 @@ public class OptionService {
     private final OptionImageRepository optionImageRepository;
     private final OptionDetailRepository optionDetailRepository;
     private final SellSelectiveOptionRepository sellSelectiveOptionRepository;
-    private final EstimateSelectiveOptionRepository estimateSelectiveOptionRepository;
 
     public List<FindSelfOptionResponse> findSelfRequiredOptions(Long trimId, RequiredCategory category) {
         verifyTrimId(trimId);
@@ -182,66 +180,72 @@ public class OptionService {
     }
 
     public List<FindGuideOptionResponse> findGuideSelectiveOptions(Long trimId, GuideInfo guideInfo) {
-        // 트림 id 검증
         verifyTrimId(trimId);
 
-        // 사용자 선택 키워드 목록
-        List<Long> userKeywordIds = guideInfo.getKeywordIds();
+        Map<Long, Option> selectiveOptions = optionRepository.findByTrimIdAndOptionType(trimId, OptionType.SELECTIVE)
+                .stream().collect(Collectors.toMap(
+                        Option::getId, row -> row));
 
-        // 트림의 선택 옵션
-        Map<Long, Option> selectiveOptions = optionRepository
-                .findByTrimIdAndOptionType(trimId, OptionType.SELECTIVE)
-                .stream()
-                .collect(Collectors.toMap(Option::getId, row -> row));
+        Map<Long, List<Long>> mapKeywordIdToMatchedOptionsIds =
+                getMapKeywordIdToMatchedOptionsIds(new ArrayList<>(selectiveOptions.keySet()), guideInfo.getKeywordIds());
 
-        List<Long> selectiveOptionIds = selectiveOptions.values()
-                .stream()
-                .map(Option::getId)
-                .collect(Collectors.toList());
+        List<Option> responseOptions = getGuideModeSelectiveResponseOptions(selectiveOptions, mapKeywordIdToMatchedOptionsIds);
 
-        // 유사 사용자의 견적 목록
-        List<Long> estimateIdsOfSimilarUsers =
-                estimateRepository.findEstimateIdsOfSimilarUsers(trimId, guideInfo);
-
-        // 사용자 키워드별 견적 목록
-        // Key: 사용자 키워드 id / Value: 키워드를 포함하는 견적의 id
-        Map<Long, List<Long>> keywordEstimateIds = userKeywordIds.stream()
-                .collect(Collectors.toMap(
-                        keywordId -> keywordId,
-                        keywordId -> estimateRepository.findIdsByTrimIdAndKeywordId(trimId, keywordId)));
-
-        // Key: 사용자 키워드를 포함하는 옵션의 id
-        // Value: 옵션에 포함된 사용자 키워드 중 우선순위가 가장 높은 키워드의 id
-        Map<Long, Long> matchedOptionKeywordIds
-                = getMatchedOptionKeywordIdWithHighestPriority(selectiveOptionIds, userKeywordIds);
-
-        // 사용자 키워드를 포함하는 옵션 목록 (응답 옵션 목록)
-        List<Option> responseOptions = matchedOptionKeywordIds.keySet()
-                .stream()
-                .map(selectiveOptions::get)
-                .collect(Collectors.toList());
+        Map<Long, List<KeywordRate>> keywordRateGroup =
+                getGuideModeSelectiveOptionKeywordRateGroup(trimId, guideInfo, mapKeywordIdToMatchedOptionsIds);
 
         List<Long> responseOptionIds = getOptionIds(responseOptions);
 
-        // 옵션별 키워드 비율
-        Map<Long, List<KeywordRate>> keywordRateGroup =
-                getSelectiveOptionKeywordRateGroup(matchedOptionKeywordIds, keywordEstimateIds);
+        Map<Long, Integer> similarityUsersRatio =
+                estimateRepository.calculateSelectiveOptionsSimilarUserRate(responseOptionIds, guideInfo.getKeywordIds(), trimId);
 
-        // 옵션별 유사 사용자 비율
-        Map<Long, Integer> similarUserRatios =
-                getSelectiveOptionSimilarUserRatios(responseOptionIds, estimateIdsOfSimilarUsers);
-
-        // 옵션 이미지
         Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(responseOptionIds);
 
-        // 옵션 상세정보
-        Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(responseOptionIds);
+        Map<Long, List<OptionDetail>> optionDetailGroup = getOptionDetailGroup(responseOptionIds);
 
-        return getSortedGuideOptionResponses(responseOptions, similarUserRatios, keywordRateGroup, optionImagesGroup, optionDetailsGroup);
+        List<FindGuideOptionResponse> findGuideOptionResponses = getSortedGuideOptionResponses(responseOptions, similarityUsersRatio, keywordRateGroup, optionImagesGroup, optionDetailGroup);
+
+        for (FindGuideOptionResponse f : findGuideOptionResponses) {
+            f.setChecked(false);
+        }
+
+        return findGuideOptionResponses;
     }
 
-    private Map<Long, Long> getMatchedOptionKeywordIdWithHighestPriority(List<Long> optionIds, List<Long> userKeywordIds) {
-        Map<Long, Long> matchedKeywordIdWithHighestPriority = new HashMap<>();
+    private Map<Long, List<KeywordRate>> getGuideModeSelectiveOptionKeywordRateGroup(Long trimId, GuideInfo guideInfo, Map<Long, List<Long>> mapKeywordIdToMatchedOptionsIds) {
+        Map<Long, List<KeywordRate>> keywordRateGroup = new HashMap<>();
+
+        Map<Long, String> keywordNames = keywordRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(
+                        Keyword::getId,
+                        Keyword::getName));
+
+        for (Long keywordId : guideInfo.getKeywordIds()) {
+            Map<Long, Integer> rates = estimateRepository
+                    .calculateSelectiveOptionsKeywordRate(trimId, mapKeywordIdToMatchedOptionsIds.get(keywordId), keywordId);
+            for (Map.Entry<Long, Integer> entry : rates.entrySet()) {
+                List<KeywordRate> keywordRates = keywordRateGroup.computeIfAbsent(entry.getKey(), e -> new ArrayList<>());
+                keywordRates.add(new KeywordRate(entry.getValue(), keywordNames.get(keywordId)));
+            }
+        }
+
+        return keywordRateGroup;
+    }
+
+    private List<Option> getGuideModeSelectiveResponseOptions(Map<Long, Option> selectiveOptions, Map<Long, List<Long>> keywordIdToOptionsIds) {
+        List<Option> responseOptions = new ArrayList<>();
+
+        for (List<Long> optionIds : keywordIdToOptionsIds.values()) {
+            for (Long optionId : optionIds) {
+                responseOptions.add(selectiveOptions.get(optionId));
+            }
+        }
+        return responseOptions;
+    }
+
+    private Map<Long, List<Long>> getMapKeywordIdToMatchedOptionsIds(List<Long> optionIds, List<Long> userKeywordIds) {
+        Map<Long, List<Long>> mapKeywordIdToMatchedOptionsIds = new HashMap<>();
 
         Map<Long, List<Keyword>> optionKeywords =
                 keywordRepository.findByContainOptionIdsAndGroupKeywords(optionIds);
@@ -254,59 +258,14 @@ public class OptionService {
 
             for (Long userKeywordId : userKeywordIds) {
                 if (optionKeywordIds.contains(userKeywordId)) {
-                    matchedKeywordIdWithHighestPriority.put(optionId, userKeywordId);
+                    List<Long> matchedOptionIds = mapKeywordIdToMatchedOptionsIds.computeIfAbsent(userKeywordId, u -> new ArrayList<>());
+                    matchedOptionIds.add(optionId);
                     break;
                 }
             }
         }
 
-        return matchedKeywordIdWithHighestPriority;
-    }
-
-    private Map<Long, List<KeywordRate>> getSelectiveOptionKeywordRateGroup(Map<Long, Long> matchedOptionKeywordIds,
-                                                                            Map<Long, List<Long>> estimateIds) {
-        Map<Long, List<KeywordRate>> keywordRateGroup = new HashMap<>();
-
-        Map<Long, String> keywordNames = keywordRepository.findAll()
-                .stream()
-                .collect(Collectors.toMap(
-                        Keyword::getId,
-                        Keyword::getName));
-
-        for (Map.Entry<Long, Long> entry : matchedOptionKeywordIds.entrySet()) {
-            Long optionId = entry.getKey();
-            Long keywordId = entry.getValue();
-
-            int totalEstimateCount = estimateIds.get(keywordId).size();
-
-            Long estimatesCount = estimateSelectiveOptionRepository.countIfEstimateContainsOption(
-                    estimateIds.get(keywordId),
-                    optionId);
-
-            List<KeywordRate> optionKeywordRates =
-                    keywordRateGroup.computeIfAbsent(optionId, o -> new ArrayList<>());
-
-            int keywordRate = Math.toIntExact(100 * estimatesCount / totalEstimateCount);
-
-            optionKeywordRates.add(new KeywordRate(keywordRate, keywordNames.get(keywordId)));
-        }
-
-        return keywordRateGroup;
-    }
-
-    private Map<Long, Integer> getSelectiveOptionSimilarUserRatios(List<Long> optionIds, List<Long> estimateIdsOfSimilarUsers) {
-        Map<Long, Integer> similarUserRatios = new HashMap<>();
-        int totalEstimatesCount = estimateIdsOfSimilarUsers.size();
-
-        for (Long optionId : optionIds) {
-            Long estimatesCount = estimateSelectiveOptionRepository
-                    .countIfEstimateContainsOption(estimateIdsOfSimilarUsers, optionId);
-
-            int similarRate = Math.toIntExact(100 * estimatesCount / totalEstimatesCount);
-            similarUserRatios.put(optionId, similarRate);
-        }
-
-        return similarUserRatios;
+        return mapKeywordIdToMatchedOptionsIds;
     }
 
     private Option getDefaultWheel() {

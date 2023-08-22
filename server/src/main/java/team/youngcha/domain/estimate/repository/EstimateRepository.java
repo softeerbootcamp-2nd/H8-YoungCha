@@ -1,17 +1,14 @@
 package team.youngcha.domain.estimate.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import team.youngcha.common.enums.Gender;
 import team.youngcha.domain.category.enums.RequiredCategory;
-import team.youngcha.domain.estimate.entity.Estimate;
 import team.youngcha.domain.option.dto.GuideInfo;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,7 +18,6 @@ import java.util.stream.Collectors;
 public class EstimateRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final RowMapper<Estimate> estimateRowMapper = new EstimateRowMapper();
 
     public Map<Long, Long> countOptionsSimilarityUsers(Long trimId, List<Long> optionIds,
                                                        GuideInfo guideInfo, RequiredCategory category) {
@@ -85,55 +81,49 @@ public class EstimateRepository {
                         "group by estimate." + optionIdColumn, params);
     }
 
-    public List<Long> findIdsByTrimIdAndKeywordId(Long trimId, Long keywordId) {
+    public Map<Long, Integer> calculateSelectiveOptionsKeywordRate(Long trimId, List<Long> optionIds, Long keywordId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
+        params.addValue("optionIds", optionIds);
         params.addValue("keywordId", keywordId);
 
-        return namedParameterJdbcTemplate.queryForList("SELECT id FROM estimate " +
-                "WHERE trim_id = :trimId " +
-                "AND (keyword1_id = :keywordId OR keyword2_id = :keywordId OR keyword3_id = :keywordId)", params, Long.class);
+        String sql = "SELECT es.options_id, " +
+                "COUNT(*) * 100 / (SELECT COUNT(*) FROM estimate e " +
+                "WHERE e.keyword1_id = :keywordId OR e.keyword2_id = :keywordId OR e.keyword3_id = :keywordId) AS rate " +
+                "FROM estimate_selective_options es " +
+                "JOIN estimate e ON e.id = es.estimate_id AND e.trim_id = :trimId " +
+                "AND (e.keyword1_id = :keywordId OR e.keyword2_id = :keywordId OR e.keyword3_id = :keywordId) " +
+                "WHERE es.options_id IN (:optionIds) " +
+                "GROUP BY es.options_id";
+
+        return optionRateMapper(namedParameterJdbcTemplate.queryForList(sql, params));
     }
 
-    public List<Long> findEstimateIdsOfSimilarUsers(Long trimId, GuideInfo guideInfo) {
+    public Map<Long, Integer> calculateSelectiveOptionsSimilarUserRate(List<Long> optionIds, List<Long> keywordIds, Long trimId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("optionIds", optionIds);
         params.addValue("trimId", trimId);
-        params.addValue("ageRange", guideInfo.getAgeRange().getRange());
-        params.addValue("gender", guideInfo.getGender().getType());
-        params.addValue("keywords", guideInfo.getKeywordIds());
+        params.addValue("keywordIds", keywordIds);
 
-        String sql = "select id from estimate " +
-                "WHERE estimate.trim_id = (:trimId) " +
-                "and estimate.age_range = (:ageRange) " +
-                "and estimate.keyword1_id in (:keywords) " +
-                "and estimate.keyword2_id in (:keywords) " +
-                "and estimate.keyword3_id in (:keywords)";
+        String sql = "SELECT es.options_id, (count(*) * 100 / (select count(*) from estimate where keyword1_id in (:keywordIds) and keyword2_id in (:keywordIds) and keyword3_id in (:keywordIds))) as rate from estimate_selective_options es " +
+                "join estimate e on es.estimate_id = e.id and e.trim_id = :trimId " +
+                "and (e.keyword1_id in (:keywordIds) AND e.keyword2_id in (:keywordIds) AND e.keyword3_id in (:keywordIds)) " +
+                "where es.options_id in (:optionIds) " +
+                "group by es.options_id";
 
-        if(guideInfo.getGender() != Gender.NONE) {
-            sql += "and estimate.gender = (:gender)";
-        }
-
-        return namedParameterJdbcTemplate.queryForList(sql, params, Long.class);
+        return optionRateMapper(namedParameterJdbcTemplate.queryForList(sql, params));
     }
 
-    private static class EstimateRowMapper implements RowMapper<Estimate> {
-        @Override
-        public Estimate mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            return Estimate.builder()
-                    .id(resultSet.getLong("id"))
-                    .trimId(resultSet.getLong("trim_id"))
-                    .engineId(resultSet.getLong("engine_id"))
-                    .bodyTypeId(resultSet.getLong("body_type_id"))
-                    .drivingSystemId(resultSet.getLong("driving_system_id"))
-                    .exteriorColorId(resultSet.getLong("exterior_color_id"))
-                    .interiorColorId(resultSet.getLong("interior_color_id"))
-                    .wheelId(resultSet.getLong("wheel_id"))
-                    .keyword1Id(resultSet.getLong("keyword1_id"))
-                    .keyword2Id(resultSet.getLong("keyword2_id"))
-                    .keyword3Id(resultSet.getLong("keyword3_id"))
-                    .ageRange(resultSet.getInt("age"))
-                    .gender(resultSet.getInt("gender"))
-                    .build();
+    private Map<Long, Integer> optionRateMapper(List<Map<String, Object>> resultSet) {
+        Map<Long, Integer> resultMap = new HashMap<>();
+
+        for (Map<String, Object> row : resultSet) {
+            Long optionsId = (Long) row.get("options_id");
+            BigDecimal rate = (BigDecimal) row.get("rate");
+            int resultRate = rate != null ? rate.intValue() : 0;
+            resultMap.put(optionsId, resultRate);
         }
+
+        return resultMap;
     }
 }
