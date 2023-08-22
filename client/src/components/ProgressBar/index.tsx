@@ -1,5 +1,6 @@
 import { LinkProps, NavLink, useParams } from 'react-router-dom';
 import { PathParamsType } from '@/types/router.ts';
+import { padWithZero } from '@/utils';
 
 interface ProgressBarProps {
   mode: 'self' | 'guide';
@@ -46,7 +47,7 @@ function ProgressList({ mode, id }: ProgressBarProps) {
           to={`/model/${id}/making/${mode}/${index + 1}`}
           key={`ProgressItem-${index}`}
         >
-          {`${(index + 1).toString().padStart(2, '0')} ${item}`}
+          {`${padWithZero(index + 1, 2)} ${item}`}
         </ProgressItem>
       ))}
     </div>
