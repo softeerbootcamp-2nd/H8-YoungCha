@@ -1,12 +1,14 @@
 import { getPriceTemplete } from '@/utils';
 import ModifyButton from '../complete/ModifyButton';
 import { OptionType } from '../type';
+import { Link, useParams } from 'react-router-dom';
 
 interface DetailOptionListProps {
   option: OptionType;
 }
 
 function DetailOptionList({ option }: DetailOptionListProps) {
+  const { id, mode } = useParams();
   return (
     <div className="flex justify-between gap-43px">
       <img
@@ -30,7 +32,9 @@ function DetailOptionList({ option }: DetailOptionListProps) {
               <span className="text-grey-black font-hsans-head text-20px leading-[26px] tracking-[-0.6px]">
                 {getPriceTemplete(option.price!)}
               </span>
-              <ModifyButton onClick={() => {}} />
+              <Link to={`/model/${id}/making/${mode}/${option.categoryId}`}>
+                <ModifyButton onClick={() => {}} />
+              </Link>
             </>
           )}
         </div>

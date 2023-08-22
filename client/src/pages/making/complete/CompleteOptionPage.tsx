@@ -1,19 +1,21 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from '@/components/Button';
 import SummaryOptionsBox from './SummaryOptionsBox';
 import { CAR_COLOR, COMPLETE_OPTION_PAGE_TITLE } from '../constant';
 import { ColorType, OptionGroupType } from '../type';
-import { mockUserSelectedOptionData } from '@/assets/mock/mock';
 import DetailOptionBox from '../detail-option-box/DetailOptionBox';
 import DetailSelectOptionBox from '../detail-option-box/DetailSelectOptionBox';
 import DetailBasicOptionBox from '../detail-option-box/DetailBasicOptionBox';
 import Confetti from '@/components/Confetti';
+import { UserSelectedOptionDataContext } from '..';
 
 function CompleteOptionPage() {
   const [selectedColorType, setSelectedColorType] =
     useState<ColorType>('exterior');
   const activeColor = 'text-white bg-main-blue';
   const inactiveColor = 'text-main-blue bg-grey-001';
+
+  const { userSelectedOptionData } = useContext(UserSelectedOptionDataContext);
 
   return (
     <div>
@@ -55,7 +57,7 @@ function CompleteOptionPage() {
             </div>
           </div>
 
-          {Object.values(mockUserSelectedOptionData).map((optionGroup) => {
+          {Object.values(userSelectedOptionData).map((optionGroup) => {
             const { title, options } = optionGroup as OptionGroupType;
             const totalPrice = Object.values(options).reduce(
               (sum, { price }) => sum + price!,
@@ -107,12 +109,12 @@ function CompleteOptionPage() {
           </div>
 
           <div className="flex flex-col gap-60px">
-            {Object.values(mockUserSelectedOptionData.mainOptions.options).map(
+            {Object.values(userSelectedOptionData.mainOptions.options).map(
               (option) => (
                 <DetailOptionBox option={option} key={option.name} />
               )
             )}
-            {Object.values(mockUserSelectedOptionData.colors.options).map(
+            {Object.values(userSelectedOptionData.colors.options).map(
               (option) => (
                 <DetailOptionBox option={option} key={option.name} />
               )
