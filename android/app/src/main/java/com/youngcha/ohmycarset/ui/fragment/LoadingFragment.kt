@@ -111,7 +111,7 @@ class LoadingFragment : Fragment() {
                     putString("mode", "GuideMode")
                 }
                 findNavController().navigate(
-                    R.id.action_loadingFragment_to_makeCarSelfModeFragment,
+                    R.id.action_loadingFragment_to_makeCarFragment,
                     bundle
                 )
             }

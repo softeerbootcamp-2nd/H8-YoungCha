@@ -11,21 +11,21 @@
         android:label="fragment_trim_select"
         tools:layout="@layout/fragment_trim_select">
         <action
-            android:id="@+id/action_trimSelectFragment_to_makeCarSelfModeFragment"
-            app:destination="@id/makeCarSelfModeFragment"/>
+            android:id="@+id/action_trimSelectFragment_to_makeCarModeFragment"
+            app:destination="@id/makeCarFragment"/>
         <action
             android:id="@+id/action_trimSelectFragment_to_estimateReadyFragment"
             app:destination="@id/estimateReadyFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/makeCarSelfModeFragment"
+        android:id="@+id/makeCarFragment"
         android:name="com.youngcha.ohmycarset.ui.fragment.CarCustomizationFragment"
-        android:label="fragment_make_car_self_mode"
+        android:label="fragment_make_car"
         tools:layout="@layout/fragment_car_customization">
 
         <action
-            android:id="@+id/action_makeCarSelfModeFragment_to_trimSelectFragment"
+            android:id="@+id/action_makeCarFragment_to_trimSelectFragment"
             app:destination="@id/trimSelectFragment" />
 
         <argument
@@ -63,8 +63,8 @@
         android:name="com.youngcha.ohmycarset.ui.fragment.LoadingFragment"
         android:label="LoadingFragment" >
         <action
-            android:id="@+id/action_loadingFragment_to_makeCarSelfModeFragment"
-            app:destination="@id/makeCarSelfModeFragment"
+            android:id="@+id/action_loadingFragment_to_makeCarFragment"
+            app:destination="@id/makeCarFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"

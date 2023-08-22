@@ -102,7 +102,7 @@ class CarCustomizationFragment : Fragment() {
 
         binding.htbHeaderToolbar.listener = object : OnHeaderToolbarClickListener {
             override fun onExitClick() {
-                findNavController().navigate(R.id.action_makeCarSelfModeFragment_to_trimSelectFragment)
+                findNavController().navigate(R.id.action_makeCarFragment_to_trimSelectFragment)
             }
 
             override fun onModeChangeClick() {

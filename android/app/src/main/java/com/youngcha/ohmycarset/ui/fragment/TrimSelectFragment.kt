@@ -176,7 +176,7 @@ class TrimSelectFragment : Fragment() {
                     bundle = Bundle().apply {
                         putString("mode", "SelfMode")
                     }
-                    findNavController().navigate(R.id.action_trimSelectFragment_to_makeCarSelfModeFragment, bundle)
+                    findNavController().navigate(R.id.action_trimSelectFragment_to_makeCarModeFragment, bundle)
                 }
             }
         }
