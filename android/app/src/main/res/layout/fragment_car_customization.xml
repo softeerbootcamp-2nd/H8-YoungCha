@@ -26,6 +26,7 @@
             app:modeChangeValid="1"
             app:title="@{viewModel.currentType}" />
 
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_main_option_tab"
             android:layout_width="match_parent"
@@ -353,7 +354,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
             app:viewModel="@{viewModel}" />
-
 
         <com.youngcha.ohmycarset.ui.customview.FeedbackView
             android:id="@+id/fv_vp_container"

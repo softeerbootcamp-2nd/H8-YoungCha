@@ -1,6 +1,5 @@
 package com.youngcha.ohmycarset.viewmodel
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -9,12 +8,15 @@ import androidx.lifecycle.ViewModel
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.enums.AdditionalTab
 import com.youngcha.ohmycarset.enums.ImageType
+import com.youngcha.ohmycarset.model.TrimSelfMode
+import com.youngcha.ohmycarset.model.TrimSelfModeExteriorColor
+import com.youngcha.ohmycarset.model.TrimSelfModeInteriorColor
+import com.youngcha.ohmycarset.model.TrimSelfModeMainOption
+import com.youngcha.ohmycarset.model.TrimSelfModeOption
 import com.youngcha.ohmycarset.model.car.Car
 import com.youngcha.ohmycarset.model.car.ImageInfo
 import com.youngcha.ohmycarset.model.car.OptionInfo
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
-import kotlin.random.Random
-
 class CarCustomizationViewModel : ViewModel() {
     // 자동차 정보 관련 변수들
     // 관련된 변수: selectedCar, currentComponentName, customizedParts
@@ -64,6 +66,14 @@ class CarCustomizationViewModel : ViewModel() {
     private val _estimateMainOptions = MutableLiveData<Map<String,List<OptionInfo>>?>()
     val estimateMainOptions: LiveData<Map<String,List<OptionInfo>>?> = _estimateMainOptions
 
+    // Sub Tab selectOption || basicOption
+    val estimateSubTabType = MutableLiveData<String>("selectOption")
+
+    private val _trimSelfModeData = MutableLiveData<TrimSelfMode>()
+    val trimSelfModeData: LiveData<TrimSelfMode> = _trimSelfModeData
+
+    val filteredOptions: MutableLiveData<List<TrimSelfModeOption>> = MutableLiveData()
+
     // 뷰페이지 및 리사이클러뷰 표시 관련 변수
     // 관련된 변수: displayOnRecyclerViewOnViewPager
     private val _displayOnRecyclerViewAndViewPager = MutableLiveData<Int>(0)
@@ -93,6 +103,7 @@ class CarCustomizationViewModel : ViewModel() {
     // 초기화 블록
     init {
         loadCarData("팰리세이드")
+        loadTrimSelfMode()
         _currentComponentName.value = selectedCar.value?.mainOptions?.get(0)?.keys?.first()
         totalPrice.value = 36000000
         prevPrice.value = 36000000
@@ -179,6 +190,19 @@ class CarCustomizationViewModel : ViewModel() {
         _customizedParts.value = randomizedParts
     }
 
+    fun updateTapPosition(position: Int, tabName: String) {
+        _currentTabPosition.value = position
+        _currentComponentName.value = tabName
+
+        prevPrice.value = totalPrice.value?.minus(getMyCarTotalPrice())
+        totalPrice.value = 36000000
+        setCurrentComponentName(tabName)
+
+        if (OPTION_SELECTION == tabName)  handleSubTab()
+
+       // setCurrentComponentName(currentComponentName.value!!)
+    }
+
 
     // --- UI 업데이트 관련 함수 ---
 
@@ -223,19 +247,15 @@ class CarCustomizationViewModel : ViewModel() {
      * 탭 변경 핸들러
      */
     fun handleTabChange(increment: Int) {
-        Log.d("로깅", increment.toString() + "!!!!!")
         val currentTabIndex = currentTabPosition.value ?: 0
         val nextTabIndex = currentTabIndex + increment
 
-        Log.d("로깅", nextTabIndex.toString())
         // 범위 확인
         if (nextTabIndex in 0 until currentMainTabs.value!!.size) {
             // 탭 변경 로직
             val tabName = currentMainTabs.value!![nextTabIndex]
             setCurrentComponentName(tabName)
-            Log.d("로깅", tabName + "ㅁㅇㄴㅁㅇㄴㄴㅁ")
             _currentTabPosition.value = nextTabIndex
-            Log.d("로깅",  nextTabIndex.toString() + "ㅁㅇ12123123ㄴㅁㅇㄴㄴㅁ")
             when (tabName) {
                 OPTION_SELECTION -> handleSubTab()
                 else -> handleMainTab()
@@ -271,7 +291,6 @@ class CarCustomizationViewModel : ViewModel() {
      */
     fun setCurrentComponentName(componentName: String) {
         _currentComponentName.value = componentName
-
         if (componentName == "견적 내기") {
             totalPrice.value = totalPrice.value?.plus(getMyCarTotalPrice())
             _estimateViewVisible.value = 1
@@ -536,6 +555,34 @@ class CarCustomizationViewModel : ViewModel() {
         return keys
     }
 
+    fun toggleSubTabType() {
+        estimateSubTabType.value = if (estimateSubTabType.value == "selectOption") {
+            _currentEstimateSubTabs.value = listOf("전체", "성능", "지능형 안전기술", "안전", "외관", "내장", "시트", "편의", "멀티미디어")
+            "basicOption"
+        } else {
+            val subOptionKeys = getSubOptionKeys()
+            val estimateTabs = mutableListOf<String>()
+            estimateTabs.add("전체")
+            estimateTabs.addAll(subOptionKeys)
+            _currentEstimateSubTabs.value = estimateTabs
+            "selectOption"
+        }
+    }
+
+    fun filterOptionsByTabName(tabName: String) {
+        val allOptions = trimSelfModeData.value?.options ?: emptyList()
+
+        val matchedOptions = if (tabName == "전체") {
+            allOptions
+        } else {
+            allOptions.filter { option ->
+                option.type == tabName
+            }
+        }
+
+        filteredOptions.value = matchedOptions
+    }
+
     fun filterSubOptions(tabName: String) {
         val map: MutableMap<String, List<OptionInfo>> = mutableMapOf()
 
@@ -574,7 +621,6 @@ class CarCustomizationViewModel : ViewModel() {
 
     // 선택 완료 시
     fun executeRandomAnimation() {
-        Log.d("로깅", currentType.value.toString() + "!!")
         if (currentType.value == "GuideMode") {
             handleTabChange(1)
             return
@@ -899,6 +945,74 @@ class CarCustomizationViewModel : ViewModel() {
             listOf(subOptions),
             subOptionImage
         )
+    }
+
+    private fun loadTrimSelfMode() {
+        // 임시 데이터 생성
+        val tempTrimSelfMode = TrimSelfMode(
+            id = 1L,
+            name = "펠리세이드",
+            imgUrl = R.drawable.img_leblanc,
+            hashtag = "#Example1",
+            description = "Le Blanc 르블랑",
+            isBest = true,
+            minPrice = "38,960,000원 부터",
+            mainOptions = listOf(
+                TrimSelfModeMainOption(
+                    imgUrl = R.drawable.img_core_option_explain,
+                    description = "Main option 1"
+                )
+            ),
+            exteriorColor = listOf(
+                TrimSelfModeExteriorColor(code = "#FAFAFA", name = "크리미 화이트 펄"),
+                TrimSelfModeExteriorColor(code = "#111111", name = "어비스 블랙펄"),
+                TrimSelfModeExteriorColor(code = "#9B9D9C", name = "쉬머링 실버 메탈릭"),
+                TrimSelfModeExteriorColor(code = "#2C2925", name = "그라파이트 그레이 메탈"),
+                TrimSelfModeExteriorColor(code = "#1C2234", name = "문라이트 블루 펄"),
+                TrimSelfModeExteriorColor(code = "#333635", name = "가이아 브라운 펄")
+            ),
+            interiorColor = listOf(
+                TrimSelfModeInteriorColor(
+                    url = R.drawable.img_quilting_natural,
+                    name = "퀄팅 천연(블랙)"
+                ),
+                TrimSelfModeInteriorColor(url = R.drawable.img_cool_grey, name = "쿨 그레이")
+            ),
+            options = listOf(
+                TrimSelfModeOption(R.drawable.img_test_1, "ISG 시스템", "기본 포함"),
+                TrimSelfModeOption(R.drawable.img_test_2, "통합 주행 모드", "기본 포함"),
+                TrimSelfModeOption(R.drawable.img_test_3, "전자식 변속 버튼", "기본 포함"),
+                TrimSelfModeOption(R.drawable.img_test_4, "랙 구동형 전동식 파워 스티어링 (R-MDPS)", "기본 포함"),
+                TrimSelfModeOption(R.drawable.img_test_5, "8단 자동변 속기", "기본 포함"),
+                TrimSelfModeOption(R.drawable.img_test_1, "성능1", "성능"),
+                TrimSelfModeOption(R.drawable.img_test_2, "지능형 안전기술1", "지능형 안전기술"),
+                TrimSelfModeOption(R.drawable.img_test_3, "안전1", "안전"),
+                TrimSelfModeOption(R.drawable.img_test_4, "외관1", "외관"),
+                TrimSelfModeOption(R.drawable.img_test_5, "내장1", "내장"),
+                TrimSelfModeOption(R.drawable.img_test_1, "시트1", "시트"),
+                TrimSelfModeOption(R.drawable.img_test_2, "편의1", "편의"),
+                TrimSelfModeOption(R.drawable.img_test_3, "멀티미디어1", "멀티미디어"),
+                TrimSelfModeOption(R.drawable.img_test_4, "멀티미디어2", "멀티미디어"),
+                TrimSelfModeOption(R.drawable.img_test_5, "편의2", "편의"),
+                TrimSelfModeOption(R.drawable.img_test_1, "시트2", "시트"),
+                TrimSelfModeOption(R.drawable.img_test_2, "내장2", "내장"),
+                TrimSelfModeOption(R.drawable.img_test_3, "외관2", "외관"),
+                TrimSelfModeOption(R.drawable.img_test_4, "안전2", "안전"),
+                TrimSelfModeOption(R.drawable.img_test_5, "지능형 안전기술2", "지능형 안전기술"),
+                TrimSelfModeOption(R.drawable.img_test_1, "성능2", "성능")
+            )
+            /*
+            백엔드 - 페이징 check - jetpack
+                    val tabNames = listOf("전체", "성능", "지능형 안전기술", "안전", "외관", "내장", "시트", "편의", "멀티미디어")
+            ISG 시스템 - 기본 포함
+    통합주행모드 - 기본 포함
+    전자식 변속버튼 - 기본 포함
+    랙 구동형 전동식 파워 스티어링 (R-MDPS)
+    8단 자동변속기
+             */
+        )
+
+        _trimSelfModeData.value = tempTrimSelfMode
     }
 
 }

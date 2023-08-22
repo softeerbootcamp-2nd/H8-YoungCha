@@ -8,7 +8,7 @@ import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.ItemEstimateDetailBinding
 import com.youngcha.ohmycarset.model.car.OptionInfo
 
-class EstimateDetailAdapter :
+class EstimateDetailAdapter(private val onOptionKeyClicked: (String) -> Unit) :
     RecyclerView.Adapter<EstimateDetailAdapter.EstimateDetailViewHolder>() {
     private var optionInfoList: List<Pair<String, OptionInfo>> = emptyList()
 
@@ -38,6 +38,15 @@ class EstimateDetailAdapter :
 
     inner class EstimateDetailViewHolder(private val binding: ItemEstimateDetailBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.tvModify.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val (optionKey, _) = optionInfoList[position] // 첫 번째 요소는 키 값입니다.
+                    onOptionKeyClicked(optionKey)
+                }
+            }
+        }
         fun bind(optionName: String, option: OptionInfo) {
             binding.tvDetailName.text = optionName
             binding.optionInfo = option

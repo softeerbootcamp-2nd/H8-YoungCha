@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <TextView
             android:id="@+id/tv_detail_name"
             android:visibility="@{option_info.optionType.equalsIgnoreCase(`sub`) ? android.view.View.GONE : android.view.View.VISIBLE}"

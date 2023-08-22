@@ -1,31 +1,15 @@
 package com.youngcha.ohmycarset.ui.fragment
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.opengl.Visibility
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
-import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
-import android.view.animation.DecelerateInterpolator
-import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +25,7 @@ import com.youngcha.ohmycarset.model.dialog.ButtonDialog
 import com.youngcha.ohmycarset.model.dialog.ButtonHorizontal
 import com.youngcha.ohmycarset.model.dialog.ButtonVertical
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.EstimateDetailAdapter
+import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeOptionAdapter
 import com.youngcha.ohmycarset.ui.adapter.viewpager.CarOptionPagerAdapter
 import com.youngcha.ohmycarset.ui.customview.ButtonDialogView
 import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
@@ -51,14 +36,13 @@ import com.youngcha.ohmycarset.util.setupImageSwipeWithScrollView
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.random.Random
-
 class CarCustomizationFragment : Fragment() {
     private var _binding: FragmentCarCustomizationBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding is null.")
 
-    private val detailAdapterMain = EstimateDetailAdapter()
-    private val detailAdapterSub = EstimateDetailAdapter()
+    private lateinit var detailAdapterMain: EstimateDetailAdapter
+    private lateinit var detailAdapterSub: EstimateDetailAdapter
+    private lateinit var trimSelfModeOptionAdapter: TrimSelfModeOptionAdapter
     private val carViewModel: CarCustomizationViewModel by viewModels()
 
     private lateinit var mode: String
@@ -208,8 +192,6 @@ class CarCustomizationFragment : Fragment() {
 
             if (carViewModel.currentType.value != "GuideMode") {
                 carViewModel.setCurrentComponentName(firstKey!!)
-            } else {
-
             }
         }
 
@@ -235,6 +217,7 @@ class CarCustomizationFragment : Fragment() {
         }
 
         carViewModel.currentEstimateSubTabs.observe(viewLifecycleOwner) { tabs ->
+            binding.layoutEstimate.lyDetail.tlOption.removeAllTabs()
             tabs.forEach { tabName ->
                 binding.layoutEstimate.lyDetail.tlOption.addTab(createCustomTabInEstimate(tabName))
             }
@@ -288,7 +271,6 @@ class CarCustomizationFragment : Fragment() {
         carViewModel.customizedParts.observe(viewLifecycleOwner) {
             var totalPrice: Int = 0
             it.forEach { map ->
-                Log.d("로그12345", map.keys.toString() + " " + map.values.toString())
                 map.values.forEach { optionInfos ->
                     optionInfos.forEach { optionInfo ->
                         totalPrice = totalPrice.plus(optionInfo.price)
@@ -297,13 +279,17 @@ class CarCustomizationFragment : Fragment() {
                 }
             }
 
-            val prevTotalPrice = carViewModel.prevPrice.value
-            val currentTotalPrice = carViewModel.totalPrice.value?.plus(carViewModel.getMyCarTotalPrice())
 
-            animateValueChange(binding.tvEstimatePrice,
+            val prevTotalPrice = carViewModel.prevPrice.value
+            val currentTotalPrice =
+                carViewModel.totalPrice.value?.plus(carViewModel.getMyCarTotalPrice())
+
+            animateValueChange(
+                binding.tvEstimatePrice,
                 prevTotalPrice!!,
                 currentTotalPrice!!,
-                requireContext().resources).start()
+                requireContext().resources
+            ).start()
             carViewModel.prevPrice.value = currentTotalPrice
         }
 
@@ -344,10 +330,32 @@ class CarCustomizationFragment : Fragment() {
 
         val linearLayoutManagerForMainOption = LinearLayoutManager(requireContext())
         binding.layoutEstimate.lyDetail.rvMainOption.layoutManager = linearLayoutManagerForMainOption
-        binding.layoutEstimate.lyDetail.rvMainOption.adapter = detailAdapterMain
+
+        detailAdapterMain = EstimateDetailAdapter { optionInfo ->
+            // optionInfo에 해당하는 탭으로 이동
+            val position = carViewModel.currentMainTabs.value?.indexOf(optionInfo)
+
+            // 찾은 위치로 _currentTabPosition를 업데이트합니다.
+            if (position != null && position != -1) {
+                carViewModel.updateTapPosition(position, optionInfo)
+            }
+        }
+        binding.layoutEstimate.lyDetail.rvMainOption.adapter  = detailAdapterMain
 
         val linearLayoutManagerForSubOption = LinearLayoutManager(requireContext())
         binding.layoutEstimate.lyDetail.rvSubOption.layoutManager = linearLayoutManagerForSubOption
+
+        detailAdapterSub = EstimateDetailAdapter { optionInfo ->
+            // optionInfo에 해당하는 탭으로 이동
+            val position = carViewModel.currentMainTabs.value?.indexOf(optionInfo)
+
+            // 찾은 위치로 _currentTabPosition를 업데이트합니다.
+            if (position != null && position != -1) {
+                carViewModel.updateTapPosition(position, optionInfo)
+            } else {
+                carViewModel.updateTapPosition(6, "옵션 선택")
+            }
+        }
         binding.layoutEstimate.lyDetail.rvSubOption.adapter = detailAdapterSub
 
     }
@@ -373,7 +381,11 @@ class CarCustomizationFragment : Fragment() {
                 val customView = tab.customView
                 val tvTabName = customView?.findViewById<TextView>(R.id.tv_tab_name)
                 val tabName = tvTabName?.text.toString()
-                carViewModel.filterSubOptions(tabName)
+
+                when (carViewModel.estimateSubTabType.value) {
+                    "selectOption" -> carViewModel.filterOptionsByTabName(tabName)
+                    "basicOption" -> carViewModel.filterSubOptions(tabName)
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}

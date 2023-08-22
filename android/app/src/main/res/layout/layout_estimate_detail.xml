@@ -57,15 +57,29 @@
 
         <TextView
             android:id="@+id/tv_detail_chooser_option_name"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
+            android:gravity="start"
             android:layout_marginStart="20dp"
             android:layout_marginTop="40dp"
-            android:text="@string/chooser_option"
+            android:text='@{viewModel.estimateSubTabType == "selectOption" ? "선택 옵션" : "기본 포함 품목"}'
             android:textColor="@color/cool_grey_black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rv_main_option" />
+
+        <TextView
+            android:id="@+id/btn_toggle_sub_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:fontFamily="@font/hyundai_sans_text_regular"
+            android:textColor="@color/cool_grey_004"
+            android:text='@{viewModel.estimateSubTabType == "selectOption" ? "기본 포함 품목 보기" : "선택 옵션 보기"}'
+            android:onClick="@{() -> viewModel.toggleSubTabType()}"
+            app:layout_constraintTop_toTopOf="@id/tv_detail_chooser_option_name"
+            app:layout_constraintBottom_toBottomOf="@id/tv_detail_chooser_option_name"
+            app:layout_constraintStart_toEndOf="@id/tv_detail_chooser_option_name"/>
 
         <TextView
             android:id="@+id/tv_detail_chooser_option_price"
@@ -73,7 +87,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="20dp"
-            android:text=""
             android:textColor="@color/cool_grey_black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
