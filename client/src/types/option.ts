@@ -24,8 +24,8 @@ export interface OptionSpecType {
 export interface OptionDetailType {
   name?: string | null;
   description?: string | null;
-  imgUrl: string;
-  specs: OptionSpecType[];
+  imgUrl: string | null;
+  specs?: OptionSpecType[];
 }
 
 export interface OptionTagType {
