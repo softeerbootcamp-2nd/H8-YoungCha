@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import MoreDetailsButton from './MoreDetailsButton';
 import SummarySection from './AdditionalContents/SummarySection';
@@ -35,6 +35,8 @@ function OptionCard({
 }: OptionCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const optionCardRef = useRef<HTMLDivElement>(null);
+
   const { mode } = useParams() as { mode: string };
   const isSelfMode = mode === 'self';
 
@@ -64,8 +66,18 @@ function OptionCard({
     if (isActive) setIsExpanded((prevState) => !prevState);
   }
 
+  useEffect(() => {
+    if (isActive)
+      optionCardRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'nearest',
+      });
+  }, [isActive]);
+
   return (
     <div
+      ref={optionCardRef}
       className={`relative border-2 rounded-6px w-375px p-20px cursor-pointer 
       ${totalDivColor} ${
         isExpanded ? 'max-h-750px' : 'max-h-150px'
