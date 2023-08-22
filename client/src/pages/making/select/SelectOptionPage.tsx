@@ -1,12 +1,13 @@
-import Button from '@/components/Button';
-import { Link, useParams } from 'react-router-dom';
-import { OPTION_ORDER } from '../constant';
-import EstimationSummary from '@/components/SummaryModal';
 import { HTMLAttributes, useState } from 'react';
-import { DownArrow } from '@/assets/icons';
-import { OptionCardProvider } from '@/store/useOptionCardContext';
+import { Link, useParams } from 'react-router-dom';
+import Button from '@/components/Button';
 import OptionCard from '@/components/OptionCard';
-import { powerTrainMock } from '@/assets/mock/optionMock';
+import EstimationSummary from '@/components/SummaryModal';
+import { DownArrow } from '@/assets/icons';
+import { PROGRESS_LIST } from './constant';
+import { OptionType } from '@/types/option';
+import { OPTION_ORDER } from '../constant';
+import useFetch from '@/hooks/useFetch.ts';
 
 interface SelectOptionPageProps {
   path: 'self' | 'guide';
@@ -17,67 +18,68 @@ interface SelectOptionMessageProps {
 }
 
 function SelectOptionPage({ path }: SelectOptionPageProps) {
-  const { step } = useParams() as { step: string; id: string };
+  const { step, mode } = useParams() as { step: string; mode: string };
+  const url = `/car-make/2/${mode}/${PROGRESS_LIST[Number(step) - 1].path}`;
+  const { data, loading } = useFetch<OptionType[]>({
+    url,
+    params:
+      Number(step) === 6
+        ? {
+            exteriorColorId: '13',
+          }
+        : undefined,
+  });
+
+  // 선택 아이템 인덳스
+  const [selectedItem, setSelectedItem] = useState(0);
 
   return (
-    <main className="relative flex-grow">
-      <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
-        {/* 이미지 영역 */}
-        <div className="lg:col-span-7">
-          <img
-            src="https://www.hyundai.com/contents/spec/LX24/gasoline3.8.jpg"
-            className="object-cover w-full h-full"
-            alt="palisade"
-          />
+    !loading && (
+      <main className="relative flex-grow">
+        <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
+          {/* 이미지 영역 */}
+          <div className="lg:col-span-7">
+            <img
+              src={data?.[selectedItem].images[0].imgUrl ?? ''}
+              className="object-cover w-full h-full"
+              alt="palisade"
+            />
+          </div>
+          {/* 옵션 선택 영역 */}
+          <div className="flex flex-col max-w-md lg:col-span-5">
+            <SelectOptionMessage step={Number(step)} />
+            <SelectOptionListContainer>
+              {data?.map((item: OptionType, index) => (
+                <button className="text-left" key={item.name}>
+                  <OptionCard
+                    isActive={selectedItem === index}
+                    onClick={() => {
+                      setSelectedItem(index);
+                    }}
+                    item={item}
+                    tags={item.tags ?? []}
+                    imgUrl={item.details[0]?.imgUrl ?? ''}
+                    price={item.price}
+                    step={Number(step)}
+                  >
+                    <OptionCard.SummarySection
+                      details={item.details}
+                      isActive={selectedItem === index}
+                    />
+                    <OptionCard.FunctionDetailBox
+                      details={item.details}
+                      isActive={selectedItem === index}
+                    />
+                  </OptionCard>
+                </button>
+              ))}
+            </SelectOptionListContainer>
+
+            <SelectOptionFooter path={path} />
+          </div>
         </div>
-        {/* 옵션 선택 영역 */}
-        <div className="flex flex-col max-w-md lg:col-span-5">
-          <SelectOptionMessage step={Number(step)} />
-          <SelectOptionListContainer>
-            <OptionCardProvider>
-              <OptionCard
-                tags={powerTrainMock.tags}
-                imgUrl={powerTrainMock.details[0].imgUrl}
-                price={powerTrainMock.price}
-                step={Number(step)}
-              >
-                <OptionCard.SummarySection details={powerTrainMock.details} />
-                <OptionCard.FunctionDetailBox
-                  details={powerTrainMock.details}
-                />
-              </OptionCard>
-            </OptionCardProvider>
-            <OptionCardProvider>
-              <OptionCard
-                tags={powerTrainMock.tags}
-                imgUrl={powerTrainMock.details[0].imgUrl}
-                price={powerTrainMock.price}
-                step={Number(step)}
-              >
-                <OptionCard.SummarySection details={powerTrainMock.details} />
-                <OptionCard.FunctionDetailBox
-                  details={powerTrainMock.details}
-                />
-              </OptionCard>
-            </OptionCardProvider>
-            <OptionCardProvider>
-              <OptionCard
-                tags={powerTrainMock.tags}
-                imgUrl={powerTrainMock.details[0].imgUrl}
-                price={powerTrainMock.price}
-                step={Number(step)}
-              >
-                <OptionCard.SummarySection details={powerTrainMock.details} />
-                <OptionCard.FunctionDetailBox
-                  details={powerTrainMock.details}
-                />
-              </OptionCard>
-            </OptionCardProvider>
-          </SelectOptionListContainer>
-          <SelectOptionFooter path={path} />
-        </div>
-      </div>
-    </main>
+      </main>
+    )
   );
 }
 
