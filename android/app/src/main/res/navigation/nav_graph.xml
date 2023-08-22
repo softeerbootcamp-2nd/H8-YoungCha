@@ -31,6 +31,10 @@
         <argument
             android:name="mode"
             app:argType="string" />
+
+        <argument
+            android:name="startPoint"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/onBoardingFragment"
@@ -53,9 +57,6 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
 
-        <argument
-            android:name="mode"
-            app:argType="string" />
     </fragment>
 
     <fragment
@@ -69,9 +70,5 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
-
-        <argument
-            android:name="mode"
-            app:argType="string" />
     </fragment>
 </navigation>

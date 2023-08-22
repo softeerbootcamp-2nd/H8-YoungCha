@@ -133,17 +133,21 @@ class CarCustomizationViewModel : ViewModel() {
      *  초기 시작 지점
      *  가이드 모드일 경우 부품 미리 생성
      */
-    fun initCarCustomizationViewModel(currentType: String) {
+    fun initCarCustomizationViewModel(currentType: String, startPoint: String) {
         _currentType.value = currentType
         when (currentType) {
             "GuideMode" -> {
                 val lastTab = currentMainTabs.value?.lastOrNull()
                 randomizeParts()
-                if (lastTab == "견적 내기") {
-                    totalPrice.value = totalPrice.value?.plus(getMyCarTotalPrice())
-                    val position = currentMainTabs.value?.indexOf(lastTab)
-                    _estimateViewVisible.value = 1
-                    _currentTabPosition.value = position!!
+                if (startPoint == "start") {
+                    updateCurrentType(currentType)
+                } else {
+                    if (lastTab == "견적 내기") {
+                        totalPrice.value = totalPrice.value?.plus(getMyCarTotalPrice())
+                        val position = currentMainTabs.value?.indexOf(lastTab)
+                        _estimateViewVisible.value = 1
+                        _currentTabPosition.value = position!!
+                    }
                 }
             }
         }

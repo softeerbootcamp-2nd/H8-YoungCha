@@ -62,6 +62,7 @@ class CarCustomizationFragment : Fragment() {
     private val carViewModel: CarCustomizationViewModel by viewModels()
 
     private lateinit var mode: String
+    private lateinit var startPoint: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +75,7 @@ class CarCustomizationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mode = arguments?.getString("mode") ?: ""
+        startPoint = arguments?.getString("startPoint") ?: ""
         setupViews()
     }
 
@@ -90,7 +92,7 @@ class CarCustomizationFragment : Fragment() {
             estimateSubTabs()
         }
         binding.vMainTabLayoutOverlay.setOnTouchListener { _, _ -> true }
-        carViewModel.initCarCustomizationViewModel(mode)
+        carViewModel.initCarCustomizationViewModel(mode, startPoint)
     }
 
     @SuppressLint("ClickableViewAccessibility")

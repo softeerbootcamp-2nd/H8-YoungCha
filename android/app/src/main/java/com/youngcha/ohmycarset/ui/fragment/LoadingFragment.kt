@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.youngcha.ohmycarset.databinding.FragmentLoadingBinding
 import android.animation.ValueAnimator
+import android.util.Log
 import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
@@ -45,22 +46,28 @@ class LoadingFragment : Fragment() {
     }
 
     private fun setupClickListener() {
+        var bundle: Bundle?
         binding.layoutEstimateReady.btnNext.setOnClickListener {
-            var bundle: Bundle?
             bundle = Bundle().apply {
                 putString("mode", "GuideMode")
+                putString("startPoint", "start")
             }
             findNavController().navigate(
                 R.id.action_loadingFragment_to_makeCarFragment,
                 bundle
             )
-
         }
 
         binding.layoutEstimateReady.btnSkip.setOnClickListener {
-
+            bundle = Bundle().apply {
+                putString("mode", "GuideMode")
+                putString("startPoint", "end")
+            }
+            findNavController().navigate(
+                R.id.action_loadingFragment_to_makeCarFragment,
+                bundle
+            )
         }
-
     }
 
     private fun setupAnimations() {
