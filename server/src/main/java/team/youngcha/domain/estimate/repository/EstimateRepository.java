@@ -43,11 +43,11 @@ public class EstimateRepository {
         Integer rate = namedParameterJdbcTemplate.queryForObject("select " +
                         "sum(case when " +
                         "e.trim_id = (:trimId) and e." + optionIdColumn + " = (:optionId) " +
-                        "and (e.keyword1_id = (:keywordId) or e.keyword2_id = (:keywordId) or e.keyword3_id = (:keywordId))" +
+                        "and (:keywordId IN (e.keyword1_id, e.keyword2_id, e.keyword3_id)) " +
                         "then 1 else 0 end) * 100" +
                         "/ sum(case when " +
                         "e.trim_id = (:trimId) " +
-                        "and (e.keyword1_id = (:keywordId) or e.keyword2_id = (:keywordId) or e.keyword3_id = (:keywordId))" +
+                        "and (:keywordId IN (e.keyword1_id, e.keyword2_id, e.keyword3_id ))" +
                         "then 1 else 0 end)" +
                         "from estimate as e",
                 params, Integer.class);
@@ -89,10 +89,10 @@ public class EstimateRepository {
 
         String sql = "SELECT es.options_id, " +
                 "COUNT(*) * 100 / (SELECT COUNT(*) FROM estimate e " +
-                "WHERE e.keyword1_id = :keywordId OR e.keyword2_id = :keywordId OR e.keyword3_id = :keywordId) AS rate " +
+                "WHERE :keywordId IN (e.keyword1_id, e.keyword2_id, e.keyword3_id)) AS rate " +
                 "FROM estimate_selective_options es " +
                 "JOIN estimate e ON e.id = es.estimate_id AND e.trim_id = :trimId " +
-                "AND (e.keyword1_id = :keywordId OR e.keyword2_id = :keywordId OR e.keyword3_id = :keywordId) " +
+                "AND :keywordId IN (e.keyword1_id, e.keyword2_id, e.keyword3_id) " +
                 "WHERE es.options_id IN (:optionIds) " +
                 "GROUP BY es.options_id";
 
