@@ -14,17 +14,11 @@ function MoveButtonBox({ path }: MoveButtonProps) {
     <>
       {path === 'age' && (
         <>
-          {selectedAge !== null ? (
-            <Link to="/model/LX06/guide/gender">
-              <Button size="lg" color="main-blue">
-                다음
-              </Button>
-            </Link>
-          ) : (
-            <Button size="lg" color="sub-blue" disabled={true}>
+          <Link to="/model/LX06/guide/gender">
+            <Button size="lg" color="main-blue" disabled={selectedAge === null}>
               다음
             </Button>
-          )}
+          </Link>
         </>
       )}
       {path === 'gender' && (
@@ -34,17 +28,15 @@ function MoveButtonBox({ path }: MoveButtonProps) {
               이전
             </Button>
           </Link>
-          {selectedGender !== null ? (
-            <Link to="/model/LX06/guide/keyword">
-              <Button size="lg" color="main-blue">
-                다음
-              </Button>
-            </Link>
-          ) : (
-            <Button size="lg" color="sub-blue" disabled={true}>
+          <Link to="/model/LX06/guide/keyword">
+            <Button
+              size="lg"
+              color="main-blue"
+              disabled={selectedGender === null}
+            >
               다음
             </Button>
-          )}
+          </Link>
         </>
       )}
       {path === 'keyword' && (
@@ -54,17 +46,15 @@ function MoveButtonBox({ path }: MoveButtonProps) {
               이전
             </Button>
           </Link>
-          {selectedKeyword.length === 3 ? (
-            <Link to="/model/LX06/guide/complete">
-              <Button size="lg" color="main-blue">
-                선택 완료
-              </Button>
-            </Link>
-          ) : (
-            <Button size="lg" color="sub-blue" disabled={true}>
+          <Link to="/model/LX06/guide/complete">
+            <Button
+              size="lg"
+              color="main-blue"
+              disabled={selectedKeyword.length !== 3}
+            >
               선택 완료
             </Button>
-          )}
+          </Link>
         </>
       )}
     </>
