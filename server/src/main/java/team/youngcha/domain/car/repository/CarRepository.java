@@ -37,7 +37,9 @@ public class CarRepository {
     private static class CarRowMapper implements RowMapper<Car> {
         @Override
         public Car mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            return new Car(resultSet.getLong("id"), resultSet.getString("name"));
+            return new Car(resultSet.getLong("id"),
+                    resultSet.getString("name_ko"),
+                    resultSet.getString("name_en"));
         }
     }
 }

@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS `dictionary`
 CREATE TABLE IF NOT EXISTS `car`
 (
     `id`   bigint       NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `name` varchar(100) NOT NULL
+    `name_ko` varchar(100) NOT NULL,
+    `name_en` varchar(100) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `trim`

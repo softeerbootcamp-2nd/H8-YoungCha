@@ -22,8 +22,6 @@ public class CarDetailsRepository {
 
     public List<CarDetails> findDetails(Long carId) {
         String sql = "SELECT " +
-                "car.id AS carId, " +
-                "car.name AS carName, " +
                 "trim.id AS trimId, " +
                 "trim.name AS trimName, " +
                 "trim.img_url AS trimImgUrl, " +

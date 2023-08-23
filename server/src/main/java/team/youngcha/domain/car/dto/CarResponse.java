@@ -15,10 +15,10 @@ public class CarResponse {
     private Long id;
 
     @Schema(description = "모델명")
-    private String name;
+    private ModelName modelName;
 
     public CarResponse(Car car) {
         this.id = car.getId();
-        this.name = car.getName();
+        this.modelName = new ModelName(car.getKoreanName(), car.getEnglishName());
     }
 }

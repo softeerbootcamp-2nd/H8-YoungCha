@@ -9,10 +9,12 @@ import lombok.NoArgsConstructor;
 public class Car {
 
     private Long id;
-    private String name;
+    private String koreanName;
+    private String englishName;
 
-    public Car(Long id, String name) {
+    public Car(Long id, String koreanName, String englishName) {
         this.id = id;
-        this.name = name;
+        this.koreanName = koreanName;
+        this.englishName = englishName;
     }
 }
