@@ -7,11 +7,11 @@ import PriceSection from './PriceSection';
 import SubOptions from './AdditionalContents/SubOptions';
 import SubOptionDescription from './AdditionalContents/SubOptionDescription';
 import ImgSection from './ImgSection';
-import CheckIcon from './CheckIcon';
 import Tags from './Tags';
-import { AllOptionType } from '@/types/option';
 import Rate from '@/components/OptionCard/Rate.tsx';
 import Name from '@/components/OptionCard/Name.tsx';
+import CheckIcon from './CheckIcon';
+import { AllOptionType } from '@/types/option';
 import { PathParamsType } from '@/types/router.ts';
 
 interface OptionCardProps {
