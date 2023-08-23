@@ -10,6 +10,7 @@ import ImgSection from './ImgSection';
 import CheckIcon from './CheckIcon';
 import Tags from './Tags';
 import { OptionDetailType, AllOptionType } from '@/types/option';
+import Rate from '@/components/OptionCard/Rate.tsx';
 
 interface OptionCardProps
   extends Pick<AllOptionType, 'tags'>,
@@ -44,12 +45,6 @@ function OptionCard({
       : 'bg-white border-sub-blue'
     : 'bg-[#EDF2FA] border-[#EDF2FA] hover:border-grey-003';
 
-  const rateTextColor = isActive
-    ? isSelfMode
-      ? 'text-main-blue'
-      : 'text-sub-blue'
-    : 'text-grey-003';
-
   const nameTextColor = isActive ? 'text-grey-black' : 'text-grey-003';
 
   const hasDetail = !!item.details[0]?.description;
@@ -83,14 +78,7 @@ function OptionCard({
         <CheckIcon {...{ isActive, isSelfMode }} />
         <Tags tags={item?.tags} />
       </div>
-      <div
-        className={`${rateTextColor}
-         body2 mt-10px mb-4px`}
-      >
-        {isSelfMode
-          ? `구매자의 ${item.rate}%가 선택했어요!`
-          : `나와 비슷한 ${item.rate}%가 선택한`}
-      </div>
+      <Rate {...{ rate: item.rate, isSelfMode, isActive }} />
       <div className={`${nameTextColor} font-medium text-20px mb-10px`}>
         {item.name}
       </div>
