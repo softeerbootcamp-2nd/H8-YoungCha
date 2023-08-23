@@ -40,28 +40,14 @@ function SelectOptionPage() {
             <SelectOptionMessage step={Number(step)} />
             <SelectOptionListContainer>
               {data?.map((item: AllOptionType, index) => (
-                <button className="text-left" key={item.name}>
-                  <OptionCard
-                    isActive={selectedItem === index}
-                    onClick={() => {
-                      setSelectedItem(index);
-                    }}
-                    item={item}
-                    tags={item.tags ?? []}
-                    imgUrl={item.details[0]?.imgUrl ?? ''}
-                    price={item.price}
-                    step={Number(step)}
-                  >
-                    <OptionCard.SummarySection
-                      details={item.details}
-                      isActive={selectedItem === index}
-                    />
-                    <OptionCard.FunctionDetailBox
-                      details={item.details}
-                      isActive={selectedItem === index}
-                    />
-                  </OptionCard>
-                </button>
+                <OptionCard
+                  key={item.name}
+                  isActive={selectedItem === index}
+                  onClick={() => {
+                    setSelectedItem(index);
+                  }}
+                  item={item}
+                />
               ))}
             </SelectOptionListContainer>
             <SelectOptionFooter

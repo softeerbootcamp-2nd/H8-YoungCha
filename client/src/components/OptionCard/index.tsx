@@ -9,33 +9,22 @@ import SubOptionDescription from './AdditionalContents/SubOptionDescription';
 import ImgSection from './ImgSection';
 import CheckIcon from './CheckIcon';
 import Tags from './Tags';
-import { OptionDetailType, AllOptionType } from '@/types/option';
+import { AllOptionType } from '@/types/option';
 import Rate from '@/components/OptionCard/Rate.tsx';
 import Name from '@/components/OptionCard/Name.tsx';
 
-interface OptionCardProps
-  extends Pick<AllOptionType, 'tags'>,
-    Pick<OptionDetailType, 'imgUrl'> {
+interface OptionCardProps {
   item: AllOptionType;
-  imgUrl: string;
-  step: number;
-  price: number;
   isActive?: boolean;
   onClick?: () => void;
 }
 
-function OptionCard({
-  isActive = false,
-  item,
-  imgUrl,
-  step,
-  onClick,
-}: OptionCardProps) {
+function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const optionCardRef = useRef<HTMLButtonElement>(null);
 
-  const { mode } = useParams() as { mode: string };
+  const { mode, step } = useParams() as { mode: string; step: string };
   const isSelfMode = mode === 'self';
 
   const totalDivColor = isActive
@@ -76,7 +65,11 @@ function OptionCard({
       </div>
       <Rate {...{ rate: item.rate, isSelfMode, isActive }} />
       <Name isActive={isActive}>{item.name}</Name>
-      <ImgSection isActive={isActive} imgUrl={imgUrl} step={step} />
+      <ImgSection
+        isActive={isActive}
+        imgUrl={item.images[0].imgUrl}
+        step={Number(step)}
+      />
       <div
         className={`${
           isExpanded ? 'max-h-400px opacity-100' : 'max-h-0 opacity-0'
