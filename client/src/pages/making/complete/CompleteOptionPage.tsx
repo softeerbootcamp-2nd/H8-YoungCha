@@ -7,6 +7,8 @@ import { mockUserSelectedOptionData } from '@/assets/mock/mock';
 import DetailOptionBox from '../detail-option-box/DetailOptionBox';
 import DetailSelectOptionBox from '../detail-option-box/DetailSelectOptionBox';
 import DetailBasicOptionBox from '../detail-option-box/DetailBasicOptionBox';
+import RotateCarImage from './RoateCarImage';
+import getRotateImages from '@/utils/getRotateImages';
 import Confetti from '@/components/Confetti';
 
 function CompleteOptionPage() {
@@ -23,11 +25,11 @@ function CompleteOptionPage() {
           <h1 className="whitespace-pre-line text-34px font-medium leading-[47.6px] tracking-[-1.36px] font-hsans-head text-grey-black text-center">
             {COMPLETE_OPTION_PAGE_TITLE}
           </h1>
-          <img
-            src="/src/assets/mock/images/palisade.png"
-            alt="palisade"
-            width={400}
-            height={200}
+          <RotateCarImage
+            images={getRotateImages({
+              url: 'https://www.hyundai.com/contents/vr360/LX06/exterior/WC9/colorchip-exterior.png',
+              count: 60,
+            })}
           />
           <div className="flex">
             {CAR_COLOR.map(({ text, type }) => (
