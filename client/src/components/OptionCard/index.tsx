@@ -53,9 +53,9 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
   return (
     <button
       ref={optionCardRef}
-      className={`text-left relative border-2 rounded-6px w-375px p-20px cursor-pointer 
+      className={`text-left relative border-2 rounded-6px min-w-320px w-full p-20px cursor-pointer 
       ${totalDivColor} ${
-        isExpanded ? 'max-h-750px' : 'max-h-150px'
+        isExpanded ? 'max-h-750px' : 'max-h-fit'
       } transition-all ease-in duration-500`}
       onClick={handleIsActive}
     >
@@ -67,7 +67,7 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
       <Name isActive={isActive}>{item.name}</Name>
       <ImgSection
         isActive={isActive}
-        imgUrl={item.images[0].imgUrl}
+        images={item.images}
         step={Number(step)}
       />
       <div
@@ -75,10 +75,12 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
           isExpanded ? 'max-h-400px opacity-100' : 'max-h-0 opacity-0'
         } transition-all ease-in-out duration-300 origin-top overflow-hidden`}
       >
-        <div className="border-t-2 border-grey-001 py-12px flex flex-col gap-y-12px">
-          <SummarySection details={item.details} isActive={isActive} />
-          <FunctionDetailBox details={item.details} isActive={isActive} />
-        </div>
+        {item.details[0]?.description && (
+          <div className="border-t-2 border-grey-001 py-12px flex flex-col gap-y-12px">
+            <SummarySection details={item.details} isActive={isActive} />
+            <FunctionDetailBox details={item.details} isActive={isActive} />
+          </div>
+        )}
       </div>
       <div className="flex justify-between">
         <PriceSection price={item.price} isActive={isActive} />
