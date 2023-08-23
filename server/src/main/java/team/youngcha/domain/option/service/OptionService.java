@@ -252,13 +252,14 @@ public class OptionService {
         boolean containDrivingPerformance = userSelectedKeywordIds.contains(keywords.get(KeywordName.DRIVING_PERFORMANCE.getName()));
         boolean containSafety = userSelectedKeywordIds.contains(keywords.get(KeywordName.SAFETY.getName()));
 
-        if (!containDesign && !containDrivingPerformance && !containSafety) {
-            return "20인치 알로이 휠";
+        if (containDesign) {
+            if (containDrivingPerformance || containSafety) {
+                return "알콘(alcon) 단조 브레이크 & 20인치 휠 패키지";
+            }
+            return getRecommendedWheelNameBySimilarity(similarityUsersRatio);
         }
-        if (containDrivingPerformance || containSafety) {
-            return "알콘(alcon) 단조 브레이크 & 20인치 휠 패키지";
-        }
-        return getRecommendedWheelNameBySimilarity(similarityUsersRatio);
+
+        return "20인치 알로이 휠";
     }
 
     private String getRecommendedWheelNameBySimilarity(Map<Long, Integer> similarityUsersRatio) {
