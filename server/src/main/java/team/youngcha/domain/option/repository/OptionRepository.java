@@ -24,11 +24,11 @@ public class OptionRepository {
     private final RowMapper<Option> optionRowMapper = new OptionRowMapper();
     private final RowMapper<DefaultOptionSummary> defaultOptionSummaryRowMapper = new DefaultOptionSummaryRowMapper();
 
-    public List<Option> findRequiredOptionsByTrimIdAndOptionType(Long trimId, OptionType type, RequiredCategory name) {
+    public List<Option> findRequiredOptionsByTrimIdAndCategory(Long trimId, RequiredCategory name) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("categoryName", name.getName());
         params.addValue("trimId", trimId);
-        params.addValue("optionType", type.getType());
+        params.addValue("optionType", OptionType.REQUIRED.getType());
 
         return namedParameterJdbcTemplate.query("select * from options " +
                         "join category on options.category_id = category.id and category.name = (:categoryName) " +
@@ -37,9 +37,10 @@ public class OptionRepository {
                 params, optionRowMapper);
     }
 
-    public List<Option> findInteriorColorsByTrimIdAndExteriorColorId(Long trimId, Long exteriorColorId) {
+    public List<Option> findRequiredOptionsByTrimIdAndExteriorColorId(Long trimId, RequiredCategory category,
+                                                                      Long exteriorColorId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("categoryName", RequiredCategory.INTERIOR_COLOR.getName());
+        params.addValue("categoryName", category.getName());
         params.addValue("trimId", trimId);
         params.addValue("optionType", OptionType.REQUIRED.getType());
         params.addValue("exteriorColorId", exteriorColorId);
@@ -128,7 +129,8 @@ public class OptionRepository {
         params.addValue("name", name);
 
         try {
-            Option option = namedParameterJdbcTemplate.queryForObject("SELECT * FROM options WHERE name = :name", params, optionRowMapper);
+            Option option = namedParameterJdbcTemplate.queryForObject(
+                    "SELECT * FROM options WHERE name = :name", params, optionRowMapper);
             return Optional.ofNullable(option);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();

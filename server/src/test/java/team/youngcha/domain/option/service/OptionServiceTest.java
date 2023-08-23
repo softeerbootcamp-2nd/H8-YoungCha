@@ -21,7 +21,6 @@ import team.youngcha.domain.option.entity.Option;
 import team.youngcha.domain.option.entity.OptionDetail;
 import team.youngcha.domain.option.entity.OptionImage;
 import team.youngcha.domain.option.entity.Spec;
-import team.youngcha.domain.option.enums.OptionType;
 import team.youngcha.domain.option.repository.OptionDetailRepository;
 import team.youngcha.domain.option.repository.OptionImageRepository;
 import team.youngcha.domain.option.repository.OptionRepository;
@@ -120,7 +119,7 @@ class OptionServiceTest {
             given(trimRepository.findById(trimId))
                     .willReturn(Optional.of(mock(Trim.class)));
             given(optionRepository.
-                    findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, RequiredCategory.POWER_TRAIN))
+                    findRequiredOptionsByTrimIdAndCategory(trimId, RequiredCategory.POWER_TRAIN))
                     .willReturn(options);
             given(sellRepository.
                     countOptionsByTrimIdAndContainOptionsIds(eq(trimId), anyList(), eq(RequiredCategory.POWER_TRAIN)))
@@ -185,7 +184,7 @@ class OptionServiceTest {
             given(trimRepository.findById(trimId))
                     .willReturn(Optional.of(mock(Trim.class)));
             given(optionRepository
-                    .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId))
+                    .findRequiredOptionsByTrimIdAndExteriorColorId(trimId, RequiredCategory.INTERIOR_COLOR, exteriorColorId))
                     .willReturn(options);
             given(sellRepository
                     .countOptionsByTrimIdAndContainOptionsIds(eq(trimId), anyList(), eq(RequiredCategory.INTERIOR_COLOR)))
@@ -389,7 +388,7 @@ class OptionServiceTest {
                                 Map<Long, Long> powerTrainCounts, Map<Long, List<Keyword>> groupKeyword) {
             given(trimRepository.findById(trimId)).willReturn(Optional.of(mock(Trim.class)));
             given(optionRepository.
-                    findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, RequiredCategory.POWER_TRAIN))
+                    findRequiredOptionsByTrimIdAndCategory(trimId, RequiredCategory.POWER_TRAIN))
                     .willReturn(List.of(diesel, gasoline));
             given(optionImageRepository.findByContainOptionIds(optionIds))
                     .willReturn(optionImages);

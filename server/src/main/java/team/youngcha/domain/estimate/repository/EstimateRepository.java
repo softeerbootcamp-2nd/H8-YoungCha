@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Repository
@@ -63,22 +64,27 @@ public class EstimateRepository {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
         params.addValue("optionIds", optionIds);
-        params.addValue("gender", guideInfo.getGender().getType());
-        params.addValue("ageRange", guideInfo.getAgeRange().getRange());
         params.addValue("keywords", guideInfo.getKeywordIds());
 
         String optionIdColumn = category.getColumn() + "_id";
 
-        return namedParameterJdbcTemplate.queryForList(
-                "select estimate." + optionIdColumn + ", COUNT(*) as count from estimate " +
-                        "where estimate." + optionIdColumn + " in (:optionIds) " +
-                        "and estimate.trim_id = (:trimId) " +
-                        "and estimate.gender = (:gender) " +
-                        "and estimate.age_range = (:ageRange) " +
-                        "and estimate.keyword1_id in (:keywords) " +
-                        "and estimate.keyword2_id in (:keywords) " +
-                        "and estimate.keyword3_id in (:keywords) " +
-                        "group by estimate." + optionIdColumn, params);
+        String sql = "select estimate." + optionIdColumn + ", COUNT(*) as count from estimate " +
+                "where estimate.keyword1_id in (:keywords) " +
+                "and estimate.keyword2_id in (:keywords) " +
+                "and estimate.keyword3_id in (:keywords) " +
+                "and estimate.trim_id = (:trimId) ";
+
+        if (!Objects.equals(category.getName(), RequiredCategory.WHEEL.getName())) {
+            params.addValue("gender", guideInfo.getGender().getType());
+            params.addValue("ageRange", guideInfo.getAgeRange().getRange());
+            sql += "and estimate.age_range = (:ageRange) " +
+                    "and estimate.gender = (:gender) ";
+        }
+
+        sql += "and estimate." + optionIdColumn + " in (:optionIds) " +
+                "group by estimate." + optionIdColumn;
+
+        return namedParameterJdbcTemplate.queryForList(sql, params);
     }
 
     public Map<Long, Integer> calculateSelectiveOptionsKeywordRate(Long trimId, List<Long> optionIds, Long keywordId) {

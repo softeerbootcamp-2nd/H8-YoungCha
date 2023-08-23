@@ -56,7 +56,7 @@ class OptionRepositoryTest {
 
         //when
         List<Option> powerTrains = optionRepository.
-                findRequiredOptionsByTrimIdAndOptionType(trimId, OptionType.REQUIRED, RequiredCategory.POWER_TRAIN);
+                findRequiredOptionsByTrimIdAndCategory(trimId, RequiredCategory.POWER_TRAIN);
 
         //then
         Option diesel = Option.builder()
@@ -129,7 +129,7 @@ class OptionRepositoryTest {
 
             //when
             List<Option> interiorColors = optionRepository
-                    .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
+                    .findRequiredOptionsByTrimIdAndExteriorColorId(trimId, RequiredCategory.INTERIOR_COLOR, exteriorColorId);
 
             //then
             assertThat(interiorColors).usingRecursiveComparison()
@@ -145,7 +145,7 @@ class OptionRepositoryTest {
 
             //when
             List<Option> interiorColors = optionRepository
-                    .findInteriorColorsByTrimIdAndExteriorColorId(trimId, exteriorColorId);
+                    .findRequiredOptionsByTrimIdAndExteriorColorId(trimId, RequiredCategory.INTERIOR_COLOR, exteriorColorId);
 
             //then
             assertThat(interiorColors).usingRecursiveComparison()
