@@ -36,7 +36,7 @@ function SelectOptionPage() {
             />
           </div>
           {/* 옵션 선택 영역 */}
-          <div className="flex flex-col max-w-md lg:col-span-5">
+          <div className="flex flex-col max-w-lg lg:col-span-5">
             <SelectOptionMessage step={Number(step)} />
             <SelectOptionListContainer>
               {data?.map((item: AllOptionType, index) => (
