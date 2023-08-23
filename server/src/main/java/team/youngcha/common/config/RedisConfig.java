@@ -57,7 +57,7 @@ public class RedisConfig {
                         .fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair
                         .fromSerializer(new CustomSerializer(Map.class)))
-                .entryTtl(Duration.ofHours(1L)); // 1시간 캐시
+                .entryTtl(Duration.ofHours(24L)); // 24시간 캐시
 
         return buildCacheManager(cf, redisCacheConfiguration);
     }
