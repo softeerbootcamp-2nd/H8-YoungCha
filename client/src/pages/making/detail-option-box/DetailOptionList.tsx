@@ -33,13 +33,15 @@ function DetailOptionList({ option }: DetailOptionListProps) {
               <span className="text-grey-black font-hsans-head text-20px leading-[26px] tracking-[-0.6px]">
                 {getPriceTemplete(option.price!)}
               </span>
-              <Link
-                to={`/model/${id}/making/${mode}/${getStep(
-                  option.categoryId!
-                )}`}
-              >
-                <ModifyButton onClick={() => {}} />
-              </Link>
+              {option.categoryId && (
+                <Link
+                  to={`/model/${id}/making/${mode}/${getStep(
+                    option.categoryId!
+                  )}`}
+                >
+                  <ModifyButton onClick={() => {}} />
+                </Link>
+              )}
             </>
           )}
         </div>

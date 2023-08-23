@@ -28,7 +28,6 @@ function DetailBasicOptionBox() {
       BasicOptionsId[selectedOptionFilter] === categoryId
     );
   }
-  console.log(basicOptions);
   return (
     <DetailOption>
       <DetailOption.Header

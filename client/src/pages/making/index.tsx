@@ -28,7 +28,6 @@ function MakingPage() {
     <UserSelectedOptionDataContext.Provider
       value={{
         userSelectedOptionData,
-
         saveOptionData,
       }}
     >
