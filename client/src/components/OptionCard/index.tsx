@@ -40,8 +40,6 @@ function OptionCard({
   const { mode } = useParams() as { mode: string };
   const isSelfMode = mode === 'self';
 
-  const stepsWithDetail = new Set([1, 2, 3, 4, 7]);
-
   const totalDivColor = isActive
     ? isSelfMode
       ? 'bg-white border-main-blue'
@@ -56,9 +54,7 @@ function OptionCard({
 
   const nameTextColor = isActive ? 'text-grey-black' : 'text-grey-003';
 
-  function hasDetail(step: number) {
-    return stepsWithDetail.has(step);
-  }
+  const hasDetail = !!item.details[0]?.description;
 
   function handleIsActive() {
     // setIsActive((prevState) => !prevState);
@@ -111,14 +107,7 @@ function OptionCard({
       </div>
       <div className="flex justify-between">
         <PriceSection price={price} isActive={isActive} />
-        {hasDetail(step) ? (
-          <MoreDetailsButton
-            isExpanded={isExpanded}
-            setIsExpanded={setIsExpanded}
-          />
-        ) : (
-          ''
-        )}
+        {hasDetail && <MoreDetailsButton {...{ isExpanded, setIsExpanded }} />}
       </div>
     </div>
   );
