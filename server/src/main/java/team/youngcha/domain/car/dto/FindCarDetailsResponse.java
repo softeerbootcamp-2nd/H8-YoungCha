@@ -16,6 +16,7 @@ public class FindCarDetailsResponse {
     @Schema(description = "이름")
     private ModelName modelName;
 
+    @Schema(description = "가이드 모드 정보")
     private GuideModeDetails guide;
 
     @Schema(description = "트림 상세정보")
