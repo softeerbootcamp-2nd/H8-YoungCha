@@ -29,7 +29,6 @@ function OptionCard({
   tags,
   imgUrl,
   step,
-  price,
   children,
   onClick,
 }: OptionCardProps) {
@@ -106,7 +105,7 @@ function OptionCard({
         <div className="my-12px">{children}</div>
       </div>
       <div className="flex justify-between">
-        <PriceSection price={price} isActive={isActive} />
+        <PriceSection price={item.price} isActive={isActive} />
         {hasDetail && <MoreDetailsButton {...{ isExpanded, setIsExpanded }} />}
       </div>
     </div>
