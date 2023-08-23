@@ -1,6 +1,6 @@
 package com.youngcha.ohmycarset.data.dto
 
-data class Option(
-    val optionData: List<Data>,
+data class Component(
+    val `data`: List<Data>,
     val message: String
 )
