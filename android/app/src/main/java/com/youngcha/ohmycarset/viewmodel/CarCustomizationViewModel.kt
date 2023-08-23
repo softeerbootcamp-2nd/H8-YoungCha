@@ -1,10 +1,12 @@
 package com.youngcha.ohmycarset.viewmodel
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.enums.AdditionalTab
 import com.youngcha.ohmycarset.enums.ImageType
@@ -16,8 +18,11 @@ import com.youngcha.ohmycarset.data.model.TrimSelfModeOption
 import com.youngcha.ohmycarset.data.model.car.Car
 import com.youngcha.ohmycarset.data.model.car.ImageInfo
 import com.youngcha.ohmycarset.data.model.car.OptionInfo
+import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
-class CarCustomizationViewModel : ViewModel() {
+import kotlinx.coroutines.launch
+
+class CarCustomizationViewModel(private val repository: SelfModeRepository) : ViewModel() {
     // 자동차 정보 관련 변수들
     // 관련된 변수: selectedCar, currentComponentName, customizedParts
     private val _selectedCar = MutableLiveData<Car>()
@@ -107,6 +112,8 @@ class CarCustomizationViewModel : ViewModel() {
         _currentComponentName.value = selectedCar.value?.mainOptions?.get(0)?.keys?.first()
         totalPrice.value = 36000000
         prevPrice.value = 36000000
+
+        getPowerTrain(1)
         /*
         addSource 메서드를 사용하여 다른 LiveData (_currentComponentName)의 업데이트를 감지합니다.
         al optionList = ...: _selectedCar.value?.mainOptions?... 이 부분은 _selectedCar의 현재 값을 가져와서 그 안의 mainOptions를 검색하고, 그 안에서 componentName 키를 가진 첫 번째 항목을 찾습니다.
@@ -1013,6 +1020,36 @@ class CarCustomizationViewModel : ViewModel() {
         )
 
         _trimSelfModeData.value = tempTrimSelfMode
+    }
+
+    fun getPowerTrain(id: Int) {
+        viewModelScope.launch {
+            try {
+                val powerTrain = repository.getPowerTrain(id)
+                Log.d("SelfModeViewModel", "PowerTrain Data: $powerTrain")
+
+                val bodyType = repository.getBodyType(id)
+                Log.d("SelfModeViewModel", "BodyType Data: $bodyType")
+
+                val options = repository.getOptions(2)
+                Log.d("SelfModeViewModel", "Options Data: $options")
+
+                val drivingSystem = repository.getDrivingSystem(id)
+                Log.d("SelfModeViewModel", "DrivingSystem Data: $drivingSystem")
+
+                val wheel = repository.getWheel(id)
+                Log.d("SelfModeViewModel", "Wheel Data: $wheel")
+
+                val exteriorColor = repository.getExteriorColor(id)
+                Log.d("SelfModeViewModel", "ExteriorColor Data: $exteriorColor")
+
+                val interiorColor = repository.getInteriorColor(id, 2)
+                Log.d("SelfModeViewModel", "InteriorColor Data: $interiorColor")
+
+            } catch (e: Exception) {
+                Log.e("SelfModeViewModel", "Error: ${e.message}")
+            }
+        }
     }
 
 }
