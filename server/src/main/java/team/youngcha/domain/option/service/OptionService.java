@@ -125,7 +125,7 @@ public class OptionService {
         List<Option> trimWheels = optionRepository
                 .findRequiredOptionsByTrimIdAndExteriorColorId(trimId, RequiredCategory.WHEEL, exteriorColorId);
 
-        List<Long> wheelIds = trimWheels.stream().map(Option::getId).collect(Collectors.toList());
+        List<Long> wheelIds = getOptionIds(trimWheels);
 
         Map<Long, Integer> similarityUsersRatio = getSimilarityUsersRatio(trimId, wheelIds, guideInfo, RequiredCategory.WHEEL);
 
@@ -278,13 +278,13 @@ public class OptionService {
 
     private List<FindGuideOptionResponse> getFindGuideColorOptionResponse(Long trimId, GuideInfo guideInfo,
                                                                           RequiredCategory category, List<Option> options) {
-        List<Long> optionIds = options.stream().map(Option::getId).collect(Collectors.toList());
+        List<Long> optionIds = getOptionIds(options);
 
         // 옵션 이미지
-        Map<Long, List<OptionImage>> exteriorColorImagesGroup = getOptionImagesGroup(optionIds);
+        Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionIds);
 
         // 옵션 상세설명
-        Map<Long, List<OptionDetail>> exteriorColorDetailsGroup = getOptionDetailGroup(optionIds);
+        Map<Long, List<OptionDetail>> optionDetailGroup = getOptionDetailGroup(optionIds);
 
         // 유사 사용자 비율
         Map<Long, Integer> similarityUsersRatio = getSimilarityUsersRatio(trimId, optionIds, guideInfo, category);
@@ -297,7 +297,7 @@ public class OptionService {
             Map<Long, List<KeywordRate>> keywordRateGroup = getKeywordGroupOfAgeRange(guideInfo, optionIds, sellRatioByAgeRange);
 
             return buildFindGuideOptionResponseSortedBySellRatio(options, sellRatioByAgeRange, similarityUsersRatio,
-                    keywordRateGroup, exteriorColorImagesGroup, exteriorColorDetailsGroup);
+                    keywordRateGroup, optionImagesGroup, optionDetailGroup);
         }
 
         // 동일 성별의 옵션별 구매율
@@ -313,7 +313,7 @@ public class OptionService {
 
         // 동일 성별 및 연령대를 기준으로 가장 많이 판매된 옵션을 추천
         return buildFindGuideOptionResponseSortedBySellRatio(options, sellRatioByAgeRangeAndGender, similarityUsersRatio,
-                keywordRateGroup, exteriorColorImagesGroup, exteriorColorDetailsGroup);
+                keywordRateGroup, optionImagesGroup, optionDetailGroup);
     }
 
     private Map<Long, Integer> getOptionSellRatioByTrimIdAndCategoryAndAgeRange(Long trimId, RequiredCategory category, AgeRange ageRange) {
@@ -348,7 +348,7 @@ public class OptionService {
 
     private List<FindSelfOptionResponse> buildFindSelfRequiredOptionResponses(Long trimId, List<Option> options,
                                                                               RequiredCategory category) {
-        List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
+        List<Long> optionsIds = getOptionIds(options);
         Map<Long, Integer> sellRatio = getRequiredOptionSellRatio(trimId, optionsIds, category);
         Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
         Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsIds);
@@ -357,7 +357,7 @@ public class OptionService {
     }
 
     private List<FindSelfOptionResponse> buildFindSelfSelectiveOptionResponses(Long trimId, List<Option> options) {
-        List<Long> optionsIds = options.stream().map(Option::getId).collect(Collectors.toList());
+        List<Long> optionsIds = getOptionIds(options);
         Map<Long, Integer> sellRatio = getSelectiveOptionSellRatio(trimId, optionsIds);
         Map<Long, List<OptionImage>> optionImagesGroup = getOptionImagesGroup(optionsIds);
         Map<Long, List<OptionDetail>> optionDetailsGroup = getOptionDetailGroup(optionsIds);
