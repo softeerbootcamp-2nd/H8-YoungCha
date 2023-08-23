@@ -10,8 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CarDetails {
 
-    private Long carId;
-    private String carName;
     private Long trimId;
     private String trimName;
     private String trimImgUrl;
@@ -25,9 +23,7 @@ public class CarDetails {
     private Integer optionImgType;
     private String optionImgUrl;
 
-    public CarDetails(Long carId, String carName, Long trimId, String trimName, String trimImgUrl, String trimBackgroundImgUrl, String trimHashTag, Integer trimPrice, String trimDescription, Integer trimOptionType, String optionName, String optionCategoryName, Integer optionImgType, String optionImgUrl) {
-        this.carId = carId;
-        this.carName = carName;
+    public CarDetails(Long trimId, String trimName, String trimImgUrl, String trimBackgroundImgUrl, String trimHashTag, Integer trimPrice, String trimDescription, Integer trimOptionType, String optionName, String optionCategoryName, Integer optionImgType, String optionImgUrl) {
         this.trimId = trimId;
         this.trimName = trimName;
         this.trimImgUrl = trimImgUrl;
