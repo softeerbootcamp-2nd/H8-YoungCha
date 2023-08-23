@@ -12,38 +12,42 @@ import MakingCarButtonsBox from './MakingCarButtonsBox';
 import TrimCardsBox from './TrimCardsBox';
 import InternalColorBox from './InternalColorBox';
 import ExteriorColorBox from './ExteriorColorBox';
-import { TrimType } from '@/types';
+import { GuideType, TrimType } from '@/types';
 import { useRef } from 'react';
 
 interface TrimsDataType {
-  model: string;
+  modelName: {
+    ko: string;
+    en: string;
+  };
   trims: TrimType[];
+  guide: GuideType;
 }
 function Home() {
   const { data, loading } = useFetch<TrimsDataType>({
     url: '/cars/1/details',
   });
-  const trims = loading ? [] : data?.trims.filter((trim) => trim.id !== 5);
 
   const secondPageRef = useRef<HTMLDivElement>(null);
-
   return (
     <div>
       {!loading && (
         <>
-          <div className="relative flex justify-center w-full h-screen bg-center bg-cover pt-85px bg-main-background-image">
+          <div
+            className={`relative flex justify-center w-full h-screen bg-center bg-cover pt-85px ${`bg-[url('${data.guide.backgroundImgUrl}')]`}`}
+          >
             <div className="flex flex-col justify-between max-w-5xl py-16px">
               <div>
                 <p className="text-white text-24px font-hsans-head tracking-[-0.96px] leading-[31.2px]">
                   {TEXT.MAKING_MY_CAR}
                 </p>
                 <p className="font-medium text-white text-64px font-hsans-head leading-[83.2px]">
-                  {data?.model}
+                  {data?.modelName.en}
                 </p>
               </div>
 
               <div>
-                <TrimCardsBox trims={trims} />
+                <TrimCardsBox trims={data.trims} guide={data.guide} />
                 <div className="flex flex-col items-center">
                   <p className="text-white opacity-60 title mt-24px">
                     {TEXT.MAIN_DETAIL_COMPARE}
@@ -69,17 +73,17 @@ function Home() {
             <div
               className="absolute bottom-0 w-full h-80px z-[-1]"
               ref={secondPageRef}
-            ></div>
+            />
           </div>
           <div className="w-full pb-400px">
-            <CarsNameListBox trims={trims} />
+            <CarsNameListBox trims={data.trims} />
             <div className="flex flex-col items-center pt-32px gap-60px ">
-              <CarsImageBox trims={trims} />
+              <CarsImageBox trims={data.trims} />
               <div className="flex flex-col max-w-5xl gap-48px">
-                <MainOptionBox trims={trims} />
-                <ExteriorColorBox trims={trims} />
-                <InternalColorBox trims={trims} />
-                <BasicOptionBox trims={trims} />
+                <MainOptionBox trims={data.trims} />
+                <ExteriorColorBox trims={data.trims} />
+                <InternalColorBox trims={data.trims} />
+                <BasicOptionBox trims={data.trims} />
                 <MakingCarButtonsBox />
                 <GuideModeButton />
               </div>
