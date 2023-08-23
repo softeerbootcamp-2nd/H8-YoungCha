@@ -67,8 +67,7 @@ public class EstimateRepository {
         String sql = "select estimate." + optionIdColumn + ", COUNT(*) as count from estimate " +
                 "where estimate.keyword1_id in (:keywords) " +
                 "and estimate.keyword2_id in (:keywords) " +
-                "and estimate.keyword3_id in (:keywords) " +
-                "and estimate.trim_id = (:trimId) ";
+                "and estimate.keyword3_id in (:keywords) ";
 
         if (!Objects.equals(category.getName(), RequiredCategory.WHEEL.getName())) {
             params.addValue("gender", guideInfo.getGender().getType());
@@ -77,7 +76,8 @@ public class EstimateRepository {
                     "and estimate.gender = (:gender) ";
         }
 
-        sql += "and estimate." + optionIdColumn + " in (:optionIds) " +
+        sql += "and estimate.trim_id = (:trimId) " +
+                "and estimate." + optionIdColumn + " in (:optionIds) " +
                 "group by estimate." + optionIdColumn;
 
         return namedParameterJdbcTemplate.queryForList(sql, params);
