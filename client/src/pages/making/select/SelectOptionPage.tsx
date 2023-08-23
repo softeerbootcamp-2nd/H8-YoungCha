@@ -36,32 +36,18 @@ function SelectOptionPage() {
             />
           </div>
           {/* 옵션 선택 영역 */}
-          <div className="flex flex-col max-w-md lg:col-span-5">
+          <div className="flex flex-col max-w-lg lg:col-span-5">
             <SelectOptionMessage step={Number(step)} />
             <SelectOptionListContainer>
               {data?.map((item: AllOptionType, index) => (
-                <button className="text-left" key={item.name}>
-                  <OptionCard
-                    isActive={selectedItem === index}
-                    onClick={() => {
-                      setSelectedItem(index);
-                    }}
-                    item={item}
-                    tags={item.tags ?? []}
-                    imgUrl={item.details[0]?.imgUrl ?? ''}
-                    price={item.price}
-                    step={Number(step)}
-                  >
-                    <OptionCard.SummarySection
-                      details={item.details}
-                      isActive={selectedItem === index}
-                    />
-                    <OptionCard.FunctionDetailBox
-                      details={item.details}
-                      isActive={selectedItem === index}
-                    />
-                  </OptionCard>
-                </button>
+                <OptionCard
+                  key={`OptionCard-${item.name}`}
+                  isActive={selectedItem === index}
+                  onClick={() => {
+                    setSelectedItem(index);
+                  }}
+                  item={item}
+                />
               ))}
             </SelectOptionListContainer>
             <SelectOptionFooter

@@ -1,4 +1,4 @@
-import { getPriceTemplete } from '@/utils';
+import { formatPrice } from '@/utils';
 import { OptionType } from '../type';
 
 interface DetailOptionHeaderProps {
@@ -13,7 +13,7 @@ function DetailOptionHeader({ option }: DetailOptionHeaderProps) {
           {option.type}
         </span>
         <span className="text-grey-black font-hsans-head text-24px font-medium leading-[31.2px] tracking-[-0.72px]">
-          {getPriceTemplete(option.price!)}
+          {formatPrice(option.price!)}
         </span>
       </div>
       <div>
