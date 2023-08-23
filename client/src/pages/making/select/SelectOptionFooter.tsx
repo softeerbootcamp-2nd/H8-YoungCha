@@ -39,14 +39,14 @@ function SelectOptionFooter({ mode, id, step, data }: SelectOptionFooterProps) {
       case 3:
         newData.mainOptions.options.bodyType = newOption;
         break;
-      case 4:
+      case 6:
         newData.mainOptions.options.wheel = newOption;
         break;
       case 5:
-        newData.colors.options.exteriorColor = newOption;
-        break;
-      case 6:
         newData.colors.options.interiorColor = newOption;
+        break;
+      case 4:
+        newData.colors.options.exteriorColor = newOption;
         break;
       case 7:
         newData.selectedOptions.options.push(newOption);
