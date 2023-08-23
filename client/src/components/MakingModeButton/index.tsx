@@ -4,7 +4,7 @@ import DetailCard from '@/components/MakingModeButton/DetailCard.tsx';
 import ChevronRight from '@/assets/icons/ChevronRight';
 import GuideModeDetailList from '@/components/MakingModeButton/GuideModeDetailList';
 import MainOptionList from '@/components/MakingModeButton/MainOptionList';
-import { getPriceTemplete } from '@/utils';
+import { formatPrice } from '@/utils';
 import { TrimType } from '@/types';
 
 // TYPES
@@ -40,7 +40,7 @@ function MakingModeButton({
           <div className="mb-8px">{hashTag}</div>
           <div className="title2 mb-16px">{name}</div>
           <div className="flex items-center justify-between">
-            <span className="opacity-80">{getPriceTemplete(price)} 부터</span>
+            <span className="opacity-80">{formatPrice(price)} 부터</span>
             <ChevronRight />
           </div>
         </button>

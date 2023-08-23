@@ -1,4 +1,4 @@
-import { getPriceTemplete } from '@/utils';
+import { formatPrice } from '@/utils';
 import ModifyButton from '../complete/ModifyButton';
 import { OptionType } from '../type';
 import { Link, useParams } from 'react-router-dom';
@@ -30,7 +30,7 @@ function DetailOptionList({ option }: DetailOptionListProps) {
           ) : (
             <>
               <span className="text-grey-black font-hsans-head text-20px leading-[26px] tracking-[-0.6px]">
-                {getPriceTemplete(option.price!)}
+                {formatPrice(option.price!)}
               </span>
               <Link to={`/model/${id}/making/${mode}/${option.categoryId}`}>
                 <ModifyButton onClick={() => {}} />
