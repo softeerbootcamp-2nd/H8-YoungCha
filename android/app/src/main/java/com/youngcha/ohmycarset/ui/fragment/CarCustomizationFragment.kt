@@ -1,6 +1,9 @@
 package com.youngcha.ohmycarset.ui.fragment
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.Rect
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +13,8 @@ import android.view.ViewTreeObserver
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.youngcha.baekcasajeon.baekcasajeon
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentCarCustomizationBinding
 import com.youngcha.ohmycarset.model.car.OptionInfo
@@ -27,12 +33,14 @@ import com.youngcha.ohmycarset.model.dialog.ButtonVertical
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.EstimateDetailAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeOptionAdapter
 import com.youngcha.ohmycarset.ui.adapter.viewpager.CarOptionPagerAdapter
+import com.youngcha.ohmycarset.ui.customview.BaekcasajeonDialogView
 import com.youngcha.ohmycarset.ui.customview.ButtonDialogView
 import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.util.AnimationUtils.animateValueChange
 import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.util.setupImageSwipeWithScrollView
+import com.youngcha.baekcasajeon.*
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -223,6 +231,17 @@ class CarCustomizationFragment : Fragment() {
             }
         }
 
+        carViewModel.currentComponentName.observe(viewLifecycleOwner) { componentName ->
+            binding.tvTitle.viewTreeObserver.addOnPreDrawListener(object: ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    binding.tvTitle.viewTreeObserver.removeOnPreDrawListener(this)
+                    showBaekcasajeon(binding.tvTitle, componentName)
+                    return true
+                }
+            })
+        }
+
+
         carViewModel.estimateViewVisible.observe(viewLifecycleOwner) {
             if (it == 1) {
                 view?.viewTreeObserver?.addOnGlobalLayoutListener(object: ViewTreeObserver.OnGlobalLayoutListener{
@@ -278,7 +297,6 @@ class CarCustomizationFragment : Fragment() {
                     }
                 }
             }
-
 
             val prevTotalPrice = carViewModel.prevPrice.value
             val currentTotalPrice =
@@ -448,6 +466,31 @@ class CarCustomizationFragment : Fragment() {
         binding.rvSubOptionList.isEnabled = isEnabled
         binding.btnComponentOption1.isEnabled = isEnabled
         binding.btnComponentOption2.isEnabled = isEnabled
+    }
+
+    fun showBaekcasajeon(anchorView: TextView, keyword: String) {
+        val dialog = BaekcasajeonDialogView(anchorView)
+
+        val options = mapOf(
+            keyword to KeywordOptions(
+                nonSelectedTextColor = Color.BLACK,  // 선택되지 않았을 때의 텍스트 색상
+                selectedTextColor = Color.WHITE,     // 선택되었을 때의 텍스트 색상
+                nonSelectedBackgroundColor = ContextCompat.getColor(requireContext(), R.color.yellow),
+                selectedBackgroundColor = ContextCompat.getColor(requireContext(), R.color.cool_grey_black),
+                padding = Rect(15, 15, 15, 15),
+                cornerRadius = 20f,
+                isBold = true
+            )
+        )
+
+        val keywordSpans = anchorView.baekcasajeon(options) { keyword ->
+            dialog.show(keyword, keyword.toString()+ " 백카사전")
+        }
+
+        dialog.setOnDismissAction {
+            keywordSpans[keyword]?.toggleSelected()
+
+        }
     }
 
     override fun onDestroyView() {
