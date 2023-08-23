@@ -38,19 +38,13 @@ public class EstimateRepository {
         params.addValue("keywordId", keywordId);
         params.addValue("optionId", optionId);
 
-        String optionIdColumn = category.getColumn() + "_id";
+        String column = category.getColumn() + "_id";
 
         // sum(트림 + 옵션 + 키워드 포함) * 100 / sum(트림 + 키워드 포함)
-        Integer rate = namedParameterJdbcTemplate.queryForObject("select " +
-                        "sum(case when " +
-                        "e.trim_id = (:trimId) and e." + optionIdColumn + " = (:optionId) " +
-                        "and (:keywordId IN (e.keyword1_id, e.keyword2_id, e.keyword3_id)) " +
-                        "then 1 else 0 end) * 100" +
-                        "/ sum(case when " +
-                        "e.trim_id = (:trimId) " +
-                        "and (:keywordId IN (e.keyword1_id, e.keyword2_id, e.keyword3_id ))" +
-                        "then 1 else 0 end)" +
-                        "from estimate as e",
+        Integer rate = namedParameterJdbcTemplate.queryForObject("SELECT " +
+                        "(SUM(CASE WHEN " + column + " = (:optionId) THEN 1 ELSE 0 END) * 100) / COUNT(*) AS rate " +
+                        "FROM estimate AS e use index(idx_keyword_trim)" +
+                        "WHERE trim_id = (:trimId) AND (:keywordId) IN (e.keyword1_id, e.keyword2_id, e.keyword3_id);",
                 params, Integer.class);
         if (rate == null) {
             return 0;
