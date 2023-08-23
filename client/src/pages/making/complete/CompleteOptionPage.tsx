@@ -8,6 +8,9 @@ import DetailSelectOptionBox from '../detail-option-box/DetailSelectOptionBox';
 import DetailBasicOptionBox from '../detail-option-box/DetailBasicOptionBox';
 import Confetti from '@/components/Confetti';
 import { UserSelectedOptionDataContext } from '..';
+import getOptionGroupTotalPrice from '@/utils/getTotalPrice';
+import getOptionGroupsTotalPrice from '@/utils/getTotalPrice';
+import { getPriceTemplete } from '@/utils';
 
 function CompleteOptionPage() {
   const [selectedColorType, setSelectedColorType] =
@@ -16,6 +19,14 @@ function CompleteOptionPage() {
   const inactiveColor = 'text-main-blue bg-grey-001';
 
   const { userSelectedOptionData } = useContext(UserSelectedOptionDataContext);
+
+  const totalPrice = getOptionGroupsTotalPrice(
+    userSelectedOptionData.mainOptions.options,
+    userSelectedOptionData.colors.options,
+    ...userSelectedOptionData.selectedOptions.options.map((option) => ({
+      option,
+    }))
+  );
 
   return (
     <div>
@@ -52,20 +63,22 @@ function CompleteOptionPage() {
             <div className="flex items-center gap-14px">
               <span className="title4 text-grey-black">차량 총 견적 금액</span>
               <span className="font-hsans-head text-34px font-medium leading-[44.2px] tracking-[-1.02px] text-grey-black">
-                47,270,000원
+                {getPriceTemplete(totalPrice)}
               </span>
             </div>
           </div>
 
           {Object.values(userSelectedOptionData).map((optionGroup) => {
             const { title, options } = optionGroup as OptionGroupType;
-            const totalPrice = Object.values(options).reduce(
-              (sum, { price }) => sum + price!,
-              0
-            );
+
+            const totalGroupPrice = getOptionGroupTotalPrice(options);
 
             return (
-              <SummaryOptionsBox title={title} price={totalPrice} key={title}>
+              <SummaryOptionsBox
+                title={title}
+                price={totalGroupPrice}
+                key={title}
+              >
                 {Object.values(options).map(({ type, name, price }, index) => {
                   const isDuplicatedType = title === '옵션' && index > 0;
                   return (
@@ -103,7 +116,7 @@ function CompleteOptionPage() {
             <div className="flex items-center gap-14px">
               <span className="title4 text-grey-black">차량 총 견적 금액</span>
               <span className="font-hsans-head text-34px font-medium leading-[44.2px] tracking-[-1.02px] text-[#36383C]">
-                47,270,000원
+                {getPriceTemplete(totalPrice)}
               </span>
             </div>
           </div>

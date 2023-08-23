@@ -15,9 +15,9 @@ export interface OptionGroupType {
 }
 
 export interface UserSelectedOptionDataType {
-  mainOptions?: OptionGroupType;
-  colors?: OptionGroupType;
-  selectedOptions?: Omit<OptionGroupType, 'options'> & {
+  mainOptions: OptionGroupType;
+  colors: OptionGroupType;
+  selectedOptions: Omit<OptionGroupType, 'options'> & {
     options: OptionType[];
   };
 }
