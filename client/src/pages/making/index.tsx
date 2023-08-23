@@ -3,48 +3,34 @@ import SelectOptionPage from './select/SelectOptionPage';
 import CompleteOptionPage from './complete/CompleteOptionPage';
 import CompleteOptionPageWithLoading from './complete/CompleteOptionPageWithLoading';
 import { INITIAL_USER_SELECTED_DATA, LAST_STEP } from './constant';
-import { UserSelectedOptionDataType } from './type';
-import {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useEffect,
-  useState,
-} from 'react';
+import { OptionType, UserSelectedOptionDataType } from './type';
+import { createContext } from 'react';
+import useSelectOption from '@/hooks/useSelectOption.ts';
 
 export interface UserSelectedOptionDataContextType {
   userSelectedOptionData: UserSelectedOptionDataType;
-  setUserSelectedOptionData: Dispatch<
-    SetStateAction<UserSelectedOptionDataType>
-  >;
+  saveOptionData: ({ newOption }: { newOption: OptionType }) => void;
 }
 
 export const UserSelectedOptionDataContext =
   createContext<UserSelectedOptionDataContextType>({
     userSelectedOptionData: INITIAL_USER_SELECTED_DATA,
-    setUserSelectedOptionData: () => {},
+    saveOptionData: () => {},
   });
 
 function MakingPage() {
   const { step } = useParams() as { step: string };
   const { state } = useLocation();
 
-  const [userSelectedOptionData, setUserSelectedOptionData] = useState(
-    INITIAL_USER_SELECTED_DATA
-  );
-
-  useEffect(() => {
-    if (userSelectedOptionData === INITIAL_USER_SELECTED_DATA) {
-      const saveData = sessionStorage.getItem('optionData')
-        ? JSON.parse(sessionStorage.getItem('optionData')!)
-        : INITIAL_USER_SELECTED_DATA;
-      setUserSelectedOptionData(saveData);
-    }
-  }, []);
+  const { userSelectedOptionData, saveOptionData } = useSelectOption();
 
   return (
     <UserSelectedOptionDataContext.Provider
-      value={{ userSelectedOptionData, setUserSelectedOptionData }}
+      value={{
+        userSelectedOptionData,
+
+        saveOptionData,
+      }}
     >
       {Number(step) !== LAST_STEP ? (
         <SelectOptionPage />
