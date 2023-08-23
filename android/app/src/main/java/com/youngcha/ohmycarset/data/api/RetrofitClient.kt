@@ -17,4 +17,8 @@ object RetrofitClient {
     val selfModeApi: SelfModeApiService by lazy {
         retrofit.create(SelfModeApiService::class.java)
     }
+
+    val apiService: ApiService by lazy {
+        retrofit.create(ApiService::class.java)
+    }
 }
