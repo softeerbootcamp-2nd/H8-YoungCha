@@ -20,7 +20,6 @@ interface OptionCardProps
   imgUrl: string;
   step: number;
   price: number;
-  children?: React.ReactNode;
   isActive?: boolean;
   onClick?: () => void;
 }
@@ -30,12 +29,11 @@ function OptionCard({
   item,
   imgUrl,
   step,
-  children,
   onClick,
 }: OptionCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const optionCardRef = useRef<HTMLDivElement>(null);
+  const optionCardRef = useRef<HTMLButtonElement>(null);
 
   const { mode } = useParams() as { mode: string };
   const isSelfMode = mode === 'self';
@@ -64,14 +62,13 @@ function OptionCard({
   }, [isActive]);
 
   return (
-    <div
+    <button
       ref={optionCardRef}
-      className={`relative border-2 rounded-6px w-375px p-20px cursor-pointer 
+      className={`text-left relative border-2 rounded-6px w-375px p-20px cursor-pointer 
       ${totalDivColor} ${
         isExpanded ? 'max-h-750px' : 'max-h-150px'
       } transition-all ease-in duration-500`}
       onClick={handleIsActive}
-      role="none"
     >
       <div className="flex">
         <CheckIcon {...{ isActive, isSelfMode }} />
@@ -83,22 +80,22 @@ function OptionCard({
       <div
         className={`${
           isExpanded ? 'max-h-400px opacity-100' : 'max-h-0 opacity-0'
-        } transition-all ease-in-out duration-500 origin-top overflow-hidden`}
+        } transition-all ease-in-out duration-300 origin-top overflow-hidden`}
       >
-        <div className="bg-grey-001 w-334 h-1px"></div>
-        <div className="my-12px">{children}</div>
+        <div className="border-t-2 border-grey-001 py-12px flex flex-col gap-y-12px">
+          <SummarySection details={item.details} isActive={isActive} />
+          <FunctionDetailBox details={item.details} isActive={isActive} />
+        </div>
       </div>
       <div className="flex justify-between">
         <PriceSection price={item.price} isActive={isActive} />
         {hasDetail && <MoreDetailsButton {...{ isExpanded, setIsExpanded }} />}
       </div>
-    </div>
+    </button>
   );
 }
 
 export default Object.assign(OptionCard, {
-  SummarySection,
-  FunctionDetailBox,
   SubOptions,
   SubOptionDescription,
 });

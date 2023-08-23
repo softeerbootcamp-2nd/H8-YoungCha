@@ -1,6 +1,6 @@
-import { OptionType } from '@/types/option';
+import { AllOptionType } from '@/types/option';
 
-interface SummarySectionProps extends Pick<OptionType, 'details'> {
+interface SummarySectionProps extends Pick<AllOptionType, 'details'> {
   isActive: boolean;
 }
 

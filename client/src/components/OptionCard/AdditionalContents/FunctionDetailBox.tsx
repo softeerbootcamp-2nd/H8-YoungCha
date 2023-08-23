@@ -1,25 +1,22 @@
-import { OptionType } from '@/types/option';
+import { AllOptionType } from '@/types/option';
 
-interface FunctionDetailBoxProps extends Pick<OptionType, 'details'> {
+interface FunctionDetailBoxProps extends Pick<AllOptionType, 'details'> {
   isActive: boolean;
 }
 
 function FunctionDetailBox({ details, isActive }: FunctionDetailBoxProps) {
+  if (details[0]?.specs) return null;
   return (
-    <div
-      className={`${
-        isActive ? 'bg-[#f3f3f3]' : 'bg-grey-001'
-      }  rounded-6px pt-4px pb-12px mt-12px`}
-    >
+    <div className={`bg-grey-001 rounded-6px p-12px flex flex-col gap-8px`}>
       {details[0]?.specs?.map((item, index) => (
         <div
           key={`FunctionDetail-${index}`}
           className={`${
             isActive ? 'text-[#4B4B4B]' : 'text-grey-003'
-          } body3 mt-8px`}
+          } body3 grid grid-cols-5 gap-x-12px`}
         >
-          <span className="p-12px">{item.name}</span>
-          <span>{item.description}</span>
+          <span>{item.name}</span>
+          <span className="col-span-4">{item.description}</span>
         </div>
       ))}
     </div>
