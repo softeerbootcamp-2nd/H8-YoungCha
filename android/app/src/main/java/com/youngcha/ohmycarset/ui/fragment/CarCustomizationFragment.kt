@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,7 +39,11 @@ import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.util.setupImageSwipeWithScrollView
 import com.youngcha.baekcasajeon.*
+import com.youngcha.ohmycarset.data.api.RetrofitClient
+import com.youngcha.ohmycarset.data.api.SelfModeApiService
+import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
+import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 class CarCustomizationFragment : Fragment() {
@@ -48,7 +53,11 @@ class CarCustomizationFragment : Fragment() {
     private lateinit var detailAdapterMain: EstimateDetailAdapter
     private lateinit var detailAdapterSub: EstimateDetailAdapter
     private lateinit var trimSelfModeOptionAdapter: TrimSelfModeOptionAdapter
-    private val carViewModel: CarCustomizationViewModel by viewModels()
+    //private val carViewModel: CarCustomizationViewModel by viewModels()
+  //  private lateinit var carViewModel: CarCustomizationViewModel
+    private lateinit var carViewModel: CarCustomizationViewModel
+    private val repository by lazy { SelfModeRepository(RetrofitClient.selfModeApi) }
+    private val viewModelFactory by lazy { CarCustomizationViewModelFactory(repository) }
 
     private lateinit var mode: String
     private lateinit var startPoint: String
@@ -69,6 +78,7 @@ class CarCustomizationFragment : Fragment() {
     }
 
     private fun setupViews() {
+        carViewModel = ViewModelProvider(this, viewModelFactory).get(CarCustomizationViewModel::class.java)
         binding.apply {
             viewModel = carViewModel
             lifecycleOwner = this@CarCustomizationFragment
