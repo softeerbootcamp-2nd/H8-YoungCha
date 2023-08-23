@@ -1,21 +1,34 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from '@/components/Button';
 import SummaryOptionsBox from './SummaryOptionsBox';
 import { CAR_COLOR, COMPLETE_OPTION_PAGE_TITLE } from '../constant';
 import { ColorType, OptionGroupType } from '../type';
-import { mockUserSelectedOptionData } from '@/assets/mock/mock';
 import DetailOptionBox from '../detail-option-box/DetailOptionBox';
 import DetailSelectOptionBox from '../detail-option-box/DetailSelectOptionBox';
 import DetailBasicOptionBox from '../detail-option-box/DetailBasicOptionBox';
 import RotateCarImage from './RoateCarImage';
 import getRotateImages from '@/utils/getRotateImages';
 import Confetti from '@/components/Confetti';
+import { UserSelectedOptionDataContext } from '..';
+import getOptionGroupTotalPrice from '@/utils/getTotalPrice';
+import getOptionGroupsTotalPrice from '@/utils/getTotalPrice';
+import { getPriceTemplete } from '@/utils';
 
 function CompleteOptionPage() {
   const [selectedColorType, setSelectedColorType] =
     useState<ColorType>('exterior');
   const activeColor = 'text-white bg-main-blue';
   const inactiveColor = 'text-main-blue bg-grey-001';
+
+  const { userSelectedOptionData } = useContext(UserSelectedOptionDataContext);
+
+  const totalPrice = getOptionGroupsTotalPrice(
+    userSelectedOptionData.mainOptions.options,
+    userSelectedOptionData.colors.options,
+    ...userSelectedOptionData.selectedOptions.options.map((option) => ({
+      option,
+    }))
+  );
 
   return (
     <div>
@@ -52,20 +65,22 @@ function CompleteOptionPage() {
             <div className="flex items-center gap-14px">
               <span className="title4 text-grey-black">차량 총 견적 금액</span>
               <span className="font-hsans-head text-34px font-medium leading-[44.2px] tracking-[-1.02px] text-grey-black">
-                47,270,000원
+                {getPriceTemplete(totalPrice)}
               </span>
             </div>
           </div>
 
-          {Object.values(mockUserSelectedOptionData).map((optionGroup) => {
+          {Object.values(userSelectedOptionData).map((optionGroup) => {
             const { title, options } = optionGroup as OptionGroupType;
-            const totalPrice = Object.values(options).reduce(
-              (sum, { price }) => sum + price!,
-              0
-            );
+
+            const totalGroupPrice = getOptionGroupTotalPrice(options);
 
             return (
-              <SummaryOptionsBox title={title} price={totalPrice} key={title}>
+              <SummaryOptionsBox
+                title={title}
+                price={totalGroupPrice}
+                key={title}
+              >
                 {Object.values(options).map(({ type, name, price }, index) => {
                   const isDuplicatedType = title === '옵션' && index > 0;
                   return (
@@ -103,18 +118,18 @@ function CompleteOptionPage() {
             <div className="flex items-center gap-14px">
               <span className="title4 text-grey-black">차량 총 견적 금액</span>
               <span className="font-hsans-head text-34px font-medium leading-[44.2px] tracking-[-1.02px] text-[#36383C]">
-                47,270,000원
+                {getPriceTemplete(totalPrice)}
               </span>
             </div>
           </div>
 
           <div className="flex flex-col gap-60px">
-            {Object.values(mockUserSelectedOptionData.mainOptions.options).map(
+            {Object.values(userSelectedOptionData.mainOptions.options).map(
               (option) => (
                 <DetailOptionBox option={option} key={option.name} />
               )
             )}
-            {Object.values(mockUserSelectedOptionData.colors.options).map(
+            {Object.values(userSelectedOptionData.colors.options).map(
               (option) => (
                 <DetailOptionBox option={option} key={option.name} />
               )

@@ -9,12 +9,12 @@ import SubOptionDescription from './AdditionalContents/SubOptionDescription';
 import ImgSection from './ImgSection';
 import CheckIcon from './CheckIcon';
 import Tags from './Tags';
-import { OptionDetailType, OptionType } from '@/types/option';
+import { AllOptionType, OptionDetailType } from '@/types/option';
 
 interface OptionCardProps
-  extends Pick<OptionType, 'tags'>,
+  extends Pick<AllOptionType, 'tags'>,
     Pick<OptionDetailType, 'imgUrl'> {
-  item: OptionType;
+  item: AllOptionType;
   imgUrl: string;
   step: number;
   price: number;
