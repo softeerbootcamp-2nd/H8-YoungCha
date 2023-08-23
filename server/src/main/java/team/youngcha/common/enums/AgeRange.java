@@ -2,7 +2,9 @@ package team.youngcha.common.enums;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Getter
 public enum AgeRange {
@@ -23,6 +25,14 @@ public enum AgeRange {
                 .findAny().orElseThrow(() -> new IllegalArgumentException("일치하는 age가 없습니다."));
     }
 
+    public List<Integer> getAges() {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add(this.range * 10 + 1);
+        }
+        return list;
+    }
+
     public int getMinAge() {
         return this.range * 10;
     }
@@ -33,7 +43,7 @@ public enum AgeRange {
 
     public String toKeyword() {
         String keywordName = this.range * 10 + "대";
-        if(this.range == 7) {
+        if (this.range == 7) {
             keywordName += " 이상";
         }
 

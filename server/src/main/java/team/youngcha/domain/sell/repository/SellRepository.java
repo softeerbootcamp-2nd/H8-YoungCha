@@ -38,12 +38,11 @@ public class SellRepository {
         String column = requiredCategory.getColumn() + "_id";
 
         String sql = "SELECT sell." + column + ", COUNT(*) AS count FROM sell " +
-                "WHERE (sell.age >= :minAge AND sell.age <= :maxAge) AND sell.trim_id = :trimId " +
+                "WHERE sell.age in (:ages) AND sell.trim_id = :trimId " +
                 "GROUP BY sell." + column;
 
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("minAge", ageRange.getMinAge());
-        params.addValue("maxAge", ageRange.getMaxAge());
+        params.addValue("ages", ageRange.getAges());
         params.addValue("trimId", trimId);
 
         return namedParameterJdbcTemplate.queryForList(sql, params)
@@ -79,13 +78,12 @@ public class SellRepository {
         String column = category.getColumn() + "_id";
 
         String sql = "SELECT sell." + column + ", COUNT(*) AS count FROM sell " +
-                "WHERE (sell.age >= :minAge AND sell.age <= :maxAge) " +
+                "WHERE sell.age in (:ages) " +
                 "AND sell.gender = :gender AND sell.trim_id = :trimId " +
                 "GROUP BY sell." + column;
 
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("minAge", ageRange.getMinAge());
-        params.addValue("maxAge", ageRange.getMaxAge());
+        params.addValue("ages", ageRange.getAges());
         params.addValue("gender", gender.getType());
         params.addValue("trimId", trimId);
 
