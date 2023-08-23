@@ -19,3 +19,14 @@ export const SelectOptionsId: Record<SelectOptionFilterType, number> = {
   '외부 장치': 9,
   '내부 장치': 10,
 };
+
+export const optionTypeName = [
+  '트림',
+  '파워트레인',
+  '구동 방식',
+  '바디 타입',
+  '외장 색상',
+  '내장 색상',
+  '휠',
+  '선택 옵션',
+];

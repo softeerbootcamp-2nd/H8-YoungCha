@@ -1,5 +1,4 @@
 import * as Icon from '@/assets/icons';
-import { powerTrainMock } from '@/assets/mock/optionMock';
 import { useState, useEffect } from 'react';
 
 const SHOW_SMILE_TIME = 500;
@@ -51,10 +50,10 @@ function FeedbackCard({ isSelected }: FeedbackCardProps) {
       </div>
 
       <div className="font-medium text-white text-20px mt-10px">
-        {powerTrainMock.feedback[0].title}
+        {/* {powerTrainMock.feedback[0].title} */}
       </div>
       <div className="text-white body3 mt-6px">
-        {powerTrainMock.feedback[0].description}
+        {/* {powerTrainMock.feedback[0].description} */}
       </div>
     </div>
   );

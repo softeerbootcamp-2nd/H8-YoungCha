@@ -21,11 +21,12 @@ interface TrimsDataType {
 }
 function Home() {
   const { data, loading } = useFetch<TrimsDataType>({
-    url: `${import.meta.env.VITE_API_URL}/cars/1/details`,
+    url: '/cars/1/details',
   });
   const trims = loading ? [] : data?.trims.filter((trim) => trim.id !== 5);
 
   const secondPageRef = useRef<HTMLDivElement>(null);
+
   return (
     <div>
       {!loading && (
@@ -66,7 +67,7 @@ function Home() {
               </div>
             </div>
             <div
-              className="absolute bottom-0 w-full h-85px z-[-1]"
+              className="absolute bottom-0 w-full h-80px z-[-1]"
               ref={secondPageRef}
             ></div>
           </div>

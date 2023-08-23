@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react';
 interface FetchType {
   url: string;
   params?: Record<string, string>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  deps?: any[];
 }
 
-function useFetch<T>({ url, params }: FetchType) {
+function useFetch<T>({ url, params, deps = [] }: FetchType) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<T>({} as T);
 
@@ -16,7 +18,7 @@ function useFetch<T>({ url, params }: FetchType) {
       setData(data as T);
       setLoading(false);
     })();
-  }, [url, params]);
+  }, [url, ...deps]);
 
   return { loading, data };
 }

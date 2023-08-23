@@ -1,6 +1,6 @@
 import { Fragment, HTMLAttributes } from 'react';
 import { OptionGroupType } from '@/pages/making/type';
-import { getPriceTemplete } from '@/utils';
+import { formatPrice } from '@/utils';
 import Transition from '../Transition/Transition';
 import { Close } from '@/assets/icons';
 import { mockUserSelectedOptionData } from '@/assets/mock/mock';
@@ -83,7 +83,7 @@ function OptionTitle({ title, price }: OptionTitleProps) {
   return (
     <div className="flex items-center justify-between font-medium text-main-blue bg-grey-001 px-20px pt-10px pb-8px title4">
       <div>{title}</div>
-      <div>{getPriceTemplete(price, true)}</div>
+      <div>{formatPrice(price, true)}</div>
     </div>
   );
 }
@@ -99,7 +99,7 @@ function Option({ type, name, price }: OptionProps) {
       <div className="grid grid-cols-4 body2 text-grey-black">
         <div className="text-grey-003">{type}</div>
         <div className="col-span-2">{name}</div>
-        <div className="text-right">{getPriceTemplete(price, true)}</div>
+        <div className="text-right">{formatPrice(price, true)}</div>
       </div>
     </>
   );

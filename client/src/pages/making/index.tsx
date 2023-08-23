@@ -1,27 +1,46 @@
-import { useParams } from 'react-router-dom';
-import CompleteOptionPage from './complete/CompleteOptionPage';
+import { useLocation, useParams } from 'react-router-dom';
 import SelectOptionPage from './select/SelectOptionPage';
-import ProgressBar from '@/components/ProgressBar';
-import { LAST_STEP } from './constant';
+import CompleteOptionPage from './complete/CompleteOptionPage';
+import CompleteOptionPageWithLoading from './complete/CompleteOptionPageWithLoading';
+import { INITIAL_USER_SELECTED_DATA, LAST_STEP } from './constant';
+import { OptionType, UserSelectedOptionDataType } from './type';
+import { createContext } from 'react';
+import useSelectOption from '@/hooks/useSelectOption.ts';
 
-interface MakingPageProps {
-  path: 'self' | 'guide';
+export interface UserSelectedOptionDataContextType {
+  userSelectedOptionData: UserSelectedOptionDataType;
+  saveOptionData: ({ newOption }: { newOption: OptionType }) => void;
 }
 
-function MakingPage({ path }: MakingPageProps) {
-  const { step, id } = useParams() as { step: string; id: string };
-  const currentStep = Number(step);
+export const UserSelectedOptionDataContext =
+  createContext<UserSelectedOptionDataContextType>({
+    userSelectedOptionData: INITIAL_USER_SELECTED_DATA,
+    saveOptionData: () => {},
+  });
+
+function MakingPage() {
+  const { step } = useParams() as { step: string };
+  const { state } = useLocation();
+
+  const { userSelectedOptionData, saveOptionData } = useSelectOption();
 
   return (
-    <div className="flex flex-col w-full h-full">
-      <ProgressBar step={currentStep} mode={path} id={id} />
-      {currentStep < LAST_STEP ? (
-        <SelectOptionPage path={path} />
-      ) : (
+    <UserSelectedOptionDataContext.Provider
+      value={{
+        userSelectedOptionData,
+        saveOptionData,
+      }}
+    >
+      {Number(step) !== LAST_STEP ? (
+        <SelectOptionPage />
+      ) : state?.isGuide ? (
         <CompleteOptionPage />
+      ) : (
+        <CompleteOptionPageWithLoading />
       )}
-    </div>
+    </UserSelectedOptionDataContext.Provider>
   );
 }
 
+export { default as MakingPageLayout } from './layout.tsx';
 export default MakingPage;

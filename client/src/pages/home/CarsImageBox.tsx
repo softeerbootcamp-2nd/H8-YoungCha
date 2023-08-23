@@ -1,5 +1,5 @@
 import { TrimType } from '@/types';
-import { getPriceTemplete } from '@/utils';
+import { formatPrice } from '@/utils';
 
 interface CarsImageBoxProps {
   trims: TrimType[];
@@ -15,7 +15,7 @@ function CarsImageBox({ trims }: CarsImageBoxProps) {
         >
           <img src={imgUrl} alt="palisade" className="w-214px h-155px" />
           <p className="font-normal body1 text-grey-black">
-            {getPriceTemplete(price)} 부터
+            {formatPrice(price)} 부터
           </p>
         </li>
       ))}

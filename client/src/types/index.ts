@@ -57,3 +57,10 @@ export interface BasicOptionType {
   totalPages: number;
   contents: ContentsType[];
 }
+
+export type ModeType = 'guide' | 'self' | 'none';
+
+export interface DictionaryContextType {
+  dictionaryOn: boolean;
+  setDictionaryOn: React.Dispatch<React.SetStateAction<boolean>>;
+}

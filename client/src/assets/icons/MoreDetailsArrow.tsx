@@ -1,16 +1,14 @@
-interface MoreDetailsArrowProps {
-  transform?: string;
-}
+import { SVGAttributes } from 'react';
 
-function MoreDetailsArrow({ transform }: MoreDetailsArrowProps) {
+function MoreDetailsArrow({ ...props }: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       width="14"
       height="14"
       viewBox="0 0 14 14"
       fill="none"
-      transform={transform}
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <g id="Group">
         <path

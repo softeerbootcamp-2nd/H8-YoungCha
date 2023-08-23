@@ -1,17 +1,17 @@
-import { PowerTrain } from '@/assets/mock/optionMock';
-import { useOptionCardContext } from '@/store/useOptionCardContext';
+import { AllOptionType } from '@/types/option';
 
-interface SummarySectionProps extends Pick<PowerTrain, 'details'> {}
+interface SummarySectionProps extends Pick<AllOptionType, 'details'> {
+  isActive: boolean;
+}
 
-function SummarySection({ details }: SummarySectionProps) {
-  const { isActive } = useOptionCardContext();
+function SummarySection({ details, isActive }: SummarySectionProps) {
   return (
     <p
       className={`${
         isActive ? 'text-grey-black' : 'text-grey-003'
       } body3 whitespace-pre-wrap`}
     >
-      {details[0].description}
+      {details[0]?.description}
     </p>
   );
 }

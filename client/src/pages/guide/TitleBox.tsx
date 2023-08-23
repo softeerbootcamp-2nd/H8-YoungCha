@@ -12,15 +12,11 @@ function TitleBox({ path }: TitleBoxProps) {
         <h1 className="font-hsans-head text-32px leading-[44.8px] tracking-[-1.28px]">
           {TEXT.TITLE[path]}
         </h1>
-        <h2
-          className={`font-hsans-head text-32px font-medium leading-[44.8px] tracking-[-1.28px] ${
-            path === 'keyword' ? 'w-275px' : 'w-full'
-          }`}
-        >
+        <h2 className="font-hsans-head text-32px font-medium leading-[44.8px] tracking-[-1.28px]">
           {TEXT.SUB_TITLE[path]}
         </h2>
       </div>
-      <pre className="text-[#8C8C8C] font-hsans-text text-20px leading-[-0.6px] ">
+      <pre className="text-[#8C8C8C] font-hsans-text text-20px leading-[-0.6px]">
         {TEXT.DESCRIPTION[path]}
       </pre>
     </div>
