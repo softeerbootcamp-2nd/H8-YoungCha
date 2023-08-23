@@ -14,7 +14,7 @@ function Loading() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full gap-y-40px">
+    <div className="flex flex-col items-center justify-center h-full gap-y-40px flex-grow">
       <LoadingCircle isInit={isInit}>
         <LoadingIcons />
       </LoadingCircle>

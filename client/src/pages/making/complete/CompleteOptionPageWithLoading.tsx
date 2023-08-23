@@ -14,7 +14,7 @@ function CompleteOptionPageWithLoading() {
   }, []);
 
   return (
-    <div className="complete-option-page-wrapper h-full">
+    <div className="flex-grow h-full flex flex-col">
       {isLoading ? <Loading /> : <CompleteOptionPage />}
     </div>
   );

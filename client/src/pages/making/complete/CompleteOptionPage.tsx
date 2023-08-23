@@ -6,8 +6,13 @@ import { ColorType, OptionGroupType } from '../type';
 import DetailOptionBox from '../detail-option-box/DetailOptionBox';
 import DetailSelectOptionBox from '../detail-option-box/DetailSelectOptionBox';
 import DetailBasicOptionBox from '../detail-option-box/DetailBasicOptionBox';
+import RotateCarImage from './RoateCarImage';
+import getRotateImages from '@/utils/getRotateImages';
 import Confetti from '@/components/Confetti';
 import { UserSelectedOptionDataContext } from '..';
+import getOptionGroupTotalPrice from '@/utils/getTotalPrice';
+import getOptionGroupsTotalPrice from '@/utils/getTotalPrice';
+import { getPriceTemplete } from '@/utils';
 
 function CompleteOptionPage() {
   const [selectedColorType, setSelectedColorType] =
@@ -17,19 +22,27 @@ function CompleteOptionPage() {
 
   const { userSelectedOptionData } = useContext(UserSelectedOptionDataContext);
 
+  const totalPrice = getOptionGroupsTotalPrice(
+    userSelectedOptionData.mainOptions.options,
+    userSelectedOptionData.colors.options,
+    ...userSelectedOptionData.selectedOptions.options.map((option) => ({
+      option,
+    }))
+  );
+
   return (
     <div>
       <Confetti particleCount={120} circleParticleCount={60} />
-      <div className="flex flex-col items-center w-full m-auto mt-60px gap-60px max-w-7xl px-128px pb-70px">
+      <div className="flex flex-col items-center w-full m-auto pt-60px gap-60px max-w-7xl px-128px pb-70px">
         <div className="flex flex-col items-center w-full">
           <h1 className="whitespace-pre-line text-34px font-medium leading-[47.6px] tracking-[-1.36px] font-hsans-head text-grey-black text-center">
             {COMPLETE_OPTION_PAGE_TITLE}
           </h1>
-          <img
-            src="/src/assets/mock/images/palisade.png"
-            alt="palisade"
-            width={400}
-            height={200}
+          <RotateCarImage
+            images={getRotateImages({
+              url: 'https://www.hyundai.com/contents/vr360/LX06/exterior/WC9/colorchip-exterior.png',
+              count: 60,
+            })}
           />
           <div className="flex">
             {CAR_COLOR.map(({ text, type }) => (
@@ -52,20 +65,22 @@ function CompleteOptionPage() {
             <div className="flex items-center gap-14px">
               <span className="title4 text-grey-black">차량 총 견적 금액</span>
               <span className="font-hsans-head text-34px font-medium leading-[44.2px] tracking-[-1.02px] text-grey-black">
-                47,270,000원
+                {getPriceTemplete(totalPrice)}
               </span>
             </div>
           </div>
 
           {Object.values(userSelectedOptionData).map((optionGroup) => {
             const { title, options } = optionGroup as OptionGroupType;
-            const totalPrice = Object.values(options).reduce(
-              (sum, { price }) => sum + price!,
-              0
-            );
+
+            const totalGroupPrice = getOptionGroupTotalPrice(options);
 
             return (
-              <SummaryOptionsBox title={title} price={totalPrice} key={title}>
+              <SummaryOptionsBox
+                title={title}
+                price={totalGroupPrice}
+                key={title}
+              >
                 {Object.values(options).map(({ type, name, price }, index) => {
                   const isDuplicatedType = title === '옵션' && index > 0;
                   return (
@@ -103,7 +118,7 @@ function CompleteOptionPage() {
             <div className="flex items-center gap-14px">
               <span className="title4 text-grey-black">차량 총 견적 금액</span>
               <span className="font-hsans-head text-34px font-medium leading-[44.2px] tracking-[-1.02px] text-[#36383C]">
-                47,270,000원
+                {getPriceTemplete(totalPrice)}
               </span>
             </div>
           </div>

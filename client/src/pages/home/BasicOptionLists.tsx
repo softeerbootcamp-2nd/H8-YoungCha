@@ -1,6 +1,5 @@
-import { get } from '@/service';
-import { BasicOptionType, ContentsType } from '@/types';
-import { useEffect, useState } from 'react';
+import useBasicOption from '@/hooks/useBasicOption';
+import { useEffect } from 'react';
 
 interface BasicOptionListsProps {
   id: number;
@@ -9,61 +8,17 @@ interface BasicOptionListsProps {
   setIsLastPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const OPTION_SIZE = 5;
-
 function BasicOptionLists({
   currentSize,
   id,
   categoryId,
   setIsLastPage,
 }: BasicOptionListsProps) {
-  const [basicOptions, setBasicOptions] = useState<BasicOptionType>(
-    {} as BasicOptionType
-  );
-  const url = `/trims/${id}/default-components`;
-  const currentPage = Math.floor((currentSize - 1) / OPTION_SIZE) + 1;
-  const params = {
-    categoryId: String(categoryId),
-    page: String(currentPage),
-    size: String(OPTION_SIZE),
-  };
+  const { basicOptions } = useBasicOption({ id, categoryId, currentSize });
+
   useEffect(() => {
     setIsLastPage((prev) => (basicOptions.last ? prev + 1 : prev));
   }, [basicOptions]);
-
-  useEffect(() => {
-    if (basicOptions.last) return;
-    (async () => {
-      const data = (await get<BasicOptionType>({
-        url,
-        params,
-      })) as BasicOptionType;
-
-      if (currentSize > OPTION_SIZE) {
-        const newContents: ContentsType[] = [
-          ...basicOptions.contents,
-          ...data.contents,
-        ];
-        setBasicOptions(() => ({
-          ...data,
-          contents: newContents,
-        }));
-      } else {
-        setBasicOptions(data);
-      }
-    })();
-  }, [currentSize]);
-
-  useEffect(() => {
-    (async () => {
-      const data = (await get<BasicOptionType>({
-        url,
-        params,
-      })) as BasicOptionType;
-
-      setBasicOptions(data);
-    })();
-  }, [categoryId]);
 
   return (
     <>

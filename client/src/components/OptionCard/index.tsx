@@ -77,7 +77,7 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
         } transition-all ease-in-out duration-300 origin-top overflow-hidden`}
       >
         {item.details[0]?.description && (
-          <div className="border-t-2 border-grey-001 py-12px flex flex-col gap-y-12px">
+          <div className="flex flex-col border-t-2 border-grey-001 py-12px gap-y-12px">
             <SummarySection details={item.details} isActive={isActive} />
             <FunctionDetailBox details={item.details} isActive={isActive} />
           </div>
