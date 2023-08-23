@@ -4,7 +4,13 @@ import CompleteOptionPage from './complete/CompleteOptionPage';
 import CompleteOptionPageWithLoading from './complete/CompleteOptionPageWithLoading';
 import { INITIAL_USER_SELECTED_DATA, LAST_STEP } from './constant';
 import { UserSelectedOptionDataType } from './type';
-import { Dispatch, SetStateAction, createContext, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useEffect,
+  useState,
+} from 'react';
 
 export interface UserSelectedOptionDataContextType {
   userSelectedOptionData: UserSelectedOptionDataType;
@@ -26,6 +32,15 @@ function MakingPage() {
   const [userSelectedOptionData, setUserSelectedOptionData] = useState(
     INITIAL_USER_SELECTED_DATA
   );
+
+  useEffect(() => {
+    if (userSelectedOptionData === INITIAL_USER_SELECTED_DATA) {
+      const saveData = sessionStorage.getItem('optionData')
+        ? JSON.parse(sessionStorage.getItem('optionData')!)
+        : INITIAL_USER_SELECTED_DATA;
+      setUserSelectedOptionData(saveData);
+    }
+  }, []);
 
   return (
     <UserSelectedOptionDataContext.Provider

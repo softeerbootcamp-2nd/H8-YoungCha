@@ -66,8 +66,7 @@ function SelectOptionFooter({ mode, id, step, data }: SelectOptionFooterProps) {
 
     setUserSelectedOptionData((prev) => {
       const newData = { ...prev };
-
-      return getNewData({
+      const newStorageData = getNewData({
         newData,
         newOption: {
           name,
@@ -77,8 +76,11 @@ function SelectOptionFooter({ mode, id, step, data }: SelectOptionFooterProps) {
           type: optionTypeName[categoryId],
         },
       });
+      sessionStorage.setItem('optionData', JSON.stringify(newStorageData));
+      return newStorageData;
     });
   }
+
   return (
     <>
       <EstimationSummary
