@@ -1,5 +1,5 @@
-INSERT INTO car (id, name)
-VALUES (1, '팰리세이드');
+INSERT INTO car (id, name_ko, name_en)
+VALUES (1, '팰리세이드', 'Palisade');
 
 INSERT INTO trim (id, name, img_url, background_img_url, hashtag, price, description, car_id)
 VALUES (2, 'Le Blanc (르블랑)', 'leblancImgUrl', 'leblancBgImgUrl', '베스트셀러', 40440000, '모두가 선택한 베스트셀러', 1),
