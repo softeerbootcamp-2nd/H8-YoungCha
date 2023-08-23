@@ -5,7 +5,7 @@ interface FunctionDetailBoxProps extends Pick<AllOptionType, 'details'> {
 }
 
 function FunctionDetailBox({ details, isActive }: FunctionDetailBoxProps) {
-  if (details[0]?.specs) return null;
+  if (details[0]?.specs?.length === 0) return null;
   return (
     <div className={`bg-grey-001 rounded-6px p-12px flex flex-col gap-8px`}>
       {details[0]?.specs?.map((item, index) => (
