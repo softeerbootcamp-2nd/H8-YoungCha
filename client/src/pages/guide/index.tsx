@@ -1,4 +1,4 @@
-import CompleteGuide from './CompleteGuide';
+import CompleteGuideWithLoading from './CompleteGuideWithLoading';
 import PrepareGuide from './PrepareGuide';
 import { PathType } from './type';
 
@@ -8,10 +8,12 @@ interface PrepareGuideProps {
 
 function Guide({ path }: PrepareGuideProps) {
   return (
-    <div className="w-full">
-      <div className="flex justify-between flex-grow mx-auto max-w-7xl px-128px">
-        {path === 'complete' ? <CompleteGuide /> : <PrepareGuide path={path} />}
-      </div>
+    <div className="flex justify-between flex-grow mx-auto max-w-7xl px-128px w-full">
+      {path === 'complete' ? (
+        <CompleteGuideWithLoading />
+      ) : (
+        <PrepareGuide path={path} />
+      )}
     </div>
   );
 }
