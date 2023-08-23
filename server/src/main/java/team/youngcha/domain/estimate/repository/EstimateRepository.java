@@ -1,6 +1,7 @@
 package team.youngcha.domain.estimate.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -32,6 +33,7 @@ public class EstimateRepository {
                 ));
     }
 
+    @Cacheable("Estimate")
     public int calculateRate(Long trimId, Long optionId, Long keywordId, RequiredCategory category) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
