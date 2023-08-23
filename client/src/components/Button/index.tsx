@@ -1,12 +1,9 @@
-import { HTMLAttributes } from 'react';
+import { ButtonHTMLAttributes } from 'react';
 
-type ColorType = 'main-blue' | 'sub-blue' | 'white' | 'grey';
-interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+type ColorType = 'main-blue' | 'white' | 'grey';
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
   color?: ColorType;
-  onClick?: () => void;
-  disabled?: boolean;
 }
 
 const buttonSize = {
@@ -20,7 +17,6 @@ const buttonSize = {
 
 const buttonColor = {
   'main-blue': 'bg-main-blue text-white',
-  'sub-blue': 'bg-[#EDF2FA] text-grey-003',
   'white': 'bg-white text-black border border-black',
   'grey': 'bg-grey-001 text-main-blue',
 };
@@ -30,20 +26,12 @@ function Button({
   size = 'md',
   color = 'main-blue',
   onClick,
-  disabled = false,
   ...restProps
 }: ButtonProps) {
-  const className = `flex justify-center items-center rounded-[6px] font-medium body2 cursor-pointer ${
-    buttonSize[size]
-  } ${buttonColor[color]} ${disabled ? 'opacity-60 cursor-not-allowed' : ''}`;
+  const className = `flex justify-center items-center rounded-[6px] font-medium body2 cursor-pointer ${buttonSize[size]} ${buttonColor[color]}`;
 
   return (
-    <button
-      className={className}
-      onClick={onClick}
-      disabled={disabled}
-      {...restProps}
-    >
+    <button className={className} onClick={onClick} {...restProps}>
       {children}
     </button>
   );
