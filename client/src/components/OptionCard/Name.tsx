@@ -1,4 +1,6 @@
-import { PropsWithChildren } from 'react';
+import { DictionaryContext } from '@/App';
+import { PropsWithChildren, useContext } from 'react';
+import { Highlighter } from 'react-dictionary';
 
 interface NameProps {
   isActive: boolean;
@@ -6,11 +8,15 @@ interface NameProps {
 
 function Name({ children, isActive }: PropsWithChildren<NameProps>) {
   const nameTextColor = isActive ? 'text-grey-black' : 'text-grey-003';
+  const { dictionary, dictionaryOn } = useContext(DictionaryContext);
+
   return (
     <div
       className={`${nameTextColor} font-medium text-20px mb-10px whitespace-wrap break-words`}
     >
-      {children}
+      <Highlighter dictionary={dictionary} isActivate={dictionaryOn}>
+        {String(children)}
+      </Highlighter>
     </div>
   );
 }

@@ -3,8 +3,8 @@ import { ColorTextType, ColorType, UserSelectedOptionDataType } from './type';
 export const LAST_STEP = 8;
 
 export const OPTION_ORDER = [
-  '파워트레인',
-  '구동 방식',
+  '파워 트레인',
+  '구동방식',
   '바디 타입',
   '휠',
   '외장 색상',
