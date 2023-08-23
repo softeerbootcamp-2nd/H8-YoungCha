@@ -1,6 +1,7 @@
 package team.youngcha.domain.estimate.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -32,25 +33,20 @@ public class EstimateRepository {
                 ));
     }
 
+    @Cacheable("Estimate")
     public int calculateRate(Long trimId, Long optionId, Long keywordId, RequiredCategory category) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
         params.addValue("keywordId", keywordId);
         params.addValue("optionId", optionId);
 
-        String optionIdColumn = category.getColumn() + "_id";
+        String column = category.getColumn() + "_id";
 
         // sum(트림 + 옵션 + 키워드 포함) * 100 / sum(트림 + 키워드 포함)
-        Integer rate = namedParameterJdbcTemplate.queryForObject("select " +
-                        "sum(case when " +
-                        "e.trim_id = (:trimId) and e." + optionIdColumn + " = (:optionId) " +
-                        "and (:keywordId IN (e.keyword1_id, e.keyword2_id, e.keyword3_id)) " +
-                        "then 1 else 0 end) * 100" +
-                        "/ sum(case when " +
-                        "e.trim_id = (:trimId) " +
-                        "and (:keywordId IN (e.keyword1_id, e.keyword2_id, e.keyword3_id ))" +
-                        "then 1 else 0 end)" +
-                        "from estimate as e",
+        Integer rate = namedParameterJdbcTemplate.queryForObject("SELECT " +
+                        "(SUM(CASE WHEN " + column + " = (:optionId) THEN 1 ELSE 0 END) * 100) / COUNT(*) AS rate " +
+                        "FROM estimate AS e use index(idx_keyword_trim)" +
+                        "WHERE trim_id = (:trimId) AND (:keywordId) IN (e.keyword1_id, e.keyword2_id, e.keyword3_id);",
                 params, Integer.class);
         if (rate == null) {
             return 0;
@@ -71,8 +67,7 @@ public class EstimateRepository {
         String sql = "select estimate." + optionIdColumn + ", COUNT(*) as count from estimate " +
                 "where estimate.keyword1_id in (:keywords) " +
                 "and estimate.keyword2_id in (:keywords) " +
-                "and estimate.keyword3_id in (:keywords) " +
-                "and estimate.trim_id = (:trimId) ";
+                "and estimate.keyword3_id in (:keywords) ";
 
         if (!Objects.equals(category.getName(), RequiredCategory.WHEEL.getName())) {
             params.addValue("gender", guideInfo.getGender().getType());
@@ -81,7 +76,8 @@ public class EstimateRepository {
                     "and estimate.gender = (:gender) ";
         }
 
-        sql += "and estimate." + optionIdColumn + " in (:optionIds) " +
+        sql += "and estimate.trim_id = (:trimId) " +
+                "and estimate." + optionIdColumn + " in (:optionIds) " +
                 "group by estimate." + optionIdColumn;
 
         return namedParameterJdbcTemplate.queryForList(sql, params);
