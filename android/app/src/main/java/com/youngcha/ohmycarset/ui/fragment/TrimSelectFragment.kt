@@ -20,11 +20,11 @@ import com.google.android.material.tabs.TabLayout
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentTrimSelectBinding
 import com.youngcha.ohmycarset.enums.TrimType
-import com.youngcha.ohmycarset.model.TrimCategory
-import com.youngcha.ohmycarset.model.dialog.ButtonDialog
-import com.youngcha.ohmycarset.model.dialog.ButtonHorizontal
-import com.youngcha.ohmycarset.model.dialog.ButtonVertical
-import com.youngcha.ohmycarset.model.dialog.TextDialog
+import com.youngcha.ohmycarset.data.model.TrimCategory
+import com.youngcha.ohmycarset.data.model.dialog.ButtonDialog
+import com.youngcha.ohmycarset.data.model.dialog.ButtonHorizontal
+import com.youngcha.ohmycarset.data.model.dialog.ButtonVertical
+import com.youngcha.ohmycarset.data.model.dialog.TextDialog
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelectAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeExteriorColorAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeInteriorColorAdapter

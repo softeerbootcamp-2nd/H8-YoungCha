@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset.model.car
+package com.youngcha.ohmycarset.data.model.car
 
 data class OptionInfo(
     val optionType: String, // main, sub, color

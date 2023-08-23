@@ -88,7 +88,6 @@ object AnimationUtils {
         }
     }
 
-
     fun animateValueChange(
         textView: TextView,
         previousValue: Int,

@@ -8,7 +8,7 @@
 
         <variable
             name="button_dialog"
-            type="com.youngcha.ohmycarset.model.dialog.ButtonDialog" />
+            type="com.youngcha.ohmycarset.data.model.dialog.ButtonDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

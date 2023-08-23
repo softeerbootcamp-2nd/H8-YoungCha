@@ -13,7 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.LayoutFeedBackBinding
-import com.youngcha.ohmycarset.model.car.OptionInfo
+import com.youngcha.ohmycarset.data.model.car.OptionInfo
 
 class FeedbackView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

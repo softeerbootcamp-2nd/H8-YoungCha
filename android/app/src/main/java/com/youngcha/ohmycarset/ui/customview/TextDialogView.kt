@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.DialogTextBinding
-import com.youngcha.ohmycarset.model.dialog.TextDialog
+import com.youngcha.ohmycarset.data.model.dialog.TextDialog
 
 class TextDialogView(context: Context, private val textDialogData: TextDialog): Dialog(context, R.style.TransparentDialog) {
 

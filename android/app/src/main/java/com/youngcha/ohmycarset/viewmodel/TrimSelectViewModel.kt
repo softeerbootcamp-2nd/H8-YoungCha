@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.youngcha.ohmycarset.enums.TrimType
-import com.youngcha.ohmycarset.model.TrimCategory
-import com.youngcha.ohmycarset.model.TrimCategoryState
+import com.youngcha.ohmycarset.data.model.TrimCategory
+import com.youngcha.ohmycarset.data.model.TrimCategoryState
 
 class TrimSelectViewModel : ViewModel() {
     private val _trimCategoryState = MutableLiveData<TrimCategoryState>()

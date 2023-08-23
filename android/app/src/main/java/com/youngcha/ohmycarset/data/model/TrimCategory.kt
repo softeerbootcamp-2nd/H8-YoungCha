@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset.model
+package com.youngcha.ohmycarset.data.model
 
 import android.os.Parcelable
 import com.youngcha.ohmycarset.enums.TrimType

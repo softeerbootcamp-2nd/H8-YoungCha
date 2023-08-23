@@ -6,7 +6,7 @@
 
         <variable
             name="button_horizontal"
-            type="com.youngcha.ohmycarset.model.dialog.ButtonHorizontal" />
+            type="com.youngcha.ohmycarset.data.model.dialog.ButtonHorizontal" />
     </data>
 
 

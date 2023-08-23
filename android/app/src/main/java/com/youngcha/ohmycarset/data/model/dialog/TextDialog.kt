@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset.model.dialog
+package com.youngcha.ohmycarset.data.model.dialog
 
 class TextDialog(
     val title: String,

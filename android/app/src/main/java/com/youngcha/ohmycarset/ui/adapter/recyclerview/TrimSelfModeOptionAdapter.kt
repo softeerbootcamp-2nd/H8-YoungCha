@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.databinding.ItemTrimSelfModeOptionBinding
-import com.youngcha.ohmycarset.model.TrimSelfModeOption
+import com.youngcha.ohmycarset.data.model.TrimSelfModeOption
 
 class TrimSelfModeOptionAdapter: RecyclerView.Adapter<TrimSelfModeOptionAdapter.TrimSelectModeOptionViewHolder>() {
 

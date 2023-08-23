@@ -1,11 +1,11 @@
-package com.youngcha.ohmycarset.ui.adapter.viewpager
+package com.youngcha.ohmycarset.ui.adapter.recyclerview
 
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.youngcha.ohmycarset.model.car.OptionInfo
+import com.youngcha.ohmycarset.data.model.car.OptionInfo
 import com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel

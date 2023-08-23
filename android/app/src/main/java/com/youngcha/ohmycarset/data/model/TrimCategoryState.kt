@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset.model
+package com.youngcha.ohmycarset.data.model
 
 data class TrimCategoryState(
     val isFirstLoad: Boolean = false,

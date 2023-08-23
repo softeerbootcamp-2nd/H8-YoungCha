@@ -10,7 +10,7 @@
 
         <variable
             name="exterior_color"
-            type="com.youngcha.ohmycarset.model.TrimSelfModeExteriorColor" />
+            type="com.youngcha.ohmycarset.data.model.TrimSelfModeExteriorColor" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

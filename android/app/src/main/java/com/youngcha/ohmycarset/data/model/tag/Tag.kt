@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset.model.tag
+package com.youngcha.ohmycarset.data.model.tag
 
 data class Tag (
     var tagOrder:String,

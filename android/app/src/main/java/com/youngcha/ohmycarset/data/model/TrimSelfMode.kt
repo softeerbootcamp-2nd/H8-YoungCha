@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset.model
+package com.youngcha.ohmycarset.data.model
 
 // 실제 API -> imgUrl: String
 // Test -> imgUrl: Int [drawble에 있는 img로 테스트하기 위해]

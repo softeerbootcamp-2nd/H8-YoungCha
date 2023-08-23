@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.ItemEstimateSummaryBinding
-import com.youngcha.ohmycarset.model.car.OptionInfo
+import com.youngcha.ohmycarset.data.model.car.OptionInfo
 
 class EstimateSummaryAdapter
     : RecyclerView.Adapter<EstimateSummaryAdapter.EstimateSummaryViewHolder>() {

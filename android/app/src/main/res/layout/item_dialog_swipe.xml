@@ -6,7 +6,7 @@
 
         <variable
             name="swipe_dialog"
-            type="com.youngcha.ohmycarset.model.dialog.SwipeDialog" />
+            type="com.youngcha.ohmycarset.data.model.dialog.SwipeDialog" />
     </data>
 
     <androidx.cardview.widget.CardView

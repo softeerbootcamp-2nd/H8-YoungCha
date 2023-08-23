@@ -21,8 +21,8 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.R
-import com.youngcha.ohmycarset.model.car.Car
-import com.youngcha.ohmycarset.model.car.OptionInfo
+import com.youngcha.ohmycarset.data.model.car.Car
+import com.youngcha.ohmycarset.data.model.car.OptionInfo
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.EstimateSummaryAdapter
 import com.youngcha.ohmycarset.ui.customview.CircleView
 import com.youngcha.ohmycarset.ui.customview.FeedbackView

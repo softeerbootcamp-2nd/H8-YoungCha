@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset.model
+package com.youngcha.ohmycarset.data.model
 
 data class TrimSelfModeOption(
     val img: Int,

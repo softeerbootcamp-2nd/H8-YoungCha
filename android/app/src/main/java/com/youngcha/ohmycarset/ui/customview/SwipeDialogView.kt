@@ -10,7 +10,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.DialogSwipeBinding
-import com.youngcha.ohmycarset.model.dialog.SwipeDialog
+import com.youngcha.ohmycarset.data.model.dialog.SwipeDialog
 import com.youngcha.ohmycarset.ui.adapter.dialog.SwipeAdapter
 
 class SwipeDialogView(

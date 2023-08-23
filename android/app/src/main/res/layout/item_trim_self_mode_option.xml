@@ -7,7 +7,7 @@
 
         <variable
             name="trim_option"
-            type="com.youngcha.ohmycarset.model.TrimSelfModeOption" />
+            type="com.youngcha.ohmycarset.data.model.TrimSelfModeOption" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

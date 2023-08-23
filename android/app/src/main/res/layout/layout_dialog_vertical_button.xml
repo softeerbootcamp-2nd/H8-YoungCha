@@ -8,7 +8,7 @@
 
         <variable
             name="button_vertical"
-            type="com.youngcha.ohmycarset.model.dialog.ButtonVertical" />
+            type="com.youngcha.ohmycarset.data.model.dialog.ButtonVertical" />
 
     </data>
 

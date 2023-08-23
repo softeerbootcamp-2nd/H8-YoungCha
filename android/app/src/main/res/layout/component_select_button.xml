@@ -6,7 +6,7 @@
 
         <variable
             name="option_info"
-            type="com.youngcha.ohmycarset.model.car.OptionInfo" />
+            type="com.youngcha.ohmycarset.data.model.car.OptionInfo" />
 
         <variable
             name="is_visible"

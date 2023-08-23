@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.youngcha.ohmycarset.databinding.ActivityMainBinding
-import com.youngcha.ohmycarset.repository.RetrofitClient
+import com.youngcha.ohmycarset.data.api.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

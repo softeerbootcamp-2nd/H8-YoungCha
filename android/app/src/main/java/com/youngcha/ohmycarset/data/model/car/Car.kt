@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset.model.car
+package com.youngcha.ohmycarset.data.model.car
 
 data class Car(
     val name: String, // 자동차 이름 ex: 팰리세이드

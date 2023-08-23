@@ -1,4 +1,4 @@
-package com.youngcha.ohmycarset.model.car
+package com.youngcha.ohmycarset.data.model.car
 
 import com.youngcha.ohmycarset.enums.ImageType
 

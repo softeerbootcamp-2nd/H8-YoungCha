@@ -6,7 +6,7 @@
     <data>
         <variable
             name="tag"
-            type="com.youngcha.ohmycarset.model.tag.Tag" />
+            type="com.youngcha.ohmycarset.data.model.tag.Tag" />
         <variable
             name="order"
             type="Integer" />

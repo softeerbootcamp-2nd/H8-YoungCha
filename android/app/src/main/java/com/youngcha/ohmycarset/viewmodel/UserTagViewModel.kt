@@ -3,7 +3,7 @@ package com.youngcha.ohmycarset.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.youngcha.ohmycarset.model.tag.Tag
+import com.youngcha.ohmycarset.data.model.tag.Tag
 
 class UserTagViewModel : ViewModel() {
 

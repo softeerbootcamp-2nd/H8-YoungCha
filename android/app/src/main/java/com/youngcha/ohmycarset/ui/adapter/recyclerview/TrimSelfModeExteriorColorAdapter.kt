@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.databinding.ItemTrimSelfModeExteiorColorBinding
-import com.youngcha.ohmycarset.model.TrimSelfModeExteriorColor
+import com.youngcha.ohmycarset.data.model.TrimSelfModeExteriorColor
 
 class TrimSelfModeExteriorColorAdapter :
     RecyclerView.Adapter<TrimSelfModeExteriorColorAdapter.TrimSelfModeExteriorColorViewHolder>() {

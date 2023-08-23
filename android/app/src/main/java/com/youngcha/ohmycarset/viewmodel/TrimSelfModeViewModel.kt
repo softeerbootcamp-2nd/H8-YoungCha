@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.youngcha.ohmycarset.R
-import com.youngcha.ohmycarset.model.TrimSelfMode
-import com.youngcha.ohmycarset.model.TrimSelfModeExteriorColor
-import com.youngcha.ohmycarset.model.TrimSelfModeInteriorColor
-import com.youngcha.ohmycarset.model.TrimSelfModeMainOption
-import com.youngcha.ohmycarset.model.TrimSelfModeOption
+import com.youngcha.ohmycarset.data.model.TrimSelfMode
+import com.youngcha.ohmycarset.data.model.TrimSelfModeExteriorColor
+import com.youngcha.ohmycarset.data.model.TrimSelfModeInteriorColor
+import com.youngcha.ohmycarset.data.model.TrimSelfModeMainOption
+import com.youngcha.ohmycarset.data.model.TrimSelfModeOption
 
 class TrimSelfModeViewModel : ViewModel() {
 

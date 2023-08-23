@@ -8,14 +8,14 @@ import androidx.lifecycle.ViewModel
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.enums.AdditionalTab
 import com.youngcha.ohmycarset.enums.ImageType
-import com.youngcha.ohmycarset.model.TrimSelfMode
-import com.youngcha.ohmycarset.model.TrimSelfModeExteriorColor
-import com.youngcha.ohmycarset.model.TrimSelfModeInteriorColor
-import com.youngcha.ohmycarset.model.TrimSelfModeMainOption
-import com.youngcha.ohmycarset.model.TrimSelfModeOption
-import com.youngcha.ohmycarset.model.car.Car
-import com.youngcha.ohmycarset.model.car.ImageInfo
-import com.youngcha.ohmycarset.model.car.OptionInfo
+import com.youngcha.ohmycarset.data.model.TrimSelfMode
+import com.youngcha.ohmycarset.data.model.TrimSelfModeExteriorColor
+import com.youngcha.ohmycarset.data.model.TrimSelfModeInteriorColor
+import com.youngcha.ohmycarset.data.model.TrimSelfModeMainOption
+import com.youngcha.ohmycarset.data.model.TrimSelfModeOption
+import com.youngcha.ohmycarset.data.model.car.Car
+import com.youngcha.ohmycarset.data.model.car.ImageInfo
+import com.youngcha.ohmycarset.data.model.car.OptionInfo
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 class CarCustomizationViewModel : ViewModel() {
     // 자동차 정보 관련 변수들

@@ -6,7 +6,7 @@
 
         <variable
             name="interior_color"
-            type="com.youngcha.ohmycarset.model.TrimSelfModeInteriorColor" />
+            type="com.youngcha.ohmycarset.data.model.TrimSelfModeInteriorColor" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
