@@ -34,10 +34,11 @@ class CarRepositoryTest {
     @DisplayName("자동차 id로 Car 엔티티를 조회할 수 있어야 한다")
     void findByValidId() {
         //given
-        jdbcTemplate.execute("INSERT INTO car VALUES (1, '팰리세이드')");
+        jdbcTemplate.execute("INSERT INTO car VALUES (1, '팰리세이드', 'Palisade')");
 
         Long carId = 1L;
-        String carName = "팰리세이드";
+        String koreanName = "팰리세이드";
+        String englishName = "Palisade";
 
         //when
         Car car = carRepository.findById(carId).orElseThrow();
@@ -45,7 +46,8 @@ class CarRepositoryTest {
         //then
         softAssertions.assertThat(car).isNotNull();
         softAssertions.assertThat(car.getId()).isEqualTo(carId);
-        softAssertions.assertThat(car.getName()).isEqualTo(carName);
+        softAssertions.assertThat(car.getKoreanName()).isEqualTo(koreanName);
+        softAssertions.assertThat(car.getEnglishName()).isEqualTo(englishName);
     }
 
     @Test
@@ -66,14 +68,14 @@ class CarRepositoryTest {
     void findAll() {
         //given
         jdbcTemplate.execute("INSERT INTO car VALUES " +
-                "(1, '팰리세이드'), " +
-                "(2, '아반떼'), " +
-                "(3, '소나타')");
+                "(1, '팰리세이드', 'Palisade'), " +
+                "(2, '아반떼', 'Avante'), " +
+                "(3, '소나타', 'Sonata')");
 
         List<Car> expected = List.of(
-                new Car(1L, "팰리세이드"),
-                new Car(2L, "아반떼"),
-                new Car(3L, "소나타")
+                new Car(1L, "팰리세이드", "Palisade"),
+                new Car(2L, "아반떼", "Avante"),
+                new Car(3L, "소나타", "Sonata")
         );
 
         //when
