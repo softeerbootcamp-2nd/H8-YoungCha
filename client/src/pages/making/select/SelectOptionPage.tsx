@@ -41,7 +41,7 @@ function SelectOptionPage() {
             <SelectOptionListContainer>
               {data?.map((item: AllOptionType, index) => (
                 <OptionCard
-                  key={item.name}
+                  key={`OptionCard-${item.name}`}
                   isActive={selectedItem === index}
                   onClick={() => {
                     setSelectedItem(index);
