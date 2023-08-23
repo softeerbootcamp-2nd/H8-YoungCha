@@ -12,7 +12,7 @@ import Confetti from '@/components/Confetti';
 import { UserSelectedOptionDataContext } from '..';
 import getOptionGroupTotalPrice from '@/utils/getTotalPrice';
 import getOptionGroupsTotalPrice from '@/utils/getTotalPrice';
-import { getPriceTemplete } from '@/utils';
+import { formatPrice } from '@/utils';
 
 function CompleteOptionPage() {
   const [selectedColorType, setSelectedColorType] =
@@ -65,7 +65,7 @@ function CompleteOptionPage() {
             <div className="flex items-center gap-14px">
               <span className="title4 text-grey-black">차량 총 견적 금액</span>
               <span className="font-hsans-head text-34px font-medium leading-[44.2px] tracking-[-1.02px] text-grey-black">
-                {getPriceTemplete(totalPrice)}
+                {formatPrice(totalPrice)}
               </span>
             </div>
           </div>
@@ -118,7 +118,7 @@ function CompleteOptionPage() {
             <div className="flex items-center gap-14px">
               <span className="title4 text-grey-black">차량 총 견적 금액</span>
               <span className="font-hsans-head text-34px font-medium leading-[44.2px] tracking-[-1.02px] text-[#36383C]">
-                {getPriceTemplete(totalPrice)}
+                {formatPrice(totalPrice)}
               </span>
             </div>
           </div>
