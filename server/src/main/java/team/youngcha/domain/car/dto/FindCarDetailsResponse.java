@@ -14,13 +14,17 @@ import java.util.List;
 public class FindCarDetailsResponse {
 
     @Schema(description = "이름")
-    private String model;
+    private ModelName modelName;
+
+    @Schema(description = "가이드 모드 정보")
+    private GuideModeDetails guide;
 
     @Schema(description = "트림 상세정보")
     private List<TrimDetail> trims;
 
-    public FindCarDetailsResponse(String model, List<TrimDetail> trims) {
-        this.model = model;
+    public FindCarDetailsResponse(ModelName modelName, GuideModeDetails guide, List<TrimDetail> trims) {
+        this.modelName = modelName;
+        this.guide = guide;
         this.trims = trims;
     }
 }

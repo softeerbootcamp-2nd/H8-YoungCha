@@ -30,7 +30,7 @@ class OptionRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        jdbcTemplate.update("insert into car (id, name) values (1,'car')");
+        jdbcTemplate.update("insert into car (id, name_ko, name_en) values (1,'자동차', 'car')");
         jdbcTemplate.update("insert into trim (id, name, img_url, background_img_url, hashtag, price, description, car_id)" +
                 " values (1, 'Le Blanc', 'Le_Blanc_img.jpg', 'Le_Blanc_back', '#베스트셀러', 10000000, '베스트셀러', 1)," +
                 "(2, 'Exclusive', 'Exclusive_img.jpg', 'Exclusive_back', '#기본', 9000000, '기본', 1)");

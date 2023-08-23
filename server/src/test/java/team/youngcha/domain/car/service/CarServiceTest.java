@@ -9,10 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import team.youngcha.common.exception.CustomException;
-import team.youngcha.domain.car.dto.CarDetails;
-import team.youngcha.domain.car.dto.CarResponse;
-import team.youngcha.domain.car.dto.FindCarDetailsResponse;
-import team.youngcha.domain.car.dto.FindCarsResponse;
+import team.youngcha.domain.car.dto.*;
 import team.youngcha.domain.car.entity.Car;
 import team.youngcha.domain.car.repository.CarDetailsRepository;
 import team.youngcha.domain.car.repository.CarRepository;
@@ -20,7 +17,6 @@ import team.youngcha.domain.trim.dto.TrimDetail;
 import team.youngcha.domain.trim.service.TrimService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -84,26 +80,31 @@ class CarServiceTest {
         @DisplayName("조회 결과를 응답 DTO로 반환한다")
         void findDetails() {
             //given
-            Car car = new Car(1L, "팰리세이드");
+            Car car = new Car(1L, "팰리세이드", "Palisade");
 
-            List<CarDetails> carDetails = new ArrayList<>();
-            carDetails.add(mock(CarDetails.class));
+            List<CarDetails> carDetails = List.of(
+                    new CarDetails(1L, "Guide Mode", "img1", "background1", "hashtag1", 500, null, null, null, null, null, null),
+                    new CarDetails(2L, "Leblanc", "img2", "background2", "hashtag2", 1000, "description2", 3, "option", "category", 1, "optionImg"));
 
-            List<TrimDetail> trimDetails = new ArrayList<>(Arrays.asList(
-                    mock(TrimDetail.class),
-                    mock(TrimDetail.class)));
+            List<TrimDetail> trimDetails = List.of(new TrimDetail(2L, "Leblanc", "background2", "img2", "hashtag2", "description2", true, 1000));
+
+            ModelName modelName = new ModelName("팰리세이드", "Palisade");
+
+            GuideModeDetails guideModeDetails = new GuideModeDetails("background1", "hashtag1", 500);
+
+            FindCarDetailsResponse expectedResponse = new FindCarDetailsResponse(modelName, guideModeDetails, trimDetails);
 
             given(carRepository.findById(anyLong())).willReturn(Optional.of(car));
             given(carDetailsRepository.findDetails(anyLong())).willReturn(carDetails);
-            given(trimService.extractTrimDetailsFromCarDetailsDtos(anyList())).willReturn(trimDetails);
+            given(trimService.extractTrimDetails(anyList())).willReturn(trimDetails);
 
             //when
-            FindCarDetailsResponse findCarDetailsResponse = carService.findDetails(car.getId());
+            FindCarDetailsResponse actualResponse = carService.findDetails(car.getId());
 
             //then
-            assertThat(findCarDetailsResponse).isNotNull();
-            assertThat(findCarDetailsResponse.getModel()).isEqualTo(car.getName());
-            assertThat(findCarDetailsResponse.getTrims().size()).isEqualTo(2);
+            assertThat(actualResponse)
+                    .usingRecursiveComparison()
+                    .isEqualTo(expectedResponse);
         }
 
     }
@@ -117,9 +118,9 @@ class CarServiceTest {
         void findCars() {
             //given
             List<Car> cars = List.of(
-                    new Car(1L, "팰리세이드"),
-                    new Car(2L, "소나타"),
-                    new Car(3L, "아반떼")
+                    new Car(1L, "팰리세이드", "Palisade"),
+                    new Car(2L, "소나타", "Sonata"),
+                    new Car(3L, "아반떼", "Avante")
             );
 
             List<CarResponse> carResponses = cars.stream()

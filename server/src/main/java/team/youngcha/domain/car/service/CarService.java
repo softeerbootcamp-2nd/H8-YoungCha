@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import team.youngcha.common.exception.CustomException;
-import team.youngcha.domain.car.dto.CarDetails;
-import team.youngcha.domain.car.dto.CarResponse;
-import team.youngcha.domain.car.dto.FindCarDetailsResponse;
-import team.youngcha.domain.car.dto.FindCarsResponse;
+import team.youngcha.domain.car.dto.*;
 import team.youngcha.domain.car.entity.Car;
 import team.youngcha.domain.car.repository.CarDetailsRepository;
 import team.youngcha.domain.car.repository.CarRepository;
@@ -34,9 +31,24 @@ public class CarService {
             throw new CustomException(HttpStatus.NOT_FOUND, "자동차 상세정보 조회 실패", "해당 자동차의 상세정보가 존재하지 않습니다.");
         }
 
-        List<TrimDetail> trimDetails = trimService.extractTrimDetailsFromCarDetailsDtos(carDetails);
+        ModelName modelName = new ModelName(car.getKoreanName(), car.getEnglishName());
 
-        return new FindCarDetailsResponse(car.getName(), trimDetails);
+        GuideModeDetails guideModeDetails = extractGuideModeDetails(carDetails);
+
+        List<TrimDetail> trimDetails = trimService.extractTrimDetails(carDetails);
+
+        return new FindCarDetailsResponse(modelName, guideModeDetails, trimDetails);
+    }
+
+    private GuideModeDetails extractGuideModeDetails(List<CarDetails> carDetails) {
+        for (CarDetails carDetail : carDetails) {
+            if (carDetail.getTrimName().equals("Guide Mode")) {
+                return new GuideModeDetails(carDetail.getTrimBackgroundImgUrl(),
+                        carDetail.getTrimHashTag(),
+                        carDetail.getTrimPrice());
+            }
+        }
+        return new GuideModeDetails("", "", 0);
     }
 
     public FindCarsResponse findCars() {

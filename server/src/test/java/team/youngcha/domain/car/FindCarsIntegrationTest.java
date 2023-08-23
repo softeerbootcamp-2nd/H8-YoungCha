@@ -26,7 +26,7 @@ public class FindCarsIntegrationTest extends IntegrationTestBase {
         //given
         String url = "/cars";
 
-        List<CarResponse> carResponses = Stream.of(new Car(1L, "팰리세이드"), new Car(2L, "넥쏘"), new Car(3L, "디올 뉴 싼타페"))
+        List<CarResponse> carResponses = Stream.of(new Car(1L, "팰리세이드", "Palisade"), new Car(2L, "넥쏘", "Nexo"), new Car(3L, "디올 뉴 싼타페", "The all-new SANTA FE"))
                 .map(CarResponse::new)
                 .collect(Collectors.toList());
 

@@ -190,3 +190,18 @@ create index idx_interior_color_trim
 
 create index idx_wheel_trim
     on sell (wheel_id, trim_id);
+
+create index idx_age_gender
+    on sell (age, gender);
+
+create index idx_age_trim_exterior_color
+    on sell (age, trim_id, exterior_color_id);
+
+create index idx_gender_trim_exterior_color
+    on sell (gender, trim_id, exterior_color_id);
+
+create index idx_keyword_age_range_gender_trim
+    on estimate (keyword1_id, keyword2_id, keyword3_id, age_range, gender, trim_id);
+
+create index idx_keyword_trim
+    on estimate (keyword1_id, keyword2_id, keyword3_id, trim_id);
