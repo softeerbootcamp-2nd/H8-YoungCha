@@ -12,6 +12,7 @@ import Tags from './Tags';
 import { AllOptionType } from '@/types/option';
 import Rate from '@/components/OptionCard/Rate.tsx';
 import Name from '@/components/OptionCard/Name.tsx';
+import { PathParamsType } from '@/types/router.ts';
 
 interface OptionCardProps {
   item: AllOptionType;
@@ -24,7 +25,7 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
 
   const optionCardRef = useRef<HTMLButtonElement>(null);
 
-  const { mode, step } = useParams() as { mode: string; step: string };
+  const { mode, step } = useParams() as PathParamsType;
   const isSelfMode = mode === 'self';
 
   const totalDivColor = isActive
