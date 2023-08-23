@@ -1,23 +1,25 @@
 import SelectButton from '@/components/SelectButton';
 import StepCircle from '../StepCircle';
 import { InactiveRound } from '@/assets/icons';
+import { useTagSelectContext } from '@/store/useTagSelectContext';
 
 interface KeywordButtonProps {
   keyword: string;
-  selectedKeyword: Array<string>;
+  keywordIndex: number;
   hoveredKeyword: string;
+  isSelected: boolean;
   handleClickKeyword: (keyword: string) => void;
   setHoveredKeyword: (keyword: string) => void;
 }
 function KeywordButton({
   keyword,
-  selectedKeyword,
+  keywordIndex,
   hoveredKeyword,
+  isSelected,
   handleClickKeyword,
   setHoveredKeyword,
 }: KeywordButtonProps) {
-  const keywordIndex = selectedKeyword.indexOf(keyword);
-  const isSelected = keywordIndex !== -1;
+  const { selectedKeyword } = useTagSelectContext();
   const isHovered = hoveredKeyword === keyword && selectedKeyword.length < 3;
 
   return (

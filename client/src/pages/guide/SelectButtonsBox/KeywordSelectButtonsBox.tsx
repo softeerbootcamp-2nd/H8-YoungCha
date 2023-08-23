@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import KeywordButton from './KeywordButton';
+import { useTagSelectContext } from '@/store/useTagSelectContext';
 
 const keywordSelectArray = [
   {
@@ -16,21 +17,25 @@ const keywordSelectArray = [
   },
 ];
 function KeywordSelectButtonsBox() {
-  const [selectedKeyword, setSelectedKeyword] = useState<Array<string>>([]);
   const [hoveredKeyword, setHoveredKeyword] = useState<string>('');
+  const { selectedKeyword, setselectedKeyword } = useTagSelectContext();
 
-  function handleClickKeyword(keyword: string) {
-    const keywordIndex = selectedKeyword.indexOf(keyword);
-    if (keywordIndex === -1) {
-      if (selectedKeyword.length === 3) return;
+  function handleOnClick(keyword: string) {
+    setselectedKeyword((prevselectedKeyword) => {
+      const keywordIndex = prevselectedKeyword.indexOf(keyword);
+      if (keywordIndex === -1) {
+        if (prevselectedKeyword.length === 3) {
+          return prevselectedKeyword;
+        }
 
-      setSelectedKeyword([...selectedKeyword, keyword]);
-    } else {
-      setSelectedKeyword([
-        ...selectedKeyword.slice(0, keywordIndex),
-        ...selectedKeyword.slice(keywordIndex + 1),
-      ]);
-    }
+        return [...prevselectedKeyword, keyword];
+      } else {
+        return [
+          ...prevselectedKeyword.slice(0, keywordIndex),
+          ...prevselectedKeyword.slice(keywordIndex + 1),
+        ];
+      }
+    });
   }
 
   return (
@@ -40,16 +45,22 @@ function KeywordSelectButtonsBox() {
           <div key={title} className="flex flex-col gap-16px">
             <h3 className="text-grey-black title4">{title}</h3>
             <div className="grid grid-cols-2 gap-12px">
-              {keywords.map((keyword) => (
-                <KeywordButton
-                  key={keyword}
-                  keyword={keyword}
-                  selectedKeyword={selectedKeyword}
-                  hoveredKeyword={hoveredKeyword}
-                  handleClickKeyword={handleClickKeyword}
-                  setHoveredKeyword={setHoveredKeyword}
-                />
-              ))}
+              {keywords.map((keyword) => {
+                const keywordIndex = selectedKeyword.indexOf(keyword);
+                const isSelected = keywordIndex !== -1;
+
+                return (
+                  <KeywordButton
+                    key={keyword}
+                    keyword={keyword}
+                    keywordIndex={keywordIndex}
+                    hoveredKeyword={hoveredKeyword}
+                    handleClickKeyword={handleOnClick}
+                    setHoveredKeyword={setHoveredKeyword}
+                    isSelected={isSelected}
+                  />
+                );
+              })}
             </div>
           </div>
         );
