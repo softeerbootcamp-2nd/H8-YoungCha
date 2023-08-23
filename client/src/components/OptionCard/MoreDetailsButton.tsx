@@ -3,10 +3,10 @@ import {
   Dispatch,
   MouseEvent,
   SetStateAction,
+  useCallback,
 } from 'react';
 import * as Icon from '@/assets/icons';
-interface MoreDetailsButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface MoreDetailsButtonProps extends ButtonHTMLAttributes<HTMLDivElement> {
   isExpanded: boolean;
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
 }
@@ -14,15 +14,16 @@ function MoreDetailsButton({
   isExpanded,
   setIsExpanded,
 }: MoreDetailsButtonProps) {
-  function toggleIsExpanded(event: MouseEvent<HTMLButtonElement>) {
+  const toggleIsExpanded = useCallback((event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     setIsExpanded((prevState) => !prevState);
-  }
+  }, []);
 
   return (
-    <button
+    <div
       className="relative flex justify-center text-center gap-2px"
       onClick={toggleIsExpanded}
+      role="none"
     >
       <span className="font-medium text-grey-003 body3">
         {isExpanded ? '접기' : '자세히 보기'}
@@ -32,7 +33,7 @@ function MoreDetailsButton({
           isExpanded ? 'rotate-180' : 'rotate-0'
         }`}
       />
-    </button>
+    </div>
   );
 }
 
