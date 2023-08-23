@@ -11,6 +11,7 @@ import CheckIcon from './CheckIcon';
 import Tags from './Tags';
 import { OptionDetailType, AllOptionType } from '@/types/option';
 import Rate from '@/components/OptionCard/Rate.tsx';
+import Name from '@/components/OptionCard/Name.tsx';
 
 interface OptionCardProps
   extends Pick<AllOptionType, 'tags'>,
@@ -45,8 +46,6 @@ function OptionCard({
       : 'bg-white border-sub-blue'
     : 'bg-[#EDF2FA] border-[#EDF2FA] hover:border-grey-003';
 
-  const nameTextColor = isActive ? 'text-grey-black' : 'text-grey-003';
-
   const hasDetail = !!item.details[0]?.description;
 
   function handleIsActive() {
@@ -79,9 +78,7 @@ function OptionCard({
         <Tags tags={item?.tags} />
       </div>
       <Rate {...{ rate: item.rate, isSelfMode, isActive }} />
-      <div className={`${nameTextColor} font-medium text-20px mb-10px`}>
-        {item.name}
-      </div>
+      <Name isActive={isActive}>{item.name}</Name>
       <ImgSection isActive={isActive} imgUrl={imgUrl} step={step} />
       <div
         className={`${
