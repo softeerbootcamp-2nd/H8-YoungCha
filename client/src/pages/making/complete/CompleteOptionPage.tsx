@@ -20,7 +20,7 @@ function CompleteOptionPage() {
   return (
     <div>
       <Confetti particleCount={120} circleParticleCount={60} />
-      <div className="flex flex-col items-center w-full m-auto mt-60px gap-60px max-w-7xl px-128px pb-70px">
+      <div className="flex flex-col items-center w-full m-auto pt-60px gap-60px max-w-7xl px-128px pb-70px">
         <div className="flex flex-col items-center w-full">
           <h1 className="whitespace-pre-line text-34px font-medium leading-[47.6px] tracking-[-1.36px] font-hsans-head text-grey-black text-center">
             {COMPLETE_OPTION_PAGE_TITLE}
