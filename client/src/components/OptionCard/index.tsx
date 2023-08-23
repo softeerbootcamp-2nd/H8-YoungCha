@@ -26,7 +26,6 @@ interface OptionCardProps
 function OptionCard({
   isActive = false,
   item,
-  tags,
   imgUrl,
   step,
   children,
@@ -82,7 +81,7 @@ function OptionCard({
     >
       <div className="flex">
         <CheckIcon {...{ isActive, isSelfMode }} />
-        {!isSelfMode && <Tags tags={tags} />}
+        <Tags tags={item?.tags} />
       </div>
       <div
         className={`${rateTextColor}
