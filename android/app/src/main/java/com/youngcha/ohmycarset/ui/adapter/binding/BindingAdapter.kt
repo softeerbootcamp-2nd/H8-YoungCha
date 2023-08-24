@@ -20,22 +20,46 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.youngcha.ohmycarset.R
-import com.youngcha.ohmycarset.model.car.Car
-import com.youngcha.ohmycarset.model.car.OptionInfo
+import com.youngcha.ohmycarset.data.model.car.Car
+import com.youngcha.ohmycarset.data.model.car.OptionInfo
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.EstimateSummaryAdapter
 import com.youngcha.ohmycarset.ui.customview.CircleView
 import com.youngcha.ohmycarset.ui.customview.FeedbackView
 import com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
 import com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
 import com.youngcha.ohmycarset.ui.interfaces.OnHyundaiButtonClickListener
+import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.util.RoundedBackgroundSpan
 
+@BindingAdapter(value = ["mainImageUrl", "subImageUrl"], requireAll = false)
+fun loadImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
+    Log.d("로그", "서브 URL 이미지 입니다. " + subImageUrl?.toString())
+    if (subImageUrl.isNullOrEmpty()) {
+        if (mainImageUrl.isNullOrEmpty()) {
+            Glide.with(view.context).clear(view)
+        } else {
+            Glide.with(view.context)
+                .load(mainImageUrl)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(view)
+        }
+    } else {
+        Glide.with(view.context)
+            .load(subImageUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(view)
+    }
+}
 
 @BindingAdapter("imageUrl")
-fun loadImage(view: ImageView, imageUrl: String) {
-    // 여기에 이미지 로딩 로직 (Glide | Coil)
-    // coil
+fun setLogoImage(view: ImageView, imageUrl: String?) {
+    Glide.with(view.context)
+        .load(imageUrl)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(view)
 }
 
 @BindingAdapter("testImageSource")
@@ -69,11 +93,6 @@ fun setFillColor(view: CircleView, colorStr: String?) {
     }
 }
 
-/*
-<ImageView
-    ...
-    app:testImageSource="@{@drawable/img_test1}" />
- */
 
 @BindingAdapter("app:isVisibleForRankZero")
 fun View.isVisibleForRankZero(rank: Int) {
@@ -128,26 +147,6 @@ fun setMainOptionImage(
     }
 }
 
-@BindingAdapter("testImageResourceCar", "testImageResourceComponentName")
-fun ImageView.setTestImageResource(car: Car?, componentName: String?) {
-    when (componentName) {
-        "옵션 선택" -> {
-            car?.subOptionImage?.get(componentName)?.let { setImageResource(it) }
-        }
-        else -> {
-            car?.mainOptionImages?.let {
-                for (map in it) {
-                    val resourceId = map[componentName]
-                    if (resourceId != null) {
-                        setImageResource(resourceId)
-                        break
-                    }
-                }
-            }
-        }
-    }
-}
-
 @BindingAdapter("optionInfo")
 fun setOptionInfo(view: HyundaiButtonView, optionInfo: OptionInfo?) {
     view.binding.optionInfo = optionInfo
@@ -191,7 +190,11 @@ fun setCustomMarginBottom(view: View, marginBottom: Float) {
 }
 
 @BindingAdapter(value = ["myCarData", "viewType"], requireAll = false)
-fun bindRecyclerView(recyclerView: RecyclerView, myCarData: List<Map<String, List<OptionInfo>>>?, viewType: String) {
+fun bindRecyclerView(
+    recyclerView: RecyclerView,
+    myCarData: List<Map<String, List<OptionInfo>>>?,
+    viewType: String
+) {
     val adapter = recyclerView.adapter as? EstimateSummaryAdapter ?: EstimateSummaryAdapter()
     recyclerView.adapter = adapter
 
@@ -206,9 +209,10 @@ fun bindRecyclerView(recyclerView: RecyclerView, myCarData: List<Map<String, Lis
         mapEntry.forEach { (key, optionList) ->
             optionList.forEach { option ->
                 if (option.optionType == viewType) {
-                    matchedOptionsMap[key] = matchedOptionsMap.getOrDefault(key, mutableListOf()).apply {
-                        add(option)
-                    }
+                    matchedOptionsMap[key] =
+                        matchedOptionsMap.getOrDefault(key, mutableListOf()).apply {
+                            add(option)
+                        }
                 }
             }
         }
@@ -226,6 +230,7 @@ fun View.setCurrentType(currentType: String?, visible: Int) {
                 "GuideMode" -> backgroundView.setBackgroundResource(R.drawable.style_guide_mode_button)
             }
         }
+
         else -> backgroundView.setBackgroundResource(R.drawable.btn_unselect_style)
     }
 }
@@ -240,6 +245,7 @@ fun View.setCustomIcon(currentType: String?, visible: Int) {
                 "GuideMode" -> icon.setImageResource(R.drawable.ic_check_guide)
             }
         }
+
         else -> icon.setImageResource(R.drawable.ic_check_off)
     }
 }
@@ -251,10 +257,22 @@ fun View.setTextColor(currentType: String?, visible: Int) {
     when (visible) {
         1 -> {
             when (currentType) {
-                "SelfMode" -> rate.setTextColor(ContextCompat.getColor(context, R.color.main_hyundai_blue))
-                "GuideMode" -> rate.setTextColor(ContextCompat.getColor(context, R.color.sub_active_blue))
+                "SelfMode" -> rate.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.main_hyundai_blue
+                    )
+                )
+
+                "GuideMode" -> rate.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.sub_active_blue
+                    )
+                )
             }
         }
+
         else -> rate.setTextColor(ContextCompat.getColor(context, R.color.cool_grey_003))
     }
 }
@@ -269,6 +287,7 @@ fun View.setTextColorForHyundaiButton(visible: Int) {
             name.setTextColor(ContextCompat.getColor(context, R.color.main_hyundai_blue))
             price.setTextColor(ContextCompat.getColor(context, R.color.main_hyundai_blue))
         }
+
         else -> {
             name.setTextColor(ContextCompat.getColor(context, R.color.cool_grey_003))
             price.setTextColor(ContextCompat.getColor(context, R.color.cool_grey_003))
@@ -294,12 +313,12 @@ fun HyundaiButtonView.borderVisible(currentType: String?, visible: Int) {
     val leftLine = this.findViewById<View>(R.id.v_left_line)
     val rightLine = this.findViewById<View>(R.id.v_right_line)
     if (currentType == "GuideMode") {
-       if (visible == 0) {
-           bottomLine.visibility = INVISIBLE
-           topLine.visibility = INVISIBLE
-           leftLine.visibility = INVISIBLE
-           rightLine.visibility = INVISIBLE
-       }
+        if (visible == 0) {
+            bottomLine.visibility = INVISIBLE
+            topLine.visibility = INVISIBLE
+            leftLine.visibility = INVISIBLE
+            rightLine.visibility = INVISIBLE
+        }
     } else {
         bottomLine.visibility = INVISIBLE
         topLine.visibility = INVISIBLE
@@ -313,7 +332,10 @@ fun setTitle(view: HeaderToolBarView, title: String?) {
     view.setTitle(title ?: "")
 }
 
-@BindingAdapter(value = ["currentTypeForBorderAnimation", "visibleForBorderAnimation"], requireAll = false)
+@BindingAdapter(
+    value = ["currentTypeForBorderAnimation", "visibleForBorderAnimation"],
+    requireAll = false
+)
 fun HyundaiButtonView.borderAnimation(currentType: String?, visible: Int) {
     if (currentType == "GuideMode" && visible == 1)
         this.animateBorder()
@@ -345,6 +367,7 @@ fun setTag(textView: TextView, currentTypeForTag: String?, visible: Int, tags: L
                 }
             }
         }
+
         else -> {
             textView.visibility = INVISIBLE
         }
@@ -354,7 +377,7 @@ fun setTag(textView: TextView, currentTypeForTag: String?, visible: Int, tags: L
 @BindingAdapter(value = ["mainFeedbackText", "subFeedbackText"], requireAll = false)
 fun setFeedbackText(view: FeedbackView, mainFeedbackText: String?, subFeedbackText: String?) {
     mainFeedbackText?.let {
-        view.setMainFeedbackText(it + "은\n효율이 좋아요!!")
+        view.setMainFeedbackText(it)
     }
 
     subFeedbackText?.let {
@@ -365,4 +388,41 @@ fun setFeedbackText(view: FeedbackView, mainFeedbackText: String?, subFeedbackTe
 @BindingAdapter("formattedCurrency")
 fun bindFormattedCurrency(view: TextView, value: Int) {
     view.text = "%,d원".format(value)
+}
+
+@BindingAdapter("plusPrice")
+fun setPriceText(view: TextView, price: Int) {
+    view.text ="+ %,d원".format(price)
+}
+
+@BindingAdapter(value = ["componentName", "subImage"], requireAll = false)
+fun setSubImage(view: ImageView, componentName: String?, subImage: String?) {
+
+    if (componentName == null || subImage == null) return
+
+    val context = view.context
+    val widthInPixels: Int
+    val heightInPixels: Int
+
+    if (componentName == "외장 색상") {
+        widthInPixels = (60 * context.resources.displayMetrics.density).toInt()
+        heightInPixels = (60 * context.resources.displayMetrics.density).toInt()
+
+        Glide.with(context)
+            .load(subImage)
+            .circleCrop()
+            .into(view)
+    } else {
+        widthInPixels = (150 * context.resources.displayMetrics.density).toInt()
+        heightInPixels = (50 * context.resources.displayMetrics.density).toInt()
+
+        Glide.with(context)
+            .load(subImage)
+            .into(view)
+    }
+
+    val params = view.layoutParams
+    params.width = widthInPixels
+    params.height = heightInPixels
+    view.layoutParams = params
 }

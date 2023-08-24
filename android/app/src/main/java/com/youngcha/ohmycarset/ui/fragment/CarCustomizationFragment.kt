@@ -3,7 +3,6 @@ package com.youngcha.ohmycarset.ui.fragment
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Rect
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,26 +12,27 @@ import android.view.ViewTreeObserver
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.youngcha.baekcasajeon.baekcasajeon
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.FragmentCarCustomizationBinding
-import com.youngcha.ohmycarset.model.car.OptionInfo
-import com.youngcha.ohmycarset.model.dialog.ButtonDialog
-import com.youngcha.ohmycarset.model.dialog.ButtonHorizontal
-import com.youngcha.ohmycarset.model.dialog.ButtonVertical
+import com.youngcha.ohmycarset.data.model.car.OptionInfo
+import com.youngcha.ohmycarset.data.model.dialog.ButtonDialog
+import com.youngcha.ohmycarset.data.model.dialog.ButtonHorizontal
+import com.youngcha.ohmycarset.data.model.dialog.ButtonVertical
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.EstimateDetailAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeOptionAdapter
-import com.youngcha.ohmycarset.ui.adapter.viewpager.CarOptionPagerAdapter
+import com.youngcha.ohmycarset.ui.adapter.recyclerview.CarOptionPagerAdapter
 import com.youngcha.ohmycarset.ui.customview.BaekcasajeonDialogView
 import com.youngcha.ohmycarset.ui.customview.ButtonDialogView
 import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
@@ -41,7 +41,12 @@ import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.util.setupImageSwipeWithScrollView
 import com.youngcha.baekcasajeon.*
+import com.youngcha.ohmycarset.data.api.RetrofitClient
+import com.youngcha.ohmycarset.data.api.SelfModeApiService
+import com.youngcha.ohmycarset.data.repository.CategoryRepository
+import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
+import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 class CarCustomizationFragment : Fragment() {
@@ -51,7 +56,13 @@ class CarCustomizationFragment : Fragment() {
     private lateinit var detailAdapterMain: EstimateDetailAdapter
     private lateinit var detailAdapterSub: EstimateDetailAdapter
     private lateinit var trimSelfModeOptionAdapter: TrimSelfModeOptionAdapter
-    private val carViewModel: CarCustomizationViewModel by viewModels()
+    //private val carViewModel: CarCustomizationViewModel by viewModels()
+  //  private lateinit var carViewModel: CarCustomizationViewModel
+    private lateinit var carViewModel: CarCustomizationViewModel
+    private val selfModeRepository by lazy { SelfModeRepository(RetrofitClient.selfModeApi) }
+    private val categoryRepository by lazy {CategoryRepository(RetrofitClient.categoriesApi)}
+    private val viewModelFactory by lazy { CarCustomizationViewModelFactory(selfModeRepository, categoryRepository) }
+    private var first: Boolean = true
 
     private lateinit var mode: String
     private lateinit var startPoint: String
@@ -72,6 +83,7 @@ class CarCustomizationFragment : Fragment() {
     }
 
     private fun setupViews() {
+        carViewModel = ViewModelProvider(this, viewModelFactory).get(CarCustomizationViewModel::class.java)
         binding.apply {
             viewModel = carViewModel
             lifecycleOwner = this@CarCustomizationFragment
@@ -199,6 +211,8 @@ class CarCustomizationFragment : Fragment() {
             }
 
             if (carViewModel.currentType.value != "GuideMode") {
+                if (!first) return@observe
+                first = false
                 carViewModel.setCurrentComponentName(firstKey!!)
             }
         }
@@ -212,11 +226,21 @@ class CarCustomizationFragment : Fragment() {
             handleOptionListUpdates(optionList)
         }
 
+//        carViewModel.currentMainTabs.observe(viewLifecycleOwner) { tabs ->
+//            tabs.forEach { tabName ->
+//                if (tabName == OPTION_SELECTION) {
+//
+//                }
+//                binding.tlMainOptionTab.addTab(binding.tlMainOptionTab.newTab().setText(tabName))
+//            }
+//        }
+
         carViewModel.currentMainTabs.observe(viewLifecycleOwner) { tabs ->
             tabs.forEach { tabName ->
                 binding.tlMainOptionTab.addTab(binding.tlMainOptionTab.newTab().setText(tabName))
             }
         }
+
 
         carViewModel.currentSubTabs.observe(viewLifecycleOwner) { tabs ->
             tabs.forEach { tabName ->
@@ -241,7 +265,6 @@ class CarCustomizationFragment : Fragment() {
             })
         }
 
-
         carViewModel.estimateViewVisible.observe(viewLifecycleOwner) {
             if (it == 1) {
                 view?.viewTreeObserver?.addOnGlobalLayoutListener(object: ViewTreeObserver.OnGlobalLayoutListener{
@@ -258,16 +281,18 @@ class CarCustomizationFragment : Fragment() {
         }
 
         carViewModel.displayOnRecyclerViewOnViewPager.observe(viewLifecycleOwner) { mode ->
-            val tabName = carViewModel.currentTabName.value // currentTabName -> main tab + sub tab
-            carViewModel.getOptionInfoByKey(tabName!!).let {
-                when (mode) {
-                    0 -> it?.let { it1 -> displayOnRecyclerView(it1, tabName) }
-                    1 -> it?.let { it1 -> displayOnViewPager(it1, tabName) }
-                    else -> {}
+            carViewModel.currentTabName.value?.let { tabName ->
+                carViewModel.getOptionInfoByKey(tabName).let {
+                    when (mode) {
+                        0 -> it?.let { optionInfo -> displayOnRecyclerView(optionInfo, tabName) }
+                        1 -> it?.let { optionInfo -> displayOnViewPager(optionInfo, tabName) }
+                        else -> {}
+                    }
                 }
+                attachTabLayoutMediator()
             }
-            attachTabLayoutMediator()
         }
+
 
         carViewModel.currentTabPosition.observe(viewLifecycleOwner) {
             binding.tlMainOptionTab.getTabAt(it)?.select()
@@ -316,7 +341,7 @@ class CarCustomizationFragment : Fragment() {
     // 현재 선택한 탭의 옵션 리스트를 ViewPager에 연결
     private fun handleOptionListUpdates(optionList: List<OptionInfo>) {
         // optionList.size가 2이상이라면 viewpager에 데이터가 보여야함
-        if (optionList.size <= 2) {
+        if (carViewModel.currentComponentName.value == "파워 트레인" || carViewModel.currentComponentName.value == "바디 타입" || carViewModel.currentComponentName.value == "구동 방식") {
             (binding.vpOptionContainer.adapter as? CarOptionPagerAdapter)?.clearOptions()
             return
         }
@@ -327,7 +352,8 @@ class CarCustomizationFragment : Fragment() {
             "",
             currentKey,
             true,
-            carViewModel.currentType.value
+            carViewModel.currentType.value,
+            carViewModel.currentComponentName.value
         )
         val selectedOptions = carViewModel.isSelectedOptions(currentKey!!) ?: listOf()
         val position = optionList.indexOf(selectedOptions.getOrNull(0)).takeIf { it != -1 } ?: 0
@@ -437,7 +463,8 @@ class CarCustomizationFragment : Fragment() {
             OPTION_SELECTION,
             tabName,
             false,
-            carViewModel.currentType.value
+            carViewModel.currentType.value,
+            carViewModel.currentComponentName.value
         )
     }
 
@@ -455,7 +482,8 @@ class CarCustomizationFragment : Fragment() {
             OPTION_SELECTION,
             tabName,
             true,
-            carViewModel.currentType.value
+            carViewModel.currentType.value,
+            carViewModel.currentComponentName.value
         )
     }
 

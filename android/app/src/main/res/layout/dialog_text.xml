@@ -10,7 +10,7 @@
 
         <variable
             name="text_dialog"
-            type="com.youngcha.ohmycarset.model.dialog.TextDialog" />
+            type="com.youngcha.ohmycarset.data.model.dialog.TextDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

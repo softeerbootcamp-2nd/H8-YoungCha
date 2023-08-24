@@ -8,7 +8,7 @@ import android.view.MotionEvent
 import android.view.ViewPropertyAnimator
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.youngcha.ohmycarset.databinding.LayoutHyundaiButtonBinding
-import com.youngcha.ohmycarset.model.car.OptionInfo
+import com.youngcha.ohmycarset.data.model.car.OptionInfo
 
 class HyundaiButtonView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -42,6 +42,11 @@ class HyundaiButtonView @JvmOverloads constructor(
 
     fun setOptionInfo(optionInfo: OptionInfo) {
         binding.optionInfo = optionInfo
+        binding.executePendingBindings()
+    }
+
+    fun setCurrentComponentName(componentName: String) {
+        binding.componentName = componentName
         binding.executePendingBindings()
     }
 

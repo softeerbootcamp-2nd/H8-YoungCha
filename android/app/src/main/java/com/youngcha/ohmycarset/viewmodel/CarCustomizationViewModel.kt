@@ -1,29 +1,45 @@
 package com.youngcha.ohmycarset.viewmodel
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.youngcha.ohmycarset.R
+import androidx.lifecycle.viewModelScope
+import com.youngcha.ohmycarset.data.dto.Category
+import com.youngcha.ohmycarset.data.dto.ComponentDTO
 import com.youngcha.ohmycarset.enums.AdditionalTab
-import com.youngcha.ohmycarset.enums.ImageType
-import com.youngcha.ohmycarset.model.TrimSelfMode
-import com.youngcha.ohmycarset.model.TrimSelfModeExteriorColor
-import com.youngcha.ohmycarset.model.TrimSelfModeInteriorColor
-import com.youngcha.ohmycarset.model.TrimSelfModeMainOption
-import com.youngcha.ohmycarset.model.TrimSelfModeOption
-import com.youngcha.ohmycarset.model.car.Car
-import com.youngcha.ohmycarset.model.car.ImageInfo
-import com.youngcha.ohmycarset.model.car.OptionInfo
+import com.youngcha.ohmycarset.data.model.TrimSelfMode
+import com.youngcha.ohmycarset.data.model.TrimSelfModeOption
+import com.youngcha.ohmycarset.data.model.car.Car
+import com.youngcha.ohmycarset.data.model.car.OptionInfo
+import com.youngcha.ohmycarset.data.repository.CategoryRepository
+import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
-class CarCustomizationViewModel : ViewModel() {
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+class CarCustomizationViewModel(
+    private val repository: SelfModeRepository,
+    private val categoryRepository: CategoryRepository
+) : ViewModel() {
+
     // 자동차 정보 관련 변수들
     // 관련된 변수: selectedCar, currentComponentName, customizedParts
     private val _selectedCar = MutableLiveData<Car>()
     val selectedCar: LiveData<Car> = _selectedCar
 
-    private val _currentComponentName = MutableLiveData<String>()
+    val carObserver = Observer<Car> { newCar ->
+        _selectedCar.value = newCar
+    }
+
+    val categories = MutableLiveData<List<Category>>()
+
+    private val _currentComponentName = MutableLiveData<String>("파워 트레인")
     val currentComponentName: LiveData<String> = _currentComponentName
 
     private val _customizedParts = MutableLiveData<List<Map<String, List<OptionInfo>>>>()
@@ -36,6 +52,8 @@ class CarCustomizationViewModel : ViewModel() {
 
     // 현재 선택된 옵션
     val currentSelectedOption = MutableLiveData<OptionInfo>()
+    val subOptionImage = MutableLiveData<String>()
+
 
     // 옵션 선택 UI 관련 변수들
     // 관련된 변수: componentOption1Visibility, componentOption2Visibility, horizontalButtonVisible, swipeButtonVisible, subOptionButtonVisible, subOptionViewTypeChangeButton, subOptionViewType
@@ -60,11 +78,11 @@ class CarCustomizationViewModel : ViewModel() {
     private val _currentEstimateSubTabs = MutableLiveData<List<String>>()
     val currentEstimateSubTabs: LiveData<List<String>> = _currentEstimateSubTabs
 
-    private val _estimateSubOptions = MutableLiveData<Map<String,List<OptionInfo>>?>()
-    val estimateSubOptions: LiveData<Map<String,List<OptionInfo>>?> = _estimateSubOptions
+    private val _estimateSubOptions = MutableLiveData<Map<String, List<OptionInfo>>?>()
+    val estimateSubOptions: LiveData<Map<String, List<OptionInfo>>?> = _estimateSubOptions
 
-    private val _estimateMainOptions = MutableLiveData<Map<String,List<OptionInfo>>?>()
-    val estimateMainOptions: LiveData<Map<String,List<OptionInfo>>?> = _estimateMainOptions
+    private val _estimateMainOptions = MutableLiveData<Map<String, List<OptionInfo>>?>()
+    val estimateMainOptions: LiveData<Map<String, List<OptionInfo>>?> = _estimateMainOptions
 
     // Sub Tab selectOption || basicOption
     val estimateSubTabType = MutableLiveData<String>("selectOption")
@@ -100,44 +118,34 @@ class CarCustomizationViewModel : ViewModel() {
     val totalPrice = MutableLiveData<Int>(0)
     val prevPrice = MutableLiveData<Int>(0)
 
-    // 초기화 블록
+
+    // --- 프래그먼트 초기 시점 함수 ---
     init {
-        loadCarData("팰리세이드")
-        loadTrimSelfMode()
-        _currentComponentName.value = selectedCar.value?.mainOptions?.get(0)?.keys?.first()
-        totalPrice.value = 36000000
-        prevPrice.value = 36000000
-        /*
-        addSource 메서드를 사용하여 다른 LiveData (_currentComponentName)의 업데이트를 감지합니다.
-        al optionList = ...: _selectedCar.value?.mainOptions?... 이 부분은 _selectedCar의 현재 값을 가져와서 그 안의 mainOptions를 검색하고, 그 안에서 componentName 키를 가진 첫 번째 항목을 찾습니다.
+        repository.car.observeForever(carObserver)
+        viewModelScope.launch(Dispatchers.IO) {
 
-        firstOrNull { it.containsKey(componentName) }: mainOptions 중에서 componentName을 키로 가진 첫 번째 항목을 찾습니다.
-        ?.get(componentName): 찾은 항목에서 componentName 키에 대응하는 값을 가져옵니다.
-        ?: emptyList(): 만약 앞의 과정에서 값이 null이면, 빈 리스트를 반환합니다.
-        currentOptionList.value = optionList: 마지막으로, 찾아낸 optionList 값을 currentOptionList의 값으로 설정합니다.
+            // 백그라운드에서 데이터 가져오기
+            val deferred = async { setupTabs() }
+            deferred.await()
 
-        간단히 요약하면, _currentComponentName의 값이 변경될 때마다, 해당 값에 해당하는 옵션 리스트를 _selectedCar에서 찾아서 currentOptionList에 설정하는 로직입니다.
+            withContext(Dispatchers.Main) {
+                // 메인 스레드에서 LiveData 업데이트
+                currentMainTabs.value = categoryRepository.mainCategories.value
+                _currentSubTabs.value = categoryRepository.subCategories.value
+                categories.value = categoryRepository.categories.value
 
-        예를 들어, "_currentComponentName"이 "파워 트레인"에서 "바디 타입"으로 변경되면, "바디 타입"에 해당하는 옵션 리스트를 "_selectedCar"에서 찾아서 "currentOptionList"에 업데이트합니다.
-         */
+                // UI 업데이트 이후에 repository.addCarComponent() 호출
+                repository.setCarComponent(2, "파워 트레인", categories.value!!)
+            }
+        }
+
         currentOptionList.addSource(_currentComponentName) { componentName ->
             val optionList =
                 _selectedCar.value?.mainOptions?.firstOrNull { it.containsKey(componentName) }
                     ?.get(componentName) ?: emptyList()
             currentOptionList.value = optionList
         }
-
-        _currentSubTabs.value = getSubOptionKeys()
-
-        val subOptionKeys = getSubOptionKeys()
-        val estimateTabs = mutableListOf<String>()
-        estimateTabs.add("전체")
-        estimateTabs.addAll(subOptionKeys)
-        _currentEstimateSubTabs.value = estimateTabs
-
     }
-
-    // --- 프래그먼트 초기 시점 함수 ---
 
     /**
      *  초기 시작 지점
@@ -164,6 +172,27 @@ class CarCustomizationViewModel : ViewModel() {
         }
     }
 
+    fun setSubOptionImage(value: Int) {
+        when(value) {
+            0 -> {
+                subOptionImage.value = ""
+            }
+            1 -> {
+                // _selectedCar의 subOptions에서 첫 번째 키에 대응하는 첫 번째 밸류의 mainImage를 가져온다.
+                if (_selectedCar.value?.subOptions?.isNotEmpty() == true) {
+                    val firstSubOption = _selectedCar.value!!.subOptions[0].values.firstOrNull()?.firstOrNull()
+                    val mainImage = firstSubOption?.mainImage
+                    subOptionImage.value = mainImage ?: ""
+                } else {
+                    subOptionImage.value = ""
+                }
+            }
+        }
+    }
+
+    private suspend fun setupTabs() {
+        categoryRepository.getCategories()
+    }
     fun randomizeParts() {
         val randomizedParts = mutableListOf<Map<String, List<OptionInfo>>>()
 
@@ -198,9 +227,9 @@ class CarCustomizationViewModel : ViewModel() {
         totalPrice.value = 36000000
         setCurrentComponentName(tabName)
 
-        if (OPTION_SELECTION == tabName)  handleSubTab()
+        if (OPTION_SELECTION == tabName) handleSubTab()
 
-       // setCurrentComponentName(currentComponentName.value!!)
+         setCurrentComponentName(currentComponentName.value!!)
     }
 
 
@@ -249,7 +278,6 @@ class CarCustomizationViewModel : ViewModel() {
     fun handleTabChange(increment: Int) {
         val currentTabIndex = currentTabPosition.value ?: 0
         val nextTabIndex = currentTabIndex + increment
-
         // 범위 확인
         if (nextTabIndex in 0 until currentMainTabs.value!!.size) {
             // 탭 변경 로직
@@ -290,26 +318,53 @@ class CarCustomizationViewModel : ViewModel() {
      * 현재 컴포넌트 이름 설정
      */
     fun setCurrentComponentName(componentName: String) {
-        _currentComponentName.value = componentName
-        if (componentName == "견적 내기") {
-            totalPrice.value = totalPrice.value?.plus(getMyCarTotalPrice())
-            _estimateViewVisible.value = 1
-        } else {
-            _estimateViewVisible.value = 0
-        }
+        viewModelScope.launch {
 
-        horizontalButtonVisible.value = 0
-        swipeButtonVisible.value = 0
+            when (componentName) {
+                "내장 색상" -> {
+                    // 내장 색상일 경우
+                    val id = _customizedParts.value?.find { it.keys.contains("왜장 색상") }?.get("왜장 색상")?.first()?.id
+                    if (id != null) {
+                        repository.setInteriorColor(2, id)
+                    } else {
+                        repository.setInteriorColor(2, 13)
+                    }
+                }
+                "견적 내기" -> {
+                    // "견적 내기" 선택 시 아무 것도 하지 않고 넘어갑니다.
+                }
 
-        if (getOptionSize(componentName) <= 2 && componentName != OPTION_SELECTION) {
-            // 하단 버튼 visible
-            horizontalButtonVisible.value = 1
-            alreadySelectedComponent(componentName)
-        } else {
-            // viewpager visible
-            swipeButtonVisible.value = 1
+                else -> {
+                    categories.value?.let { repository.setCarComponent(2, componentName, it) }
+                }
+            }
+
+            // Repository 함수 호출이 끝난 후 나머지 로직 실행
+            _currentComponentName.value = componentName
+            if (componentName == "견적 내기") {
+                totalPrice.value = totalPrice.value?.plus(getMyCarTotalPrice())
+                _estimateViewVisible.value = 1
+            } else {
+                _estimateViewVisible.value = 0
+            }
+
+            horizontalButtonVisible.value = 0
+            swipeButtonVisible.value = 0
+            setSubOptionImage(0)
+            if ((componentName == "파워 트레인" || componentName == "바디 타입" || componentName == "구동 방식") && componentName != OPTION_SELECTION) {
+                horizontalButtonVisible.value = 1
+                alreadySelectedComponent(componentName)
+            } else if (componentName == OPTION_SELECTION){
+                setSubOptionImage(1)
+                currentSubTabPosition.value = 0
+                swipeButtonVisible.value = 1
+                updateDataContainer()
+            } else {
+                swipeButtonVisible.value = 1
+            }
         }
     }
+
 
     /**
      * 키를 사용하여 서브옵션 정보 가져오기
@@ -393,19 +448,6 @@ class CarCustomizationViewModel : ViewModel() {
      * 선택된 옵션 조회
      */
     fun isSelectedOptions(tabName: String): List<OptionInfo>? {
-        /*
-        val data = listOf(
-            mapOf("Engine" to listOf(OptionInfo("V6"), OptionInfo("V8"))),
-            mapOf("Color" to listOf(OptionInfo("Red"), OptionInfo("Blue"), OptionInfo("Green")))
-        )
-        _customizedParts.value = data
-
-        _customizedParts의 값을 car 변수에 할당합니다. 위의 예제에서는 data 리스트입니다.
-        car 목록에서 "Color"를 키로 가진 첫 번째 항목의 인덱스를 찾습니다. 위의 예제에서는 인덱스 1에 위치하고 있습니다.
-        해당 항목을 찾았기 때문에, 그 항목을 myCarToMap 변수에 할당합니다. 따라서 myCarToMap의 값은 mapOf("Color" to listOf(OptionInfo("Red"), OptionInfo("Blue"), OptionInfo("Green")))가 됩니다.
-        myCarToMap에서 "Color"에 해당하는 값을 반환합니다. 결과적으로 result의 값은 listOf(OptionInfo("Red"), OptionInfo("Blue"), OptionInfo("Green"))가 됩니다.
-        이렇게 함수는 "Color" 탭의 옵션 목록을 반환합니다. 만약 "Color"와 같은 키를 갖는 항목이 _customizedParts에 없다면 함수는 null을 반환합니다.
-         */
         val car = _customizedParts.value
 
         val index = car?.indexOfFirst { it.containsKey(tabName) }
@@ -453,8 +495,8 @@ class CarCustomizationViewModel : ViewModel() {
      * 차량 데이터 로드
      */
     private fun loadCarData(carName: String) {
-        _selectedCar.value = createCarData(carName)
-        updateTabInfo(_selectedCar.value!!)
+        // _selectedCar.value = createCarData(carName)
+//        updateTabInfo(_selectedCar.value!!)
     }
 
     // --- 기타 헬퍼 함수 ---
@@ -557,7 +599,8 @@ class CarCustomizationViewModel : ViewModel() {
 
     fun toggleSubTabType() {
         estimateSubTabType.value = if (estimateSubTabType.value == "selectOption") {
-            _currentEstimateSubTabs.value = listOf("전체", "성능", "지능형 안전기술", "안전", "외관", "내장", "시트", "편의", "멀티미디어")
+            _currentEstimateSubTabs.value =
+                listOf("전체", "성능", "지능형 안전기술", "안전", "외관", "내장", "시트", "편의", "멀티미디어")
             "basicOption"
         } else {
             val subOptionKeys = getSubOptionKeys()
@@ -591,7 +634,8 @@ class CarCustomizationViewModel : ViewModel() {
 
             for (i in 1 until (size ?: 0)) {
                 val key = _currentEstimateSubTabs.value?.get(i).toString()
-                val subOptionInfoList = _customizedParts.value?.firstOrNull { it.containsKey(key) }?.get(key)
+                val subOptionInfoList =
+                    _customizedParts.value?.firstOrNull { it.containsKey(key) }?.get(key)
                 if (subOptionInfoList != null) {
                     map[key] = subOptionInfoList
                 }
@@ -611,7 +655,8 @@ class CarCustomizationViewModel : ViewModel() {
 
         for (i in 0 until (size ?: 0)) {
             val key = currentMainTabs.value?.get(i).toString()
-            val mainOptionInfoList = _customizedParts.value?.firstOrNull { it.containsKey(key) }?.get(key)
+            val mainOptionInfoList =
+                _customizedParts.value?.firstOrNull { it.containsKey(key) }?.get(key)
             if (mainOptionInfoList != null) {
                 map[key] = mainOptionInfoList
             }
@@ -635,7 +680,7 @@ class CarCustomizationViewModel : ViewModel() {
             return
         }
 
-        if (getOptionSize(currentComponentName.value!!) <= 2) {
+        if ((currentComponentName.value == "파워 트레인" || currentComponentName.value == "바디 타입" || currentComponentName.value == "구동 방식")) {
             if (componentOption1Visibility.value == 1) {
                 _startAnimationEvent.value = "fv_component_option_1"
             } else if (componentOption2Visibility.value == 1) {
@@ -646,373 +691,9 @@ class CarCustomizationViewModel : ViewModel() {
         }
     }
 
-    // Test Data
-    private fun createCarData(carName: String): Car {
-        val mainOptions = mapOf(
-            "파워 트레인" to listOf(
-                OptionInfo(
-                    "main",
-                    "63%",
-                    "디젤 2.2",
-                    1480000,
-                    ImageInfo(ImageType.NONE, 0),
-                    emptyList()
-                ),
-                OptionInfo(
-                    "main",
-                    "72%",
-                    "가솔린 3.8",
-                    0,
-                    ImageInfo(ImageType.NONE, 0),
-                    emptyList()
-                )
-            ),
-            "구동 방식" to listOf(
-                OptionInfo("main", "72%", "2WD", 0, ImageInfo(ImageType.NONE, 0), emptyList()),
-                OptionInfo(
-                    "main",
-                    "28%",
-                    "4WD",
-                    2370000,
-                    ImageInfo(ImageType.NONE, 0),
-                    emptyList()
-                )
-            ),
-            "바디 타입" to listOf(
-                OptionInfo("main", "85%", "7인승", 0, ImageInfo(ImageType.NONE, 0), emptyList()),
-                OptionInfo("main", "15%", "8인승", 0, ImageInfo(ImageType.NONE, 0), emptyList())
-            ),
-            "외장 색상" to listOf(
-                OptionInfo(
-                    "color",
-                    "50%",
-                    "크리미 화이트 펄",
-                    1000000,
-                    ImageInfo(ImageType.CIRCLE, R.color.black),
-                    emptyList()
-                ),
-                OptionInfo(
-                    "color",
-                    "30%",
-                    "어비스 플랙펄",
-                    0,
-                    ImageInfo(ImageType.CIRCLE, R.color.cool_grey_001),
-                    emptyList()
-                ),
-                OptionInfo(
-                    "color",
-                    "25%",
-                    "그라파이트 그레이 메탈릭",
-                    0,
-                    ImageInfo(ImageType.CIRCLE, R.color.cool_grey_002),
-                    emptyList()
-                ),
-                OptionInfo(
-                    "color",
-                    "7%",
-                    "쉬머링 실버 메탈릭",
-                    0,
-                    ImageInfo(ImageType.CIRCLE, R.color.cool_grey_003),
-                    emptyList()
-                ),
-                OptionInfo(
-                    "color",
-                    "3%",
-                    "문라이트 블루 펄",
-                    0,
-                    ImageInfo(ImageType.CIRCLE, R.color.cool_grey_004),
-                    emptyList()
-                ),
-                OptionInfo(
-                    "color",
-                    "2%",
-                    "가이아미 브라운 펄",
-                    0,
-                    ImageInfo(ImageType.CIRCLE, R.color.active_blue),
-                    emptyList()
-                )
-            ),
-            "내장 색상" to listOf(
-                OptionInfo(
-                    "color",
-                    "57%",
-                    "퀄팅 천연 (블랙)",
-                    0,
-                    ImageInfo(ImageType.RECTANGLE, R.drawable.img_test_make_car_option_01),
-                    emptyList()
-                ),
-                OptionInfo(
-                    "color",
-                    "43%",
-                    "쿨그레이",
-                    0,
-                    ImageInfo(ImageType.RECTANGLE, R.drawable.img_test_make_car_option_02),
-                    emptyList()
-                ),
-                OptionInfo(
-                    "color",
-                    "57%",
-                    "하하하 천연 (블랙)",
-                    0,
-                    ImageInfo(ImageType.RECTANGLE, R.drawable.img_test_make_car_option_01),
-                    emptyList()
-                ),
-                OptionInfo(
-                    "color",
-                    "57%",
-                    "테스트입니다(블랙)",
-                    0,
-                    ImageInfo(ImageType.RECTANGLE, R.drawable.img_test_make_car_option_01),
-                    emptyList()
-                ),
-                OptionInfo(
-                    "color",
-                    "57%",
-                    "퀄팅 천연 123(블랙)",
-                    2334560,
-                    ImageInfo(ImageType.RECTANGLE, R.drawable.img_test_make_car_option_01),
-                    emptyList()
-                )
-            ),
-            "휠 선택" to listOf(
-                OptionInfo(
-                    "main",
-                    "30%",
-                    "20인치 알로이 휠 & 타이어",
-                    2280000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("스탠다드 선택")
-                ),
-                OptionInfo(
-                    "main",
-                    "20%",
-                    "20인치 다크 스퍼터링 휠",
-                    4280000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("20대 61%", "여성 65%")
-                ),
-                OptionInfo(
-                    "main",
-                    "20%",
-                    "20인치 다12크 스퍼터링 휠",
-                    4280000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("프리미엄 선택")
-                ),
-                OptionInfo(
-                    "main",
-                    "20%",
-                    "28인치 다크 휠",
-                    5600000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("프리미엄 선택")
-                ),
-                OptionInfo(
-                    "main",
-                    "20%",
-                    "32인치 더블 휠",
-                    6570000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("프리미엄 선택")
-                )
-            )
-        )
-        val mainOptionImages = mapOf(
-            "파워 트레인" to R.drawable.img_test_make_car_01,
-            "구동 방식" to R.drawable.img_test_make_car_02,
-            "바디 타입" to R.drawable.img_test_make_car_03,
-            "외장 색상" to R.drawable.img_test_make_car_04,
-            "내장 색상" to R.drawable.img_test_make_car_05,
-            "휠 선택" to R.drawable.img_test_make_car_06,
-        )
-
-        val subOptions = mapOf(
-            "시스템" to listOf(
-                OptionInfo(
-                    "sub",
-                    "60%",
-                    "최신 시스템",
-                    1880000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("최신 인21포테인먼트 시스템")
-                ),
-                OptionInfo(
-                    "sub",
-                    "60%",
-                    "test123",
-                    100000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("최신 인포테인먼트 시스템")
-                ),
-                OptionInfo(
-                    "sub",
-                    "60%",
-                    "tttasdasdjaslkd",
-                    18810000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("최신 인포테인먼트 시스템")
-                )
-            ),
-            "온도관리" to listOf(
-                OptionInfo(
-                    "sub",
-                    "40%",
-                    "자동 온도 조절",
-                    980000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("자동 온도 조절 기능")
-                ),
-                OptionInfo(
-                    "sub",
-                    "20%",
-                    "자동12 조절",
-                    1980000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("자동 온도 조절 기능")
-                ),
-                OptionInfo(
-                    "sub",
-                    "10%",
-                    "온도 조절",
-                    440000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("자동 온도 조절 기능")
-                )
-            ),
-            "외부장치" to listOf(
-                OptionInfo(
-                    "sub",
-                    "50%",
-                    "외부 디바이스 호환",
-                    1280000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("USB, Bluetooth 연결 가능")
-                ),
-                OptionInfo(
-                    "sub",
-                    "10%",
-                    "soqn 디바이스 호환",
-                    120000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("USB, Bluetooth 연결 가능")
-                ),
-                OptionInfo(
-                    "sub",
-                    "20%",
-                    "내부 디바이스 호환",
-                    3200000,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("USB, Bluetooth 연결 가능")
-                )
-            ),
-            "내부장치" to listOf(
-                OptionInfo(
-                    "sub",
-                    "50%",
-                    "프리미엄 사운드",
-                    677700,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("높은 품질의 사운드 시스템")
-                ),
-                OptionInfo(
-                    "sub",
-                    "4%",
-                    "사운드",
-                    349090,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("높은 품질의 사운드 시스템")
-                ),
-                OptionInfo(
-                    "sub",
-                    "1000%",
-                    "그냥 사운드",
-                    1999999,
-                    ImageInfo(ImageType.NONE, 0),
-                    listOf("높은 품질의 사운드 시스템")
-                )
-            )
-        )
-
-        val subOptionImage = mapOf(
-            "옵션 선택" to R.drawable.img_test_make_car_07
-        )
-
-        return Car(
-            "팰리세이드",
-            "SUV",
-            listOf(mainOptions),
-            listOf(mainOptionImages),
-            listOf(subOptions),
-            subOptionImage
-        )
-    }
-
-    private fun loadTrimSelfMode() {
-        // 임시 데이터 생성
-        val tempTrimSelfMode = TrimSelfMode(
-            id = 1L,
-            name = "펠리세이드",
-            imgUrl = R.drawable.img_leblanc,
-            hashtag = "#Example1",
-            description = "Le Blanc 르블랑",
-            isBest = true,
-            minPrice = "38,960,000원 부터",
-            mainOptions = listOf(
-                TrimSelfModeMainOption(
-                    imgUrl = R.drawable.img_core_option_explain,
-                    description = "Main option 1"
-                )
-            ),
-            exteriorColor = listOf(
-                TrimSelfModeExteriorColor(code = "#FAFAFA", name = "크리미 화이트 펄"),
-                TrimSelfModeExteriorColor(code = "#111111", name = "어비스 블랙펄"),
-                TrimSelfModeExteriorColor(code = "#9B9D9C", name = "쉬머링 실버 메탈릭"),
-                TrimSelfModeExteriorColor(code = "#2C2925", name = "그라파이트 그레이 메탈"),
-                TrimSelfModeExteriorColor(code = "#1C2234", name = "문라이트 블루 펄"),
-                TrimSelfModeExteriorColor(code = "#333635", name = "가이아 브라운 펄")
-            ),
-            interiorColor = listOf(
-                TrimSelfModeInteriorColor(
-                    url = R.drawable.img_quilting_natural,
-                    name = "퀄팅 천연(블랙)"
-                ),
-                TrimSelfModeInteriorColor(url = R.drawable.img_cool_grey, name = "쿨 그레이")
-            ),
-            options = listOf(
-                TrimSelfModeOption(R.drawable.img_test_1, "ISG 시스템", "기본 포함"),
-                TrimSelfModeOption(R.drawable.img_test_2, "통합 주행 모드", "기본 포함"),
-                TrimSelfModeOption(R.drawable.img_test_3, "전자식 변속 버튼", "기본 포함"),
-                TrimSelfModeOption(R.drawable.img_test_4, "랙 구동형 전동식 파워 스티어링 (R-MDPS)", "기본 포함"),
-                TrimSelfModeOption(R.drawable.img_test_5, "8단 자동변 속기", "기본 포함"),
-                TrimSelfModeOption(R.drawable.img_test_1, "성능1", "성능"),
-                TrimSelfModeOption(R.drawable.img_test_2, "지능형 안전기술1", "지능형 안전기술"),
-                TrimSelfModeOption(R.drawable.img_test_3, "안전1", "안전"),
-                TrimSelfModeOption(R.drawable.img_test_4, "외관1", "외관"),
-                TrimSelfModeOption(R.drawable.img_test_5, "내장1", "내장"),
-                TrimSelfModeOption(R.drawable.img_test_1, "시트1", "시트"),
-                TrimSelfModeOption(R.drawable.img_test_2, "편의1", "편의"),
-                TrimSelfModeOption(R.drawable.img_test_3, "멀티미디어1", "멀티미디어"),
-                TrimSelfModeOption(R.drawable.img_test_4, "멀티미디어2", "멀티미디어"),
-                TrimSelfModeOption(R.drawable.img_test_5, "편의2", "편의"),
-                TrimSelfModeOption(R.drawable.img_test_1, "시트2", "시트"),
-                TrimSelfModeOption(R.drawable.img_test_2, "내장2", "내장"),
-                TrimSelfModeOption(R.drawable.img_test_3, "외관2", "외관"),
-                TrimSelfModeOption(R.drawable.img_test_4, "안전2", "안전"),
-                TrimSelfModeOption(R.drawable.img_test_5, "지능형 안전기술2", "지능형 안전기술"),
-                TrimSelfModeOption(R.drawable.img_test_1, "성능2", "성능")
-            )
-            /*
-            백엔드 - 페이징 check - jetpack
-                    val tabNames = listOf("전체", "성능", "지능형 안전기술", "안전", "외관", "내장", "시트", "편의", "멀티미디어")
-            ISG 시스템 - 기본 포함
-    통합주행모드 - 기본 포함
-    전자식 변속버튼 - 기본 포함
-    랙 구동형 전동식 파워 스티어링 (R-MDPS)
-    8단 자동변속기
-             */
-        )
-
-        _trimSelfModeData.value = tempTrimSelfMode
+    override fun onCleared() {
+        repository.car.removeObserver(carObserver)
+        super.onCleared()
     }
 
 }

@@ -61,11 +61,11 @@
             android:layout_width="match_parent"
             android:layout_height="310dp"
             android:visibility="@{viewModel.subOptionButtonVisible == 1? View.VISIBLE : View.GONE}"
+            app:mainImageUrl="@{viewModel.currentSelectedOption.mainImage}"
+            app:subImageUrl="@{viewModel.subOptionImage}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
-            app:testImageResourceCar="@{viewModel.selectedCar}"
-            app:testImageResourceComponentName="@{viewModel.currentComponentName}" />
+            app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -157,8 +157,8 @@
                 app:layout_constraintEnd_toEndOf="@id/btn_component_option_1"
                 app:layout_constraintStart_toStartOf="@id/btn_component_option_1"
                 app:layout_constraintTop_toTopOf="@id/btn_component_option_1"
-                app:mainFeedbackText="@{viewModel.currentSelectedOption.name}"
-                app:subFeedbackText='@{"+ " + String.valueOf(viewModel.currentSelectedOption.price) + "원"}' />
+                app:mainFeedbackText="@{viewModel.currentSelectedOption.feedbackTitle}"
+                app:subFeedbackText="@{viewModel.currentSelectedOption.feedbackDescription}" />
 
             <com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
                 android:id="@+id/btn_component_option_2"
@@ -195,8 +195,8 @@
                 app:layout_constraintEnd_toEndOf="@id/btn_component_option_2"
                 app:layout_constraintStart_toStartOf="@id/btn_component_option_2"
                 app:layout_constraintTop_toTopOf="@id/btn_component_option_2"
-                app:mainFeedbackText="@{viewModel.currentSelectedOption.name}"
-                app:subFeedbackText='@{"+ " + String.valueOf(viewModel.currentSelectedOption.price) + "원"}' />
+                app:mainFeedbackText="@{viewModel.currentSelectedOption.feedbackTitle}"
+                app:subFeedbackText="@{viewModel.currentSelectedOption.feedbackDescription}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -220,6 +220,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="33dp"
+            android:background="@color/cool_grey_004"
             android:visibility="@{(viewModel.swipeButtonVisible == 1 &amp;&amp; viewModel.subOptionButtonVisible == 1) ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -309,6 +310,7 @@
                 android:fontFamily="@font/hyundai_sans_head_kr_medium"
                 android:textColor="@color/cool_grey_black"
                 android:textSize="22sp"
+                app:layout_constraintTop_toBottomOf="@id/tv_estimate_price_int"
                 app:layout_constraintBottom_toBottomOf="@id/cl_button_container"
                 app:layout_constraintStart_toStartOf="@id/cl_button_container" />
 
@@ -363,8 +365,8 @@
             app:layout_constraintEnd_toEndOf="@id/vp_option_container"
             app:layout_constraintStart_toStartOf="@id/vp_option_container"
             app:layout_constraintTop_toTopOf="@id/vp_option_container"
-            app:mainFeedbackText="@{viewModel.currentSelectedOption.name}"
-            app:subFeedbackText='@{"+ " + String.valueOf(viewModel.currentSelectedOption.price) + "원"}' />
+            app:mainFeedbackText="@{viewModel.currentSelectedOption.feedbackTitle}"
+            app:subFeedbackText="@{viewModel.currentSelectedOption.feedbackDescription}" />
 
         <FrameLayout
             android:id="@+id/fl_particle_container"

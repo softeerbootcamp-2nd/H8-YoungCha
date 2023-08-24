@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.databinding.PreliminariesLongButtonBinding
-import com.youngcha.ohmycarset.model.tag.Tag
+import com.youngcha.ohmycarset.data.model.tag.Tag
 import com.youngcha.ohmycarset.viewmodel.UserTagViewModel
 
 class AgeAdapter(private val viewModel: UserTagViewModel) :

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.databinding.ItemTrimSelectBinding
-import com.youngcha.ohmycarset.model.TrimCategory
+import com.youngcha.ohmycarset.data.model.TrimCategory
 import com.youngcha.ohmycarset.viewmodel.TrimSelectViewModel
 
 class TrimSelectAdapter(
