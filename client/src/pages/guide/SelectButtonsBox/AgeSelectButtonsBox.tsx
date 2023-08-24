@@ -23,7 +23,7 @@ function AgeSelectButtonsBox() {
   }
 
   return (
-    <div className={`flex flex-col w-343px gap-12px justify-center mt-98px`}>
+    <div className={`flex flex-col w-343px gap-12px justify-center`}>
       {ageSelectArray.map((age: AgeType) => {
         const isHovered = hoveredAge === age;
         const isSelected = selectedAge === age;
