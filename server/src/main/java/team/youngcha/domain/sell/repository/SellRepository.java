@@ -19,7 +19,7 @@ public class SellRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @Cacheable(value = "Sell", cacheManager = "mapCacheManager")
+    @Cacheable(value = "Sell", cacheManager = "longMapCacheManager")
     public Map<Long, Long> countOptionsByTrimIdAndContainOptionsIds(Long trimId, List<Long> optionIds,
                                                                     RequiredCategory category) {
         List<Map<String, Object>> results = querySellCounts(namedParameterJdbcTemplate, trimId,

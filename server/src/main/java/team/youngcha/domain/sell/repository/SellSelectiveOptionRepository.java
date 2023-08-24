@@ -16,7 +16,7 @@ public class SellSelectiveOptionRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     // 셀프 모드 선택 옵션
-    @Cacheable(value = "SelectiveOption", cacheManager = "mapCacheManager")
+    @Cacheable(value = "SelectiveOption", cacheManager = "longMapCacheManager")
     public Map<Long, Long> countByOptionIdForTrim(Long trimId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);

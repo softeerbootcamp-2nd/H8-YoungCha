@@ -83,7 +83,7 @@ public class EstimateRepository {
         return namedParameterJdbcTemplate.queryForList(sql, params);
     }
 
-    @Cacheable(value = "Estimate", cacheManager = "mapCacheManager")
+    @Cacheable(value = "Estimate", cacheManager = "intMapCacheManager")
     public Map<Long, Integer> calculateSelectiveOptionsKeywordRate(Long trimId, Long keywordId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);

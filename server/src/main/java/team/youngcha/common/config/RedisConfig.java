@@ -16,7 +16,6 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
-import java.util.Map;
 
 @Profile({"!test"})
 @Configuration
@@ -50,14 +49,27 @@ public class RedisConfig {
 
     // CustomSerializer를 사용해 Map<Long,Long>로 역직렬화
     @Bean
-    public CacheManager mapCacheManager(RedisConnectionFactory cf) {
+    public CacheManager longMapCacheManager(RedisConnectionFactory cf) {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration
                 .defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair
                         .fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair
-                        .fromSerializer(new CustomSerializer(Map.class)))
-                .entryTtl(Duration.ofHours(24L)); // 24시간 캐시
+                        .fromSerializer(new CustomSerializer(Long.class, Long.class)))
+                .entryTtl(Duration.ofSeconds(10L)); // 24시간 캐시
+
+        return buildCacheManager(cf, redisCacheConfiguration);
+    }
+
+    @Bean
+    public CacheManager intMapCacheManager(RedisConnectionFactory cf) {
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration
+                .defaultCacheConfig()
+                .serializeKeysWith(RedisSerializationContext.SerializationPair
+                        .fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair
+                        .fromSerializer(new CustomSerializer(Long.class, Integer.class)))
+                .entryTtl(Duration.ofSeconds(10L)); // 24시간 캐시
 
         return buildCacheManager(cf, redisCacheConfiguration);
     }
