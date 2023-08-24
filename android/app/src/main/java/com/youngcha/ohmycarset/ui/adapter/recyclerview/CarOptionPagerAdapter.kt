@@ -104,6 +104,7 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
         RecyclerView.ViewHolder(hyundaiButtonView) {
         init {
             hyundaiButtonView.setOnClickListener {
+                viewModel.setSubOptionImage(0)
                 if (currentType == "GuideMode") {
                     hyundaiButtonView.animateBorder().withEndAction {
                         handleOptionUpdates()
