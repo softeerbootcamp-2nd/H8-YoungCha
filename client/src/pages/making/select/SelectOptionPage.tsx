@@ -1,17 +1,19 @@
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import OptionCard from '@/components/OptionCard';
-import { INTERIOR_COLOR_STEP, PROGRESS_LIST } from './constant';
-import useFetch from '@/hooks/useFetch.ts';
-import { PathParamsType } from '@/types/router';
-import SelectOptionMessage from './SelectOptionMessage';
-import SelectOptionListContainer from './SelectOptionListContainer';
-import SelectOptionFooter from './SelectOptionFooter';
-import { AllOptionType } from '@/types/option';
+import {
+  SelectOptionMessage,
+  SelectOptionListContainer,
+  SelectOptionFooter,
+} from './';
 import { UserSelectedOptionDataContext } from '@/pages/making';
-import { optionTypeName } from '@/constant.ts';
-import getRotateImages from '@/utils/getRotateImages.ts';
+import OptionCard from '@/components/OptionCard';
 import RotateCarImage from '@/components/RotateCarImage';
+import useFetch from '@/hooks/useFetch.ts';
+import getRotateImages from '@/utils/getRotateImages.ts';
+import { PathParamsType } from '@/types/router';
+import { AllOptionType } from '@/types/option';
+import { INTERIOR_COLOR_STEP, PROGRESS_LIST } from './constant';
+import { optionTypeName } from '@/constant.ts';
 
 const EXTERIOR_COLOR_STEP = 5;
 
