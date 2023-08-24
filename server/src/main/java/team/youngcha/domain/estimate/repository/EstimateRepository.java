@@ -83,23 +83,23 @@ public class EstimateRepository {
         return namedParameterJdbcTemplate.queryForList(sql, params);
     }
 
-    public Map<Long, Integer> calculateSelectiveOptionsKeywordRate(Long trimId, List<Long> optionIds, Long keywordId) {
-        if (optionIds == null || optionIds.isEmpty()) {
-            return new HashMap<>();
-        }
+    @Cacheable(value = "Estimate", cacheManager = "mapCacheManager")
+    public Map<Long, Integer> calculateSelectiveOptionsKeywordRate(Long trimId, Long keywordId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
-        params.addValue("optionIds", optionIds);
         params.addValue("keywordId", keywordId);
 
         String sql = "SELECT es.options_id, " +
-                "COUNT(*) * 100 / (SELECT COUNT(*) FROM estimate e " +
-                "WHERE :keywordId IN (e.keyword1_id, e.keyword2_id, e.keyword3_id)) AS rate " +
+                "COUNT(*) * 100 / " +
+                "(SELECT COUNT(*) " +
+                "FROM estimate e " +
+                "WHERE (:keywordId) IN (e.keyword1_id, e.keyword2_id, e.keyword3_id)) AS rate " +
                 "FROM estimate_selective_options es " +
-                "JOIN estimate e ON e.id = es.estimate_id AND e.trim_id = :trimId " +
-                "AND :keywordId IN (e.keyword1_id, e.keyword2_id, e.keyword3_id) " +
-                "WHERE es.options_id IN (:optionIds) " +
-                "GROUP BY es.options_id";
+                "WHERE es.estimate_id IN (SELECT e.id " +
+                "FROM estimate e use index (idx_keyword_trim) " +
+                "WHERE (:keywordId) IN (e.keyword1_id, e.keyword2_id, e.keyword3_id) " +
+                "AND e.trim_id = (:trimId)) " +
+                "GROUP BY es.options_id ";
 
         return optionRateMapper(namedParameterJdbcTemplate.queryForList(sql, params));
     }

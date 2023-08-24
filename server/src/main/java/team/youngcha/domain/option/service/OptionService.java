@@ -190,7 +190,13 @@ public class OptionService {
 
         for (Long keywordId : guideInfo.getKeywordIds()) {
             Map<Long, Integer> rates = estimateRepository
-                    .calculateSelectiveOptionsKeywordRate(trimId, mapKeywordIdToMatchedOptionsIds.get(keywordId), keywordId);
+                    .calculateSelectiveOptionsKeywordRate(trimId, keywordId)
+                    .entrySet().stream()
+                    .filter(entry -> {
+                        List<Long> optionsIds = mapKeywordIdToMatchedOptionsIds.get(keywordId);
+                        return optionsIds != null && optionsIds.contains(entry.getKey());
+                    })
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
             for (Map.Entry<Long, Integer> entry : rates.entrySet()) {
                 List<KeywordRate> keywordRates = keywordRateGroup.computeIfAbsent(entry.getKey(), e -> new ArrayList<>());
                 keywordRates.add(new KeywordRate(entry.getValue(), keywordNames.get(keywordId)));
