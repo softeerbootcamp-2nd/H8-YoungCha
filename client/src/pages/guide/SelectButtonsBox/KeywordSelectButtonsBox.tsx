@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import KeywordButton from './KeywordButton';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useTagSelectContext } from '@/store/useTagSelectContext';
+import KeywordButton from './KeywordButton';
 
 const keywordSelectArray = [
   {
@@ -17,8 +18,16 @@ const keywordSelectArray = [
   },
 ];
 function KeywordSelectButtonsBox() {
+  const navigate = useNavigate();
   const [hoveredKeyword, setHoveredKeyword] = useState<string>('');
-  const { selectedKeyword, setselectedKeyword } = useTagSelectContext();
+  const { selectedAge, selectedKeyword, setselectedKeyword } =
+    useTagSelectContext();
+
+  useEffect(() => {
+    if (selectedAge === null) {
+      navigate('/model/LX06/guide/age');
+    }
+  }, [selectedAge]);
 
   function handleOnClick(keyword: string) {
     setselectedKeyword((prevselectedKeyword) => {
