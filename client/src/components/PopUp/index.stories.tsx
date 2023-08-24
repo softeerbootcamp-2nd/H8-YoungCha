@@ -6,6 +6,7 @@ import {
   ModeChangePopUp,
   SelfModeCard,
   GuideModeCard,
+  ModelListPopUpText,
 } from './constant';
 
 const meta: Meta<typeof PopUp> = {
@@ -99,6 +100,28 @@ export const ModeChangeToSelf: Story = {
           currentMode="guide"
           mode={GuideModeCard.mode}
           description={GuideModeCard.description}
+        />
+      </PopUp>
+    ),
+  },
+};
+
+export const ModelList: Story = {
+  args: {
+    children: (
+      <PopUp onClose={closePopUp}>
+        <PopUp.PopUpMain
+          title={ModelChangePopUp.title}
+          imgSrc={<ModelChangePopUp.ImgSrc />}
+        />
+        <PopUp.CenteredDescription
+          description={ModelListPopUpText.description}
+        />
+        <PopUp.PopUpProgressBar />
+        <PopUp.ModelCarousel />
+        <PopUp.PopUpButton
+          greyButtonContent={ModelListPopUpText.greyButtonContent}
+          blueButtonContent={ModelListPopUpText.blueButtonContent}
         />
       </PopUp>
     ),
