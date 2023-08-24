@@ -1,7 +1,6 @@
 import { createContext } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import SelectOptionPage from './select/SelectOptionPage';
-import SelectMultiOptionPage from '@/pages/making/select/SelectMultiOptionPage.tsx';
+import { SelectOptionPage, SelectMultiOptionPage } from './select';
 import CompleteOptionPage from './complete/CompleteOptionPage';
 import CompleteOptionPageWithLoading from './complete/CompleteOptionPageWithLoading';
 import useSelectOption from '@/hooks/useSelectOption.ts';
@@ -40,6 +39,7 @@ function MakingPage() {
 }
 
 export { default as MakingPageLayout } from './layout.tsx';
+
 export default function MakingPageWithProvider() {
   const { userSelectedOptionData, saveOptionData } = useSelectOption();
 
