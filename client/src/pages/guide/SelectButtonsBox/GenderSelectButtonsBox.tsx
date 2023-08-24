@@ -2,18 +2,27 @@ import ActiveCheck from '@/assets/icons/select-check';
 import InactiveCheck from '@/assets/icons/select-check-inactive';
 import SelectButton from '@/components/SelectButton';
 import { GenderType } from '../type';
-import { Fragment, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Fragment, useEffect, useState } from 'react';
 import { useTagSelectContext } from '@/store/useTagSelectContext';
 
 const genderSelectArray: Array<GenderType> = ['남성', '여성', '선택 안함'];
 
 function GenderSelectButtonsBox() {
+  const navigate = useNavigate();
   const [hoveredGender, setHoveredGender] = useState<GenderType | ''>('');
-  const { selectedGender, setSelectedGender } = useTagSelectContext();
+  const { selectedAge, selectedGender, setSelectedGender } =
+    useTagSelectContext();
 
   function handleOnclick(Gender: GenderType) {
     setSelectedGender(Gender);
   }
+
+  useEffect(() => {
+    if (selectedAge === null) {
+      navigate('/model/LX06/guide/age');
+    }
+  }, [selectedAge]);
 
   return (
     <div className={`flex flex-col w-343px gap-12px mt-173px`}>
