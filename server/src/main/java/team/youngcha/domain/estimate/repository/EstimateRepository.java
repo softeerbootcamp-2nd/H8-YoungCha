@@ -84,6 +84,9 @@ public class EstimateRepository {
     }
 
     public Map<Long, Integer> calculateSelectiveOptionsKeywordRate(Long trimId, List<Long> optionIds, Long keywordId) {
+        if (optionIds == null || optionIds.isEmpty()) {
+            return new HashMap<>();
+        }
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
         params.addValue("optionIds", optionIds);
