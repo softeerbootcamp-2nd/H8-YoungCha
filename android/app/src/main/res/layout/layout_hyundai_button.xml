@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="component_name"
+            type="String" />
+
+        <variable
             name="option_info"
             type="com.youngcha.ohmycarset.data.model.car.OptionInfo" />
 
@@ -77,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/hyundai_sans_head_kr_regular"
-            android:text="@{option_info.rate}"
+            android:text='@{"구매자의 " + option_info.rate + "%가 선택한"}'
             android:textSize="12sp"
             app:currentTypeForText="@{current_type}"
             app:layout_constraintStart_toStartOf="@id/tv_price"
@@ -86,13 +90,15 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/hyundai_sans_head_kr_otf_medium"
+            android:gravity="start"
             android:text="@{option_info.name}"
             android:textColor="@{is_visible == 1 ? @color/cool_grey_black :@color/cool_grey_003}"
             android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_price"
             app:layout_constraintTop_toBottomOf="@id/tv_rate" />
 
@@ -103,11 +109,11 @@
             android:layout_marginStart="20dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="@font/hyundai_sans_head_kr_regular"
-            app:formattedCurrency="@{option_info.price}"
             android:textColor="@{is_visible == 1 ? @color/cool_grey_black :@color/cool_grey_003}"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:plusPrice="@{option_info.price}" />
 
         <ImageView
             android:id="@+id/iv_interior"
@@ -115,21 +121,12 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:scaleType="fitXY"
-            app:imageUrl="@{option_info.subImage}"
-           app:layout_constraintBottom_toBottomOf="parent"
+            app:componentName="@{component_name}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
-
-<!--        <com.youngcha.ohmycarset.ui.customview.CircleView-->
-<!--            android:id="@+id/cv_exterior"-->
-<!--            android:layout_width="60dp"-->
-<!--            android:layout_height="60dp"-->
-<!--            android:layout_marginEnd="28dp"-->
-<!--           app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/v_background"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintVertical_bias="0.5" />-->
+            app:layout_constraintVertical_bias="0.5"
+            app:subImage="@{option_info.subImage}" />
 
         <ImageView
             android:id="@+id/iv_logo"
