@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -102,6 +103,15 @@ class CarCustomizationFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupListener() {
+
+        binding.btnComponentOption1.ibDetail.setOnClickListener {
+            carViewModel.onDetailClicked("button1")
+        }
+
+        binding.btnComponentOption2.ibDetail.setOnClickListener {
+            carViewModel.onDetailClicked("button2")
+        }
+
         val images = List(60) { id ->
             resources.getIdentifier("image_0${id + 1}", "drawable", requireContext().packageName)
         }
@@ -338,6 +348,9 @@ class CarCustomizationFragment : Fragment() {
             carViewModel.prevPrice.value = currentTotalPrice
         }
 
+        carViewModel.detailOptionInfo.observe(viewLifecycleOwner) {
+            Log.d("로그", "5. 디테일 정보 표시 입니다.: " + it.toString())
+        }
     }
 
     // 현재 선택한 탭의 옵션 리스트를 ViewPager에 연결
