@@ -61,7 +61,8 @@
             android:layout_width="match_parent"
             android:layout_height="310dp"
             android:visibility="@{viewModel.subOptionButtonVisible == 1? View.VISIBLE : View.GONE}"
-            app:imageUrl="@{viewModel.currentSelectedOption.mainImage}"
+            app:mainImageUrl="@{viewModel.currentSelectedOption.mainImage}"
+            app:subImageUrl="@{viewModel.subOptionImage}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab" />
