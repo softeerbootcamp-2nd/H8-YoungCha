@@ -28,7 +28,7 @@ public enum AgeRange {
     public List<Integer> getAges() {
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            list.add(this.range * 10 + 1);
+            list.add(this.range * 10 + i);
         }
         return list;
     }
