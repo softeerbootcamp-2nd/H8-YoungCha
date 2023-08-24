@@ -1,5 +1,5 @@
 import App from '@/App';
-import Home from '@/pages/home';
+import { HomePage } from '@/pages/home';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Guide from '@/pages/guide';
 import FullScreenLayout from '@/components/layout/FullScreenLayout';
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
       {
         path: 'model/:id',
         children: [
-          { index: true, element: <Home /> },
+          { index: true, element: <HomePage /> },
           {
             path: 'guide',
             element: <FullScreenLayout />,
