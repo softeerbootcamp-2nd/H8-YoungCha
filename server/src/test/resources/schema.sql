@@ -205,3 +205,6 @@ create index idx_keyword_age_range_gender_trim
 
 create index idx_keyword_trim
     on estimate (keyword1_id, keyword2_id, keyword3_id, trim_id);
+
+create index options_id
+    on sell_selective_options (options_id);
