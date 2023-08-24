@@ -86,10 +86,16 @@ public class OptionRepository {
         params.addValue("categoryId", categoryId);
         params.addValue("trimId", trimId);
 
+        // 전체 카테고리 조회
         String sql = "SELECT COUNT(*) FROM trim " +
-                "JOIN trim_options ON trim.id = trim_options.trim_id and trim_options.type = (:trimOptionType) " +
-                "JOIN options ON trim_options.options_id = options.id and options.category_id = (:categoryId) " +
-                "WHERE trim.id = (:trimId)";
+                "JOIN trim_options ON trim.id = trim_options.trim_id AND trim_options.type = (:trimOptionType) " +
+                "JOIN options ON trim_options.options_id = options.id ";
+
+        // 특정 카테고리 조회
+        if(categoryId != 0) {
+            sql += "AND options.category_id = (:categoryId) ";
+        }
+        sql += "WHERE trim.id = (:trimId)";
 
         Integer count = namedParameterJdbcTemplate.queryForObject(sql, params, Integer.class);
 
@@ -116,8 +122,14 @@ public class OptionRepository {
                 "options_image.img_url AS optionsImgUrl " +
                 "FROM trim " +
                 "JOIN trim_options ON trim.id = trim_options.trim_id AND trim_options.type = (:trimOptionType) " +
-                "JOIN options ON trim_options.options_id = options.id AND options.category_id = (:categoryId) " +
-                "LEFT JOIN options_image ON options.id = options_image.options_id " +
+                "JOIN options ON trim_options.options_id = options.id ";
+
+        // 특정 카테고리 조회
+        if(categoryId != 0) {
+            sql += "AND options.category_id = (:categoryId) ";
+        }
+
+        sql += "LEFT JOIN options_image ON options.id = options_image.options_id " +
                 "WHERE trim.id = (:trimId) " +
                 "ORDER BY options.id LIMIT :size OFFSET :offset";
 

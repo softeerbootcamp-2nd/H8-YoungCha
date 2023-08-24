@@ -102,6 +102,7 @@ public class TrimService {
 
         List<DefaultOptionSummary> paginatedDefaultOptions
                 = optionRepository.findPaginatedDefaultOptionsByTrimIdAndCategoryId(trimId, categoryId, page, size);
+
         if (paginatedDefaultOptions.size() == 0) {
             throw new CustomException(HttpStatus.NOT_FOUND, "페이지 조회 실패", "페이지 조회에 실패했습니다.");
         }
