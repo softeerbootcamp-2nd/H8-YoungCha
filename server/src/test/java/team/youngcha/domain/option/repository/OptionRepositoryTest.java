@@ -49,7 +49,7 @@ class OptionRepositoryTest {
         jdbcTemplate.update("insert into trim_options (id, type, trim_id, options_id) " +
                 "values (1, " + OptionType.REQUIRED.getType() + ", 1, 1)," +
                 "(2," + OptionType.REQUIRED.getType() + ", 1, 2)," +
-                "(3, " + OptionType.BASIC.getType() + ", 1, 2)," +
+                "(3, " + OptionType.DEFAULT.getType() + ", 1, 2)," +
                 "(4, " + OptionType.REQUIRED.getType() + ", 2, 2)");
 
         Long trimId = 1L;

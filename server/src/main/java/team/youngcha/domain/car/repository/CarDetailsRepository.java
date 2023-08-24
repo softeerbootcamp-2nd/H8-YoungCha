@@ -47,7 +47,7 @@ public class CarDetailsRepository {
                 "OR (category.name = :interiorColor AND options_image.img_type = :subImage)";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("defaultOption", OptionType.BASIC.getType());
+        params.addValue("defaultOption", OptionType.DEFAULT.getType());
         params.addValue("logo", OptionImageType.LOGO.getValue());
         params.addValue("carId", carId);
         params.addValue("mainOption", OptionType.CORE.getType());

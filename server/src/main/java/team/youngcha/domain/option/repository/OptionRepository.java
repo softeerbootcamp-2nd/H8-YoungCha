@@ -82,7 +82,7 @@ public class OptionRepository {
 
     public int countDefaultOptionsByTrimIdAndCategoryId(Long trimId, Long categoryId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("trimOptionType", OptionType.BASIC.getType());
+        params.addValue("trimOptionType", OptionType.DEFAULT.getType());
         params.addValue("categoryId", categoryId);
         params.addValue("trimId", trimId);
 
@@ -109,7 +109,7 @@ public class OptionRepository {
                                                                                        Long categoryId,
                                                                                        int page, int size) {
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("trimOptionType", OptionType.BASIC.getType());
+        params.addValue("trimOptionType", OptionType.DEFAULT.getType());
         params.addValue("categoryId", categoryId);
         params.addValue("trimId", trimId);
         params.addValue("size", size);
