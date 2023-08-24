@@ -7,6 +7,7 @@ import CompleteOptionPageWithLoading from './complete/CompleteOptionPageWithLoad
 import useSelectOption from '@/hooks/useSelectOption.ts';
 import { INITIAL_USER_SELECTED_DATA, LAST_STEP } from './constant';
 import { OptionType, UserSelectedOptionDataType } from './type';
+import { PathParamsType } from '@/types/router.ts';
 
 export interface UserSelectedOptionDataContextType {
   userSelectedOptionData: UserSelectedOptionDataType;
@@ -20,7 +21,7 @@ export const UserSelectedOptionDataContext =
   });
 
 function MakingPage() {
-  const { step } = useParams() as { step: string };
+  const { step } = useParams() as PathParamsType;
   const { state } = useLocation();
 
   if (Number(step) === LAST_STEP) {
