@@ -8,7 +8,7 @@ function Tags({ tags }: TagsProps) {
       key={`tags-${index}`}
       className="flex items-center body3 bg-tag-skyblue px-8px rounded-2px text-main-blue"
     >
-      {`${tag.name} ${tag.rate}%`}
+      {`${tag.name}  ${tag.rate}%`}
     </div>
   ));
 }
