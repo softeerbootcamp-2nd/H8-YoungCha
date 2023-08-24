@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.option.dto.DefaultOptionSummary;
 import team.youngcha.domain.option.entity.Option;
+import team.youngcha.domain.option.enums.OptionImageType;
 import team.youngcha.domain.option.enums.OptionType;
 
 import java.sql.ResultSet;
@@ -114,6 +115,7 @@ public class OptionRepository {
         params.addValue("trimId", trimId);
         params.addValue("size", size);
         params.addValue("offset", (page - 1) * size);
+        params.addValue("sub", OptionImageType.SUB.getValue());
 
         String sql = "SELECT " +
                 "options.id AS optionsId, " +
@@ -129,7 +131,7 @@ public class OptionRepository {
             sql += "AND options.category_id = (:categoryId) ";
         }
 
-        sql += "LEFT JOIN options_image ON options.id = options_image.options_id " +
+        sql += "LEFT JOIN options_image ON options.id = options_image.options_id AND options_image.img_type = :sub " +
                 "WHERE trim.id = (:trimId) " +
                 "ORDER BY options.id LIMIT :size OFFSET :offset";
 
