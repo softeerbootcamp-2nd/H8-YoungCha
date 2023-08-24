@@ -17,6 +17,9 @@ import android.widget.TextView
 import kotlin.random.Random
 
 object AnimationUtils {
+
+    private val activeAnimations = mutableListOf<Animator>()
+
     fun explodeView(frameLayout: FrameLayout, numberOfParticles: Int = 150) {
         val parentHeight = frameLayout.height
         val parentWidth = frameLayout.width
@@ -81,9 +84,10 @@ object AnimationUtils {
             animatorSet.addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
                     frameLayout.removeView(particle)
+                    activeAnimations.remove(animation)
                 }
             })
-
+            activeAnimations.add(animatorSet)
             animatorSet.start()
         }
     }
