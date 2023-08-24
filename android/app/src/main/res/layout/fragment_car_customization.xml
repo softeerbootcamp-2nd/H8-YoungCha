@@ -64,8 +64,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
-            app:testImageResourceCar="@{viewModel.selectedCar}"
-            app:testImageResourceComponentName="@{viewModel.currentComponentName}" />
+            app:imageUrl="@{viewModel.currentSelectedOption.mainImage}" />
 
         <TextView
             android:id="@+id/tv_title"
