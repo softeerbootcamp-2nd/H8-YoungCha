@@ -33,7 +33,7 @@ class FeedbackView @JvmOverloads constructor(
     }
 
     fun startFeedbackAnimation() {
-        binding.ivFace.setImageResource(R.drawable.ic_face)
+        binding.ivFace.setImageResource(R.drawable.ic_smile)
         binding.clVpSelected.visibility = View.VISIBLE
         binding.ivGood.clearAnimation() // 이전 애니메이션 제거
         binding.ivGood.visibility = View.INVISIBLE
@@ -46,7 +46,7 @@ class FeedbackView @JvmOverloads constructor(
 
             override fun onAnimationEnd(animation: Animation?) {
                 Handler(Looper.getMainLooper()).postDelayed({
-                    binding.ivFace.setImageResource(R.drawable.ic_smile)
+                    binding.ivFace.setImageResource(R.drawable.ic_face)
                     binding.ivGood.startAnimation(fadeInForGood)
                 }, 500) // 0.5초 후 실행
             }
