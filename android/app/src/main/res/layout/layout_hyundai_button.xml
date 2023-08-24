@@ -111,39 +111,35 @@
 
         <ImageView
             android:id="@+id/iv_interior"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:scaleType="fitXY"
-            android:visibility="@{option_info.image.type == ImageType.RECTANGLE ? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:imageUrl="@{option_info.subImage}"
+           app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            app:optionImage="@{option_info.image.type == ImageType.RECTANGLE ? option_info.image.source : -1}" />
+            app:layout_constraintVertical_bias="0.5" />
 
-        <com.youngcha.ohmycarset.ui.customview.CircleView
-            android:id="@+id/cv_exterior"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="28dp"
-            android:visibility="@{option_info.image.type == ImageType.CIRCLE ? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/v_background"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            app:optionImage_circle="@{option_info.image.type == ImageType.CIRCLE ? option_info.image.source : 0}" />
+<!--        <com.youngcha.ohmycarset.ui.customview.CircleView-->
+<!--            android:id="@+id/cv_exterior"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:layout_marginEnd="28dp"-->
+<!--           app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/v_background"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0.5" />-->
 
         <ImageView
             android:id="@+id/iv_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="22dp"
             android:layout_marginTop="21dp"
             android:layout_marginEnd="25dp"
-            android:visibility="@{option_info.image.type == ImageType.ICON ? View.VISIBLE : View.INVISIBLE}"
+            app:imageUrl="@{option_info.logoImage}"
             app:layout_constraintEnd_toEndOf="@+id/v_background"
-            app:layout_constraintTop_toTopOf="parent"
-            app:optionImage="@{option_info.image.type == ImageType.ICON ? option_info.image.source : -1}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/ib_detail"
