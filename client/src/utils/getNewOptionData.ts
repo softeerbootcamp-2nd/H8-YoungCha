@@ -8,6 +8,8 @@ function getNewUserOptionData({
   newOption: OptionType;
 }) {
   switch (newOption.categoryId) {
+    //TODO: newOption.categoryId -> newOption.categoryName으로 변경
+    //반복되는 newData.mainOptions 와 같은 것 분해할당으로 재활용
     case 1:
       newData.mainOptions.options.powerTrain = newOption;
       break;

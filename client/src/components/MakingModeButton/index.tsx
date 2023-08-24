@@ -20,10 +20,9 @@ function MakingModeButton({
   hashTag = '#',
   price = 0,
   description,
-  to = '/#',
+  to = '',
 }: MakingModeButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
-
   return (
     <div className="relative">
       <div className="absolute bottom-[calc(100%+16px)]">
@@ -33,7 +32,8 @@ function MakingModeButton({
       </div>
       <Link to={to}>
         <button
-          className="body3 bg-white rounded-6px p-20px w-192px h-123px text=grey-black hover:bg-main-blue hover:text-white transition-colors duration-200 text-left"
+          className="body3 bg-white rounded-6px p-20px w-192px h-123px text=grey-black hover:bg-main-blue hover:text-white transition-colors duration-200 text-left "
+          style={{ cursor: to === '' ? 'not-allowed' : 'pointer' }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >

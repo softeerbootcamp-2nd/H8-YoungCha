@@ -21,13 +21,14 @@ function TrimCardsBox({ trims, guide }: TrimCardsBoxProps) {
       </MakingModeButton>
       {trims.map(
         ({ name, hashTag, price, description, mainOptions }, index) => {
+          const to = name === 'Le Blanc (르블랑)' ? 'making/self/1' : '';
           return (
             <MakingModeButton
               name={removeBracket(name)}
               hashTag={`#${hashTag}`}
               price={price}
               description={description}
-              to="making/self/1"
+              to={to}
               key={`making-mode-button-${index}`}
             >
               <MakingModeButton.MainOptionList mainOptions={mainOptions} />
