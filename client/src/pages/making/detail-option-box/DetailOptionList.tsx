@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import getStep from '@/utils/getStep';
 
 interface DetailOptionListProps {
-  option: OptionType;
+  option: Omit<OptionType, 'id'>;
 }
 
 function DetailOptionList({ option }: DetailOptionListProps) {
