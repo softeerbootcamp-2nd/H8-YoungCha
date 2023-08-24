@@ -5,7 +5,6 @@ import SummarySection from './AdditionalContents/SummarySection';
 import FunctionDetailBox from './AdditionalContents/FunctionDetailBox';
 import PriceSection from './PriceSection';
 import SubOptions from './AdditionalContents/SubOptions';
-import SubOptionDescription from './AdditionalContents/SubOptionDescription';
 import ImgSection from './ImgSection';
 import Tags from './Tags';
 import Rate from '@/components/OptionCard/Rate.tsx';
@@ -105,7 +104,4 @@ function OptionCard({
   );
 }
 
-export default Object.assign(OptionCard, {
-  SubOptions,
-  SubOptionDescription,
-});
+export default OptionCard;
