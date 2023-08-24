@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.data.dto.Category
 import com.youngcha.ohmycarset.data.dto.ComponentDTO
 import com.youngcha.ohmycarset.enums.AdditionalTab
@@ -38,6 +39,9 @@ class CarCustomizationViewModel(
     }
 
     val categories = MutableLiveData<List<Category>>()
+
+    private val _detailOptionInfo = MutableLiveData<OptionInfo>()
+    val detailOptionInfo: LiveData<OptionInfo> = _detailOptionInfo
 
     private val _currentComponentName = MutableLiveData<String>("파워 트레인")
     val currentComponentName: LiveData<String> = _currentComponentName
@@ -688,6 +692,34 @@ class CarCustomizationViewModel(
             }
         } else {
             _startAnimationEvent.value = "fv_vp_container"
+        }
+    }
+
+    fun getMainOptionInfoByKey(key: String): List<OptionInfo>? {
+        val car = _selectedCar.value
+
+        car?.mainOptions?.forEach { map ->
+            map[key]?.let {
+                return it
+            }
+        }
+
+        return null
+    }
+
+    fun onDetailClicked(buttonName: String) {
+        val optionInfoList = getMainOptionInfoByKey(currentComponentName.value ?: return)
+        when(buttonName) {
+            "button1"-> {
+                if (optionInfoList != null) {
+                    _detailOptionInfo.value = optionInfoList.getOrNull(0)
+                }
+            }
+            "button2" -> {
+                if (optionInfoList != null) {
+                    _detailOptionInfo.value = optionInfoList.getOrNull(1)
+                }
+            }
         }
     }
 
