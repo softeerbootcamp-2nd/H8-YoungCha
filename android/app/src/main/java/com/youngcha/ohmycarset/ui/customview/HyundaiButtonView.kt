@@ -45,6 +45,11 @@ class HyundaiButtonView @JvmOverloads constructor(
         binding.executePendingBindings()
     }
 
+    fun setCurrentComponentName(componentName: String) {
+        binding.componentName = componentName
+        binding.executePendingBindings()
+    }
+
     fun setIsVisible(isVisible: Int) {
         binding.isVisible = isVisible
         binding.executePendingBindings()
