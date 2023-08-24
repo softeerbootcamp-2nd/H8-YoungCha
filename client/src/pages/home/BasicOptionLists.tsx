@@ -31,11 +31,14 @@ function BasicOptionLists({
             className="flex items-center gap-15px"
             key={`basic-option-content-${index}`}
           >
-            <img
-              src={imgUrl}
-              alt={name}
-              className="w-80px h-60px rounded-6px"
-            />
+            <div className="w-80px min-w-80px h-60px rounded-6px">
+              <img
+                src={imgUrl}
+                alt={name}
+                className="object-cover w-full rounded-6px"
+              />
+            </div>
+
             <div className="font-medium body2">
               <Highlighter dictionary={dictionary} isActivate={dictionaryOn}>
                 {name}

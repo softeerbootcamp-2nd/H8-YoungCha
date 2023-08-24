@@ -16,12 +16,15 @@ function TrimCardsBox({ trims, guide }: TrimCardsBoxProps) {
         price={guide.price}
         description="나에게 딱 맞는 구성으로"
         to="guide/age"
+        position="first"
       >
         <MakingModeButton.GuideModeDetailList />
       </MakingModeButton>
       {trims.map(
         ({ name, hashTag, price, description, mainOptions }, index) => {
           const to = name === 'Le Blanc (르블랑)' ? 'making/self/1' : '';
+          const position = index === trims.length - 1 ? 'last' : 'middle';
+
           return (
             <MakingModeButton
               name={removeBracket(name)}
@@ -30,6 +33,7 @@ function TrimCardsBox({ trims, guide }: TrimCardsBoxProps) {
               description={description}
               to={to}
               key={`making-mode-button-${index}`}
+              position={position}
             >
               <MakingModeButton.MainOptionList mainOptions={mainOptions} />
             </MakingModeButton>

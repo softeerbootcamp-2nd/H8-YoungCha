@@ -12,6 +12,7 @@ export interface MakingModeButtonProps
   extends Pick<TrimType, 'name' | 'hashTag' | 'price' | 'description'> {
   children?: React.ReactNode;
   to: string;
+  position: 'first' | 'middle' | 'last';
 }
 
 function MakingModeButton({
@@ -21,11 +22,19 @@ function MakingModeButton({
   price = 0,
   description,
   to = '',
+  position,
 }: MakingModeButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const absolutePosition =
+    position === 'first'
+      ? '-left-1px'
+      : position === 'last'
+      ? '-right-1px'
+      : 'left-1/2 transform -translate-x-1/2';
+
   return (
-    <div className="relative">
-      <div className="absolute bottom-[calc(100%+16px)]">
+    <div className="relative ">
+      <div className={`absolute bottom-[calc(100%+16px)] ${absolutePosition}`}>
         {isHovered && (
           <DetailCard {...{ name, description }}>{children}</DetailCard>
         )}
