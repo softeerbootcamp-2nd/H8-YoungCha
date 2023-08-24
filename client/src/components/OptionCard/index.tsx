@@ -18,9 +18,15 @@ interface OptionCardProps {
   item: AllOptionType;
   isActive?: boolean;
   onClick?: () => void;
+  multiSelect?: boolean;
 }
 
-function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
+function OptionCard({
+  isActive = false,
+  item,
+  onClick,
+  multiSelect,
+}: OptionCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const optionCardRef = useRef<HTMLButtonElement>(null);
@@ -39,7 +45,7 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
   function handleIsActive() {
     // setIsActive((prevState) => !prevState);
     onClick?.();
-    if (isActive) setIsExpanded((prevState) => !prevState);
+    if (isActive && !multiSelect) setIsExpanded((prevState) => !prevState);
   }
 
   useEffect(() => {
@@ -60,7 +66,7 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
       } transition-all ease-in duration-500`}
       onClick={handleIsActive}
     >
-      <div className="flex">
+      <div className="flex gap-8px">
         <CheckIcon {...{ isActive, isSelfMode }} />
         <Tags tags={item?.tags} />
       </div>
@@ -78,8 +84,16 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
       >
         {item.details[0]?.description && (
           <div className="flex flex-col border-t-2 border-grey-001 py-12px gap-y-12px">
-            <SummarySection details={item.details} isActive={isActive} />
-            <FunctionDetailBox details={item.details} isActive={isActive} />
+            {multiSelect ? (
+              <>
+                <SubOptions options={item?.details} isActive={isActive} />
+              </>
+            ) : (
+              <>
+                <SummarySection details={item.details} isActive={isActive} />
+                <FunctionDetailBox details={item.details} isActive={isActive} />
+              </>
+            )}
           </div>
         )}
       </div>
