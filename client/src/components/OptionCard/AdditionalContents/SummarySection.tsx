@@ -10,11 +10,7 @@ function SummarySection({ details, isActive }: SummarySectionProps) {
   const { dictionary, dictionaryOn } = useContext(DictionaryContext);
 
   return (
-    <div
-      className={`${
-        isActive ? 'text-grey-black' : 'text-grey-003'
-      } body3 whitespace-pre-wrap`}
-    >
+    <div className={`${isActive ? 'text-grey-black' : 'text-grey-003'} body3`}>
       <Highlighter dictionary={dictionary} isActivate={dictionaryOn}>
         {details[0]?.description}
       </Highlighter>
