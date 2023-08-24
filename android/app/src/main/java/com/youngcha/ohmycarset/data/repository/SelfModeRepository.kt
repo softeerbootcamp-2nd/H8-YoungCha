@@ -25,6 +25,7 @@ class SelfModeRepository(private val selfModeApiService: SelfModeApiService) {
             OptionInfo(
                 id = dataItem.id,
                 categoryId = dataItem.categoryId,
+                checked = false,
                 optionType = type,
                 rate = dataItem.rate.toString(),
                 name = dataItem.name,
