@@ -23,7 +23,7 @@ function ModeSelectCard({
 
   return (
     <div
-      className={`${borderColor} rounded-6px w-301px h-116px border-1px pt-18px pb-24px pl-18px pr-10px m-4px `}
+      className={`${borderColor} rounded-6px w-301px h-116px border-1px pt-18px pb-24px pl-18px pr-10px m-4px mx-21px`}
       {...props}
     >
       <div className="flex">
