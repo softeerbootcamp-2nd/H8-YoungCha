@@ -1,39 +1,54 @@
 import MakingModeButton from '@/components/MakingModeButton';
 import removeBracket from '../../utils/removeBracket';
-import { TrimType } from '@/types';
+import { GuideType, TrimType } from '@/types';
 
 interface TrimCardsBoxProps {
   trims: TrimType[];
+  guide: GuideType;
+  setBackgroundImgUrl: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function TrimCardsBox({ trims }: TrimCardsBoxProps) {
+function TrimCardsBox({
+  trims,
+  guide,
+  setBackgroundImgUrl,
+}: TrimCardsBoxProps) {
   return (
     <div className="flex justify-between gap-16px">
       <MakingModeButton
         name="Guide Mode"
-        hashTag={`#${trims[0].hashTag}`}
-        price={38000000}
+        hashTag={guide.hashTag}
+        price={guide.price}
         description="나에게 딱 맞는 구성으로"
         to="guide/age"
+        position="first"
+        handleBackgroundImgUrlChange={() =>
+          setBackgroundImgUrl(trims[0].backgroundImgUrl)
+        }
       >
         <MakingModeButton.GuideModeDetailList />
       </MakingModeButton>
-      {trims.map(
-        ({ name, hashTag, price, description, mainOptions }, index) => {
-          return (
-            <MakingModeButton
-              name={removeBracket(name)}
-              hashTag={`#${hashTag}`}
-              price={price}
-              description={description}
-              to="making/self/1"
-              key={`making-mode-button-${index}`}
-            >
-              <MakingModeButton.MainOptionList mainOptions={mainOptions} />
-            </MakingModeButton>
-          );
-        }
-      )}
+      {trims.map((trim, index) => {
+        const to = trim.name === 'Le Blanc (르블랑)' ? 'making/self/1' : '';
+        const position = index === trims.length - 1 ? 'last' : 'middle';
+
+        return (
+          <MakingModeButton
+            name={removeBracket(trim.name)}
+            hashTag={`#${trim.hashTag}`}
+            price={trim.price}
+            description={trim.description}
+            to={to}
+            key={`making-mode-button-${index}`}
+            position={position}
+            handleBackgroundImgUrlChange={() =>
+              setBackgroundImgUrl(trim.backgroundImgUrl)
+            }
+          >
+            <MakingModeButton.MainOptionList mainOptions={trim.mainOptions} />
+          </MakingModeButton>
+        );
+      })}
     </div>
   );
 }

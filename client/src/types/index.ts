@@ -31,6 +31,12 @@ export interface InternalColorType {
   name: string;
 }
 
+export interface GuideType {
+  backgroundImgUrl: string;
+  hashTag: string;
+  price: number;
+}
+
 export interface TrimType {
   id: number;
   name: string;
@@ -59,8 +65,3 @@ export interface BasicOptionType {
 }
 
 export type ModeType = 'guide' | 'self' | 'none';
-
-export interface DictionaryContextType {
-  dictionaryOn: boolean;
-  setDictionaryOn: React.Dispatch<React.SetStateAction<boolean>>;
-}

@@ -74,7 +74,7 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
       <div
         className={`${
           isExpanded ? 'max-h-400px opacity-100' : 'max-h-0 opacity-0'
-        } transition-all ease-in-out duration-300 origin-top overflow-hidden`}
+        } transition-all ease-in-out duration-300 origin-top`}
       >
         {item.details[0]?.description && (
           <div className="flex flex-col border-t-2 border-grey-001 py-12px gap-y-12px">

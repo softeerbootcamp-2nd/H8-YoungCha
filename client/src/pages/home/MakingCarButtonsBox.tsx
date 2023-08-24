@@ -6,13 +6,21 @@ import { TITLE } from './constant';
 function MakingCarButtonsBox() {
   return (
     <OptionLayout>
-      {Array.from({ length: 4 }).map((_, index) => (
-        <Link to="/model/LX06/making/self/1" key={index}>
-          <Button size="md" color="main-blue">
-            {TITLE.MAKING_MY_CAR}
-          </Button>
-        </Link>
-      ))}
+      {Array.from({ length: 4 }).map((_, index) => {
+        const to = index === 1 ? 'making/self/1' : '';
+
+        return (
+          <Link to={to} key={index}>
+            <Button
+              size="md"
+              color="main-blue"
+              style={{ cursor: index !== 1 ? 'not-allowed' : 'pointer' }}
+            >
+              {TITLE.MAKING_MY_CAR}
+            </Button>
+          </Link>
+        );
+      })}
     </OptionLayout>
   );
 }
