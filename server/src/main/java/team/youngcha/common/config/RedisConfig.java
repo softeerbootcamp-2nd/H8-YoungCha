@@ -22,6 +22,8 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfig {
 
+    private static final Long ONE_DAY = 24L;
+
     @Value("${spring.redis.host}")
     private String host;
 
@@ -42,7 +44,7 @@ public class RedisConfig {
                         .fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair
                         .fromSerializer(new GenericJackson2JsonRedisSerializer()))
-                .entryTtl(Duration.ofHours(1L)); // 1시간 캐시
+                .entryTtl(Duration.ofHours(ONE_DAY));
 
         return buildCacheManager(cf, redisCacheConfiguration);
     }
@@ -56,7 +58,7 @@ public class RedisConfig {
                         .fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair
                         .fromSerializer(new CustomSerializer(Long.class, Long.class)))
-                .entryTtl(Duration.ofSeconds(10L)); // 24시간 캐시
+                .entryTtl(Duration.ofHours(ONE_DAY)); // 24시간 캐시
 
         return buildCacheManager(cf, redisCacheConfiguration);
     }
@@ -69,7 +71,7 @@ public class RedisConfig {
                         .fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair
                         .fromSerializer(new CustomSerializer(Long.class, Integer.class)))
-                .entryTtl(Duration.ofSeconds(10L)); // 24시간 캐시
+                .entryTtl(Duration.ofHours(ONE_DAY)); // 24시간 캐시
 
         return buildCacheManager(cf, redisCacheConfiguration);
     }
