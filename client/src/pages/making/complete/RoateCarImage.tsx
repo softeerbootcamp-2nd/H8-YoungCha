@@ -3,9 +3,10 @@ import { MouseEventHandler, useLayoutEffect, useState } from 'react';
 
 interface ImageRotatorProps {
   images: string[];
+  className?: string;
 }
 
-function RotateCarImage({ images }: ImageRotatorProps) {
+function RotateCarImage({ images, className }: ImageRotatorProps) {
   const { state, handleMouseDown, handleMouseMove, handleMouseUp } =
     useRotate();
   const preventEventDefault: MouseEventHandler<HTMLDivElement> = (e) =>
@@ -35,7 +36,7 @@ function RotateCarImage({ images }: ImageRotatorProps) {
   return (
     <>
       {isImageLoading ? (
-        <div className={`flex items-center justify-center`}>
+        <div className={`flex items-center justify-center ${className}`}>
           <svg
             className="animate-spin -ml-1 mr-3 h-5 w-5 text-black"
             xmlns="http://www.w3.org/2000/svg"
@@ -69,9 +70,9 @@ function RotateCarImage({ images }: ImageRotatorProps) {
           onMouseLeave={handleMouseUp}
           className={`${
             state.isMouseDown ? 'cursor-grabbing' : 'cursor-grab'
-          } relative w-full flex justify-center h-200px`}
+          } relative w-full flex justify-center ${className}`}
         >
-          <div className="relative">
+          <div className="relative flex justify-center items-center">
             {images.map((imgSrc, idx) => (
               <img
                 src={imgSrc}
@@ -80,8 +81,6 @@ function RotateCarImage({ images }: ImageRotatorProps) {
                 className={`${
                   idx === state.nextImgIdx ? 'block' : 'hidden'
                 } pointer-events-none select-none`}
-                width={400}
-                height={200}
               />
             ))}
             <div className="absolute top-0 right-0 flex items-center justify-center text-white rounded-full opacity-30 body2 bg-grey-black w-40px h-40px">

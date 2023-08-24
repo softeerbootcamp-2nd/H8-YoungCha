@@ -43,6 +43,7 @@ function CompleteOptionPage() {
               url: 'https://www.hyundai.com/contents/vr360/LX06/exterior/WC9/colorchip-exterior.png',
               count: 60,
             })}
+            className={`w-[600px] h-[400px]`}
           />
           <div className="flex">
             {CAR_COLOR.map(({ text, type }) => (
