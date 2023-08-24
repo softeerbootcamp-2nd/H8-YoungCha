@@ -1,55 +1,27 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { UserSelectedOptionDataContext } from '@/pages/making';
 import OptionCard from '@/components/OptionCard';
 import {
   SelectOptionMessage,
   SelectOptionListContainer,
   SelectOptionFooter,
 } from './';
-import useFetch from '@/hooks/useFetch.ts';
 import { PathParamsType } from '@/types/router';
 import { AllOptionType } from '@/types/option';
-import { INTERIOR_COLOR_STEP, PROGRESS_LIST } from './constant';
+import { SelectOptionPageProps } from '@/pages/making/select/type.ts';
 
 const CATEGORY = ['시스템', '온도관리', '외부장치', '내부장치'];
 
-function SelectMultiOptionPage() {
+function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
   const { step, mode, id } = useParams() as PathParamsType;
-  const url = `/car-make/2/${mode}/${PROGRESS_LIST[Number(step) - 1].path}`;
 
-  const { userSelectedOptionData } = useContext(UserSelectedOptionDataContext);
-
-  const { data, loading } = useFetch<AllOptionType[]>({
-    url,
-    params:
-      mode === 'guide'
-        ? ({
-            keyword1Id: '1',
-            keyword2Id: '2',
-            keyword3Id: '3',
-            age: '2',
-            gender: '0',
-            exteriorColorId:
-              Number(step) === INTERIOR_COLOR_STEP
-                ? userSelectedOptionData.colors.options.exteriorColor.id.toString()
-                : '0',
-          } as Record<string, string>)
-        : Number(step) === INTERIOR_COLOR_STEP
-        ? ({
-            exteriorColorId:
-              userSelectedOptionData.colors.options.exteriorColor.id.toString(),
-          } as Record<string, string>)
-        : undefined,
-  }) as { data: AllOptionType[]; loading: boolean };
-
-  // 선택 아이템 인덳스
   const [selectedItem, setSelectedItem] = useState<number>(0);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+
+  const [category, setCategory] = useState('시스템');
   const [categorizedData, setCategorizedData] = useState(
     {} as { [key: string]: AllOptionType[] }
   );
-  const [category, setCategory] = useState('시스템');
 
   function onNext() {
     // data: AllOptionType[]
@@ -73,7 +45,7 @@ function SelectMultiOptionPage() {
   }, [data]);
 
   return (
-    !loading && (
+    !isLoading && (
       <main className="relative flex-grow">
         <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
           {/* 이미지 영역 */}
