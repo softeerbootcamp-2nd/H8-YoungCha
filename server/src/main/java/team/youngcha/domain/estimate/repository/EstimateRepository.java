@@ -45,7 +45,7 @@ public class EstimateRepository {
         // sum(트림 + 옵션 + 키워드 포함) * 100 / sum(트림 + 키워드 포함)
         Integer rate = namedParameterJdbcTemplate.queryForObject("SELECT " +
                         "(SUM(CASE WHEN " + column + " = (:optionId) THEN 1 ELSE 0 END) * 100) / COUNT(*) AS rate " +
-                        "FROM estimate AS e use index(idx_keyword_trim)" +
+                        "FROM estimate AS e use index(idx_keyword_trim) " +
                         "WHERE trim_id = (:trimId) AND (:keywordId) IN (e.keyword1_id, e.keyword2_id, e.keyword3_id);",
                 params, Integer.class);
         if (rate == null) {
@@ -83,20 +83,23 @@ public class EstimateRepository {
         return namedParameterJdbcTemplate.queryForList(sql, params);
     }
 
-    public Map<Long, Integer> calculateSelectiveOptionsKeywordRate(Long trimId, List<Long> optionIds, Long keywordId) {
+    @Cacheable(value = "Estimate", cacheManager = "intMapCacheManager")
+    public Map<Long, Integer> calculateSelectiveOptionsKeywordRate(Long trimId, Long keywordId) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("trimId", trimId);
-        params.addValue("optionIds", optionIds);
         params.addValue("keywordId", keywordId);
 
         String sql = "SELECT es.options_id, " +
-                "COUNT(*) * 100 / (SELECT COUNT(*) FROM estimate e " +
-                "WHERE :keywordId IN (e.keyword1_id, e.keyword2_id, e.keyword3_id)) AS rate " +
+                "COUNT(*) * 100 / " +
+                "(SELECT COUNT(*) " +
+                "FROM estimate e " +
+                "WHERE (:keywordId) IN (e.keyword1_id, e.keyword2_id, e.keyword3_id)) AS rate " +
                 "FROM estimate_selective_options es " +
-                "JOIN estimate e ON e.id = es.estimate_id AND e.trim_id = :trimId " +
-                "AND :keywordId IN (e.keyword1_id, e.keyword2_id, e.keyword3_id) " +
-                "WHERE es.options_id IN (:optionIds) " +
-                "GROUP BY es.options_id";
+                "WHERE es.estimate_id IN (SELECT e.id " +
+                "FROM estimate e use index (idx_keyword_trim) " +
+                "WHERE (:keywordId) IN (e.keyword1_id, e.keyword2_id, e.keyword3_id) " +
+                "AND e.trim_id = (:trimId)) " +
+                "GROUP BY es.options_id ";
 
         return optionRateMapper(namedParameterJdbcTemplate.queryForList(sql, params));
     }
