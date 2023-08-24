@@ -536,7 +536,7 @@ public class OptionService {
                             optionDetailsGroup.getOrDefault(option.getId(), new ArrayList<>())
                     );
                 })
-                .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> -sellRatio.get(response.getId())))
+                .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> -sellRatio.getOrDefault(response.getId(), 0)))
                 .collect(Collectors.toList());
 
         if (!responses.isEmpty()) {
