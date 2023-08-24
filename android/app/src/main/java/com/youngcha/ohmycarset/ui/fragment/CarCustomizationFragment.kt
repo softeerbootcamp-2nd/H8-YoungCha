@@ -87,7 +87,9 @@ class CarCustomizationFragment : Fragment() {
         binding.apply {
             viewModel = carViewModel
             lifecycleOwner = this@CarCustomizationFragment
-            vpOptionContainer.adapter = CarOptionPagerAdapter(carViewModel)
+            vpOptionContainer.adapter = CarOptionPagerAdapter(carViewModel) {
+                Log.d("로그", "4. 디테일 정보 입니다: " + it.detail.toString())
+            }
             attachTabLayoutMediator()
             setupRecyclerView()
             setupSubTabs()
@@ -369,7 +371,9 @@ class CarCustomizationFragment : Fragment() {
         binding.rvSubOptionList.setHasFixedSize(true)
 
         // 초기 어댑터 설정 (옵션 데이터가 없는 초기 상태)
-        binding.rvSubOptionList.adapter = CarOptionPagerAdapter(carViewModel)
+        binding.rvSubOptionList.adapter = CarOptionPagerAdapter(carViewModel) {
+            Log.d("로그", "1. 디테일 정보 입니다: " + it.detail.toString())
+        }
 
 
         val linearLayoutManagerForMainOption = LinearLayoutManager(requireContext())
@@ -456,7 +460,9 @@ class CarCustomizationFragment : Fragment() {
 
     // sub option 상태에서만 가능
     private fun displayOnRecyclerView(optionInfos: List<OptionInfo>, tabName: String) {
-        val adapter = CarOptionPagerAdapter(carViewModel)
+        val adapter = CarOptionPagerAdapter(carViewModel) {
+            Log.d("로그", "3. 디테일 정보 입니다: " + it.detail.toString())
+        }
         binding.rvSubOptionList.adapter = adapter
         adapter.setOptions(
             optionInfos,
@@ -470,7 +476,9 @@ class CarCustomizationFragment : Fragment() {
 
     // main & sub 전부 가능
     private fun displayOnViewPager(optionInfos: List<OptionInfo>, tabName: String) {
-        val adapter = CarOptionPagerAdapter(carViewModel)
+        val adapter = CarOptionPagerAdapter(carViewModel) {
+            Log.d("로그", "2. 디테일 정보 입니다: " + it.detail.toString())
+        }
         binding.vpOptionContainer.adapter = adapter
         val selectedOptions = carViewModel.isSelectedOptions(tabName) ?: listOf()
         val position =

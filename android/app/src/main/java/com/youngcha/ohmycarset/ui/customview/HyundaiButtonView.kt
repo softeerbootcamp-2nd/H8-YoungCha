@@ -60,6 +60,10 @@ class HyundaiButtonView @JvmOverloads constructor(
         binding.executePendingBindings()
     }
 
+    fun setDetailClickListener(listener: OnClickListener) {
+        binding.ibDetail.setOnClickListener(listener)
+    }
+
     fun animateBorder(): ViewPropertyAnimator {
         binding.vBottomLine.animate().cancel()
         binding.vTopLine.animate().cancel()
