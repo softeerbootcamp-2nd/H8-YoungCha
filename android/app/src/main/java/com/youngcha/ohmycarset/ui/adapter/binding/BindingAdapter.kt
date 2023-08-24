@@ -30,6 +30,7 @@ import com.youngcha.ohmycarset.ui.customview.FeedbackView
 import com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
 import com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
 import com.youngcha.ohmycarset.ui.interfaces.OnHyundaiButtonClickListener
+import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.util.RoundedBackgroundSpan
 
 @BindingAdapter("imageUrl")
@@ -378,3 +379,34 @@ fun setPriceText(view: TextView, price: Int) {
     view.text ="+ %,d원".format(price)
 }
 
+@BindingAdapter(value = ["componentName", "subImage"], requireAll = false)
+fun setSubImage(view: ImageView, componentName: String?, subImage: String?) {
+
+    if (componentName == null || subImage == null) return
+
+    val context = view.context
+    val widthInPixels: Int
+    val heightInPixels: Int
+
+    if (componentName == "외장 색상") {
+        widthInPixels = (60 * context.resources.displayMetrics.density).toInt()
+        heightInPixels = (60 * context.resources.displayMetrics.density).toInt()
+
+        Glide.with(context)
+            .load(subImage)
+            .circleCrop()
+            .into(view)
+    } else {
+        widthInPixels = (150 * context.resources.displayMetrics.density).toInt()
+        heightInPixels = (50 * context.resources.displayMetrics.density).toInt()
+
+        Glide.with(context)
+            .load(subImage)
+            .into(view)
+    }
+
+    val params = view.layoutParams
+    params.width = widthInPixels
+    params.height = heightInPixels
+    view.layoutParams = params
+}
