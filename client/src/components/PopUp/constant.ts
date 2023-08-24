@@ -71,3 +71,24 @@ export const GuideModeCard = {
   description:
     '내 상황과 성향에 맞는 옵션들을 추천받아\n나에게 딱 맞는 옵션들로 구성된 차량 견적을\n받아볼 수 있어요.',
 };
+
+export const MODEL_LIST = [
+  '수소/전기차',
+  'N',
+  '승용',
+  'SUV',
+  'MPV',
+  '소형트럭&택시',
+  '트럭',
+  '버스',
+];
+
+export const ModelListPopUpText = {
+  description: '변경을 원하는 모델을 선택해주세요.',
+  greyButtonContent: '취소',
+  blueButtonContent: '선택완료',
+};
+
+export const SpecificModelChangePopUpTitle = {
+  title: '로 변경하시겠어요?',
+};
