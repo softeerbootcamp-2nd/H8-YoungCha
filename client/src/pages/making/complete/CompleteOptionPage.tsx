@@ -6,7 +6,7 @@ import { ColorType, OptionGroupType } from '../type';
 import DetailOptionBox from '../detail-option-box/DetailOptionBox';
 import DetailSelectOptionBox from '../detail-option-box/DetailSelectOptionBox';
 import DetailBasicOptionBox from '../detail-option-box/DetailBasicOptionBox';
-import RotateCarImage from './RoateCarImage';
+import RotateCarImage from '@/components/RotateCarImage';
 import getRotateImages from '@/utils/getRotateImages';
 import Confetti from '@/components/Confetti';
 import { UserSelectedOptionDataContext } from '..';

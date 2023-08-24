@@ -11,7 +11,7 @@ import { AllOptionType } from '@/types/option';
 import { UserSelectedOptionDataContext } from '@/pages/making';
 import { optionTypeName } from '@/constant.ts';
 import getRotateImages from '@/utils/getRotateImages.ts';
-import RotateCarImage from '@/pages/making/complete/RoateCarImage.tsx';
+import RotateCarImage from '@/components/RotateCarImage';
 
 const EXTERIOR_COLOR_STEP = 5;
 

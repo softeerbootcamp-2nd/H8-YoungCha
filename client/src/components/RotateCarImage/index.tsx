@@ -1,4 +1,4 @@
-import useRotate from '@/hooks/useRotate';
+import useRotate from '@/hooks/useRotate.ts';
 import { MouseEventHandler, useLayoutEffect, useState } from 'react';
 
 interface ImageRotatorProps {
