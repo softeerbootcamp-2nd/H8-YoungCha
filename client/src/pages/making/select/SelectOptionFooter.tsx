@@ -1,53 +1,43 @@
 import { PathParamsType } from '@/types/router';
-import { useContext, useState } from 'react';
-import { UserSelectedOptionDataContext } from '..';
-import EstimationSummary from '@/components/SummaryModal';
+import { useState } from 'react';
+
 import { DownArrow } from '@/assets/icons';
 import { Link } from 'react-router-dom';
 import Button from '@/components/Button';
-import { AllOptionType } from '@/types/option';
-import { optionTypeName } from '@/constant';
+import SummaryModal from '@/components/SummaryModal';
 
 interface SelectOptionFooterProps
   extends Pick<PathParamsType, 'mode' | 'id' | 'step'> {
-  data: AllOptionType;
+  onNext: () => void;
 }
 
-function SelectOptionFooter({ mode, id, step, data }: SelectOptionFooterProps) {
+function SelectOptionFooter({
+  mode,
+  id,
+  step,
+  onNext,
+}: SelectOptionFooterProps) {
   const currentStep = Number(step);
 
-  const [isEstimationSummaryOpen, setIsEstimationSummaryOpen] = useState(false);
-  const { saveOptionData } = useContext(UserSelectedOptionDataContext);
-
-  function handleOnClick() {
-    const newOption = {
-      name: data.name,
-      price: data.price,
-      imgUrl: data.images[0].imgUrl,
-      categoryId: data.categoryId,
-      type: optionTypeName[data.categoryId],
-    };
-
-    saveOptionData({ newOption });
-  }
+  const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
 
   return (
     <>
-      <EstimationSummary
-        render={isEstimationSummaryOpen}
-        onClose={() => setIsEstimationSummaryOpen(false)}
+      <SummaryModal
+        render={isSummaryModalOpen}
+        onClose={() => setIsSummaryModalOpen(false)}
       />
       <div className="z-10 flex items-end justify-between w-full bg-white pt-24px pb-40px px-32px">
         <div className="flex flex-col gap-5px">
           <button
             className="flex gap-5px"
-            onClick={() => setIsEstimationSummaryOpen((value) => !value)}
+            onClick={() => setIsSummaryModalOpen((value) => !value)}
           >
             <span className="body2 text-grey-003">총 견적금액</span>
             <span className="bg-grey-001 rounded-4px">
               <DownArrow
                 className={`fill-grey-003 transition ${
-                  isEstimationSummaryOpen ? 'rotate-180' : ''
+                  isSummaryModalOpen ? 'rotate-180' : ''
                 }`}
               />
             </span>
@@ -64,7 +54,7 @@ function SelectOptionFooter({ mode, id, step, data }: SelectOptionFooterProps) {
             </Link>
           )}
           <Link to={`/model/${id}/making/${mode}/${Number(step) + 1}`}>
-            <Button size="sm" onClick={handleOnClick}>
+            <Button size="sm" onClick={onNext}>
               선택 완료
             </Button>
           </Link>
