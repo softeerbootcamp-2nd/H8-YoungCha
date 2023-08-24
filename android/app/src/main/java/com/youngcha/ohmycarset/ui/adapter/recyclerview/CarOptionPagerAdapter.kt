@@ -21,6 +21,7 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
 
     private val animatedTabs = HashMap<String, Boolean>()
     private var shouldAnimate = false
+    private var componentName: String? = null
 
     /*
     어댑터에서 currentSelectedOptions 사용하여 ViewModel의 상태를 반영하는 것은 문제가 되지 않지만?, 그 변수의 값을 어댑터 내에서 변경하거나 수정하는 행위는 MVVM 패턴에서 어긋남
@@ -28,18 +29,20 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
     private var currentSelectedOptions = listOf<OptionInfo>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setOptions(newOptions: List<OptionInfo>, type: String, subOption: String?, isDisplayingInPager: Boolean, currentType: String?) {
+    fun setOptions(newOptions: List<OptionInfo>, type: String, subOption: String?, isDisplayingInPager: Boolean, currentType: String?, componentName: String?) {
         this.options = newOptions
         this.optionType = type
         this.subOptionName = subOption
         this.isDisplayingInPager = isDisplayingInPager
         this.currentType = currentType
+        this.componentName = componentName
         currentSelectedOptions = viewModel.isSelectedOptions(subOption!!) ?: listOf()
 
         // 만약 현재 선택된 옵션이 없다면 0번째 옵션을 추가
         if (currentSelectedOptions.isEmpty()) {
             val firstOption = options.firstOrNull()
             firstOption?.let {
+                //viewModel.addCarComponents(viewModel.currentComponentName.value!!, it)
                 if (optionType != OPTION_SELECTION) {
                     viewModel.addCarComponents(viewModel.currentComponentName.value!!, it)
                 }
@@ -91,7 +94,7 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(options[position], isDisplayingInPager, currentType)
+        holder.bind(options[position], isDisplayingInPager, currentType, componentName!!)
     }
 
     override fun getItemCount(): Int = options.size
@@ -149,11 +152,12 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
             viewModel.addCarComponents(viewModel.currentComponentName.value!!, clickedOption, subOptionName)
         }
 
-        fun bind(option: OptionInfo, isViewPager: Boolean, currentType: String?) {
+        fun bind(option: OptionInfo, isViewPager: Boolean, currentType: String?, componentName: String) {
             if (shouldAnimate  && currentType == "GuideMode") {
                 hyundaiButtonView.animateBorder()
                 shouldAnimate = false // 애니메이션이 한 번 실행된 후 플래그를 초기화
             }
+            hyundaiButtonView.setCurrentComponentName(componentName)
             hyundaiButtonView.setOptionInfo(option)
             hyundaiButtonView.setIsViewPager(isViewPager)
             hyundaiButtonView.setCurrentType(currentType!!)
