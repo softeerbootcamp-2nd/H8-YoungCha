@@ -18,6 +18,10 @@ object RetrofitClient {
         retrofit.create(SelfModeApiService::class.java)
     }
 
+    val categoriesApi: CategoriesApiService by lazy {
+        retrofit.create(CategoriesApiService::class.java)
+    }
+
     val apiService: ApiService by lazy {
         retrofit.create(ApiService::class.java)
     }
