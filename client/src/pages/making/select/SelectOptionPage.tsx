@@ -64,7 +64,6 @@ function SelectOptionPage() {
 
   useEffect(() => {
     setSelectedItem(0);
-    console.log(data);
   }, [data]);
 
   return (
