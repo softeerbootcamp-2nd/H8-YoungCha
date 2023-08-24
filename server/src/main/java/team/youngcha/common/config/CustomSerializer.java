@@ -14,6 +14,6 @@ public class CustomSerializer extends Jackson2JsonRedisSerializer {
     @Override
     protected JavaType getJavaType(Class clazz) {
         return TypeFactory.defaultInstance()
-                .constructMapType(Map.class, Long.class, Long.class);
+                .constructMapType(Map.class, Long.class, Number.class);
     }
 }
