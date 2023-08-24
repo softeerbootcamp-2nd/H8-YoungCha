@@ -29,8 +29,11 @@ function Confetti({
   const [animationID, setAnimationID] = useState(0);
 
   const animate = useCallback(() => {
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext('2d')!;
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+
+    if (!canvas) return;
+    if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
