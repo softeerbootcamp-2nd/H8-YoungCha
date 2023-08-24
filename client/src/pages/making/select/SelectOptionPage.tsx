@@ -76,14 +76,14 @@ function SelectOptionPage() {
             {Number(step) === EXTERIOR_COLOR_STEP ? (
               <RotateCarImage
                 images={getRotateImages({
-                  url: data?.[selectedItem].images[0].imgUrl ?? '',
+                  url: data?.[selectedItem]?.images[0].imgUrl ?? '',
                   count: 60,
                 })}
                 className="h-fit"
               />
             ) : (
               <img
-                src={data?.[selectedItem].images[0].imgUrl ?? ''}
+                src={data?.[selectedItem]?.images[0].imgUrl ?? ''}
                 className="w-full h-full object-cover"
                 alt="palisade"
               />
