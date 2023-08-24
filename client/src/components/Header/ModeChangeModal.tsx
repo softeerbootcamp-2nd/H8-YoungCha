@@ -16,7 +16,7 @@ interface ModeChangeModalProps {
 }
 
 function ModeChangeModal({ mode, closePopUp }: ModeChangeModalProps) {
-  const [isConfirmOepn, setIsConfirmOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ function ModeChangeModal({ mode, closePopUp }: ModeChangeModalProps) {
     mode === 'self' ? ChangeToGuideModePopUp : ChangeToSelfModePopUp;
   return (
     <PopUp onClose={closePopUp}>
-      {isConfirmOepn ? (
+      {isConfirmOpen ? (
         <>
           <PopUp.PopUpMain
             title={changeToNextModePopUp.title}
