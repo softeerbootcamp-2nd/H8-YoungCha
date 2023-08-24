@@ -10,7 +10,9 @@ export interface AllOptionType {
   details: OptionDetailType[];
   tags?: OptionTagType[];
 }
-
+export interface AllGuideOptionType extends AllOptionType {
+  checked: boolean;
+}
 export interface OptionImageType {
   imgUrl: string;
   imgType: number;

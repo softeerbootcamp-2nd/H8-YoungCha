@@ -9,7 +9,7 @@ function CompleteGuideWithLoading() {
   useEffect(() => {
     const loadingTime = setTimeout(() => {
       setIsLoading(false);
-    }, LOADING_DURATION);
+    }, LOADING_DURATION + 6000);
     return () => clearTimeout(loadingTime);
   }, []);
 
