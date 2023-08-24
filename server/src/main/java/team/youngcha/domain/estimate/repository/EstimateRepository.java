@@ -45,7 +45,7 @@ public class EstimateRepository {
         // sum(트림 + 옵션 + 키워드 포함) * 100 / sum(트림 + 키워드 포함)
         Integer rate = namedParameterJdbcTemplate.queryForObject("SELECT " +
                         "(SUM(CASE WHEN " + column + " = (:optionId) THEN 1 ELSE 0 END) * 100) / COUNT(*) AS rate " +
-                        "FROM estimate AS e use index(idx_keyword_trim)" +
+                        "FROM estimate AS e ignore index(trim_id)" +
                         "WHERE trim_id = (:trimId) AND (:keywordId) IN (e.keyword1_id, e.keyword2_id, e.keyword3_id);",
                 params, Integer.class);
         if (rate == null) {
