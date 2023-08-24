@@ -29,12 +29,14 @@ function Home() {
   });
 
   const secondPageRef = useRef<HTMLDivElement>(null);
+
   return (
     <div>
       {!loading && (
         <>
           <div
-            className={`relative flex justify-center w-full h-screen bg-center bg-cover pt-85px ${`bg-[url('${data.guide.backgroundImgUrl}')]`}`}
+            className={`relative flex justify-center w-full h-screen bg-center bg-cover pt-85px`}
+            style={{ backgroundImage: `url('${data.guide.backgroundImgUrl}')` }}
           >
             <div className="flex flex-col justify-between max-w-5xl py-16px">
               <div>
