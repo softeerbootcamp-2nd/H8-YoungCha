@@ -13,6 +13,7 @@ export interface MakingModeButtonProps
   children?: React.ReactNode;
   to: string;
   position: 'first' | 'middle' | 'last';
+  handleBackgroundImgUrlChange: () => void;
 }
 
 function MakingModeButton({
@@ -23,6 +24,7 @@ function MakingModeButton({
   description,
   to = '',
   position,
+  handleBackgroundImgUrlChange,
 }: MakingModeButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
   const absolutePosition =
@@ -43,7 +45,10 @@ function MakingModeButton({
         <button
           className="body3 bg-white rounded-6px p-20px w-192px h-123px text=grey-black hover:bg-main-blue hover:text-white transition-colors duration-200 text-left "
           style={{ cursor: to === '' ? 'not-allowed' : 'pointer' }}
-          onMouseEnter={() => setIsHovered(true)}
+          onMouseEnter={() => {
+            setIsHovered(true);
+            handleBackgroundImgUrlChange();
+          }}
           onMouseLeave={() => setIsHovered(false)}
         >
           <div className="mb-8px">{hashTag}</div>
