@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTagSelectContext } from '@/store/useTagSelectContext';
 import KeywordButton from './KeywordButton';
+import useTagRefreshNavigator from '@/hooks/useTagRefreshNavigator';
 
 const keywordSelectArray = [
   {
@@ -18,16 +18,10 @@ const keywordSelectArray = [
   },
 ];
 function KeywordSelectButtonsBox() {
-  const navigate = useNavigate();
   const [hoveredKeyword, setHoveredKeyword] = useState<string>('');
-  const { selectedAge, selectedKeyword, setselectedKeyword } =
-    useTagSelectContext();
+  const { selectedKeyword, setselectedKeyword } = useTagSelectContext();
 
-  useEffect(() => {
-    if (selectedAge === null) {
-      navigate('/model/LX06/guide/age');
-    }
-  }, [selectedAge]);
+  useTagRefreshNavigator();
 
   function handleOnClick(keyword: string) {
     setselectedKeyword((prevselectedKeyword) => {
