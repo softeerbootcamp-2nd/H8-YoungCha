@@ -25,12 +25,14 @@ export const INITIAL_USER_SELECTED_DATA: UserSelectedOptionDataType = {
     title: '팰리세이드 Le Blanc (르블랑)',
     options: {
       trim: {
+        id: 2,
         type: '트림',
         name: 'Le Blanc',
         imgUrl: '/src/assets/mock/images/palisade.png',
         price: 43_460_000,
       },
       powerTrain: {
+        id: 1,
         type: '파워트레인',
         name: '디젤 2.2',
         imgUrl: '/src/assets/mock/images/palisade.png',
@@ -38,6 +40,7 @@ export const INITIAL_USER_SELECTED_DATA: UserSelectedOptionDataType = {
         categoryId: 1,
       },
       drivingSystem: {
+        id: 3,
         type: '구동 방식',
         name: '2WD',
         imgUrl: '/src/assets/mock/images/palisade.png',
@@ -45,6 +48,7 @@ export const INITIAL_USER_SELECTED_DATA: UserSelectedOptionDataType = {
         categoryId: 2,
       },
       bodyType: {
+        id: 5,
         type: '바디 타입',
         name: '7인승',
         imgUrl: '/src/assets/mock/images/palisade.png',
@@ -52,6 +56,7 @@ export const INITIAL_USER_SELECTED_DATA: UserSelectedOptionDataType = {
         categoryId: 3,
       },
       wheel: {
+        id: 15,
         type: '휠',
         name: '20인치',
         imgUrl: '/src/assets/mock/images/palisade.png',
@@ -65,6 +70,7 @@ export const INITIAL_USER_SELECTED_DATA: UserSelectedOptionDataType = {
     title: '색상',
     options: {
       exteriorColor: {
+        id: 12,
         type: '외장 색상',
         name: '크리미 화이트 펄',
         imgUrl: '/src/assets/mock/images/palisade.png',
@@ -72,6 +78,7 @@ export const INITIAL_USER_SELECTED_DATA: UserSelectedOptionDataType = {
         categoryId: 4,
       },
       interiorColor: {
+        id: 13,
         type: '내장 색상',
         name: '퀼팅천연 (블랙)',
         imgUrl: '/src/assets/mock/images/palisade.png',
