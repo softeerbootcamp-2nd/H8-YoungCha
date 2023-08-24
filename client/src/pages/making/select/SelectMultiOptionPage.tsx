@@ -56,20 +56,18 @@ function SelectMultiOptionPage() {
   }
 
   useEffect(() => {
-    setCategorizedData(
-      Array.isArray(data)
-        ? data?.reduce(
-            (acc, cur) => {
-              const { categoryId } = cur;
-              const categoryName = CATEGORY[categoryId - 7];
-              acc[categoryName] = acc[categoryName] ?? [];
-              acc[categoryName].push(cur);
-              return acc;
-            },
-            {} as { [key: string]: AllOptionType[] }
-          )
-        : {}
+    if (!Array.isArray(data)) return;
+    const newCategorizedData = data?.reduce(
+      (acc, cur) => {
+        const { categoryId } = cur;
+        const categoryName = CATEGORY[categoryId - 7];
+        acc[categoryName] = acc[categoryName] ?? [];
+        acc[categoryName].push(cur);
+        return acc;
+      },
+      {} as { [key: string]: AllOptionType[] }
     );
+    setCategorizedData(newCategorizedData);
   }, [data]);
 
   return (
