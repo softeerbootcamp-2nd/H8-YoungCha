@@ -4,6 +4,9 @@ import CenteredDescription from './Contents/CenteredDescription';
 import PopUpButton from './Contents/PopUpButton';
 import DualMufflerImg from './Contents/DualMufflerImg';
 import ModeSelectCard from './Contents/ModeSelectCard';
+import ModelSelectCard from './Contents/ModelSelectCard';
+import ModelCarousel from './Contents/ModelCarousel';
+import PopUpProgressBar from './Contents/PopUpProgressBar';
 
 interface PopUpProps {
   onClose?: () => void;
@@ -31,4 +34,7 @@ export default Object.assign(PopUp, {
   PopUpButton,
   DualMufflerImg,
   ModeSelectCard,
+  ModelSelectCard,
+  ModelCarousel,
+  PopUpProgressBar,
 });
