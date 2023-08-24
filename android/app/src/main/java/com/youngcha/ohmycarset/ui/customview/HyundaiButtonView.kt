@@ -1,12 +1,16 @@
 package com.youngcha.ohmycarset.ui.customview
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewPropertyAnimator
+import android.widget.ImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.databinding.LayoutHyundaiButtonBinding
 import com.youngcha.ohmycarset.data.model.car.OptionInfo
 
@@ -22,6 +26,9 @@ class HyundaiButtonView @JvmOverloads constructor(
         binding = LayoutHyundaiButtonBinding.inflate(inflater, this, true)
     }
 
+    val ibDetail: ImageButton
+        get() = binding.ibDetail
+
     private var onClickAction: (() -> Unit)? = null
 
     fun setOnClickAction(action: (() -> Unit)?) {
@@ -29,11 +36,19 @@ class HyundaiButtonView @JvmOverloads constructor(
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_UP) {
+        if (event.action == MotionEvent.ACTION_UP && !isTouchInsideIbDetail(event)) {
             onClickAction?.invoke()
         }
         return super.dispatchTouchEvent(event)
     }
+
+
+    fun isTouchInsideIbDetail(event: MotionEvent): Boolean {
+        val rect = Rect()
+        binding.ibDetail.getHitRect(rect)
+        return rect.contains(event.x.toInt(), event.y.toInt())
+    }
+
 
     fun setCurrentType(currentType: String) {
         binding.currentType = currentType
@@ -61,7 +76,9 @@ class HyundaiButtonView @JvmOverloads constructor(
     }
 
     fun setDetailClickListener(listener: OnClickListener) {
-        binding.ibDetail.setOnClickListener(listener)
+        binding.ibDetail.setOnClickListener {
+            listener.onClick(it)
+        }
     }
 
     fun animateBorder(): ViewPropertyAnimator {

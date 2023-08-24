@@ -61,11 +61,11 @@
             android:layout_width="match_parent"
             android:layout_height="310dp"
             android:visibility="@{viewModel.subOptionButtonVisible == 1? View.VISIBLE : View.GONE}"
-            app:mainImageUrl="@{viewModel.currentSelectedOption.mainImage}"
-            app:subImageUrl="@{viewModel.subOptionImage}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab" />
+            app:layout_constraintTop_toBottomOf="@id/tl_main_option_tab"
+            app:mainImageUrl="@{viewModel.currentSelectedOption.mainImage}"
+            app:subImageUrl="@{viewModel.subOptionImage}" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -129,6 +129,7 @@
                 android:layout_marginEnd="3.5dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:tag="button1"
                 app:animateOnClick="@{true}"
                 app:currentType="@{viewModel.currentType}"
                 app:currentTypeForBackground="@{viewModel.currentType}"
@@ -167,6 +168,7 @@
                 android:layout_marginStart="3.5dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:tag="button2"
                 app:animateOnClick="@{true}"
                 app:currentType="@{viewModel.currentType}"
                 app:currentTypeForBackground="@{viewModel.currentType}"
@@ -310,9 +312,9 @@
                 android:fontFamily="@font/hyundai_sans_head_kr_medium"
                 android:textColor="@color/cool_grey_black"
                 android:textSize="22sp"
-                app:layout_constraintTop_toBottomOf="@id/tv_estimate_price_int"
                 app:layout_constraintBottom_toBottomOf="@id/cl_button_container"
-                app:layout_constraintStart_toStartOf="@id/cl_button_container" />
+                app:layout_constraintStart_toStartOf="@id/cl_button_container"
+                app:layout_constraintTop_toBottomOf="@id/tv_estimate_price_int" />
 
             <TextView
                 android:id="@+id/btn_prev"
