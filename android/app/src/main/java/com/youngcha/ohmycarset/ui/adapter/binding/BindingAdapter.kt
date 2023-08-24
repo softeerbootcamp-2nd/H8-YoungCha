@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.View.INVISIBLE
@@ -33,18 +34,33 @@ import com.youngcha.ohmycarset.ui.interfaces.OnHyundaiButtonClickListener
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.util.RoundedBackgroundSpan
 
-@BindingAdapter("imageUrl")
-fun loadImage(view: ImageView, imageUrl: String?) {
-    if (imageUrl.isNullOrEmpty()) {
-        Glide.with(view.context).clear(view)
+@BindingAdapter(value = ["mainImageUrl", "subImageUrl"], requireAll = false)
+fun loadImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
+    Log.d("로그", "서브 URL 이미지 입니다. " + subImageUrl?.toString())
+    if (subImageUrl.isNullOrEmpty()) {
+        if (mainImageUrl.isNullOrEmpty()) {
+            Glide.with(view.context).clear(view)
+        } else {
+            Glide.with(view.context)
+                .load(mainImageUrl)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(view)
+        }
     } else {
         Glide.with(view.context)
-            .load(imageUrl)
+            .load(subImageUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(view)
     }
 }
 
+@BindingAdapter("imageUrl")
+fun setLogoImage(view: ImageView, imageUrl: String?) {
+    Glide.with(view.context)
+        .load(imageUrl)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(view)
+}
 
 @BindingAdapter("testImageSource")
 fun loadImage(view: ImageView, imageUrl: Int) {
