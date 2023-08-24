@@ -2,6 +2,8 @@ import { INITIAL_USER_SELECTED_DATA } from '@/pages/making/constant';
 import { OptionType } from '@/pages/making/type';
 import getNewUserOptionData from '@/utils/getNewOptionData';
 import { useEffect, useState } from 'react';
+import { UserSelectedOptionDataType } from '../pages/making/type';
+import { getStorage, setStorage } from '@/utils/optionStorage';
 
 // 상태 설정, storage 저장
 function useSelectOption() {
@@ -16,16 +18,20 @@ function useSelectOption() {
         newData,
         newOption,
       });
-      sessionStorage.setItem('optionData', JSON.stringify(newStorageData));
+      setStorage<UserSelectedOptionDataType>({
+        key: 'optionData',
+        value: newStorageData,
+      });
       return newStorageData;
     });
   }
 
   useEffect(() => {
     if (userSelectedOptionData === INITIAL_USER_SELECTED_DATA) {
-      const saveData = sessionStorage.getItem('optionData')
-        ? JSON.parse(sessionStorage.getItem('optionData')!)
-        : INITIAL_USER_SELECTED_DATA;
+      const saveData = getStorage<UserSelectedOptionDataType>({
+        key: 'optionData',
+        initalValue: INITIAL_USER_SELECTED_DATA,
+      });
       setUserSelectedOptionData(saveData);
     }
   }, []);
