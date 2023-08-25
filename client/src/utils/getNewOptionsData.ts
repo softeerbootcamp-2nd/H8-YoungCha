@@ -7,7 +7,6 @@ function getNewUserOptionsData({
   newData: UserSelectedOptionDataType;
   newOptions: OptionType[] | undefined;
 }) {
-  console.log(newData);
   if (!newOptions) return newData;
 
   newData.selectedOptions.options = [...newOptions];

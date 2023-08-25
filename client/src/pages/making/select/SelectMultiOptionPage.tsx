@@ -20,7 +20,7 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
   const { step, mode, id } = useParams() as PathParamsType;
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState<number>(0);
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [selectedItemIds, setSelectedItemIds] = useState<number[]>([]);
 
   const [category, setCategory] = useState('시스템');
   const [categorizedData, setCategorizedData] = useState(
@@ -32,19 +32,11 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
   function onNext() {
     navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
   }
-  function getSelectedItemIndex() {
-    const itemIndex: number[] = [];
-
-    Object.values(userSelectedOptionData.selectedOptions.options).forEach(
-      ({ id, categoryId }) => {
-        if (categoryId === data[0].id) {
-          data.forEach((item, index) => {
-            if (id === item.id) itemIndex.push(index);
-          });
-        }
-      }
-    );
-    return itemIndex;
+  function getSelectedItemIds() {
+    const itemIds = Object.values(
+      userSelectedOptionData.selectedOptions.options
+    ).map(({ id }) => id);
+    return itemIds;
   }
 
   useEffect(() => {
@@ -59,15 +51,16 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
       },
       {} as { [key: string]: AllOptionType[] }
     );
-    const itemIndexs = getSelectedItemIndex();
+    const itemIds = getSelectedItemIds();
+
     setCategorizedData(newCategorizedData);
-    setSelectedItems(itemIndexs);
+    setSelectedItemIds(itemIds);
   }, [data]);
 
   useEffect(() => {
     if (!Array.isArray(data)) return;
-    const newOptions = selectedItems.map((optionId) => {
-      const optionIndex = data?.findIndex((item) => item.id === optionId);
+    const newOptions = selectedItemIds.map((id) => {
+      const optionIndex = data.findIndex((item) => item.id === id);
       return {
         id: data[optionIndex].id,
         name: data[optionIndex].name,
@@ -78,7 +71,7 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
       };
     });
     saveOptionData({ newOptions });
-  }, [selectedItems, data]);
+  }, [selectedItemIds, data]);
 
   return (
     <main className="relative flex-grow">
@@ -155,10 +148,10 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
               categorizedData[category]?.map((item: AllOptionType) => (
                 <OptionCard
                   key={`OptionCard-${item.name}`}
-                  isActive={selectedItems.indexOf(item.id) >= 0}
+                  isActive={selectedItemIds.indexOf(item.id) >= 0}
                   onClick={() => {
                     setSelectedItem(item.id);
-                    setSelectedItems((prevState) => {
+                    setSelectedItemIds((prevState) => {
                       if (prevState.indexOf(item.id) >= 0) {
                         return prevState.filter((id) => id !== item.id);
                       } else {
