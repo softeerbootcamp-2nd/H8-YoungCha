@@ -13,8 +13,7 @@ import TrimCardsBox from './TrimCardsBox';
 import InternalColorBox from './InternalColorBox';
 import ExteriorColorBox from './ExteriorColorBox';
 import { TrimType } from '@/types';
-import { useRef } from 'react';
-
+import { useEffect, useRef } from 'react';
 interface TrimsDataType {
   model: string;
   trims: TrimType[];
@@ -27,6 +26,9 @@ function Home() {
 
   const secondPageRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    sessionStorage.clear();
+  }, []);
   return (
     <div>
       {!loading && (
