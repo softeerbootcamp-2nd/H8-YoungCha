@@ -46,7 +46,10 @@ function MoveButtonBox({ path }: MoveButtonProps) {
               이전
             </Button>
           </Link>
-          <Link to="/model/LX06/guide/complete">
+          <Link
+            to="/model/LX06/guide/complete"
+            state={{ selectedAge, selectedGender, selectedKeyword }}
+          >
             <Button
               size="lg"
               color="main-blue"

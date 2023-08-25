@@ -8,6 +8,7 @@ export interface OptionType {
   type?: string;
   categoryId?: number;
   price?: number;
+  selectedItem?: number;
 }
 
 export interface OptionGroupType {

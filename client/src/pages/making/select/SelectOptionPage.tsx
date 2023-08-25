@@ -42,11 +42,25 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
     setSelectedItem(0);
   }, [data]);
 
+  useEffect(() => {
+    if (!Array.isArray(data)) return;
+
+    const newOption = {
+      id: data[selectedItem].id,
+      name: data[selectedItem].name,
+      price: data[selectedItem].price,
+      imgUrl: data[selectedItem].images?.[0].imgUrl,
+      categoryId: data[selectedItem].categoryId,
+      type: optionTypeName[data[selectedItem].categoryId],
+    };
+    saveOptionData({ newOption });
+  }, [selectedItem]);
+
   return (
     <main className="relative flex-grow">
       <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
         {/* 이미지 영역 */}
-        <div className="lg:col-span-7 flex flex-col justify-center items-center bg-grey-001 px-16px">
+        <div className="flex flex-col items-center justify-center lg:col-span-7 bg-grey-001 px-16px">
           {isLoading ? (
             <Spinner />
           ) : Number(step) === EXTERIOR_COLOR_STEP ? (
