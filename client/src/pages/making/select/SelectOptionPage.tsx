@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   SelectOptionMessage,
   SelectOptionListContainer,
@@ -17,15 +17,18 @@ import Spinner from '@/components/Spinner';
 import Skeleton from '@/components/OptionCard/Skeleton.tsx';
 
 const EXTERIOR_COLOR_STEP = 5;
+const FEEDBACK_DELAY_TIME = 2000;
 
 function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
   const { step, mode, id } = useParams() as PathParamsType;
-
+  const navigate = useNavigate();
+  const [next, setNext] = useState(false);
   const { saveOptionData } = useContext(UserSelectedOptionDataContext);
 
   // 선택 아이템 인덳스
   const [selectedItem, setSelectedItem] = useState(0);
   const [isImageLoading, setIsImageLoading] = useState(true);
+
   function onNext(data: AllOptionType) {
     const newOption = {
       id: data.id,
@@ -36,9 +39,17 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
       type: optionTypeName[data.categoryId],
     };
     saveOptionData({ newOption });
+    if (mode === 'guide') {
+      return navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
+    }
+    setTimeout(() => {
+      navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
+    }, FEEDBACK_DELAY_TIME);
+    setNext(true);
   }
 
   useEffect(() => {
+    setNext(false);
     setSelectedItem(0);
   }, [data]);
 
@@ -57,10 +68,10 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
   }, [selectedItem]);
 
   return (
-    <main className="relative flex-grow">
+    <main className={`relative flex-grow ${next ? 'pointer-events-none' : ''}`}>
       <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
         {/* 이미지 영역 */}
-        <div className="flex flex-col items-center justify-center lg:col-span-7 bg-grey-001 px-16px">
+        <div className="lg:col-span-7 flex flex-col justify-center items-center bg-grey-001">
           {isLoading ? (
             <Spinner />
           ) : Number(step) === EXTERIOR_COLOR_STEP ? (
@@ -106,6 +117,7 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
                       setSelectedItem(index);
                     }}
                     item={item}
+                    next={next}
                   />
                 ))
             )}

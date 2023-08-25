@@ -63,11 +63,9 @@ function SelectOptionFooter({
               이전
             </Link>
           )}
-          <Link to={`/model/${id}/making/${mode}/${Number(step) + 1}`}>
-            <Button size="sm" onClick={onNext}>
-              선택 완료
-            </Button>
-          </Link>
+          <Button size="sm" onClick={onNext}>
+            선택 완료
+          </Button>
         </div>
       </div>
     </>

@@ -12,12 +12,14 @@ import Name from '@/components/OptionCard/Name.tsx';
 import CheckIcon from './CheckIcon';
 import { AllOptionType } from '@/types/option';
 import { PathParamsType } from '@/types/router.ts';
+import FeedbackCard from '@/components/FeedbackCard';
 
 interface OptionCardProps {
   item: AllOptionType;
   isActive?: boolean;
   onClick?: () => void;
   multiSelect?: boolean;
+  next?: boolean;
 }
 
 function OptionCard({
@@ -25,9 +27,9 @@ function OptionCard({
   item,
   onClick,
   multiSelect,
+  next,
 }: OptionCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-
   const optionCardRef = useRef<HTMLButtonElement>(null);
 
   const { mode, step } = useParams() as PathParamsType;
@@ -42,7 +44,6 @@ function OptionCard({
   const hasDetail = !!item.details[0]?.description;
 
   function handleIsActive() {
-    // setIsActive((prevState) => !prevState);
     onClick?.();
     if (isActive && !multiSelect) setIsExpanded((prevState) => !prevState);
   }
@@ -56,13 +57,17 @@ function OptionCard({
       });
   }, [isActive]);
 
+  useEffect(() => {
+    isActive && setIsExpanded(false);
+  }, [next]);
+
   return (
     <button
       ref={optionCardRef}
       className={`text-left relative border-2 rounded-6px min-w-320px w-full p-20px cursor-pointer 
       ${totalDivColor} ${
         isExpanded ? 'max-h-750px' : 'max-h-fit'
-      } transition-all ease-in duration-500`}
+      } transition-all ease-in duration-300`}
       onClick={handleIsActive}
     >
       <div className="flex gap-8px">
@@ -79,7 +84,7 @@ function OptionCard({
       <div
         className={`${
           isExpanded ? 'max-h-400px opacity-100' : 'max-h-0 opacity-0'
-        } transition-all ease-in-out duration-300 origin-top`}
+        } transition-all ease-in-out duration-300 origin-top overflow-hidden`}
       >
         {item.details[0]?.description && (
           <div className="flex flex-col border-t-2 border-grey-001 py-12px gap-y-12px">
@@ -100,6 +105,14 @@ function OptionCard({
         <PriceSection price={item.price} isActive={isActive} />
         {hasDetail && <MoreDetailsButton {...{ isExpanded, setIsExpanded }} />}
       </div>
+      {mode === 'self' && next && isActive && (
+        // <Transition render={next} from="opacity-0" to="opacity-100" unmount>
+        <FeedbackCard
+          feedbackTitle={item.feedbackTitle}
+          feedbackDescription={item.feedbackDescription}
+        />
+        // </Transition>
+      )}
     </button>
   );
 }

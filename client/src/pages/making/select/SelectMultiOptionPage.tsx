@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import OptionCard from '@/components/OptionCard';
 import {
   SelectOptionMessage,
@@ -16,7 +16,7 @@ const CATEGORY = ['시스템', '온도관리', '외부장치', '내부장치'];
 
 function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
   const { step, mode, id } = useParams() as PathParamsType;
-
+  const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState<number>(0);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
@@ -29,6 +29,7 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
     // data: AllOptionType[]
     // const newOption = data?.filter((item) => selectedItems.includes(item.id));
     //   TODO: 배열 저장
+    navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
   }
 
   useEffect(() => {
@@ -92,19 +93,22 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
                 </div>
               </>
             ) : (
-              Object.keys(categorizedData)?.map((key) => (
-                <button
-                  className={`flex-1 px-8px py-6px rounded-6px body3 ${
-                    key === category
-                      ? 'bg-main-blue text-white'
-                      : 'bg-grey-002 text-grey-003'
-                  }`}
-                  key={key}
-                  onClick={() => setCategory(key)}
-                >
-                  {key}
-                </button>
-              ))
+              Object.keys(categorizedData)?.map((data) => {
+                if (data === 'undefined') return;
+                return (
+                  <button
+                    className={`flex-1 px-8px py-6px rounded-6px body3 ${
+                      data === category
+                        ? 'bg-main-blue text-white'
+                        : 'bg-grey-002 text-grey-003'
+                    }`}
+                    key={`Category-${data}`}
+                    onClick={() => setCategory(data)}
+                  >
+                    {data}
+                  </button>
+                );
+              })
             )}
           </div>
           <SelectOptionListContainer>
@@ -117,7 +121,7 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
             ) : (
               categorizedData[category]?.map((item: AllOptionType) => (
                 <OptionCard
-                  key={item.name}
+                  key={`OptionCard-${item.name}`}
                   isActive={selectedItems.indexOf(item.id) >= 0}
                   onClick={() => {
                     setSelectedItem(item.id);

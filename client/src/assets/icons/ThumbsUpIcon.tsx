@@ -1,4 +1,6 @@
-function ThumbsUpIcon() {
+import { HTMLAttributes } from 'react';
+
+function ThumbsUpIcon({ ...props }: HTMLAttributes<SVGSVGElement>) {
   return (
     <svg
       width="20"
@@ -6,6 +8,7 @@ function ThumbsUpIcon() {
       viewBox="0 0 20 26"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <g id="good">
         <path
