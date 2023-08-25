@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import OptionCard from '@/components/OptionCard';
 import {
@@ -11,6 +11,8 @@ import { AllOptionType } from '@/types/option';
 import { SelectOptionPageProps } from '@/pages/making/select/type.ts';
 import Spinner from '@/components/Spinner';
 import Skeleton from '@/components/OptionCard/Skeleton.tsx';
+import { UserSelectedOptionDataContext } from '..';
+import { optionTypeName } from '@/constant';
 
 const CATEGORY = ['시스템', '온도관리', '외부장치', '내부장치'];
 
@@ -24,7 +26,7 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
   const [categorizedData, setCategorizedData] = useState(
     {} as { [key: string]: AllOptionType[] }
   );
-
+  const { saveOptionData } = useContext(UserSelectedOptionDataContext);
   function onNext() {
     // data: AllOptionType[]
     // const newOption = data?.filter((item) => selectedItems.includes(item.id));
@@ -47,11 +49,28 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
     setCategorizedData(newCategorizedData);
   }, [data]);
 
+  useEffect(() => {
+    console.log(data);
+    console.log(selectedItems);
+    const newOptions = selectedItems.map((optionId) => {
+      const optionIndex = data?.findIndex((item) => item.id === optionId);
+      return {
+        id: data[optionIndex].id,
+        name: data[optionIndex].name,
+        price: data[optionIndex].price,
+        imgUrl: data[optionIndex].images?.[0].imgUrl,
+        categoryId: data[optionIndex].categoryId,
+        type: optionTypeName[data[optionIndex].categoryId],
+      };
+    });
+    saveOptionData({ newOptions });
+  }, [selectedItems]);
+
   return (
     <main className="relative flex-grow">
       <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
         {/* 이미지 영역 */}
-        <div className="lg:col-span-7 relative flex flex-col justify-center items-center bg-grey-001">
+        <div className="relative flex flex-col items-center justify-center lg:col-span-7 bg-grey-001">
           {isLoading ? (
             <Spinner />
           ) : (
@@ -64,8 +83,8 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
                 className="object-cover w-full h-full"
                 alt="palisade"
               />
-              <div className="absolute bottom-0 left-0 right-0 flex justify-center items-center h-80px drop-shadow-lg">
-                <span className="body1 text-white">
+              <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center h-80px drop-shadow-lg">
+                <span className="text-white body1">
                   {data?.filter((item) => item.id === selectedItem)[0]?.name ??
                     data?.[0].name}
                 </span>

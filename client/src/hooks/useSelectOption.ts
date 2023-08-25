@@ -11,12 +11,19 @@ function useSelectOption() {
     INITIAL_USER_SELECTED_DATA
   );
 
-  function saveOptionData({ newOption }: { newOption: OptionType }) {
+  function saveOptionData({
+    newOption,
+    newOptions,
+  }: {
+    newOption?: OptionType;
+    newOptions?: OptionType[];
+  }) {
     setUserSelectedOptionData((prev) => {
       const newData = { ...prev };
       const newStorageData = getNewUserOptionData({
         newData,
         newOption,
+        newOptions,
       });
       setStorage<UserSelectedOptionDataType>({
         key: 'optionData',

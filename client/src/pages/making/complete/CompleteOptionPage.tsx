@@ -29,8 +29,6 @@ function CompleteOptionPage() {
       option,
     }))
   );
-  console.log(userSelectedOptionData);
-  console.log(userSelectedOptionData?.colors.options.exteriorColor.imgUrl);
   return (
     <div>
       <Confetti particleCount={120} circleParticleCount={60} />

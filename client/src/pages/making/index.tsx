@@ -16,7 +16,13 @@ import {
 
 export interface UserSelectedOptionDataContextType {
   userSelectedOptionData: UserSelectedOptionDataType;
-  saveOptionData: ({ newOption }: { newOption: OptionType }) => void;
+  saveOptionData: ({
+    newOption,
+    newOptions,
+  }: {
+    newOption?: OptionType;
+    newOptions?: OptionType[];
+  }) => void;
 }
 
 export const UserSelectedOptionDataContext =
@@ -52,17 +58,16 @@ function MakingPage() {
             gender: '0',
             exteriorColorId:
               Number(step) === INTERIOR_COLOR_STEP
-                ? userSelectedOptionData.colors.options.exteriorColor.id.toString()
+                ? userSelectedOptionData.colors.options.exteriorColor?.id.toString()
                 : '0',
           } as Record<string, string>)
         : Number(step) === INTERIOR_COLOR_STEP
         ? ({
             exteriorColorId:
-              userSelectedOptionData.colors.options.exteriorColor.id.toString(),
+              userSelectedOptionData.colors.options.exteriorColor?.id.toString(),
           } as Record<string, string>)
         : undefined,
   });
-
   if (Number(step) === LAST_STEP - 1)
     return <SelectMultiOptionPage {...{ data, isLoading }} />;
 
