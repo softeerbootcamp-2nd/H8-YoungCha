@@ -37,7 +37,6 @@ function MakingPage() {
   const { step, mode } = useParams() as PathParamsType;
   const { state } = useLocation();
 
-  console.log(state);
   if (Number(step) === LAST_STEP) {
     return state?.isGuide ? (
       <CompleteOptionPage />
@@ -48,7 +47,6 @@ function MakingPage() {
 
   const { userSelectedOptionData } = useContext(UserSelectedOptionDataContext);
   const url = `/car-make/2/${mode}/${PROGRESS_LIST[Number(step) - 1].path}`;
-  console.log(state);
   const { data, loading: isLoading } = useFetch<AllOptionType[]>({
     url,
     params:

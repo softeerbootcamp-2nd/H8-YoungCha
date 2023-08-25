@@ -2,20 +2,32 @@ import Button from '@/components/Button';
 import { TEXT } from './constant';
 import { Link, useParams } from 'react-router-dom';
 import Confetti from '@/components/Confetti';
+import RotateCarImage from '@/components/RotateCarImage';
+import getRotateImages from '@/utils/getRotateImages';
+import { UserSelectedOptionDataType } from '../making/type';
+import { getStorage } from '@/utils/optionStorage';
+import { INITIAL_USER_SELECTED_DATA } from '../making/constant';
 
 function CompleteGuide() {
   const { id } = useParams();
+  const userSelectedOptionData = getStorage({
+    key: 'optionData',
+    initalValue: INITIAL_USER_SELECTED_DATA,
+  }) as UserSelectedOptionDataType;
 
   return (
     <>
       <Confetti particleCount={120} circleParticleCount={60} />
       <div className="flex flex-col items-center w-full gap-16px">
-        <img
-          src="/src/assets/mock/images/palisade.png"
-          alt="palisade"
-          width={400}
-          height={300}
-        />
+        <div className="w-450px">
+          <RotateCarImage
+            images={getRotateImages({
+              url: userSelectedOptionData?.colors.options.exteriorColor?.imgUrl,
+              count: 60,
+            })}
+          />
+        </div>
+
         <h1 className="font-hsans-head text-32px font-medium leading-[44.8px] tracking-[-1.28px]">
           {TEXT.TITLE.complete}
         </h1>
