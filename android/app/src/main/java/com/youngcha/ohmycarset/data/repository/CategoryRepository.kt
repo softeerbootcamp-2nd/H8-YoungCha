@@ -51,5 +51,4 @@ class CategoryRepository(private val categoryAPIService: CategoriesApiService) {
             _subCategories.postValue(emptyList())
         }
     }
-
 }
