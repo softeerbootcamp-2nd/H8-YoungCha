@@ -1,61 +1,53 @@
 import * as Icon from '@/assets/icons';
 import { useState, useEffect } from 'react';
+import Transition from '@/components/Transition/Transition.tsx';
 
-const SHOW_SMILE_TIME = 500;
-const SHOW_LAUGHING_TIME = 1000;
+const SHOW_LAUGHING_TIME = 500;
 
 interface FeedbackCardProps {
-  isSelected: boolean;
+  feedbackTitle: string;
+  feedbackDescription: string;
 }
 
-function FeedbackCard({ isSelected }: FeedbackCardProps) {
-  const [showSmileIcon, setShowSmileIcon] = useState(true);
-  const [showLaughingIcon, setShowLaughingIcon] = useState(false);
+function FeedbackCard({
+  feedbackTitle,
+  feedbackDescription,
+}: FeedbackCardProps) {
+  const [isGood, setIsGood] = useState(false);
 
   useEffect(() => {
-    if (isSelected) {
-      const showSmileTimer = setTimeout(() => {
-        setShowSmileIcon(false);
-      }, SHOW_SMILE_TIME);
-
-      const showLaughingTimer = setTimeout(() => {
-        setShowLaughingIcon(true);
-      }, SHOW_LAUGHING_TIME);
-
-      return () => {
-        clearTimeout(showSmileTimer);
-        clearTimeout(showLaughingTimer);
-      };
-    }
-  }, [isSelected]);
+    const timer = setTimeout(() => setIsGood(true), SHOW_LAUGHING_TIME);
+    return () => {
+      clearTimeout(timer);
+      setIsGood(false);
+    };
+    // setIsGood(true);
+  }, []);
 
   return (
-    <div
-      className={`bg-main-blue border-2 border-main-blue rounded-6px w-375px max-h-150px p-20px`}
-    >
+    <Transition render from="opacity-0" to="opacity-100" unmount>
       <div
-        className={`${
-          showSmileIcon ? 'opacity-100' : 'opacity-0'
-        } transition-opacity duration-500 linear`}
+        className={`absolute w-full bg-main-blue border-2 border-main-blue rounded-4px p-20px top-0 left-0 bottom-0 right-0`}
       >
-        {showSmileIcon && <Icon.SmileIcon />}
-      </div>
-      <div
-        className={`flex ${
-          showLaughingIcon ? 'opacity-100' : 'opacity-0'
-        } transition-opacity duration-500 linear`}
-      >
-        {showLaughingIcon && <Icon.LaughingFaceIcon />}
-        {showLaughingIcon && <Icon.ThumbsUpIcon />}
-      </div>
+        <div className="flex">
+          {isGood ? <Icon.SmileIcon /> : <Icon.LaughingFaceIcon />}
+          <Transition
+            render={isGood}
+            className="origin-bottom-left"
+            from="opacity-0 scale-0"
+            to="opacity-100 scale-100"
+            unmount
+          >
+            <Icon.ThumbsUpIcon className="w-24px h-24px" />
+          </Transition>
+        </div>
 
-      <div className="font-medium text-white text-20px mt-10px">
-        {/* {powerTrainMock.feedback[0].title} */}
+        <div className="font-medium text-white text-20px mt-10px">
+          {feedbackTitle}
+        </div>
+        <div className="text-white body3 mt-6px">{feedbackDescription}</div>
       </div>
-      <div className="text-white body3 mt-6px">
-        {/* {powerTrainMock.feedback[0].description} */}
-      </div>
-    </div>
+    </Transition>
   );
 }
 
