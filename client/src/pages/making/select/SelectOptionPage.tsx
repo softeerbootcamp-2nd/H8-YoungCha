@@ -29,19 +29,7 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
   const [selectedItem, setSelectedItem] = useState(0);
   const [isImageLoading, setIsImageLoading] = useState(true);
 
-  function onNext(data: AllOptionType) {
-    const newOption = {
-      id: data.id,
-      name: data.name,
-      price: data.price,
-      imgUrl: data.images?.[0].imgUrl,
-      categoryId: data.categoryId,
-      type: optionTypeName[data.categoryId],
-    };
-    saveOptionData({ newOption });
-    if (mode === 'guide') {
-      return navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
-    }
+  function onNext() {
     setTimeout(() => {
       navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
     }, FEEDBACK_DELAY_TIME);
@@ -71,7 +59,7 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
     <main className={`relative flex-grow ${next ? 'pointer-events-none' : ''}`}>
       <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
         {/* 이미지 영역 */}
-        <div className="lg:col-span-7 flex flex-col justify-center items-center bg-grey-001">
+        <div className="flex flex-col items-center justify-center lg:col-span-7 bg-grey-001">
           {isLoading ? (
             <Spinner />
           ) : Number(step) === EXTERIOR_COLOR_STEP ? (
@@ -122,9 +110,7 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
                 ))
             )}
           </SelectOptionListContainer>
-          <SelectOptionFooter
-            {...{ mode, id, step, onNext: () => onNext(data[selectedItem]) }}
-          />
+          <SelectOptionFooter {...{ mode, id, step, onNext: () => onNext() }} />
         </div>
       </div>
     </main>
