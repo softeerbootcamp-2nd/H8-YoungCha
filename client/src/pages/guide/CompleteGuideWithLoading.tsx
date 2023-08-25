@@ -38,6 +38,7 @@ function CompleteGuideWithLoading() {
         imgUrl: option.images[0].imgUrl,
         categoryId: option.categoryId,
         type: optionTypeName[option.categoryId],
+        id: option.id,
       };
     })[0];
 
