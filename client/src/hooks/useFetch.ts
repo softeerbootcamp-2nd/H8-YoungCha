@@ -1,5 +1,5 @@
 import { get } from '@/service';
-import { useState, useEffect, useDeferredValue } from 'react';
+import { useState, useEffect } from 'react';
 
 interface FetchType {
   url: string;
@@ -10,7 +10,6 @@ interface FetchType {
 
 function useFetch<T>({ url, params, deps = [] }: FetchType) {
   const [loading, setLoading] = useState(true);
-  const deferredLoading = useDeferredValue(loading);
   const [data, setData] = useState<T>({} as T);
 
   useEffect(() => {
@@ -22,7 +21,7 @@ function useFetch<T>({ url, params, deps = [] }: FetchType) {
     })();
   }, [url, ...deps]);
 
-  return { loading: deferredLoading, data };
+  return { loading, data };
 }
 
 export default useFetch;
