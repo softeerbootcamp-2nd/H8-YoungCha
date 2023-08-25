@@ -42,7 +42,7 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
     Object.values(userSelectedOptionData).forEach(
       ({ options }: { options: OptionGroupType }) => {
         Object.values(options).forEach(({ id, categoryId }) => {
-          if (categoryId === data[0].id) {
+          if (categoryId === data[0].categoryId) {
             data.forEach((item, index) => {
               if (id === item.id) itemIndex = index;
             });
@@ -72,7 +72,7 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
       type: optionTypeName[data[selectedItem].categoryId],
     };
     saveOptionData({ newOption });
-  }, [selectedItem, data]);
+  }, [selectedItem]);
 
   return (
     <>
