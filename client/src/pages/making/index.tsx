@@ -16,6 +16,7 @@ import {
 
 export interface UserSelectedOptionDataContextType {
   userSelectedOptionData: UserSelectedOptionDataType;
+  setUserSelectedOptionData: (data: UserSelectedOptionDataType) => void;
   saveOptionData: ({
     newOption,
     newOptions,
@@ -28,6 +29,7 @@ export interface UserSelectedOptionDataContextType {
 export const UserSelectedOptionDataContext =
   createContext<UserSelectedOptionDataContextType>({
     userSelectedOptionData: INITIAL_USER_SELECTED_DATA,
+    setUserSelectedOptionData: () => {},
     saveOptionData: () => {},
   });
 
@@ -35,6 +37,7 @@ function MakingPage() {
   const { step, mode } = useParams() as PathParamsType;
   const { state } = useLocation();
 
+  console.log(state);
   if (Number(step) === LAST_STEP) {
     return state?.isGuide ? (
       <CompleteOptionPage />
@@ -45,7 +48,7 @@ function MakingPage() {
 
   const { userSelectedOptionData } = useContext(UserSelectedOptionDataContext);
   const url = `/car-make/2/${mode}/${PROGRESS_LIST[Number(step) - 1].path}`;
-
+  console.log(state);
   const { data, loading: isLoading } = useFetch<AllOptionType[]>({
     url,
     params:
@@ -75,12 +78,14 @@ function MakingPage() {
 }
 
 export default function MakingPageWithProvider() {
-  const { userSelectedOptionData, saveOptionData } = useSelectOption();
+  const { userSelectedOptionData, setUserSelectedOptionData, saveOptionData } =
+    useSelectOption();
 
   return (
     <UserSelectedOptionDataContext.Provider
       value={{
         userSelectedOptionData,
+        setUserSelectedOptionData,
         saveOptionData,
       }}
     >
