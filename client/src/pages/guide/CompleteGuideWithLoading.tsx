@@ -10,8 +10,12 @@ import { optionTypeName } from '@/constant';
 import { useLocation } from 'react-router-dom';
 import { AgeType, GenderType } from './type';
 
+const TRIM_ID = 2;
+
 function CompleteGuideWithLoading() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isTimerEnd, setIsTimerEnd] = useState(false);
+  const [isRequestEnd, setIsRequestEnd] = useState(false);
+
   const {
     state: { selectedAge, selectedGender, selectedKeyword },
   }: {
@@ -22,7 +26,6 @@ function CompleteGuideWithLoading() {
     };
   } = useLocation();
 
-  const trimId = 2;
   const { saveOptionData } = useSelectOption();
 
   function filterContextOptions(options: AllGuideOptionType[]) {
@@ -50,7 +53,7 @@ function CompleteGuideWithLoading() {
       keywordId[selectedKeyword[2] as keyof typeof keywordId],
     ];
     const exterirColorData = await get<AllGuideOptionType[]>({
-      url: `/car-make/${trimId}/guide/exterior-color`,
+      url: `/car-make/${TRIM_ID}/guide/exterior-color`,
       params: { age, gender, keyword1Id, keyword2Id, keyword3Id },
     });
     const exteriorColorId = String(
@@ -66,27 +69,27 @@ function CompleteGuideWithLoading() {
     };
     const urls = [
       {
-        url: `/car-make/${trimId}/guide/wheel`,
+        url: `/car-make/${TRIM_ID}/guide/wheel`,
         params,
       },
       {
-        url: `/car-make/${trimId}/guide/power-train`,
+        url: `/car-make/${TRIM_ID}/guide/power-train`,
         params,
       },
       {
-        url: `/car-make/${trimId}/guide/options`,
+        url: `/car-make/${TRIM_ID}/guide/options`,
         params,
       },
       {
-        url: `/car-make/${trimId}/guide/interior-color`,
+        url: `/car-make/${TRIM_ID}/guide/interior-color`,
         params,
       },
       {
-        url: `/car-make/${trimId}/guide/driving-system`,
+        url: `/car-make/${TRIM_ID}/guide/driving-system`,
         params,
       },
       {
-        url: `/car-make/${trimId}/guide/body-type`,
+        url: `/car-make/${TRIM_ID}/guide/body-type`,
         params,
       },
     ];
@@ -99,8 +102,8 @@ function CompleteGuideWithLoading() {
 
   useEffect(() => {
     const loadingTime = setTimeout(() => {
-      setIsLoading(false);
-    }, LOADING_DURATION * 10);
+      setIsTimerEnd(true);
+    }, LOADING_DURATION);
 
     (async () => {
       const userGuideOptions =
@@ -108,19 +111,16 @@ function CompleteGuideWithLoading() {
 
       userGuideOptions.forEach((option) => {
         const filteredOptions = filterContextOptions(option);
-        console.log(filteredOptions);
         saveOptionData({ newOption: filteredOptions });
       });
-
-      clearTimeout(loadingTime);
-      setIsLoading(false);
+      setIsRequestEnd(true);
     })();
     return () => clearTimeout(loadingTime);
   }, []);
 
   return (
     <div className="flex-grow h-full">
-      {isLoading ? <Loading /> : <CompleteGuide />}
+      {isTimerEnd && isRequestEnd ? <CompleteGuide /> : <Loading />}
     </div>
   );
 }
