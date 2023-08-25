@@ -2,6 +2,7 @@ export type ColorType = 'exterior' | 'interior';
 export type ColorTextType = '외부' | '내부';
 
 export interface OptionType {
+  id: number;
   name: string;
   imgUrl: string;
   type?: string;

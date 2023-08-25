@@ -1,18 +1,19 @@
 import { Fragment, useState } from 'react';
+import SubOptionDescription from '@/components/OptionCard/AdditionalContents/SubOptionDescription.tsx';
+import { OptionDetailType } from '@/types/option.ts';
+interface SubOptionsProps {
+  options: OptionDetailType[];
+  isActive: boolean;
+}
 
-function SubOptions() {
-  const options = [
-    '전방 충돌 방지 보조',
-    '내비게이션 기반 스마트 크루즈 컨트롤',
-    '고속도로 주행보조 2',
-  ];
+function SubOptions({ options, isActive }: SubOptionsProps) {
   const [subSelectedIndex, setsubSelectedIndex] = useState(0);
 
   function handleOnClick(
     event: React.MouseEvent<HTMLParagraphElement>,
     index: number
   ) {
-    event.stopPropagation();
+    isActive && event.stopPropagation();
     setsubSelectedIndex(index);
   }
 
@@ -22,16 +23,19 @@ function SubOptions() {
         <Fragment key={`SubOption-${index}`}>
           <p
             className={`${
-              subSelectedIndex === index ? 'text-grey-black font-medium' : ''
-            }`}
+              isActive && subSelectedIndex === index ? 'text-grey-black' : ''
+            } ${isActive ? 'font-medium' : ''}`}
             onClick={(event) => handleOnClick(event, index)}
             role="none"
           >
-            {item}
+            {item.name}
           </p>
           {index !== options.length - 1 && <p>ㆍ</p>}
         </Fragment>
       ))}
+      <SubOptionDescription isActive={isActive}>
+        {options[subSelectedIndex].description}
+      </SubOptionDescription>
     </div>
   );
 }
