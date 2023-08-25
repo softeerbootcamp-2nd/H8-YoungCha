@@ -53,6 +53,20 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
     setSelectedItem(0);
   }, [data]);
 
+  useEffect(() => {
+    if (!Array.isArray(data)) return;
+
+    const newOption = {
+      id: data[selectedItem].id,
+      name: data[selectedItem].name,
+      price: data[selectedItem].price,
+      imgUrl: data[selectedItem].images?.[0].imgUrl,
+      categoryId: data[selectedItem].categoryId,
+      type: optionTypeName[data[selectedItem].categoryId],
+    };
+    saveOptionData({ newOption });
+  }, [selectedItem]);
+
   return (
     <main className={`relative flex-grow ${next ? 'pointer-events-none' : ''}`}>
       <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">

@@ -8,7 +8,7 @@ interface PrepareGuideProps {
 
 function Guide({ path }: PrepareGuideProps) {
   return (
-    <div className="flex justify-between flex-grow mx-auto max-w-7xl px-128px w-full">
+    <div className="flex justify-between flex-grow w-full mx-auto max-w-7xl px-128px">
       {path === 'complete' ? (
         <CompleteGuideWithLoading />
       ) : (
