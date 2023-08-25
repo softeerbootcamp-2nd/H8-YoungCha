@@ -65,7 +65,7 @@ function RotateCarImage({ images, className }: ImageRotatorProps) {
                 } pointer-events-none select-none`}
               />
             ))}
-            <div className="absolute top-0 right-0 flex items-center justify-center text-white rounded-full opacity-30 body2 bg-grey-black w-40px h-40px">
+            <div className="absolute top-16px right-16px flex items-center justify-center text-white rounded-full opacity-30 body2 bg-grey-black w-40px h-40px">
               360°
             </div>
           </div>

@@ -46,7 +46,7 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
     <main className="relative flex-grow">
       <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
         {/* 이미지 영역 */}
-        <div className="lg:col-span-7 flex flex-col justify-center items-center bg-grey-001 px-16px">
+        <div className="lg:col-span-7 flex flex-col justify-center items-center bg-grey-001">
           {isLoading ? (
             <Spinner />
           ) : Number(step) === EXTERIOR_COLOR_STEP ? (
