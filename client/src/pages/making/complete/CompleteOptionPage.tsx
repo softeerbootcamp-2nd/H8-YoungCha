@@ -29,7 +29,8 @@ function CompleteOptionPage() {
       option,
     }))
   );
-
+  console.log(userSelectedOptionData);
+  console.log(userSelectedOptionData?.colors.options.exteriorColor.imgUrl);
   return (
     <div>
       <Confetti particleCount={120} circleParticleCount={60} />
@@ -38,13 +39,25 @@ function CompleteOptionPage() {
           <h1 className="whitespace-pre-line text-34px font-medium leading-[47.6px] tracking-[-1.36px] font-hsans-head text-grey-black text-center">
             {COMPLETE_OPTION_PAGE_TITLE}
           </h1>
-          <RotateCarImage
-            images={getRotateImages({
-              url: 'https://www.hyundai.com/contents/vr360/LX06/exterior/WC9/colorchip-exterior.png',
-              count: 60,
-            })}
-            className={`w-[600px] h-[400px]`}
-          />
+          <div className={`w-700px h-400px flex justify-center items-center`}>
+            {selectedColorType === 'exterior' ? (
+              <RotateCarImage
+                images={getRotateImages({
+                  url: userSelectedOptionData?.colors.options.exteriorColor
+                    .imgUrl,
+                  count: 60,
+                })}
+              />
+            ) : (
+              <img
+                src={
+                  userSelectedOptionData?.colors.options.interiorColor.imgUrl
+                }
+                alt="interior"
+              />
+            )}
+          </div>
+
           <div className="flex">
             {CAR_COLOR.map(({ text, type }) => (
               <button

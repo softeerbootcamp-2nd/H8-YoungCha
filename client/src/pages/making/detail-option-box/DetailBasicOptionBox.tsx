@@ -17,7 +17,6 @@ function DetailBasicOptionBox() {
     categoryId: BasicOptionsId[selectedOptionFilter],
     currentSize,
   });
-  console.log(basicOptions);
   function handleMoreOptionClick() {
     setCurrentSize((prev) => prev + OPTION_SIZE);
   }
