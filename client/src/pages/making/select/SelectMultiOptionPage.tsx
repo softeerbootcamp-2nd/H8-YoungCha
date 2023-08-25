@@ -26,12 +26,25 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
   const [categorizedData, setCategorizedData] = useState(
     {} as { [key: string]: AllOptionType[] }
   );
-  const { saveOptionData } = useContext(UserSelectedOptionDataContext);
+  const { userSelectedOptionData, saveOptionData } = useContext(
+    UserSelectedOptionDataContext
+  );
   function onNext() {
-    // data: AllOptionType[]
-    // const newOption = data?.filter((item) => selectedItems.includes(item.id));
-    //   TODO: 배열 저장
     navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
+  }
+  function getSelectedItemIndex() {
+    const itemIndex: number[] = [];
+
+    Object.values(userSelectedOptionData.selectedOptions.options).forEach(
+      ({ id, categoryId }) => {
+        if (categoryId === data[0].id) {
+          data.forEach((item, index) => {
+            if (id === item.id) itemIndex.push(index);
+          });
+        }
+      }
+    );
+    return itemIndex;
   }
 
   useEffect(() => {
@@ -46,12 +59,13 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
       },
       {} as { [key: string]: AllOptionType[] }
     );
+    const itemIndexs = getSelectedItemIndex();
     setCategorizedData(newCategorizedData);
+    setSelectedItems(itemIndexs);
   }, [data]);
 
   useEffect(() => {
-    console.log(data);
-    console.log(selectedItems);
+    if (!Array.isArray(data)) return;
     const newOptions = selectedItems.map((optionId) => {
       const optionIndex = data?.findIndex((item) => item.id === optionId);
       return {
@@ -64,7 +78,7 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
       };
     });
     saveOptionData({ newOptions });
-  }, [selectedItems]);
+  }, [selectedItems, data]);
 
   return (
     <main className="relative flex-grow">

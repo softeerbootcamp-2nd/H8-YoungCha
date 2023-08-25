@@ -4,6 +4,7 @@ import getNewUserOptionData from '@/utils/getNewOptionData';
 import { useEffect, useState } from 'react';
 import { UserSelectedOptionDataType } from '../pages/making/type';
 import { getStorage, setStorage } from '@/utils/optionStorage';
+import getNewUserOptionsData from '../utils/getNewOptionsData';
 
 // 상태 설정, storage 저장
 function useSelectOption() {
@@ -20,11 +21,9 @@ function useSelectOption() {
   }) {
     setUserSelectedOptionData((prev) => {
       const newData = { ...prev };
-      const newStorageData = getNewUserOptionData({
-        newData,
-        newOption,
-        newOptions,
-      });
+      const newStorageData = newOption
+        ? getNewUserOptionData({ newData, newOption })
+        : getNewUserOptionsData({ newData, newOptions });
       setStorage<UserSelectedOptionDataType>({
         key: 'optionData',
         value: newStorageData,
