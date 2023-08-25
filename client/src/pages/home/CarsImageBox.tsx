@@ -13,7 +13,7 @@ function CarsImageBox({ trims }: CarsImageBoxProps) {
           className="flex flex-col items-center gap-8px"
           key={`car-image-${index}`}
         >
-          <img src={imgUrl} alt="palisade" className="w-214px h-155px" />
+          <img src={imgUrl} alt="palisade" className="h-155px" />
           <p className="font-normal body1 text-grey-black">
             {formatPrice(price)} 부터
           </p>

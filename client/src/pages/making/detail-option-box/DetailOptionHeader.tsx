@@ -2,7 +2,7 @@ import { formatPrice } from '@/utils';
 import { OptionType } from '../type';
 
 interface DetailOptionHeaderProps {
-  option: Omit<OptionType, 'name' | 'imgUrl'>;
+  option: Omit<OptionType, 'name' | 'imgUrl' | 'id'>;
 }
 
 function DetailOptionHeader({ option }: DetailOptionHeaderProps) {

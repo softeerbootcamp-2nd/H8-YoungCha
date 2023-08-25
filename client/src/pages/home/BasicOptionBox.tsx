@@ -46,19 +46,21 @@ function BasicOptionBox({ trims }: BasicOptionBoxProps) {
           ))}
         </div>
         <OptionLayout>
-          {trims.map(({ id }, index) => (
-            <ul
-              className="flex flex-col w-full gap-24px"
-              key={`basic-option-${index}`}
-            >
-              <BasicOptionLists
-                id={id}
-                categoryId={BasicOptionsId[selectedOption]}
-                currentSize={currentSize}
-                setIsLastPage={setLastPageCount}
-              />
-            </ul>
-          ))}
+          <div className="flex justify-around gap-8px">
+            {trims.map(({ id }, index) => (
+              <ul
+                className="flex flex-col w-full gap-24px"
+                key={`basic-option-${index}`}
+              >
+                <BasicOptionLists
+                  id={id}
+                  categoryId={BasicOptionsId[selectedOption]}
+                  currentSize={currentSize}
+                  setIsLastPage={setLastPageCount}
+                />
+              </ul>
+            ))}
+          </div>
         </OptionLayout>
         {lastPageCount < 3 && (
           <Button color="grey" onClick={handleMoreOptionClick}>

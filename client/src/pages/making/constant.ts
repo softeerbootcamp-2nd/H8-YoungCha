@@ -3,8 +3,8 @@ import { ColorTextType, ColorType, UserSelectedOptionDataType } from './type';
 export const LAST_STEP = 8;
 
 export const OPTION_ORDER = [
-  '파워트레인',
-  '구동 방식',
+  '파워 트레인',
+  '구동방식',
   '바디 타입',
   '휠',
   '외장 색상',
@@ -25,6 +25,7 @@ export const INITIAL_USER_SELECTED_DATA: UserSelectedOptionDataType = {
     title: '팰리세이드 Le Blanc (르블랑)',
     options: {
       trim: {
+        id: 2,
         type: '트림',
         name: 'Le Blanc(르블랑)',
         imgUrl: '/src/assets/mock/images/palisade.png',
@@ -37,7 +38,6 @@ export const INITIAL_USER_SELECTED_DATA: UserSelectedOptionDataType = {
     title: '색상',
     options: {},
   },
-
   selectedOptions: {
     title: '옵션',
     options: [],

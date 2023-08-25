@@ -1,6 +1,7 @@
 import ActiveCheck from '@/assets/icons/select-check';
 import InactiveCheck from '@/assets/icons/select-check-inactive';
 import SelectButton from '@/components/SelectButton';
+import useTagRefreshNavigator from '@/hooks/useTagRefreshNavigator';
 import { GenderType } from '../type';
 import { Fragment, useState } from 'react';
 import { useTagSelectContext } from '@/store/useTagSelectContext';
@@ -11,6 +12,7 @@ function GenderSelectButtonsBox() {
   const [hoveredGender, setHoveredGender] = useState<GenderType | ''>('');
   const { selectedGender, setSelectedGender } = useTagSelectContext();
 
+  useTagRefreshNavigator();
   function handleOnclick(Gender: GenderType) {
     setSelectedGender(Gender);
   }

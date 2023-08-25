@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import KeywordButton from './KeywordButton';
 import { useTagSelectContext } from '@/store/useTagSelectContext';
+import KeywordButton from './KeywordButton';
+import useTagRefreshNavigator from '@/hooks/useTagRefreshNavigator';
 
 const keywordSelectArray = [
   {
@@ -19,6 +20,8 @@ const keywordSelectArray = [
 function KeywordSelectButtonsBox() {
   const [hoveredKeyword, setHoveredKeyword] = useState<string>('');
   const { selectedKeyword, setselectedKeyword } = useTagSelectContext();
+
+  useTagRefreshNavigator();
 
   function handleOnClick(keyword: string) {
     setselectedKeyword((prevselectedKeyword) => {

@@ -14,7 +14,7 @@ function PopUpButton({
   onClose,
 }: PopUpButtonProps) {
   return (
-    <div className="flex gap-8px mt-24px">
+    <div className="flex justify-center gap-8px mt-24px">
       <Button size="lg" color="grey" onClick={onClose}>
         {greyButtonContent}
       </Button>
