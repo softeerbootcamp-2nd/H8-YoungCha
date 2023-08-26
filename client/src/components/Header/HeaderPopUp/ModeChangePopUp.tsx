@@ -20,11 +20,13 @@ function ModeChangePopUp({ mode, closePopUp }: ModeChangePopUpProps) {
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const guidePathname = pathname.replace('self', 'guide');
-  const selfPathname = pathname.replace('guide', 'self');
+  const guidePathname = '/model/LX06/guide/age';
+  const selfPathname = '/model/LX06/making/self/1';
 
   const changeToNextModePopUp =
     mode === 'self' ? ChangeToGuideModePopUp : ChangeToSelfModePopUp;
+
+  const isGuide = pathname.includes('guide') ? true : false;
   return (
     <PopUp onClose={closePopUp}>
       {isConfirmOpen ? (
@@ -42,7 +44,7 @@ function ModeChangePopUp({ mode, closePopUp }: ModeChangePopUpProps) {
             onClose={closePopUp}
             onClick={() => {
               closePopUp();
-              navigate(mode === 'self' ? guidePathname : selfPathname);
+              navigate(isGuide ? selfPathname : guidePathname);
             }}
           />
         </>
