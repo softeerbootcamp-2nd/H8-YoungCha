@@ -13,8 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.data.api.RetrofitClient
+import com.youngcha.ohmycarset.data.model.GuideParam
 import com.youngcha.ohmycarset.data.repository.CategoryRepository
 import com.youngcha.ohmycarset.data.repository.GuideModeRepository
 import com.youngcha.ohmycarset.data.repository.SelfModeRepository
@@ -135,6 +137,23 @@ class EstimateReadyFragment : Fragment() {
         userTagViewModel.useList.observe(viewLifecycleOwner) { updateUseList ->
             useAdapter.useList = updateUseList
         }
+
+        userTagViewModel.tagNumbers.observe(viewLifecycleOwner) { tagNumbers ->
+            if(tagNumbers.size >= 5) {
+                val guideParam = GuideParam(
+                    id = 2,
+                    gender = tagNumbers[0],
+                    age = tagNumbers[1],
+                    keyword1Id = tagNumbers[2],
+                    keyword2Id = tagNumbers[3],
+                    keyword3Id = tagNumbers[4]
+                )
+                val action = EstimateReadyFragmentDirections.actionEstimateReadyFragmentToLoadingFragment(guideParam)
+                findNavController().navigate(action)
+            } else {
+                Snackbar.make(binding.root, "선택 부분을 확인해주세요.", Snackbar.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setRecyclerView() {
@@ -213,7 +232,7 @@ class EstimateReadyFragment : Fragment() {
 
         binding.layoutPreliminariesKeyword.btnNext.setOnClickListener {
             if (userTagViewModel.selectedList.size != 3) return@setOnClickListener
-            findNavController().navigate(R.id.action_estimateReadyFragment_to_loadingFragment)
+            userTagViewModel.getTagNumber()
         }
 
     }
