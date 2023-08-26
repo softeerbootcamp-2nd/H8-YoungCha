@@ -139,7 +139,7 @@ function CompleteOptionPage() {
               })}
             </div>
 
-            <div className="flex justify-between w-full">
+            <div className="flex justify-between w-full gap-x-16px">
               <Button size="xl" color="main-blue">
                 구매 상담 신청
               </Button>
