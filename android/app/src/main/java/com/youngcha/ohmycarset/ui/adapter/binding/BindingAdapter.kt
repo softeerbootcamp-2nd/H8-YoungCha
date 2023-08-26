@@ -366,8 +366,9 @@ fun setTitle(view: HeaderToolBarView, title: String?) {
     requireAll = false
 )
 fun HyundaiButtonView.borderAnimation(currentType: String?, visible: Int) {
-    if (currentType == "GuideMode" && visible == 1)
+    if (currentType == "GuideMode" && visible == 1) {
         this.animateBorder()
+    }
 }
 
 @BindingAdapter(value = ["currentTypeForTag", "visibleForTag", "tagData"], requireAll = false)

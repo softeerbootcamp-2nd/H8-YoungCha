@@ -3,7 +3,7 @@ package com.youngcha.ohmycarset.data.dto
 data class DataXX(
     val categoryId: Int,
     val checked: Boolean,
-    val details: List<DetailX>,
+    val details: List<Detail>,
     val feedbackDescription: String,
     val feedbackTitle: String,
     val id: Int,

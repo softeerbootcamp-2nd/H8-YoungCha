@@ -38,6 +38,7 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
         this.componentName = componentName
         currentSelectedOptions = viewModel.isSelectedOptions(subOption!!) ?: listOf()
 
+        Log.d("Adapter", currentSelectedOptions.toString())
         // 만약 현재 선택된 옵션이 없다면 0번째 옵션을 추가
         if (currentSelectedOptions.isEmpty()) {
             val firstOption = options.firstOrNull()

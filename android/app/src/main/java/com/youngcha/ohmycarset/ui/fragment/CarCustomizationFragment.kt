@@ -40,7 +40,6 @@ import com.youngcha.ohmycarset.ui.customview.BaekcasajeonDialogView
 import com.youngcha.ohmycarset.ui.customview.ButtonDialogView
 import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.util.AnimationUtils.animateValueChange
-import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.util.setupImageSwipeWithScrollView
 import com.youngcha.baekcasajeon.*
@@ -49,6 +48,7 @@ import com.youngcha.ohmycarset.data.api.SelfModeApiService
 import com.youngcha.ohmycarset.data.repository.CategoryRepository
 import com.youngcha.ohmycarset.data.repository.GuideModeRepository
 import com.youngcha.ohmycarset.data.repository.SelfModeRepository
+import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
 import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactory

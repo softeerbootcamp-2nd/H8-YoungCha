@@ -71,7 +71,7 @@ class SelfModeRepository(private val selfModeApiService: SelfModeApiService) {
     // 내장 색상 업데이트 함수
     suspend fun setInteriorColor(carMakeId: Int, exteriorColorId: Int) {
         val currentCar = _car.value ?: Car()
-        val updatedComponent = mapOf("내장 색상" to filterData(selfModeApiService.getInteriorColor(carMakeId, exteriorColorId), "sub"))
+        val updatedComponent = mapOf("내장 색상" to filterData(selfModeApiService.getInteriorColor(carMakeId, exteriorColorId), "color"))
 
         val containsInteriorColor = currentCar.mainOptions.any { it.keys.contains("내장 색상") }
 
