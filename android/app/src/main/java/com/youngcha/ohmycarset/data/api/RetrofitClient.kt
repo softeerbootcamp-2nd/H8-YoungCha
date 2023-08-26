@@ -1,5 +1,6 @@
 package com.youngcha.ohmycarset.data.api
 
+import com.youngcha.ohmycarset.data.repository.GuideModeRepository
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,6 +28,10 @@ object RetrofitClient {
 
     val selfModeApi: SelfModeApiService by lazy {
         retrofit.create(SelfModeApiService::class.java)
+    }
+
+    val guideModeApi: GuideModeApiService by lazy {
+        retrofit.create(GuideModeApiService::class.java)
     }
 
     val categoriesApi: CategoriesApiService by lazy {
