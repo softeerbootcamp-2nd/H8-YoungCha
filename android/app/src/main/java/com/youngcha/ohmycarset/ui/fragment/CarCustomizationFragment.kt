@@ -101,13 +101,6 @@ class CarCustomizationFragment : Fragment() {
             carViewModel.categories.value = categoryRepository.categories.value
         }
 
-        if(mode == "SelfMode") {
-            carViewModel.startSelfMode()
-        } else {
-           // carViewModel.updateTapPosition(0, "파워 트레인")
-            carViewModel.initCarCustomizationViewModel("GuideMode", startPoint)
-        }
-
         binding.apply {
             viewModel = carViewModel
             lifecycleOwner = this@CarCustomizationFragment
@@ -119,6 +112,14 @@ class CarCustomizationFragment : Fragment() {
             setupListener()
             estimateSubTabs()
         }
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            if(mode == "SelfMode") {
+                carViewModel.startSelfMode()
+            } else {
+                carViewModel.initCarCustomizationViewModel("GuideMode", startPoint)
+            }
+        }, 300)
 
         binding.vMainTabLayoutOverlay.setOnTouchListener { _, _ -> true }
     }
