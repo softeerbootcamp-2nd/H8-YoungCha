@@ -1,26 +1,25 @@
 package com.youngcha.ohmycarset.ui.adapter.recyclerview
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.youngcha.ohmycarset.data.dto.TrimDefaultOption
 import com.youngcha.ohmycarset.databinding.ItemTrimSelfModeOptionBinding
-import com.youngcha.ohmycarset.data.model.TrimSelfModeOption
 
 class TrimSelfModeOptionAdapter: RecyclerView.Adapter<TrimSelfModeOptionAdapter.TrimSelectModeOptionViewHolder>() {
 
-    private var trimSelfModeOptions: List<TrimSelfModeOption> = emptyList()
+    private var trimSelfModeOptions: List<TrimDefaultOption.Data.Content> = emptyList()
     private var displayItemCount: Int = 5
 
-    fun updateTrimSelfModeOptions(newTrimSelfModeOptions: List<TrimSelfModeOption>) {
+    fun updateTrimSelfModeOptions(newTrimSelfModeOptions: List<TrimDefaultOption.Data.Content>) {
         val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun getOldListSize() = trimSelfModeOptions.size
 
             override fun getNewListSize() = newTrimSelfModeOptions.size
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return trimSelfModeOptions[oldItemPosition].type == newTrimSelfModeOptions[newItemPosition].type
+                return trimSelfModeOptions[oldItemPosition].categoryId == newTrimSelfModeOptions[newItemPosition].categoryId
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -30,6 +29,7 @@ class TrimSelfModeOptionAdapter: RecyclerView.Adapter<TrimSelfModeOptionAdapter.
 
         trimSelfModeOptions = newTrimSelfModeOptions
         diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     fun setDisplayItemCount(count: Int) {
@@ -61,7 +61,7 @@ class TrimSelfModeOptionAdapter: RecyclerView.Adapter<TrimSelfModeOptionAdapter.
         private val binding: ItemTrimSelfModeOptionBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(trimSelfModeOption: TrimSelfModeOption) {
+        fun bind(trimSelfModeOption: TrimDefaultOption.Data.Content) {
             binding.trimOption = trimSelfModeOption
             binding.executePendingBindings()
         }
