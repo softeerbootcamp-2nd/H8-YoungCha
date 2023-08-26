@@ -50,7 +50,7 @@ function Header({ mode = 'none', setMode = () => {} }: HeaderProps) {
       <div className="flex items-center justify-between h-full max-w-5xl mx-auto xl:max-w-none xl:px-96px">
         <div className="flex h-24px gap-20px">
           <Icon.HDLogo
-            className="w-45px lg:w-166px h-23px"
+            className="cursor-pointer w-45px lg:w-166px h-23px"
             onClick={() => {
               if (mode !== 'none') {
                 openPopUp();
