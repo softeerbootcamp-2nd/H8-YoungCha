@@ -165,7 +165,7 @@ class CarCustomizationViewModel(
                 currentTabName.value = currentMainTabs.value!![0]
                 currentSubTabPosition.value = 0
                 totalPrice.value = 36000000
-                categories.value = categoryRepository.getAllCategories()
+                categories.value = categoryRepository.getAllSubCategories()
             }
             initialization.complete(Unit)
         }
@@ -182,7 +182,7 @@ class CarCustomizationViewModel(
     fun startGuideMode(guideParam: GuideParam) {
         viewModelScope.launch(Dispatchers.IO) {
 
-            val fetchedCategories = categoryRepository.getAllCategories()
+            val fetchedCategories = categoryRepository.getAllSubCategories()
             fetchedCategories?.let {
                 guideModeRepository.fetchAllGuideDataAndSetCar(guideParam, it)
                 withContext(Dispatchers.Main) {
