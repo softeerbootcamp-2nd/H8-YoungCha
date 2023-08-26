@@ -16,17 +16,17 @@ interface ModeChangePopUpProps {
 }
 
 function ModeChangePopUp({ mode, closePopUp }: ModeChangePopUpProps) {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
   const guidePathname = '/model/LX06/guide/age';
   const selfPathname = '/model/LX06/making/self/1';
 
   const changeToNextModePopUp =
     mode === 'self' ? ChangeToGuideModePopUp : ChangeToSelfModePopUp;
-
   const isGuide = pathname.includes('guide') ? true : false;
+
   return (
     <PopUp onClose={closePopUp}>
       {isConfirmOpen ? (

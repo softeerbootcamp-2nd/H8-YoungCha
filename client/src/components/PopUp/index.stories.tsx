@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import PopUp from './index';
 import {
   ChangeToGasolinePopUp,
-  ModelChangePopUp,
-  ModeChangePopUp,
+  ModelChangePopUpText,
+  ModeChangePopUpText,
   SelfModeCard,
   GuideModeCard,
   ModelListPopUpText,
@@ -26,13 +26,15 @@ export const ModelChange: Story = {
     children: (
       <PopUp onClose={closePopUp}>
         <PopUp.PopUpMain
-          title={ModelChangePopUp.title}
-          imgSrc={<ModelChangePopUp.ImgSrc />}
+          title={ModelChangePopUpText.title}
+          imgSrc={<ModelChangePopUpText.ImgSrc />}
         />
-        <PopUp.CenteredDescription description={ModelChangePopUp.description} />
+        <PopUp.CenteredDescription
+          description={ModelChangePopUpText.description}
+        />
         <PopUp.PopUpButton
-          greyButtonContent={ModelChangePopUp.greyButtonContent}
-          blueButtonContent={ModelChangePopUp.blueButtonContent}
+          greyButtonContent={ModelChangePopUpText.greyButtonContent}
+          blueButtonContent={ModelChangePopUpText.blueButtonContent}
         />
       </PopUp>
     ),
@@ -65,8 +67,8 @@ export const ModeChangeToGuide: Story = {
     children: (
       <PopUp onClose={closePopUp}>
         <PopUp.PopUpMain
-          title={ModeChangePopUp.title}
-          imgSrc={<ModeChangePopUp.ImgSrc />}
+          title={ModeChangePopUpText.title}
+          imgSrc={<ModeChangePopUpText.ImgSrc />}
         />
         <PopUp.ModeSelectCard
           currentMode="self"
@@ -88,8 +90,8 @@ export const ModeChangeToSelf: Story = {
     children: (
       <PopUp onClose={closePopUp}>
         <PopUp.PopUpMain
-          title={ModeChangePopUp.title}
-          imgSrc={<ModeChangePopUp.ImgSrc />}
+          title={ModeChangePopUpText.title}
+          imgSrc={<ModeChangePopUpText.ImgSrc />}
         />
         <PopUp.ModeSelectCard
           currentMode="guide"
@@ -111,8 +113,8 @@ export const ModelList: Story = {
     children: (
       <PopUp onClose={closePopUp}>
         <PopUp.PopUpMain
-          title={ModelChangePopUp.title}
-          imgSrc={<ModelChangePopUp.ImgSrc />}
+          title={ModelChangePopUpText.title}
+          imgSrc={<ModelChangePopUpText.ImgSrc />}
         />
         <PopUp.CenteredDescription
           description={ModelListPopUpText.description}
