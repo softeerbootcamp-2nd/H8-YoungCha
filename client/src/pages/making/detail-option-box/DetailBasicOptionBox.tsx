@@ -17,17 +17,10 @@ function DetailBasicOptionBox() {
     categoryId: BasicOptionsId[selectedOptionFilter],
     currentSize,
   });
-
   function handleMoreOptionClick() {
     setCurrentSize((prev) => prev + OPTION_SIZE);
   }
 
-  function isSelectOption(categoryId: number) {
-    return (
-      BasicOptionsId[selectedOptionFilter] === -1 ||
-      BasicOptionsId[selectedOptionFilter] === categoryId
-    );
-  }
   return (
     <DetailOption>
       <DetailOption.Header
@@ -38,14 +31,12 @@ function DetailBasicOptionBox() {
         selectedOption={selectedOptionFilter}
         onClick={(option) => setSelectedOptionFilter(option)}
       />
-      {basicOptions?.contents
-        ?.filter((option) => isSelectOption(option.categoryId!))
-        .map((option) => (
-          <DetailOption.List
-            option={{ ...option, type: '기본 포함 품목' }}
-            key={option.name}
-          />
-        ))}
+      {basicOptions?.contents?.map((option) => (
+        <DetailOption.List
+          option={{ ...option, type: '기본 포함 품목' }}
+          key={option.name}
+        />
+      ))}
 
       {!basicOptions.last && (
         <div className="flex justify-center">

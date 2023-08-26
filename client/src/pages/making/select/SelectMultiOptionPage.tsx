@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import OptionCard from '@/components/OptionCard';
 import {
@@ -11,6 +11,8 @@ import { AllOptionType } from '@/types/option';
 import { SelectOptionPageProps } from '@/pages/making/select/type.ts';
 import Spinner from '@/components/Spinner';
 import Skeleton from '@/components/OptionCard/Skeleton.tsx';
+import { UserSelectedOptionDataContext } from '..';
+import { optionTypeName } from '@/constant';
 
 const CATEGORY = ['시스템', '온도관리', '외부장치', '내부장치'];
 
@@ -18,18 +20,23 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
   const { step, mode, id } = useParams() as PathParamsType;
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState<number>(0);
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [selectedItemIds, setSelectedItemIds] = useState<number[]>([]);
 
   const [category, setCategory] = useState('시스템');
   const [categorizedData, setCategorizedData] = useState(
     {} as { [key: string]: AllOptionType[] }
   );
-
+  const { userSelectedOptionData, saveOptionData } = useContext(
+    UserSelectedOptionDataContext
+  );
   function onNext() {
-    // data: AllOptionType[]
-    // const newOption = data?.filter((item) => selectedItems.includes(item.id));
-    //   TODO: 배열 저장
     navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
+  }
+  function getSelectedItemIds() {
+    const itemIds = Object.values(
+      userSelectedOptionData.selectedOptions.options
+    ).map(({ id }) => id);
+    return itemIds;
   }
 
   useEffect(() => {
@@ -44,14 +51,33 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
       },
       {} as { [key: string]: AllOptionType[] }
     );
+    const itemIds = getSelectedItemIds();
+
     setCategorizedData(newCategorizedData);
+    setSelectedItemIds(itemIds);
   }, [data]);
+
+  useEffect(() => {
+    if (!Array.isArray(data)) return;
+    const newOptions = selectedItemIds.map((id) => {
+      const optionIndex = data.findIndex((item) => item.id === id);
+      return {
+        id: data[optionIndex].id,
+        name: data[optionIndex].name,
+        price: data[optionIndex].price,
+        imgUrl: data[optionIndex].images?.[0].imgUrl,
+        categoryId: data[optionIndex].categoryId,
+        type: optionTypeName[data[optionIndex].categoryId],
+      };
+    });
+    saveOptionData({ newOptions });
+  }, [selectedItemIds, data]);
 
   return (
     <main className="relative flex-grow">
       <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
         {/* 이미지 영역 */}
-        <div className="lg:col-span-7 relative flex flex-col justify-center items-center bg-grey-001">
+        <div className="relative flex flex-col items-center justify-center lg:col-span-7 bg-grey-001">
           {isLoading ? (
             <Spinner />
           ) : (
@@ -64,8 +90,8 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
                 className="object-cover w-full h-full"
                 alt="palisade"
               />
-              <div className="absolute bottom-0 left-0 right-0 flex justify-center items-center h-80px drop-shadow-lg">
-                <span className="body1 text-white">
+              <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center h-80px drop-shadow-lg">
+                <span className="text-white body1">
                   {data?.filter((item) => item.id === selectedItem)[0]?.name ??
                     data?.[0].name}
                 </span>
@@ -122,10 +148,10 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
               categorizedData[category]?.map((item: AllOptionType) => (
                 <OptionCard
                   key={`OptionCard-${item.name}`}
-                  isActive={selectedItems.indexOf(item.id) >= 0}
+                  isActive={selectedItemIds.indexOf(item.id) >= 0}
                   onClick={() => {
                     setSelectedItem(item.id);
-                    setSelectedItems((prevState) => {
+                    setSelectedItemIds((prevState) => {
                       if (prevState.indexOf(item.id) >= 0) {
                         return prevState.filter((id) => id !== item.id);
                       } else {

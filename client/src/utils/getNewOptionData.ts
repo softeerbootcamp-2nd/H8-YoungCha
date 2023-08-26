@@ -1,5 +1,14 @@
 import { OptionType, UserSelectedOptionDataType } from '@/pages/making/type';
 
+const CATEGORY = [
+  '',
+  '파워 트레인',
+  '구동방식',
+  '바디 타입',
+  '외장 색상',
+  '내장 색상',
+  '휠',
+];
 function getNewUserOptionData({
   newData,
   newOption,
@@ -7,31 +16,24 @@ function getNewUserOptionData({
   newData: UserSelectedOptionDataType;
   newOption: OptionType;
 }) {
-  switch (newOption.categoryId) {
-    //TODO: newOption.categoryId -> newOption.categoryName으로 변경
-    //반복되는 newData.mainOptions 와 같은 것 분해할당으로 재활용
-    case 1:
+  switch (CATEGORY[newOption.categoryId!]) {
+    case '파워 트레인':
       newData.mainOptions.options.powerTrain = newOption;
       break;
-    case 2:
+    case '구동방식':
       newData.mainOptions.options.drivingSystem = newOption;
       break;
-    case 3:
+    case '바디 타입':
       newData.mainOptions.options.bodyType = newOption;
       break;
-    case 6:
-      newData.mainOptions.options.wheel = newOption;
-      break;
-    case 5:
-      newData.colors.options.interiorColor = newOption;
-      break;
-    case 4:
+    case '외장 색상':
       newData.colors.options.exteriorColor = newOption;
       break;
-    case 7:
-      newData.selectedOptions.options.push(newOption);
+    case '내장 색상':
+      newData.colors.options.interiorColor = newOption;
       break;
-    default:
+    case '휠':
+      newData.mainOptions.options.wheel = newOption;
       break;
   }
   return newData;

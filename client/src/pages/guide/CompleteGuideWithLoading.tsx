@@ -9,6 +9,7 @@ import useSelectOption from '@/hooks/useSelectOption';
 import { optionTypeName } from '@/constant';
 import { useLocation } from 'react-router-dom';
 import { AgeType, GenderType } from './type';
+import { setStorage } from '@/utils/optionStorage';
 
 const TRIM_ID = 2;
 
@@ -46,28 +47,23 @@ function CompleteGuideWithLoading() {
   }
 
   async function getUserGuideOptions() {
-    const [age, gender, keyword1Id, keyword2Id, keyword3Id] = [
-      keywordId[selectedAge!],
-      keywordId[selectedGender!],
-      keywordId[selectedKeyword[0] as keyof typeof keywordId],
-      keywordId[selectedKeyword[1] as keyof typeof keywordId],
-      keywordId[selectedKeyword[2] as keyof typeof keywordId],
-    ];
+    const params = {
+      age: keywordId[selectedAge!],
+      gender: keywordId[selectedGender!],
+      keyword1Id: keywordId[selectedKeyword[0] as keyof typeof keywordId],
+      keyword2Id: keywordId[selectedKeyword[1] as keyof typeof keywordId],
+      keyword3Id: keywordId[selectedKeyword[2] as keyof typeof keywordId],
+      exteriorColorId: '',
+    };
+
     const exterirColorData = await get<AllGuideOptionType[]>({
       url: `/car-make/${TRIM_ID}/guide/exterior-color`,
-      params: { age, gender, keyword1Id, keyword2Id, keyword3Id },
+      params: params,
     });
-    const exteriorColorId = String(
+    params.exteriorColorId = String(
       exterirColorData?.filter((data) => data.checked)[0].id
     );
-    const params = {
-      age,
-      gender,
-      keyword1Id,
-      keyword2Id,
-      keyword3Id,
-      exteriorColorId,
-    };
+
     const urls = [
       {
         url: `/car-make/${TRIM_ID}/guide/wheel`,
@@ -95,6 +91,10 @@ function CompleteGuideWithLoading() {
       },
     ];
 
+    setStorage({
+      key: 'keywords',
+      value: params,
+    });
     const options = await Promise.all(
       urls.map(({ url, params }) => get<AllGuideOptionType>({ url, params }))
     );

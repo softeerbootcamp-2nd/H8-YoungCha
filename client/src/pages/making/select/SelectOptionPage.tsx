@@ -15,6 +15,7 @@ import { SelectOptionPageProps } from '@/pages/making/select/type.ts';
 import { optionTypeName } from '@/constant.ts';
 import Spinner from '@/components/Spinner';
 import Skeleton from '@/components/OptionCard/Skeleton.tsx';
+import { OptionGroupType } from '../type';
 
 const EXTERIOR_COLOR_STEP = 5;
 const FEEDBACK_DELAY_TIME = 2000;
@@ -23,39 +24,49 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
   const { step, mode, id } = useParams() as PathParamsType;
   const navigate = useNavigate();
   const [next, setNext] = useState(false);
-  const { saveOptionData } = useContext(UserSelectedOptionDataContext);
-
+  const { userSelectedOptionData, saveOptionData } = useContext(
+    UserSelectedOptionDataContext
+  );
   // 선택 아이템 인덳스
-  const [selectedItem, setSelectedItem] = useState(0);
+  const [selectedItem, setSelectedItem] = useState(-1);
   const [isImageLoading, setIsImageLoading] = useState(true);
-
-  function onNext(data: AllOptionType) {
-    const newOption = {
-      id: data.id,
-      name: data.name,
-      price: data.price,
-      imgUrl: data.images?.[0].imgUrl,
-      categoryId: data.categoryId,
-      type: optionTypeName[data.categoryId],
-    };
-    saveOptionData({ newOption });
+  function onNext() {
     if (mode === 'guide') {
       return navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
     }
+
     setTimeout(() => {
       navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
     }, FEEDBACK_DELAY_TIME);
     setNext(true);
   }
 
-  useEffect(() => {
-    setNext(false);
-    setSelectedItem(0);
-  }, [data]);
+  function getSelectedItemIndex() {
+    let itemIndex = 0;
+    Object.values(userSelectedOptionData).forEach(
+      ({ options }: { options: OptionGroupType }) => {
+        Object.values(options).forEach(({ id, categoryId }) => {
+          if (categoryId === data[0].categoryId) {
+            data.forEach((item, index) => {
+              if (id === item.id) itemIndex = index;
+            });
+          }
+        });
+      }
+    );
+    return itemIndex;
+  }
 
   useEffect(() => {
     if (!Array.isArray(data)) return;
 
+    const itemIndex = getSelectedItemIndex();
+    setNext(false);
+    setSelectedItem(itemIndex);
+  }, [data]);
+
+  useEffect(() => {
+    if (!Array.isArray(data) || selectedItem === -1) return;
     const newOption = {
       id: data[selectedItem].id,
       name: data[selectedItem].name,
@@ -68,66 +79,72 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
   }, [selectedItem]);
 
   return (
-    <main className={`relative flex-grow ${next ? 'pointer-events-none' : ''}`}>
-      <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
-        {/* 이미지 영역 */}
-        <div className="lg:col-span-7 flex flex-col justify-center items-center bg-grey-001">
-          {isLoading ? (
-            <Spinner />
-          ) : Number(step) === EXTERIOR_COLOR_STEP ? (
-            <RotateCarImage
-              images={getRotateImages({
-                url: data?.[selectedItem]?.images[0].imgUrl ?? '',
-                count: 60,
-              })}
-              className="basis-1/2"
-            />
-          ) : (
-            <>
-              {isImageLoading && <Spinner />}
-              <img
-                src={data?.[selectedItem]?.images[0].imgUrl ?? ''}
-                className={`w-full h-full object-cover ${
-                  isImageLoading && 'hidden'
-                } `}
-                onLoad={() => setIsImageLoading(false)}
-                alt="palisade"
-              />
-            </>
-          )}
-        </div>
-        {/* 옵션 선택 영역 */}
-        <div className="flex flex-col max-w-lg lg:col-span-5">
-          <SelectOptionMessage step={Number(step)} />
-          <SelectOptionListContainer>
-            {isLoading ? (
-              <>
-                <Skeleton />
-                <Skeleton />
-              </>
-            ) : (
-              Array.isArray(data) &&
-              data
-                ?.sort((a, b) => b.rate - a.rate)
-                .map((item: AllOptionType, index) => (
-                  <OptionCard
-                    key={`OptionCard-${item.name}`}
-                    isActive={selectedItem === index}
-                    onClick={() => {
-                      setSelectedItem(index);
-                    }}
-                    item={item}
-                    next={next}
+    <>
+      {selectedItem !== -1 && (
+        <main
+          className={`relative flex-grow ${next ? 'pointer-events-none' : ''}`}
+        >
+          <div className="absolute top-0 bottom-0 grid w-full grid-cols-2 lg:grid-cols-12">
+            {/* 이미지 영역 */}
+            <div className="flex flex-col items-center justify-center lg:col-span-7 bg-grey-001">
+              {isLoading ? (
+                <Spinner />
+              ) : Number(step) === EXTERIOR_COLOR_STEP ? (
+                <RotateCarImage
+                  images={getRotateImages({
+                    url: data?.[selectedItem]?.images[0].imgUrl ?? '',
+                    count: 60,
+                  })}
+                  className="basis-1/2"
+                />
+              ) : (
+                <>
+                  {isImageLoading && <Spinner />}
+                  <img
+                    src={data?.[selectedItem]?.images[0].imgUrl ?? ''}
+                    className={`w-full h-full object-cover ${
+                      isImageLoading && 'hidden'
+                    } `}
+                    onLoad={() => setIsImageLoading(false)}
+                    alt="palisade"
                   />
-                ))
-            )}
-          </SelectOptionListContainer>
-          <SelectOptionFooter
-            {...{ mode, id, step, onNext: () => onNext(data[selectedItem]) }}
-          />
-        </div>
-      </div>
-    </main>
+                </>
+              )}
+            </div>
+            {/* 옵션 선택 영역 */}
+            <div className="flex flex-col max-w-lg lg:col-span-5">
+              <SelectOptionMessage step={Number(step)} />
+              <SelectOptionListContainer>
+                {isLoading ? (
+                  <>
+                    <Skeleton />
+                    <Skeleton />
+                  </>
+                ) : (
+                  Array.isArray(data) &&
+                  data
+                    ?.sort((a, b) => b.rate - a.rate)
+                    .map((item: AllOptionType, index) => (
+                      <OptionCard
+                        key={`OptionCard-${item.name}`}
+                        isActive={selectedItem === index}
+                        onClick={() => {
+                          setSelectedItem(index);
+                        }}
+                        item={item}
+                        next={next}
+                      />
+                    ))
+                )}
+              </SelectOptionListContainer>
+              <SelectOptionFooter
+                {...{ mode, id, step, onNext: () => onNext() }}
+              />
+            </div>
+          </div>
+        </main>
+      )}
+    </>
   );
 }
 

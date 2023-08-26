@@ -43,3 +43,12 @@ export const INITIAL_USER_SELECTED_DATA: UserSelectedOptionDataType = {
     options: [],
   },
 };
+
+export const INITIAL_KEYWORDS = {
+  keyword1Id: '1',
+  keyword2Id: '2',
+  keyword3Id: '3',
+  age: '2',
+  gender: '0',
+  exteriorColorId: '0',
+} as Record<string, string>;
