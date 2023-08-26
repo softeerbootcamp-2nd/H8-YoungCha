@@ -4,7 +4,7 @@ export const SELF_MODE = '셀프 모드';
 export const GUIDE_MODE = '가이드 모드';
 export const PROGRESSING_NOW = '현재 진행 중';
 
-export const ExitPopUp = {
+export const ExitPopUpText = {
   title: '내 차 만들기에서 나가시겠어요?',
   ImgSrc: Icon.CryingFaceIcon,
   description:
@@ -13,7 +13,7 @@ export const ExitPopUp = {
   blueButtonContent: '나가지 않을래요!',
 };
 
-export const ModelChangePopUp = {
+export const ModelChangePopUpText = {
   title: '모델을 변경하시겠어요?',
   ImgSrc: Icon.ModelChangeIcon,
   description:
@@ -55,7 +55,7 @@ export const ChangeToGasolinePopUp = {
   blueButtonContent: '변경할래요!',
 };
 
-export const ModeChangePopUp = {
+export const ModeChangePopUpText = {
   title: '내 차 만들기 방식 변경하기',
   ImgSrc: Icon.ModeChangeIcon,
 };
