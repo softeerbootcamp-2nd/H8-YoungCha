@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -44,11 +47,15 @@ import com.youngcha.baekcasajeon.*
 import com.youngcha.ohmycarset.data.api.RetrofitClient
 import com.youngcha.ohmycarset.data.api.SelfModeApiService
 import com.youngcha.ohmycarset.data.repository.CategoryRepository
+import com.youngcha.ohmycarset.data.repository.GuideModeRepository
 import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
+import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
 import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+
 class CarCustomizationFragment : Fragment() {
     private var _binding: FragmentCarCustomizationBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding is null.")
@@ -60,9 +67,14 @@ class CarCustomizationFragment : Fragment() {
   //  private lateinit var carViewModel: CarCustomizationViewModel
     private lateinit var carViewModel: CarCustomizationViewModel
     private val selfModeRepository by lazy { SelfModeRepository(RetrofitClient.selfModeApi) }
-    private val categoryRepository by lazy {CategoryRepository(RetrofitClient.categoriesApi)}
-    private val viewModelFactory by lazy { CarCustomizationViewModelFactory(selfModeRepository, categoryRepository) }
+    private val guideModeRepository by lazy { GuideModeRepository(RetrofitClient.guideModeApi) }
+    private val categoryRepository by lazy { CategoryRepository(RetrofitClient.categoriesApi) }
+   // private val viewModelFactory by lazy { CarCustomizationViewModelFactory(selfModeRepository, guideModeRepository, categoryRepository) }
     private var first: Boolean = true
+
+  //  private lateinit var viewModelFactory: CarCustomizationViewModel
+
+    private val guideModeViewModel: GuideModeViewModel by activityViewModels()
 
     private lateinit var mode: String
     private lateinit var startPoint: String
@@ -83,7 +95,19 @@ class CarCustomizationFragment : Fragment() {
     }
 
     private fun setupViews() {
-        carViewModel = ViewModelProvider(this, viewModelFactory).get(CarCustomizationViewModel::class.java)
+        val factory = CarCustomizationViewModelFactory(selfModeRepository, guideModeRepository, categoryRepository)
+        carViewModel = ViewModelProvider(requireActivity(), factory).get(CarCustomizationViewModel::class.java)
+        if (carViewModel.categories.value == null) {
+            carViewModel.categories.value = categoryRepository.categories.value
+        }
+
+        if(mode == "SelfMode") {
+            carViewModel.startSelfMode()
+        } else {
+           // carViewModel.updateTapPosition(0, "파워 트레인")
+            carViewModel.initCarCustomizationViewModel("GuideMode", startPoint)
+        }
+
         binding.apply {
             viewModel = carViewModel
             lifecycleOwner = this@CarCustomizationFragment
@@ -95,6 +119,7 @@ class CarCustomizationFragment : Fragment() {
             setupListener()
             estimateSubTabs()
         }
+
         binding.vMainTabLayoutOverlay.setOnTouchListener { _, _ -> true }
     }
 
@@ -120,10 +145,14 @@ class CarCustomizationFragment : Fragment() {
                 )
 
                 dialog.setOnVerticalButtonClickListener { value ->
-                    if (value == carViewModel.currentType.value!!) return@setOnVerticalButtonClickListener
-                    carViewModel.updateCurrentType(value)
-                    // 탭을 첫 번째로 이동
-                    binding.tlMainOptionTab.getTabAt(0)?.select()
+                    if (value == "SelfMode") {
+                        carViewModel.startSelfMode()
+                        // 탭을 첫 번째로 이동
+                        binding.tlMainOptionTab.getTabAt(0)?.select()
+                    } else {
+                        findNavController().navigate(R.id.action_makeCarFragment_to_estimateReadyFragment)
+                    }
+
                 }
 
                 dialog.show()
@@ -204,16 +233,11 @@ class CarCustomizationFragment : Fragment() {
         }
 
         carViewModel.selectedCar.observe(viewLifecycleOwner) { car ->
-            val firstKey = car.mainOptions.first().keys.firstOrNull()
-            if (mode == "GuideMode") {
-                carViewModel.initCarCustomizationViewModel(mode, startPoint)
-                startPoint = "null"
-            }
-
-            if (carViewModel.currentType.value != "GuideMode") {
-                if (!first) return@observe
-                first = false
-                carViewModel.setCurrentComponentName(firstKey!!)
+            car.mainOptions.let {
+                val firstKey = car.mainOptions.first().keys.firstOrNull()
+                if (carViewModel.currentType.value != "GuideMode") {
+                    carViewModel.setCurrentComponentName(firstKey!!)
+                }
             }
         }
 
@@ -226,21 +250,13 @@ class CarCustomizationFragment : Fragment() {
             handleOptionListUpdates(optionList)
         }
 
-//        carViewModel.currentMainTabs.observe(viewLifecycleOwner) { tabs ->
-//            tabs.forEach { tabName ->
-//                if (tabName == OPTION_SELECTION) {
-//
-//                }
-//                binding.tlMainOptionTab.addTab(binding.tlMainOptionTab.newTab().setText(tabName))
-//            }
-//        }
-
         carViewModel.currentMainTabs.observe(viewLifecycleOwner) { tabs ->
-            tabs.forEach { tabName ->
-                binding.tlMainOptionTab.addTab(binding.tlMainOptionTab.newTab().setText(tabName))
+            tabs.let {
+                it.forEach { tabName ->
+                    binding.tlMainOptionTab.addTab(binding.tlMainOptionTab.newTab().setText(tabName))
+                }
             }
         }
-
 
         carViewModel.currentSubTabs.observe(viewLifecycleOwner) { tabs ->
             tabs.forEach { tabName ->
@@ -381,6 +397,7 @@ class CarCustomizationFragment : Fragment() {
 
             // 찾은 위치로 _currentTabPosition를 업데이트합니다.
             if (position != null && position != -1) {
+                Log.d("로그", "이동1" +  optionInfo.toString())
                 carViewModel.updateTapPosition(position, optionInfo)
             }
         }
@@ -395,8 +412,10 @@ class CarCustomizationFragment : Fragment() {
 
             // 찾은 위치로 _currentTabPosition를 업데이트합니다.
             if (position != null && position != -1) {
+                Log.d("로그", "이동2" +  optionInfo.toString())
                 carViewModel.updateTapPosition(position, optionInfo)
             } else {
+                Log.d("로그", "이동3" +  optionInfo.toString())
                 carViewModel.updateTapPosition(6, "옵션 선택")
             }
         }
@@ -473,6 +492,7 @@ class CarCustomizationFragment : Fragment() {
         val adapter = CarOptionPagerAdapter(carViewModel)
         binding.vpOptionContainer.adapter = adapter
         val selectedOptions = carViewModel.isSelectedOptions(tabName) ?: listOf()
+
         val position =
             optionInfos.indexOfFirst { it == selectedOptions.firstOrNull() }.takeIf { it != -1 }
                 ?: 0
