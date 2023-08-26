@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import * as Icon from '../../assets/icons';
 import { ModeContext } from '@/App';
 import { useModal } from '@/hooks/useModal';
-import ModeChangeModal from './ModeChangeModal';
+import ModeChangePopUp from './HeaderPopUp/ModeChangePopUp';
 
 const MODE_TEXT = {
   self: '셀프 모드',
@@ -26,7 +26,7 @@ function ModeChangeButton() {
           fill={mode === 'guide' ? '#4CA7CE' : '#202732'}
         />
       </button>
-      {isOpen && <ModeChangeModal mode={mode} closePopUp={closePopUp} />}
+      {isOpen && <ModeChangePopUp mode={mode} closePopUp={closePopUp} />}
     </>
   );
 }

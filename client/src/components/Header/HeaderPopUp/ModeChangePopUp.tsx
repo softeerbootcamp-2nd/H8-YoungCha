@@ -1,21 +1,21 @@
 import { useState } from 'react';
-import PopUp from '../PopUp';
+import PopUp from '../../PopUp';
 import {
   ChangeToGuideModePopUp,
   ChangeToSelfModePopUp,
   GuideModeCard,
-  ModeChangePopUp,
+  ModeChangePopUpText,
   SelfModeCard,
-} from '../PopUp/constant';
+} from '../../PopUp/constant';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ModeType } from '@/types';
 
-interface ModeChangeModalProps {
+interface ModeChangePopUpProps {
   mode: ModeType;
   closePopUp: () => void;
 }
 
-function ModeChangeModal({ mode, closePopUp }: ModeChangeModalProps) {
+function ModeChangePopUp({ mode, closePopUp }: ModeChangePopUpProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const { pathname } = useLocation();
@@ -49,8 +49,8 @@ function ModeChangeModal({ mode, closePopUp }: ModeChangeModalProps) {
       ) : (
         <>
           <PopUp.PopUpMain
-            title={ModeChangePopUp.title}
-            imgSrc={<ModeChangePopUp.ImgSrc />}
+            title={ModeChangePopUpText.title}
+            imgSrc={<ModeChangePopUpText.ImgSrc />}
           />
 
           <div className={`${mode !== 'self' ? 'cursor-pointer' : ''}`}>
@@ -76,4 +76,4 @@ function ModeChangeModal({ mode, closePopUp }: ModeChangeModalProps) {
   );
 }
 
-export default ModeChangeModal;
+export default ModeChangePopUp;
