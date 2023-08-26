@@ -21,7 +21,13 @@ import kotlin.random.Random
 
 object AnimationUtils {
 
+    private val activeAnimations = mutableListOf<Animator>()
+
     fun explodeView(frameLayout: FrameLayout, numberOfParticles: Int = 150, numberOfExplosions: Int = 5) {
+        activeAnimations.forEach { it.cancel() }
+        activeAnimations.clear()
+        frameLayout.removeAllViews()
+
         val colors = listOf("#FF7676", "#FD3F33", "#FFB876", "#FFB801", "#76ADFF", "#357FED")
 
         repeat(numberOfExplosions) {
@@ -77,7 +83,6 @@ object AnimationUtils {
             }
         }
     }
-
 
     fun animateValueChange(
         textView: TextView,
