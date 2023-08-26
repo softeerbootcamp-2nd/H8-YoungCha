@@ -26,7 +26,7 @@ class GuideModeViewModel(private val repository: GuideModeRepository, private va
         viewModelScope.launch(Dispatchers.IO) {
 
             val fetchedCategories = categoryRepository.getAllCategories()
-            Log.d("로그", fetchedCategories.toString())
+
             fetchedCategories?.let {
                 repository.fetchAllGuideDataAndSetCar(guideParam, it)
                 withContext(Dispatchers.Main) {
