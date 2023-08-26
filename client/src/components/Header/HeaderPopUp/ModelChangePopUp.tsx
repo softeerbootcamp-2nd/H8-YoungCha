@@ -37,14 +37,12 @@ function ModelChangePopUp({ closePopUp }: ModelChangePopUpProps) {
           />
         </>
       )}
-      {isSpecificModelChangeOpen ? (
+      {isSpecificModelChangeOpen && (
         <SpecificModelChangePopUp
           activeIndex={0}
           onClick={() => setIsSpecificModelChangeOpen(false)}
           onClose={closePopUp}
         />
-      ) : (
-        <></>
       )}
     </PopUp>
   );

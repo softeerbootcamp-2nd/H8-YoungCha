@@ -57,11 +57,7 @@ function Header({ mode = 'none', setMode = () => {} }: HeaderProps) {
               }
             }}
           />
-          {isOpen && mode !== 'none' ? (
-            <ExitPopUp closePopUp={closePopUp} />
-          ) : (
-            <></>
-          )}
+          {isOpen && mode !== 'none' && <ExitPopUp closePopUp={closePopUp} />}
           <span>|</span>
 
           <div className={`flex font-medium title3 gap-8px `}>

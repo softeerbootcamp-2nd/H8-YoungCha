@@ -154,13 +154,11 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
           </div>
         </main>
       )}
-      {isOpen ? (
+      {isOpen && (
         <PowerTrainChangePopUp
           closePopUp={closePopUp}
           setSelectedItem={setSelectedItem}
         />
-      ) : (
-        <></>
       )}
     </>
   );
