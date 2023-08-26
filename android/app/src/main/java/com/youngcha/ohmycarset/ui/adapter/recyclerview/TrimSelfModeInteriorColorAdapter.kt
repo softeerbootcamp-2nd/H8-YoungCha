@@ -5,15 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.youngcha.ohmycarset.databinding.ItemTrimSelfModeInteriorColorBinding
-import com.youngcha.ohmycarset.data.model.TrimSelfModeInteriorColor
+import com.youngcha.ohmycarset.data.dto.TrimMainData
 
 class TrimSelfModeInteriorColorAdapter :
     RecyclerView.Adapter<TrimSelfModeInteriorColorAdapter.TrimSelfModeInteriorColorViewHolder>() {
 
-    private var trimSelfModeInteriorColor: List<TrimSelfModeInteriorColor> = emptyList()
+    private var trimSelfModeInteriorColor: List<TrimMainData.Data.Trim.InteriorColor> = emptyList()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateTrimSelfModeInteriorColor(trimSelfModeInteriorColor: List<TrimSelfModeInteriorColor>) {
+    fun updateTrimSelfModeInteriorColor(trimSelfModeInteriorColor: List<TrimMainData.Data.Trim.InteriorColor>) {
         this.trimSelfModeInteriorColor = trimSelfModeInteriorColor
         notifyDataSetChanged()
     }
@@ -36,7 +36,7 @@ class TrimSelfModeInteriorColorAdapter :
     class TrimSelfModeInteriorColorViewHolder(private val binding: ItemTrimSelfModeInteriorColorBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(trimSelfModeInteriorColor: TrimSelfModeInteriorColor) {
+        fun bind(trimSelfModeInteriorColor: TrimMainData.Data.Trim.InteriorColor) {
             binding.interiorColor = trimSelfModeInteriorColor
             binding.executePendingBindings()
         }

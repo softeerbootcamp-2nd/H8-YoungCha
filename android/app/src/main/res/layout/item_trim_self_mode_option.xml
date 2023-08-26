@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="trim_option_data"
+            type="com.youngcha.ohmycarset.data.dto.TrimDefaultOption" />
 
         <variable
             name="trim_option"
-            type="com.youngcha.ohmycarset.data.model.TrimSelfModeOption" />
+            type="com.youngcha.ohmycarset.data.dto.TrimDefaultOption.Data.Content" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,10 +23,10 @@
             android:layout_height="64dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:testImageSource="@{trim_option.img}" />
+            app:round_corner_imageUrl="@{trim_option.imgUrl}" />
 
         <TextView
-            android:id="@+id/tv_trim_name"
+            android:id="@+id/tv_trim_option_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -43,12 +46,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/hyundai_sans_text_kr_regular"
-            android:text="@{trim_option.type}"
+            android:text="@string/default_option"
             android:textColor="@color/trim_self_mode_option_txt_color"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_trim_name"
+            app:layout_constraintStart_toEndOf="@+id/tv_trim_option_name"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="기본포함" />
 

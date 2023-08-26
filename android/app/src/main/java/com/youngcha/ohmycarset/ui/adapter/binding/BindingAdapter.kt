@@ -20,6 +20,12 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.load
+import coil.request.ImageRequest
+import coil.transform.CircleCropTransformation
+import coil.transform.RoundedCornersTransformation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.youngcha.ohmycarset.R
@@ -31,7 +37,6 @@ import com.youngcha.ohmycarset.ui.customview.FeedbackView
 import com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
 import com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
 import com.youngcha.ohmycarset.ui.interfaces.OnHyundaiButtonClickListener
-import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.util.RoundedBackgroundSpan
 
 @BindingAdapter(value = ["mainImageUrl", "subImageUrl"], requireAll = false)
@@ -84,7 +89,51 @@ fun setLogoImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
 }
 
 @BindingAdapter("imageUrl")
-fun loadImage(view: ImageView, logoImageUrl: String?) {
+fun loadImageCoil(view: ImageView, imageUrl: String?) {
+    imageUrl.let {
+        view.load(it) {
+        }
+    }
+}
+
+@BindingAdapter("svgImageUrl")
+fun loadSvgImage(imageView: ImageView, url: String?) {
+    val context = imageView.context
+
+    val imageLoader = ImageLoader.Builder(context)
+        .componentRegistry {
+            add(SvgDecoder(context))
+        }
+        .build()
+
+    val request = ImageRequest.Builder(context)
+        .data(url)
+        .target(imageView)
+        .build()
+
+    imageLoader.enqueue(request)
+}
+
+@BindingAdapter("exterior_imageUrl")
+fun loadExteriorImage(view: ImageView, imageUrl: String?) {
+    imageUrl.let {
+        view.load(it) {
+            transformations(CircleCropTransformation())
+        }
+    }
+}
+
+@BindingAdapter("round_corner_imageUrl")
+fun loadInteriorImage(view: ImageView, imageUrl: String?) {
+    imageUrl.let {
+        view.load(it) {
+            transformations(RoundedCornersTransformation(10f))
+        }
+    }
+}
+
+
+fun setLogoImage(view: ImageView, imageUrl: String?) {
     Glide.with(view.context)
         .load(logoImageUrl)
         .transition(DrawableTransitionOptions.withCrossFade())

@@ -144,6 +144,9 @@
     <string name="selection_complete_button_label">선택완료</string>
     <string name="about">이 뭔가요?</string>
     <string name="understand">이해했어요!</string>
+    <string name="default_option">기본 포함</string>
+    <string name="price_start">부터</string>
+    <string name="hashTag">#</string>
 
 
 </resources>
