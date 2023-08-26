@@ -220,7 +220,6 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="33dp"
-            android:background="@color/cool_grey_004"
             android:visibility="@{(viewModel.swipeButtonVisible == 1 &amp;&amp; viewModel.subOptionButtonVisible == 1) ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

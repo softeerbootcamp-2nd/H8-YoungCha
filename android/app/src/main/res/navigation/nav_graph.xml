@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_trim_select">
         <action
             android:id="@+id/action_trimSelectFragment_to_makeCarModeFragment"
-            app:destination="@id/makeCarFragment"/>
+            app:destination="@id/makeCarFragment" />
         <action
             android:id="@+id/action_trimSelectFragment_to_estimateReadyFragment"
             app:destination="@id/estimateReadyFragment" />
@@ -28,6 +28,10 @@
             android:id="@+id/action_makeCarFragment_to_trimSelectFragment"
             app:destination="@id/trimSelectFragment" />
 
+        <action
+            android:id="@+id/action_makeCarFragment_to_estimateReadyFragment"
+            app:destination="@id/estimateReadyFragment" />
+
         <argument
             android:name="mode"
             app:argType="string" />
@@ -39,7 +43,7 @@
     <fragment
         android:id="@+id/onBoardingFragment"
         android:name="com.youngcha.ohmycarset.ui.fragment.OnBoardingFragment"
-        android:label="OnBoardingFragment" >
+        android:label="OnBoardingFragment">
         <action
             android:id="@+id/action_onBoardingFragment_to_trimSelectFragment"
             app:destination="@id/trimSelectFragment" />
@@ -48,7 +52,8 @@
     <fragment
         android:id="@+id/estimateReadyFragment"
         android:name="com.youngcha.ohmycarset.ui.fragment.EstimateReadyFragment"
-        android:label="LoadingFragment" >
+        android:label="LoadingFragment">
+
         <action
             android:id="@+id/action_estimateReadyFragment_to_loadingFragment"
             app:destination="@id/loadingFragment"
@@ -56,13 +61,20 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
-
     </fragment>
+
 
     <fragment
         android:id="@+id/loadingFragment"
         android:name="com.youngcha.ohmycarset.ui.fragment.LoadingFragment"
-        android:label="LoadingFragment" >
+        android:label="LoadingFragment">
+
+        <argument
+            android:name="guideParam"
+            android:defaultValue="@null"
+            app:argType="com.youngcha.ohmycarset.data.model.GuideParam"
+            app:nullable="true" />
+
         <action
             android:id="@+id/action_loadingFragment_to_makeCarFragment"
             app:destination="@id/makeCarFragment"
@@ -70,5 +82,6 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
+
     </fragment>
 </navigation>

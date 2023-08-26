@@ -10,14 +10,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.youngcha.ohmycarset.data.dto.Category
 import com.youngcha.ohmycarset.data.dto.ComponentDTO
+import com.youngcha.ohmycarset.data.model.GuideParam
 import com.youngcha.ohmycarset.enums.AdditionalTab
 import com.youngcha.ohmycarset.data.model.TrimSelfMode
 import com.youngcha.ohmycarset.data.model.TrimSelfModeOption
 import com.youngcha.ohmycarset.data.model.car.Car
 import com.youngcha.ohmycarset.data.model.car.OptionInfo
 import com.youngcha.ohmycarset.data.repository.CategoryRepository
+import com.youngcha.ohmycarset.data.repository.GuideModeRepository
 import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -25,6 +28,7 @@ import kotlinx.coroutines.withContext
 
 class CarCustomizationViewModel(
     private val repository: SelfModeRepository,
+    private val guideModeRepository: GuideModeRepository,
     private val categoryRepository: CategoryRepository
 ) : ViewModel() {
 
@@ -44,6 +48,30 @@ class CarCustomizationViewModel(
 
     private val _customizedParts = MutableLiveData<List<Map<String, List<OptionInfo>>>>()
     val customizedParts: LiveData<List<Map<String, List<OptionInfo>>>> = _customizedParts
+    fun logCustomizedParts() {
+        val parts = _customizedParts.value
+
+        parts?.let {
+            val logBuilder = StringBuilder("Customized Parts:\n\n")
+
+            for (partMap in it) {
+                for ((key, valueList) in partMap) {
+                    logBuilder.append("Component: $key\n")
+
+                    for (optionInfo in valueList) {
+                        logBuilder.append("  Option: ${optionInfo.name}, Checked: ${optionInfo.checked}\n")
+                    }
+
+                    logBuilder.append("\n")
+                }
+            }
+
+            Log.d("로그", logBuilder.toString())
+        } ?: run {
+            Log.d("로그", "No parts available.")
+        }
+    }
+
 
     // 선택 모드 관련 변수
     // 관련된 변수: currentType
@@ -118,8 +146,9 @@ class CarCustomizationViewModel(
     val totalPrice = MutableLiveData<Int>(0)
     val prevPrice = MutableLiveData<Int>(0)
 
-
+    private val initialization = CompletableDeferred<Unit>()
     // --- 프래그먼트 초기 시점 함수 ---
+
     init {
         repository.car.observeForever(carObserver)
         viewModelScope.launch(Dispatchers.IO) {
@@ -132,11 +161,13 @@ class CarCustomizationViewModel(
                 // 메인 스레드에서 LiveData 업데이트
                 currentMainTabs.value = categoryRepository.mainCategories.value
                 _currentSubTabs.value = categoryRepository.subCategories.value
-                categories.value = categoryRepository.categories.value
-
-                // UI 업데이트 이후에 repository.addCarComponent() 호출
-                repository.setCarComponent(2, "파워 트레인", categories.value!!)
+                _currentTabPosition.value = 0
+                currentTabName.value = currentMainTabs.value!![0]
+                currentSubTabPosition.value = 0
+                totalPrice.value = 36000000
+                categories.value = categoryRepository.getAllCategories()
             }
+            initialization.complete(Unit)
         }
 
         currentOptionList.addSource(_currentComponentName) { componentName ->
@@ -147,6 +178,74 @@ class CarCustomizationViewModel(
         }
     }
 
+
+    fun startGuideMode(guideParam: GuideParam) {
+        viewModelScope.launch(Dispatchers.IO) {
+
+            val fetchedCategories = categoryRepository.getAllCategories()
+            fetchedCategories?.let {
+                guideModeRepository.fetchAllGuideDataAndSetCar(guideParam, it)
+                withContext(Dispatchers.Main) {
+                    // 메인 스레드에서 LiveData 업데이트
+                    categories.value = it
+                    _selectedCar.value = guideModeRepository.car.value
+
+                    _selectedCar.value?.let { selectedCarValue ->
+
+                        // 1. mainOptions 처리
+                        val customizedMainOptions =
+                            selectedCarValue.mainOptions.mapNotNull { optionMap ->
+                                optionMap.entries.mapNotNull { entry ->
+                                    val key = entry.key
+                                    val values = entry.value.filter { it.checked }
+
+                                    if (values.isNotEmpty()) key to values else null
+                                }.toMap()
+                            }.filter { it.isNotEmpty() }
+
+                        // 2. subOptions 처리
+                        val customizedSubOptions =
+                            selectedCarValue.subOptions.mapNotNull { optionMap ->
+                                optionMap.entries.mapNotNull { entry ->
+                                    val key = entry.key
+                                    val values = entry.value.filter { it.checked }
+
+                                    if (values.isNotEmpty()) key to values else null
+                                }.toMap()
+                            }.filter { it.isNotEmpty() }
+
+                        // 3. 두 결과를 합쳐 customizedParts에 설정
+                        val combinedOptions = mutableListOf<Map<String, List<OptionInfo>>>()
+                        combinedOptions.addAll(customizedMainOptions)
+                        combinedOptions.addAll(customizedSubOptions)
+
+                        _customizedParts.value = combinedOptions
+
+                    }
+                }
+            } ?: run {
+            }
+        }
+    }
+
+    fun startSelfMode() {
+        viewModelScope.launch(Dispatchers.IO) {
+            initialization.await()
+            withContext(Dispatchers.Main) {
+                _customizedParts.value = emptyList()
+                _currentTabPosition.value = 0
+                currentTabName.value = currentMainTabs.value!![0]
+                currentSubTabPosition.value = 0
+                _currentType.value = "SelfMode"
+                totalPrice.value = 36000000
+                repository.setCarComponent(2, "파워 트레인", categories.value!!)
+                _selectedCar.value = repository.car.value
+            }
+        }
+    }
+
+
+
     /**
      *  초기 시작 지점
      *  가이드 모드일 경우 부품 미리 생성
@@ -156,10 +255,18 @@ class CarCustomizationViewModel(
         when (currentType) {
             "GuideMode" -> {
                 val lastTab = currentMainTabs.value?.lastOrNull()
-                randomizeParts()
                 if (startPoint == "start") {
+                    Log.d("로그", "시작")
+                    Log.d("로그", _selectedCar.value.toString())
+                    logCustomizedParts()
                     currentTabName.value = currentMainTabs.value!![0]
-                    setCurrentComponentName(currentTabName.value!!)
+                    updateTapPosition(0, "파워 트레인")
+                    Log.d("로그", "")
+                 //   onComponentOption1Selected()
+//                    _currentTabPosition.value = 0
+//                    _currentComponentName.value = "파워 트레인"
+
+                   // setCurrentComponentName(currentTabName.value!!)
                 } else {
                     if (lastTab == "견적 내기") {
                         totalPrice.value = totalPrice.value?.plus(getMyCarTotalPrice())
@@ -173,14 +280,16 @@ class CarCustomizationViewModel(
     }
 
     fun setSubOptionImage(value: Int) {
-        when(value) {
+        when (value) {
             0 -> {
                 subOptionImage.value = ""
             }
+
             1 -> {
                 // _selectedCar의 subOptions에서 첫 번째 키에 대응하는 첫 번째 밸류의 mainImage를 가져온다.
                 if (_selectedCar.value?.subOptions?.isNotEmpty() == true) {
-                    val firstSubOption = _selectedCar.value!!.subOptions[0].values.firstOrNull()?.firstOrNull()
+                    val firstSubOption =
+                        _selectedCar.value!!.subOptions[0].values.firstOrNull()?.firstOrNull()
                     val mainImage = firstSubOption?.mainImage
                     subOptionImage.value = mainImage ?: ""
                 } else {
@@ -193,31 +302,6 @@ class CarCustomizationViewModel(
     private suspend fun setupTabs() {
         categoryRepository.getCategories()
     }
-    fun randomizeParts() {
-        val randomizedParts = mutableListOf<Map<String, List<OptionInfo>>>()
-
-        // 주 옵션에서 무작위로 선택
-        _selectedCar.value?.mainOptions?.forEach { mainOptionMap ->
-            val randomizedMainOptions = mainOptionMap.map { entry ->
-                val randomOption = entry.value.random()
-                entry.key to listOf(randomOption)
-            }.toMap()
-
-            randomizedParts.add(randomizedMainOptions)
-        }
-
-        // 부 옵션에서 무작위로 선택
-        _selectedCar.value?.subOptions?.forEach { subOptionMap ->
-            val randomizedSubOptions = subOptionMap.map { entry ->
-                val randomOption = entry.value.random()
-                entry.key to listOf(randomOption)
-            }.toMap()
-
-            randomizedParts.add(randomizedSubOptions)
-        }
-
-        _customizedParts.value = randomizedParts
-    }
 
     fun updateTapPosition(position: Int, tabName: String) {
         _currentTabPosition.value = position
@@ -227,9 +311,6 @@ class CarCustomizationViewModel(
         totalPrice.value = 36000000
         setCurrentComponentName(tabName)
 
-        if (OPTION_SELECTION == tabName) handleSubTab()
-
-         setCurrentComponentName(currentComponentName.value!!)
     }
 
 
@@ -245,16 +326,35 @@ class CarCustomizationViewModel(
     /**
      * 현재 타입 업데이트
      */
-    fun updateCurrentType(currentType: String) {
-        _currentType.value = currentType
-        _currentTabPosition.value = 0
-        currentTabName.value = currentMainTabs.value!![0]
-        currentSubTabPosition.value = 0
-        totalPrice.value = 36000000
-        _customizedParts.value = emptyList()
+//    suspend fun updateCurrentType(currentType: String) {
+//        _currentType.value = currentType
+//        _currentTabPosition.value = 0
+//        currentTabName.value = currentMainTabs.value!![0]
+//        currentSubTabPosition.value = 0
+//        totalPrice.value = 36000000
+//        _customizedParts.value = emptyList()
+//        _selectedCar.value = Car()
+//        categories.value?.let { repository.setCarComponent(2, "파워 트레인", it) }
+//      //  setCurrentComponentName(currentTabName.value!!)
+//    }
 
-        setCurrentComponentName(currentTabName.value!!)
+    fun updateCurrentType(currentType: String) {
+        viewModelScope.launch {
+            _currentType.value = currentType
+            _currentTabPosition.value = 0
+            currentTabName.value = currentMainTabs.value!![0]
+            currentSubTabPosition.value = 0
+            totalPrice.value = 36000000
+            _customizedParts.value = emptyList()
+            _selectedCar.value = Car()
+
+            categories.value?.let {
+                repository.setCarComponent(2, "파워 트레인", it)
+            }
+            // setCurrentComponentName(currentTabName.value!!)
+        }
     }
+
 
     /**
      * 탭 정보 업데이트
@@ -278,10 +378,12 @@ class CarCustomizationViewModel(
     fun handleTabChange(increment: Int) {
         val currentTabIndex = currentTabPosition.value ?: 0
         val nextTabIndex = currentTabIndex + increment
+
         // 범위 확인
         if (nextTabIndex in 0 until currentMainTabs.value!!.size) {
             // 탭 변경 로직
             val tabName = currentMainTabs.value!![nextTabIndex]
+
             setCurrentComponentName(tabName)
             _currentTabPosition.value = nextTabIndex
             when (tabName) {
@@ -314,28 +416,48 @@ class CarCustomizationViewModel(
 
     // --- 데이터 설정 및 조회 관련 함수 ---
 
+    fun isAlreadySelectedComponent(componentName: String): Boolean {
+        val parts = _customizedParts.value
+        if (componentName == OPTION_SELECTION  && currentType.value == "GuideMode"){
+            return true
+        }
+        parts?.let {
+            for (partMap in it) {
+                if (partMap.containsKey(componentName)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+
     /**
      * 현재 컴포넌트 이름 설정
      */
     fun setCurrentComponentName(componentName: String) {
         viewModelScope.launch {
-
-            when (componentName) {
-                "내장 색상" -> {
-                    // 내장 색상일 경우
-                    val id = _customizedParts.value?.find { it.keys.contains("왜장 색상") }?.get("왜장 색상")?.first()?.id
-                    if (id != null) {
-                        repository.setInteriorColor(2, id)
-                    } else {
-                        repository.setInteriorColor(2, 13)
+            if (!isAlreadySelectedComponent(componentName)) {
+                when (componentName) {
+                    "내장 색상" -> {
+                        // 내장 색상일 경우
+                        val id =
+                            _customizedParts.value?.find { it.keys.contains("왜장 색상") }?.get("왜장 색상")
+                                ?.first()?.id
+                        if (id != null) {
+                            repository.setInteriorColor(2, id)
+                        } else {
+                            repository.setInteriorColor(2, 13)
+                        }
                     }
-                }
-                "견적 내기" -> {
-                    // "견적 내기" 선택 시 아무 것도 하지 않고 넘어갑니다.
-                }
 
-                else -> {
-                    categories.value?.let { repository.setCarComponent(2, componentName, it) }
+                    "견적 내기" -> {
+                        // "견적 내기" 선택 시 아무 것도 하지 않고 넘어갑니다.
+                    }
+
+                    else -> {
+                        categories.value?.let { repository.setCarComponent(2, componentName, it) }
+                    }
                 }
             }
 
@@ -354,7 +476,7 @@ class CarCustomizationViewModel(
             if ((componentName == "파워 트레인" || componentName == "바디 타입" || componentName == "구동 방식") && componentName != OPTION_SELECTION) {
                 horizontalButtonVisible.value = 1
                 alreadySelectedComponent(componentName)
-            } else if (componentName == OPTION_SELECTION){
+            } else if (componentName == OPTION_SELECTION) {
                 setSubOptionImage(1)
                 currentSubTabPosition.value = 0
                 swipeButtonVisible.value = 1
@@ -404,7 +526,6 @@ class CarCustomizationViewModel(
                 existingOptions.add(option)
                 existingComponent[keyName] = existingOptions
 
-
             } else {
                 // 여기에는 값을 덮어써야함 즉 최신 값으로 벨류를 업데이트
                 existingComponent[keyName] = listOf(option)
@@ -419,6 +540,7 @@ class CarCustomizationViewModel(
         }
         //  _totalPrice.value = _totalPrice.value?.plus(option.price)
         _customizedParts.value = updatedList
+      //  logCustomizedParts()
     }
 
     /**
@@ -471,8 +593,10 @@ class CarCustomizationViewModel(
         if (index != -1) {
             // 이미 선택된 값들이 있다면
             val myCarToList = car[index]
+
             val myCarToMap = myCarToList[componentName] // 선택된 값
             val option = getOption(componentName, 0) ?: return // 0번 인덱스 옵션 가져오기
+
             if (option == myCarToMap?.get(0)) {
                 onComponentOption1Selected()
             } else {
@@ -491,13 +615,6 @@ class CarCustomizationViewModel(
         _displayOnRecyclerViewAndViewPager.value = if (subOptionButtonVisible.value == 0) 0 else 1
     }
 
-    /**
-     * 차량 데이터 로드
-     */
-    private fun loadCarData(carName: String) {
-        // _selectedCar.value = createCarData(carName)
-//        updateTabInfo(_selectedCar.value!!)
-    }
 
     // --- 기타 헬퍼 함수 ---
 
@@ -678,6 +795,15 @@ class CarCustomizationViewModel(
         if (nextTabName == "견적 내기") {
             _startAnimationEvent.value = "estimate_summary"
             return
+        }
+
+        val currentName = _currentComponentName.value
+        val partsList = _customizedParts.value
+        if (currentName != null && partsList != null) {
+            val optionsForComponent = partsList.find { it.containsKey(currentName) }?.get(currentName)
+            if (!optionsForComponent.isNullOrEmpty()) {
+                currentSelectedOption.value = optionsForComponent[0]
+            }
         }
 
         if ((currentComponentName.value == "파워 트레인" || currentComponentName.value == "바디 타입" || currentComponentName.value == "구동 방식")) {

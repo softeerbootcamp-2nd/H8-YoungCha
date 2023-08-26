@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Path
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
@@ -14,81 +15,72 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.TextView
+import java.lang.Math.cos
+import java.lang.Math.sin
 import kotlin.random.Random
 
 object AnimationUtils {
 
     private val activeAnimations = mutableListOf<Animator>()
 
-    fun explodeView(frameLayout: FrameLayout, numberOfParticles: Int = 150) {
-        val parentHeight = frameLayout.height
-        val parentWidth = frameLayout.width
-        val endY = parentHeight * 0.7f
+    fun explodeView(frameLayout: FrameLayout, numberOfParticles: Int = 150, numberOfExplosions: Int = 5) {
+        activeAnimations.forEach { it.cancel() }
+        activeAnimations.clear()
+        frameLayout.removeAllViews()
 
         val colors = listOf("#FF7676", "#FD3F33", "#FFB876", "#FFB801", "#76ADFF", "#357FED")
 
-        val particles = List(numberOfParticles) {
-            val width = Random.nextInt(20) + 10
-            val height = Random.nextInt(20) + 8
-            val color = Color.parseColor(colors[Random.nextInt(colors.size)])
+        repeat(numberOfExplosions) {
+            // 화면 상단의 랜덤 위치에서 폭죽 시작
+            val explosionCenterX = Random.nextInt(frameLayout.width).toFloat()
+            val explosionCenterY = Random.nextInt(frameLayout.height / 3).toFloat()
 
-            val particle = View(frameLayout.context).apply {
-                setBackgroundColor(color)
-                layoutParams = FrameLayout.LayoutParams(width, height)
-                x = Random.nextInt(parentWidth - width).toFloat()
-                y = 0f - height - Random.nextInt(300).toFloat()
-                alpha = 0.8f
-            }
-            frameLayout.addView(particle)
-            particle
-        }
+            val particles = List(numberOfParticles) {
+                val width = Random.nextInt(20) + 10
+                val height = Random.nextInt(20) + 8
+                val color = Color.parseColor(colors[Random.nextInt(colors.size)])
 
-        particles.forEach { particle ->
-            val totalDuration = (Random.nextInt(7001) + 3000).toLong()  // 속도 차이를 늘리기 위해 범위 조절
-
-            // Y좌표에 대한 애니메이션
-            val yAnimator = ObjectAnimator.ofFloat(particle, "y", particle.y, endY).apply {
-                duration = totalDuration
-                interpolator = DecelerateInterpolator()
-            }
-
-            // X좌표에 대한 랜덤 이동
-            val xRandomizer = ValueAnimator.ofFloat(0f, 1f).apply {
-                duration = totalDuration
-                addUpdateListener {
-                    val randomXOffset = (Random.nextInt(5) - 2).toFloat()
-                    particle.x = (particle.x + randomXOffset).coerceIn(0f,
-                        (parentWidth - particle.width).toFloat()
-                    )
+                val particle = View(frameLayout.context).apply {
+                    setBackgroundColor(color)
+                    layoutParams = FrameLayout.LayoutParams(width, height)
+                    x = explosionCenterX - width / 2f
+                    y = explosionCenterY - height / 2f
+                    alpha = 0.8f
                 }
+                frameLayout.addView(particle)
+                particle
             }
 
-            // 회전 애니메이션
-            val rotationAnimator = ObjectAnimator.ofFloat(particle, "rotation", 0f, 360f * (Random.nextInt(3) + 1)).apply {
-                duration = totalDuration
-                repeatCount = ValueAnimator.INFINITE
-                interpolator = LinearInterpolator()
-            }
+            particles.forEach { particle ->
+                val angle = Math.toRadians(Random.nextInt(360).toDouble())
+                val speed = Random.nextInt(10) + 5  // 5~15 사이의 속도
 
-            // Fade out 애니메이션 조절
-            val fadeOutAnimator = ObjectAnimator.ofFloat(particle, "alpha", 0.8f, 0f).apply {
-                duration = 500
-                startDelay = (totalDuration * 0.7).toLong()
-            }
+                val xVelocity = cos(angle) * speed
+                val yVelocity = sin(angle) * speed
 
-            val animatorSet = AnimatorSet().apply {
-                playTogether(yAnimator, xRandomizer, fadeOutAnimator, rotationAnimator)
-                startDelay = Random.nextInt(1500).toLong()  // 시작 시점에 랜덤한 지연 추가
-            }
+                val animator = ValueAnimator.ofFloat(0f, 1f).apply {
+                    duration = (Random.nextInt(3001) + 2000).toLong()  // 2~5초
+                    interpolator = LinearInterpolator()
+                    addUpdateListener {
+                        particle.x += xVelocity.toFloat()
+                        particle.y += yVelocity.toFloat()
 
-            animatorSet.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    frameLayout.removeView(particle)
-                    activeAnimations.remove(animation)
+                        // 화면 밖으로 나가면 삭제
+                        if (particle.x < 0 || particle.x > frameLayout.width || particle.y < 0 || particle.y > frameLayout.height) {
+                            frameLayout.removeView(particle)
+                            this.cancel()
+                        }
+                    }
                 }
-            })
-            activeAnimations.add(animatorSet)
-            animatorSet.start()
+
+                animator.addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        frameLayout.removeView(particle)
+                    }
+                })
+
+                animator.start()
+            }
         }
     }
 

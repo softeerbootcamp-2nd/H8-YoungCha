@@ -6,6 +6,7 @@ import com.youngcha.ohmycarset.data.dto.Image
 data class OptionInfo(
     val id: Int,
     val categoryId: Int,
+    val checked: Boolean = false,
     val optionType: String, // main, sub, color
     val rate: String, // 63%
     val name: String, // 디젤 2.2

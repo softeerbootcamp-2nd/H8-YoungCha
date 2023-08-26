@@ -52,4 +52,16 @@ class CategoryRepository(private val categoryAPIService: CategoriesApiService) {
         }
     }
 
+    suspend fun getAllCategories(): List<Category>? {
+        return try {
+            val response = categoryAPIService.getCategories()
+            if (response.message == "success") {
+                response.data.categories.filter { it.id in 7..10 }.sortedBy { it.id }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
 }

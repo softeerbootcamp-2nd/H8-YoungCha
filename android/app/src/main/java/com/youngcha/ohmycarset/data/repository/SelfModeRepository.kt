@@ -25,6 +25,7 @@ class SelfModeRepository(private val selfModeApiService: SelfModeApiService) {
             OptionInfo(
                 id = dataItem.id,
                 categoryId = dataItem.categoryId,
+                checked = false,
                 optionType = type,
                 rate = dataItem.rate.toString(),
                 name = dataItem.name,
@@ -49,13 +50,13 @@ class SelfModeRepository(private val selfModeApiService: SelfModeApiService) {
         val newComponent: Map<String, List<OptionInfo>>
 
         when (componentType) {
-            "파워 트레인" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getPowerTrain(carMakeId), componentType))
-            "구동 방식" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getDrivingSystem(carMakeId), componentType))
-            "바디 타입" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getBodyType(carMakeId), componentType))
-            "외장 색상" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getExteriorColor(carMakeId), componentType))
-            "휠 선택" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getWheel(carMakeId), componentType))
+            "파워 트레인" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getPowerTrain(carMakeId), "main"))
+            "구동 방식" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getDrivingSystem(carMakeId), "main"))
+            "바디 타입" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getBodyType(carMakeId), "main"))
+            "외장 색상" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getExteriorColor(carMakeId), "color"))
+            "휠 선택" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getWheel(carMakeId), "main"))
             "옵션 선택" -> {
-                newComponent = createSubOptionMap(categories, filterData(selfModeApiService.getOptions(carMakeId), componentType))
+                newComponent = createSubOptionMap(categories, filterData(selfModeApiService.getOptions(carMakeId), "sub"))
             }
             else -> throw IllegalArgumentException("Unsupported component type: $componentType")
         }
@@ -70,7 +71,7 @@ class SelfModeRepository(private val selfModeApiService: SelfModeApiService) {
     // 내장 색상 업데이트 함수
     suspend fun setInteriorColor(carMakeId: Int, exteriorColorId: Int) {
         val currentCar = _car.value ?: Car()
-        val updatedComponent = mapOf("내장 색상" to filterData(selfModeApiService.getInteriorColor(carMakeId, exteriorColorId), "내장 색상"))
+        val updatedComponent = mapOf("내장 색상" to filterData(selfModeApiService.getInteriorColor(carMakeId, exteriorColorId), "color"))
 
         val containsInteriorColor = currentCar.mainOptions.any { it.keys.contains("내장 색상") }
 

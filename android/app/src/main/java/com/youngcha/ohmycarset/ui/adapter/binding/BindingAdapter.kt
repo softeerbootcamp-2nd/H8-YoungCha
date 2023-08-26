@@ -40,7 +40,7 @@ import com.youngcha.ohmycarset.ui.interfaces.OnHyundaiButtonClickListener
 import com.youngcha.ohmycarset.util.RoundedBackgroundSpan
 
 @BindingAdapter(value = ["mainImageUrl", "subImageUrl"], requireAll = false)
-fun loadImageGlide(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
+fun loadImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
     if (subImageUrl.isNullOrEmpty()) {
         if (mainImageUrl.isNullOrEmpty()) {
             Glide.with(view.context).clear(view)
@@ -56,6 +56,36 @@ fun loadImageGlide(view: ImageView, mainImageUrl: String?, subImageUrl: String?)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(view)
     }
+}
+
+@BindingAdapter(value = ["detailMainImageUrl", "detailSubImageUrl"], requireAll = false)
+fun setLogoImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
+
+    val context = view.context
+    val widthInPixels: Int
+    val heightInPixels: Int
+
+    if (mainImageUrl == "") {
+        widthInPixels = (60 * context.resources.displayMetrics.density).toInt()
+        heightInPixels = (60 * context.resources.displayMetrics.density).toInt()
+        Glide.with(view.context)
+            .load(subImageUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .circleCrop()
+            .into(view)
+    } else {
+        widthInPixels = (86 * context.resources.displayMetrics.density).toInt()
+        heightInPixels = (64 * context.resources.displayMetrics.density).toInt()
+        Glide.with(view.context)
+            .load(mainImageUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(view)
+    }
+
+    val params = view.layoutParams
+    params.width = widthInPixels
+    params.height = heightInPixels
+    view.layoutParams = params
 }
 
 @BindingAdapter("imageUrl")
@@ -105,7 +135,7 @@ fun loadInteriorImage(view: ImageView, imageUrl: String?) {
 
 fun setLogoImage(view: ImageView, imageUrl: String?) {
     Glide.with(view.context)
-        .load(imageUrl)
+        .load(logoImageUrl)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(view)
 }
@@ -385,8 +415,9 @@ fun setTitle(view: HeaderToolBarView, title: String?) {
     requireAll = false
 )
 fun HyundaiButtonView.borderAnimation(currentType: String?, visible: Int) {
-    if (currentType == "GuideMode" && visible == 1)
+    if (currentType == "GuideMode" && visible == 1) {
         this.animateBorder()
+    }
 }
 
 @BindingAdapter(value = ["currentTypeForTag", "visibleForTag", "tagData"], requireAll = false)

@@ -21,7 +21,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildFeatures {
         viewBinding = true
     }
@@ -32,10 +31,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = '17'
     }
@@ -49,8 +50,14 @@ android {
     }
 }
 
-dependencies {
+kapt {
+    javacOptions {
+        option("-source", "17")
+        option("-target", "17")
+    }
+}
 
+dependencies {
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
@@ -61,7 +68,7 @@ dependencies {
 
     // Feature module Support
     implementation "androidx.navigation:navigation-dynamic-features-fragment:2.6.0"
-    
+
     //jetpack-navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
@@ -84,6 +91,5 @@ dependencies {
 
     // glide
     implementation 'com.github.bumptech.glide:glide:4.16.0'
-
 
 }
