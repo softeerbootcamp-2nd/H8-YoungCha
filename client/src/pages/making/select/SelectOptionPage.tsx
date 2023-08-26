@@ -31,6 +31,10 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
   const [selectedItem, setSelectedItem] = useState(-1);
   const [isImageLoading, setIsImageLoading] = useState(true);
   function onNext() {
+    if (mode === 'guide') {
+      return navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
+    }
+
     setTimeout(() => {
       navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
     }, FEEDBACK_DELAY_TIME);
