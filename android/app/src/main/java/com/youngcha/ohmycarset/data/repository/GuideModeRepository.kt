@@ -1,5 +1,6 @@
 package com.youngcha.ohmycarset.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.youngcha.ohmycarset.data.api.GuideModeApiService
@@ -45,55 +46,57 @@ class GuideModeRepository(private val guideModeApiService: GuideModeApiService) 
         val powerTrain = filterData(
             guideModeApiService.getPowerTrainGuide(
                 guideParam.id,
-                guideParam.gender,
                 guideParam.age,
+                guideParam.gender,
                 guideParam.keyword1Id,
                 guideParam.keyword2Id,
                 guideParam.keyword3Id
-            ), "파워 트레인"
+            ), "main"
         )
+
         val drivingSystem = filterData(
             guideModeApiService.getDrivingSystem(
                 guideParam.id,
-                guideParam.gender,
                 guideParam.age,
+                guideParam.gender,
                 guideParam.keyword1Id,
                 guideParam.keyword2Id,
                 guideParam.keyword3Id
-            ), "구동 방식"
+            ), "main"
         )
+
         val bodyType = filterData(
             guideModeApiService.getBodyTypeGuide(
                 guideParam.id,
-                guideParam.gender,
                 guideParam.age,
+                guideParam.gender,
                 guideParam.keyword1Id,
                 guideParam.keyword2Id,
                 guideParam.keyword3Id
-            ), "바디 타입"
+            ), "main"
         )
 
         val exteriorColor = filterData(
             guideModeApiService.getExteriorColorGuide(
                 guideParam.id,
-                guideParam.gender,
                 guideParam.age,
+                guideParam.gender,
                 guideParam.keyword1Id,
                 guideParam.keyword2Id,
                 guideParam.keyword3Id
-            ), "외장 색상"
+            ), "color"
         )
         val firstExteriorId = exteriorColor.firstOrNull()?.id
         val interiorColor = if (firstExteriorId != null)
             filterData(
                 guideModeApiService.getInteriorColorGuide(
                     guideParam.id,
-                    guideParam.gender,
                     guideParam.age,
+                    guideParam.gender,
                     guideParam.keyword1Id,
                     guideParam.keyword2Id,
                     guideParam.keyword3Id, firstExteriorId
-                ), "내장 색상"
+                ), "color"
             )
         else emptyList()
 
@@ -101,12 +104,12 @@ class GuideModeRepository(private val guideModeApiService: GuideModeApiService) 
             filterData(
                 guideModeApiService.getWheelGuide(
                     guideParam.id,
-                    guideParam.gender,
                     guideParam.age,
+                    guideParam.gender,
                     guideParam.keyword1Id,
                     guideParam.keyword2Id,
                     guideParam.keyword3Id, firstExteriorId
-                ), "휠 선택"
+                ), "main"
             )
         else emptyList()
 
@@ -114,12 +117,12 @@ class GuideModeRepository(private val guideModeApiService: GuideModeApiService) 
             categories, filterData(
                 guideModeApiService.getOptionsGuide(
                     guideParam.id,
-                    guideParam.gender,
                     guideParam.age,
+                    guideParam.gender,
                     guideParam.keyword1Id,
                     guideParam.keyword2Id,
                     guideParam.keyword3Id
-                ), "옵션 선택"
+                ), "sub"
             )
         )
 
@@ -143,8 +146,7 @@ class GuideModeRepository(private val guideModeApiService: GuideModeApiService) 
             mainOptions = listOf(mainOptionsMap),
             subOptions = subOptionsList
         )
-
-        _car.value = updatedCar
+        _car.postValue(updatedCar)
     }
 
 
