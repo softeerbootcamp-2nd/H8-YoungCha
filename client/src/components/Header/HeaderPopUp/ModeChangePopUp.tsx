@@ -25,7 +25,7 @@ function ModeChangePopUp({ mode, closePopUp }: ModeChangePopUpProps) {
 
   const changeToNextModePopUp =
     mode === 'self' ? ChangeToGuideModePopUp : ChangeToSelfModePopUp;
-  const isGuide = pathname.includes('guide') ? true : false;
+  const isGuide = pathname.includes('guide');
 
   return (
     <PopUp onClose={closePopUp}>
