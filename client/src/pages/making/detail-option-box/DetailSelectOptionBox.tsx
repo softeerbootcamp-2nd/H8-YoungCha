@@ -1,20 +1,20 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import DetailOption from './DetailOption';
-import { mockUserSelectedOptionData } from '@/assets/mock/mock';
 import { SelectOptionsId } from '@/constant';
 import { SelectOptionFilterType } from '@/types';
+import { UserSelectedOptionDataContext } from '..';
 
 function DetailSelectOptionBox() {
   const [selectedOptionFilter, setSelectedOptionFilter] =
     useState<SelectOptionFilterType>('전체');
-
+  const { userSelectedOptionData } = useContext(UserSelectedOptionDataContext);
   function isSelectOption(categoryId: number) {
     return (
-      SelectOptionsId[selectedOptionFilter] === -1 ||
+      SelectOptionsId[selectedOptionFilter] === 0 ||
       SelectOptionsId[selectedOptionFilter] === categoryId
     );
   }
-  const totalPrice = mockUserSelectedOptionData.selectedOptions.options.reduce(
+  const totalPrice = userSelectedOptionData.selectedOptions.options.reduce(
     (sum, option) => sum + option.price!,
     0
   );
@@ -29,7 +29,7 @@ function DetailSelectOptionBox() {
         selectedOption={selectedOptionFilter}
         onClick={(option) => setSelectedOptionFilter(option)}
       />
-      {mockUserSelectedOptionData.selectedOptions.options
+      {userSelectedOptionData.selectedOptions.options
         .filter((option) => isSelectOption(option.categoryId!))
         .map((option) => (
           <DetailOption.List option={option} key={option.name} />

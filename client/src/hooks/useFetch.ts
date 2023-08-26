@@ -14,6 +14,7 @@ function useFetch<T>({ url, params, deps = [] }: FetchType) {
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const data = await get<T>({ url, params });
       setData(data as T);
       setLoading(false);

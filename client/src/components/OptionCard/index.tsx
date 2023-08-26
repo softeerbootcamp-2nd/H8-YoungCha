@@ -5,7 +5,6 @@ import SummarySection from './AdditionalContents/SummarySection';
 import FunctionDetailBox from './AdditionalContents/FunctionDetailBox';
 import PriceSection from './PriceSection';
 import SubOptions from './AdditionalContents/SubOptions';
-import SubOptionDescription from './AdditionalContents/SubOptionDescription';
 import ImgSection from './ImgSection';
 import Tags from './Tags';
 import Rate from '@/components/OptionCard/Rate.tsx';
@@ -13,16 +12,24 @@ import Name from '@/components/OptionCard/Name.tsx';
 import CheckIcon from './CheckIcon';
 import { AllOptionType } from '@/types/option';
 import { PathParamsType } from '@/types/router.ts';
+import FeedbackCard from '@/components/FeedbackCard';
 
 interface OptionCardProps {
   item: AllOptionType;
   isActive?: boolean;
   onClick?: () => void;
+  multiSelect?: boolean;
+  next?: boolean;
 }
 
-function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
+function OptionCard({
+  isActive = false,
+  item,
+  onClick,
+  multiSelect,
+  next,
+}: OptionCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-
   const optionCardRef = useRef<HTMLButtonElement>(null);
 
   const { mode, step } = useParams() as PathParamsType;
@@ -37,9 +44,8 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
   const hasDetail = !!item.details[0]?.description;
 
   function handleIsActive() {
-    // setIsActive((prevState) => !prevState);
     onClick?.();
-    if (isActive) setIsExpanded((prevState) => !prevState);
+    if (isActive && !multiSelect) setIsExpanded((prevState) => !prevState);
   }
 
   useEffect(() => {
@@ -51,16 +57,20 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
       });
   }, [isActive]);
 
+  useEffect(() => {
+    isActive && setIsExpanded(false);
+  }, [next]);
+
   return (
     <button
       ref={optionCardRef}
       className={`text-left relative border-2 rounded-6px min-w-320px w-full p-20px cursor-pointer 
       ${totalDivColor} ${
         isExpanded ? 'max-h-750px' : 'max-h-fit'
-      } transition-all ease-in duration-500`}
+      } transition-all ease-in duration-300`}
       onClick={handleIsActive}
     >
-      <div className="flex">
+      <div className="flex gap-8px">
         <CheckIcon {...{ isActive, isSelfMode }} />
         <Tags tags={item?.tags} />
       </div>
@@ -74,12 +84,20 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
       <div
         className={`${
           isExpanded ? 'max-h-400px opacity-100' : 'max-h-0 opacity-0'
-        } transition-all ease-in-out duration-300 origin-top`}
+        } transition-all ease-in-out duration-300 origin-top overflow-hidden`}
       >
         {item.details[0]?.description && (
           <div className="flex flex-col border-t-2 border-grey-001 py-12px gap-y-12px">
-            <SummarySection details={item.details} isActive={isActive} />
-            <FunctionDetailBox details={item.details} isActive={isActive} />
+            {multiSelect ? (
+              <>
+                <SubOptions options={item?.details} isActive={isActive} />
+              </>
+            ) : (
+              <>
+                <SummarySection details={item.details} isActive={isActive} />
+                <FunctionDetailBox details={item.details} isActive={isActive} />
+              </>
+            )}
           </div>
         )}
       </div>
@@ -87,11 +105,16 @@ function OptionCard({ isActive = false, item, onClick }: OptionCardProps) {
         <PriceSection price={item.price} isActive={isActive} />
         {hasDetail && <MoreDetailsButton {...{ isExpanded, setIsExpanded }} />}
       </div>
+      {mode === 'self' && next && isActive && (
+        // <Transition render={next} from="opacity-0" to="opacity-100" unmount>
+        <FeedbackCard
+          feedbackTitle={item.feedbackTitle}
+          feedbackDescription={item.feedbackDescription}
+        />
+        // </Transition>
+      )}
     </button>
   );
 }
 
-export default Object.assign(OptionCard, {
-  SubOptions,
-  SubOptionDescription,
-});
+export default OptionCard;

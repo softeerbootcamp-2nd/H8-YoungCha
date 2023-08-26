@@ -2,6 +2,9 @@ import { INITIAL_USER_SELECTED_DATA } from '@/pages/making/constant';
 import { OptionType } from '@/pages/making/type';
 import getNewUserOptionData from '@/utils/getNewOptionData';
 import { useEffect, useState } from 'react';
+import { UserSelectedOptionDataType } from '../pages/making/type';
+import { getStorage, setStorage } from '@/utils/optionStorage';
+import getNewUserOptionsData from '../utils/getNewOptionsData';
 
 // 상태 설정, storage 저장
 function useSelectOption() {
@@ -9,23 +12,32 @@ function useSelectOption() {
     INITIAL_USER_SELECTED_DATA
   );
 
-  function saveOptionData({ newOption }: { newOption: OptionType }) {
+  function saveOptionData({
+    newOption,
+    newOptions,
+  }: {
+    newOption?: OptionType;
+    newOptions?: OptionType[];
+  }) {
     setUserSelectedOptionData((prev) => {
       const newData = { ...prev };
-      const newStorageData = getNewUserOptionData({
-        newData,
-        newOption,
+      const newStorageData = newOption
+        ? getNewUserOptionData({ newData, newOption })
+        : getNewUserOptionsData({ newData, newOptions });
+      setStorage<UserSelectedOptionDataType>({
+        key: 'optionData',
+        value: newStorageData,
       });
-      sessionStorage.setItem('optionData', JSON.stringify(newStorageData));
       return newStorageData;
     });
   }
 
   useEffect(() => {
     if (userSelectedOptionData === INITIAL_USER_SELECTED_DATA) {
-      const saveData = sessionStorage.getItem('optionData')
-        ? JSON.parse(sessionStorage.getItem('optionData')!)
-        : INITIAL_USER_SELECTED_DATA;
+      const saveData = getStorage<UserSelectedOptionDataType>({
+        key: 'optionData',
+        initalValue: INITIAL_USER_SELECTED_DATA,
+      });
       setUserSelectedOptionData(saveData);
     }
   }, []);

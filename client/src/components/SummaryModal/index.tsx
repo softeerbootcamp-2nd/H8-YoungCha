@@ -1,9 +1,11 @@
-import { Fragment, HTMLAttributes } from 'react';
+import { Fragment, HTMLAttributes, useContext } from 'react';
 import { OptionGroupType } from '@/pages/making/type';
 import { formatPrice } from '@/utils';
 import Transition from '../Transition/Transition';
 import { Close } from '@/assets/icons';
-import { mockUserSelectedOptionData } from '@/assets/mock/mock';
+// import { mockUserSelectedOptionData } from '@/assets/mock/mock';
+import { UserSelectedOptionDataContext } from '@/pages/making';
+import getOptionGroupsTotalPrice from '@/utils/getTotalPrice';
 
 const ESTIMATION_SUMMARY = '견적 요약';
 
@@ -24,6 +26,7 @@ interface OptionProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function SummaryModal({ render, onClose }: SummaryModalProps) {
+  const { userSelectedOptionData } = useContext(UserSelectedOptionDataContext);
   return (
     <div className="relative h-0 select-none">
       <Transition
@@ -44,12 +47,9 @@ function SummaryModal({ render, onClose }: SummaryModalProps) {
 
         <div className="max-h-[calc(100vh-312px)] overflow-y-auto">
           <div className="flex flex-col h-full">
-            {Object.values(mockUserSelectedOptionData).map((optionGroup) => {
+            {Object.values(userSelectedOptionData).map((optionGroup) => {
               const { title, options } = optionGroup as OptionGroupType;
-              const totalPrice = Object.values(options).reduce(
-                (sum, { price }) => sum + price!,
-                0
-              );
+              const totalPrice = getOptionGroupsTotalPrice(options);
 
               return (
                 <Fragment key={title}>
