@@ -36,7 +36,6 @@ import com.youngcha.ohmycarset.util.RoundedBackgroundSpan
 
 @BindingAdapter(value = ["mainImageUrl", "subImageUrl"], requireAll = false)
 fun loadImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
-    Log.d("로그", "서브 URL 이미지 입니다. " + subImageUrl?.toString())
     if (subImageUrl.isNullOrEmpty()) {
         if (mainImageUrl.isNullOrEmpty()) {
             Glide.with(view.context).clear(view)
@@ -54,10 +53,40 @@ fun loadImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
     }
 }
 
+@BindingAdapter(value = ["detailMainImageUrl", "detailSubImageUrl"], requireAll = false)
+fun setLogoImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
+
+    val context = view.context
+    val widthInPixels: Int
+    val heightInPixels: Int
+
+    if (mainImageUrl == "") {
+        widthInPixels = (60 * context.resources.displayMetrics.density).toInt()
+        heightInPixels = (60 * context.resources.displayMetrics.density).toInt()
+        Glide.with(view.context)
+            .load(subImageUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .circleCrop()
+            .into(view)
+    } else {
+        widthInPixels = (86 * context.resources.displayMetrics.density).toInt()
+        heightInPixels = (64 * context.resources.displayMetrics.density).toInt()
+        Glide.with(view.context)
+            .load(mainImageUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(view)
+    }
+
+    val params = view.layoutParams
+    params.width = widthInPixels
+    params.height = heightInPixels
+    view.layoutParams = params
+}
+
 @BindingAdapter("imageUrl")
-fun setLogoImage(view: ImageView, imageUrl: String?) {
+fun loadImage(view: ImageView, logoImageUrl: String?) {
     Glide.with(view.context)
-        .load(imageUrl)
+        .load(logoImageUrl)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(view)
 }
