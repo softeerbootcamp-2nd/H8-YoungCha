@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.ComponentRegistry
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.load
@@ -102,6 +103,7 @@ fun loadSvgImage(imageView: ImageView, url: String?) {
 
     val imageLoader = ImageLoader.Builder(context)
         .componentRegistry {
+            // 여기에서 add() 메서드를 사용하여 SvgDecoder 등을 추가합니다.
             add(SvgDecoder(context))
         }
         .build()
@@ -113,6 +115,7 @@ fun loadSvgImage(imageView: ImageView, url: String?) {
 
     imageLoader.enqueue(request)
 }
+
 
 @BindingAdapter("exterior_imageUrl")
 fun loadExteriorImage(view: ImageView, imageUrl: String?) {
@@ -132,10 +135,10 @@ fun loadInteriorImage(view: ImageView, imageUrl: String?) {
     }
 }
 
-
+@BindingAdapter("imageUrl")
 fun setLogoImage(view: ImageView, imageUrl: String?) {
     Glide.with(view.context)
-        .load(logoImageUrl)
+        .load(imageUrl)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(view)
 }
