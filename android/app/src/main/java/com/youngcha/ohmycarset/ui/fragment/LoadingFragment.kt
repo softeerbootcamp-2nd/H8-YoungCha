@@ -23,6 +23,7 @@ import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.databinding.FragmentLoadingBinding
 import com.youngcha.ohmycarset.util.AnimationUtils
 import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
+import com.youngcha.ohmycarset.util.getColorCodeFromName
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
 import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactory
@@ -72,6 +73,16 @@ class LoadingFragment : Fragment() {
         guideParam = args.guideParam!!
 
         carCustomizationViewModel.startGuideMode(guideParam)
+
+        carCustomizationViewModel.currentExteriorColor.observe(viewLifecycleOwner) { exteriorColorName ->
+            val colorCode = getColorCodeFromName(exteriorColorName)
+            carCustomizationViewModel.currentExteriorColorFirstUrl.value =
+                "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/${
+                    "001.png"
+                }"
+
+            binding.layoutEstimateReady.imageUrl = carCustomizationViewModel.currentExteriorColorFirstUrl.value
+        }
         setupClickListener()
         setupAnimations()
     }
