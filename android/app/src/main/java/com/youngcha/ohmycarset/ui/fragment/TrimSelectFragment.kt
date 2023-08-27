@@ -1,5 +1,6 @@
 package com.youngcha.ohmycarset.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.util.DisplayMetrics
@@ -16,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.data.api.RetrofitClient
@@ -23,12 +25,17 @@ import com.youngcha.ohmycarset.databinding.FragmentTrimSelectBinding
 import com.youngcha.ohmycarset.enums.TrimType
 import com.youngcha.ohmycarset.data.model.TrimCategory
 import com.youngcha.ohmycarset.data.dto.OptionCategory
+import com.youngcha.ohmycarset.data.model.dialog.ButtonDialog
+import com.youngcha.ohmycarset.data.model.dialog.ButtonHorizontal
+import com.youngcha.ohmycarset.data.model.dialog.ButtonVertical
 import com.youngcha.ohmycarset.data.repository.BaekcasajeonRepository
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelectAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeExteriorColorAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeInteriorColorAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeMainOptionAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeOptionAdapter
+import com.youngcha.ohmycarset.ui.customview.ButtonDialogView
+import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.ui.listener.CustomScrollChangeListener
 import com.youngcha.ohmycarset.util.MILLISECONDS_PER_INCH
 import com.youngcha.ohmycarset.util.decorator.GridItemDecoration
@@ -82,19 +89,37 @@ class TrimSelectFragment : Fragment() {
     }
 
     private fun initViews() {
-        baekcasajeonViewModel.baekcasajeonSuccess.observe(viewLifecycleOwner) {
-            Log.d("로그", "init " + it.toString())
-        }
-
-        baekcasajeonViewModel.baekcasajeon.observe(viewLifecycleOwner) {
-            Log.d("로그", "1. " + it.toString())
-        }
         binding.layoutGuideMode.clRootView.visibility = View.VISIBLE
         binding.layoutSelfMode.clRootView.visibility = View.GONE
         binding.nsvSelfTrimScroll.setOnScrollChangeListener(
             CustomScrollChangeListener(binding.ivDropDownTrim, binding.tvDetailInfoTxt)
         )
         setupTabs()
+        setupListener()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupListener() {
+        binding.htbHeaderToolbar.listener = object : OnHeaderToolbarClickListener {
+            override fun onExitClick() {
+                findNavController().navigate(R.id.action_makeCarFragment_to_trimSelectFragment)
+            }
+
+            override fun onModeChangeClick() {
+            }
+
+            override fun onDictionaryOffClick() {
+                baekcasajeonViewModel.setBaekcasajeonState()
+            }
+
+            override fun onModelChangeClick() {
+                showSnackbar("준비중 입니다.")
+            }
+
+            private fun showSnackbar(message: String) {
+                Snackbar.make(binding.htbHeaderToolbar, message, Snackbar.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -133,6 +158,10 @@ class TrimSelectFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        baekcasajeonViewModel.baekcasajeonState.observe(viewLifecycleOwner) { state ->
+            binding.htbHeaderToolbar.updateDictionaryState(state)
+        }
+
         trimSelectViewModel.trimCategoryState.observe(viewLifecycleOwner) { trimState ->
             updateRecyclerView(trimState.trimCategories)
             if (!trimState.isFirstLoad) {
