@@ -18,6 +18,7 @@ import team.youngcha.domain.option.dto.FindOptionDetailResponse;
 import team.youngcha.domain.option.dto.FindOptionImageResponse;
 import team.youngcha.domain.option.dto.FindSpecResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -213,6 +214,52 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
                 .details(List.of(seat8Detail)).build();
 
         assertResponseAndExpected(response, List.of(optionResponse1, optionResponse2));
+    }
+
+    @Test
+    @DisplayName("가이드 모드 외장색상 조회를 검증한다.")
+    void findExteriorColor() {
+        //given
+        String url = "/car-make/2/guide/exterior-color";
+
+        FindGuideOptionResponse findGuideOptionResponse1 = new FindGuideOptionResponse(9L, 4L, true, 0, 0,
+                "문라이트 블루 펄", "문라이트 블루 펄은 활기찬 분위기에요!", "밝은 파란색의 외장색상으로, 차량에 상쾌하고 활기찬 느낌을 줍니다.",
+                List.of(new KeywordRate(50, "30대"), new KeywordRate(40, "여성")), new ArrayList<>(),
+                List.of(new FindOptionImageResponse("https://www.hyundai.com/contents/vr360/LX06/exterior/UB7/colorchip-exterior.png", 1)));
+
+        FindGuideOptionResponse findGuideOptionResponse2 = new FindGuideOptionResponse(7L, 4L, false, 0, 0,
+                "어비스 블랙펄", "어비스 블랙펄은 고급스러워요!", "깊은 검정색의 외장색상으로, 차량에 고급스러움과 우아함을 더해줍니다.",
+                List.of(new KeywordRate(0, "30대"), new KeywordRate(0, "여성")), new ArrayList<>(),
+                List.of(new FindOptionImageResponse("https://www.hyundai.com/contents/vr360/LX06/exterior/A2B/colorchip-exterior.png", 1)));
+
+        FindGuideOptionResponse findGuideOptionResponse3 = new FindGuideOptionResponse(8L, 4L, false, 0, 0,
+                "쉬머링 실버 메탈릭", "쉬머링 실버 메탈릭은 현대적이에요!", "은색 계열의 외장색상으로, 차량에 현대적이고 세련된 분위기를 더해줍니다.",
+                List.of(new KeywordRate(0, "30대"), new KeywordRate(20, "여성")), new ArrayList<>(),
+                List.of(new FindOptionImageResponse("https://www.hyundai.com/contents/vr360/LX06/exterior/R2T/colorchip-exterior.png", 1)));
+
+        FindGuideOptionResponse findGuideOptionResponse4 = new FindGuideOptionResponse(10L, 4L, false, 0, 0,
+                "가이아 브라운 펄", "가이아 브라운 펄은 고급스러워요!", "브라운 계열의 외장색상으로, 차량에 고급스러움과 차분한 분위기를 부여합니다.",
+                List.of(new KeywordRate(0, "30대"), new KeywordRate(0, "여성")), new ArrayList<>(),
+                List.of(new FindOptionImageResponse("https://www.hyundai.com/contents/vr360/LX06/exterior/D2S/colorchip-exterior.png", 1)));
+
+        FindGuideOptionResponse findGuideOptionResponse5 = new FindGuideOptionResponse(11L, 4L, false, 0, 0,
+                "그라파이트 그레이 메탈릭", "그라파이트 그레이 메탈릭은 세련된 느낌을 줘요!", "회색 계열의 외장색상으로, 차량에 현대적이고 세련된 분위기를 부여합니다.",
+                List.of(new KeywordRate(0, "30대"), new KeywordRate(0, "여성")), new ArrayList<>(),
+                List.of(new FindOptionImageResponse("https://www.hyundai.com/contents/vr360/LX06/exterior/P7V/colorchip-exterior.png", 1)));
+
+        FindGuideOptionResponse findGuideOptionResponse6 = new FindGuideOptionResponse(12L, 4L, false, 0, 100000,
+                "크리미 화이트 펄", "크리미 화이트 펄은 우아한 분위기에요!", "밝은 화이트(흰색)의 외장색상으로, 차량에 깨끗하고 우아한 느낌을 줍니다.",
+                List.of(new KeywordRate(50, "30대"), new KeywordRate(40, "여성")), new ArrayList<>(),
+                List.of(new FindOptionImageResponse("https://www.hyundai.com/contents/vr360/LX06/exterior/WC9/colorchip-exterior.png", 1)));
+
+        //when
+        ExtractableResponse<Response> response = callEndpoint(url, params);
+
+        //then
+        assertResponseAndExpected(response, List.of(
+                findGuideOptionResponse1, findGuideOptionResponse2,
+                findGuideOptionResponse3, findGuideOptionResponse4,
+                findGuideOptionResponse5, findGuideOptionResponse6));
     }
 
     private void assertResponseAndExpected(ExtractableResponse<Response> response, List<FindGuideOptionResponse> expectedResponses) {
