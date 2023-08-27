@@ -44,6 +44,7 @@ function ModeChangePopUp({ mode, closePopUp }: ModeChangePopUpProps) {
             onClose={closePopUp}
             onClick={() => {
               closePopUp();
+              sessionStorage.clear();
               navigate(isGuide ? selfPathname : guidePathname);
             }}
           />
