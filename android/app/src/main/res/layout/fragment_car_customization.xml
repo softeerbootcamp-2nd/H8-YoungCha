@@ -67,6 +67,20 @@
             app:mainImageUrl="@{viewModel.currentSelectedOption.mainImage}"
             app:subImageUrl="@{viewModel.subOptionImage}" />
 
+        <com.youngcha.ohmycarset.ui.customview.CircleView
+            android:id="@+id/cv_rotate_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:visibility="@{viewModel.carRotateView == 1 ? View.VISIBLE : View.GONE}"
+            app:circleText="360°"
+            app:fillColor="@color/cool_grey_002"
+            app:layout_constraintEnd_toEndOf="@id/iv_main_img"
+            app:layout_constraintTop_toTopOf="@id/iv_main_img"
+            app:textColor="@color/white"
+            app:textSize="10sp" />
+
         <ProgressBar
             android:id="@+id/pb_loading"
             android:layout_width="wrap_content"
