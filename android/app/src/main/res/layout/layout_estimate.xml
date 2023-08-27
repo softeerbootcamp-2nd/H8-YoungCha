@@ -40,7 +40,7 @@
                 android:layout_width="0dp"
                 android:layout_height="170dp"
                 android:layout_marginTop="22dp"
-                android:src="@drawable/image_01"
+                app:imageUrl="@{viewModel.exteriorButtonChange == 1 ? viewModel.currentExteriorColorFirstUrl: viewModel.currentInteriorColorUrl}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
