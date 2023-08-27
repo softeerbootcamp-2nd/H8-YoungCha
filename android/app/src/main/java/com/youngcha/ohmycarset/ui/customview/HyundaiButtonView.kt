@@ -76,22 +76,22 @@ class HyundaiButtonView @JvmOverloads constructor(
         binding.vLeftLine.visibility = visibility
         binding.vRightLine.visibility = visibility
 
-        binding.vBottomLine.pivotX = 0f
-        binding.vBottomLine.animate()
+        binding.vTopLine.pivotX = 0f
+        binding.vTopLine.animate()
             .setDuration(500)
             .scaleX(1f)
             .withEndAction {
-                binding.vRightLine.pivotY = binding.vRightLine.height.toFloat()
+                binding.vRightLine.pivotY = 0f
                 binding.vRightLine.animate()
                     .setDuration(500)
                     .scaleY(1f)
                     .withEndAction {
-                        binding.vTopLine.pivotX = binding.vTopLine.width.toFloat()
-                        binding.vTopLine.animate()
+                        binding.vBottomLine.pivotX = binding.vBottomLine.width.toFloat()
+                        binding.vBottomLine.animate()
                             .setDuration(500)
                             .scaleX(1f)
                             .withEndAction {
-                                binding.vLeftLine.pivotY = 0f
+                                binding.vLeftLine.pivotY = binding.vLeftLine.height.toFloat()
                                 binding.vLeftLine.animate()
                                     .setDuration(500)
                                     .scaleY(1f)
