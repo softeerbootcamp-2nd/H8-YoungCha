@@ -13,7 +13,7 @@ fun showSwipeDialog(
 ) {
     val dialogs = mutableListOf<SwipeDialog>()
     optionInfo.detail.forEach {
-        dialogs.add(SwipeDialog(it.imgUrl, optionInfo.name, it.name, it.description))
+        dialogs.add(SwipeDialog(it.imgUrl?: "", optionInfo.name?: "", it.name ?: "", it.description ?: ""))
     }
     SwipeDialogView(context, dialogs).show()
 }
@@ -21,11 +21,12 @@ fun showSwipeDialog(
 fun showTextDialog(
     context: Context,
     componentName: String,
-    optionInfo: OptionInfo
+    optionInfo: OptionInfo?
 ) {
     var spec: String = ""
-    optionInfo.detail[0].specs.forEach {
+    optionInfo?.detail?.get(0)?.specs?.forEach {
         spec += "${it.name}  ${it.description}\n"
     }
-    TextDialogView(context, TextDialog(componentName, optionInfo.name, optionInfo.detail[0].description, spec)).show()
+    spec = spec.trimEnd()
+    TextDialogView(context, TextDialog(componentName, optionInfo!!.name, optionInfo.detail[0].description ?: "", spec ?: "")).show()
 }

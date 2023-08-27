@@ -58,6 +58,8 @@ import com.youngcha.ohmycarset.util.findTextViews
 import com.youngcha.ohmycarset.util.getColorCodeFromName
 import com.youngcha.ohmycarset.util.hideBaekcasajeon
 import com.youngcha.ohmycarset.util.showBaekcasajeon
+import com.youngcha.ohmycarset.util.showSwipeDialog
+import com.youngcha.ohmycarset.util.showTextDialog
 import com.youngcha.ohmycarset.viewmodel.BaekcasajeonViewModel
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
@@ -121,6 +123,13 @@ class CarCustomizationFragment : Fragment() {
             lifecycleOwner = this@CarCustomizationFragment
             vpOptionContainer.adapter = CarOptionPagerAdapter(carViewModel) {
                 Log.d("로그", "4. 디테일 정보 입니다: " + it.detail.toString())
+                if (it.detail.isEmpty()) return@CarOptionPagerAdapter
+                val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
+                if (countWithImgUrl > 0) {
+                    showSwipeDialog(requireContext(), it)
+                } else {
+                    showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+                }
             }
             attachTabLayoutMediator()
             setupRecyclerView()
@@ -450,7 +459,13 @@ class CarCustomizationFragment : Fragment() {
 
         carViewModel.detailOptionInfo.observe(viewLifecycleOwner) {
             Log.d("로그", "5. 디테일 정보 표시 입니다.: " + it.toString())
-
+            if (it.detail.isEmpty()) return@observe
+            val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
+            if (countWithImgUrl > 0) {
+                showSwipeDialog(requireContext(), it)
+            } else {
+                showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+            }
         }
 
         baekcasajeonViewModel.baekcasajeonState.observe(viewLifecycleOwner) { state ->
@@ -510,6 +525,13 @@ class CarCustomizationFragment : Fragment() {
         // 초기 어댑터 설정 (옵션 데이터가 없는 초기 상태)
         binding.rvSubOptionList.adapter = CarOptionPagerAdapter(carViewModel) {
             Log.d("로그", "1. 디테일 정보 입니다: " + it.detail.toString())
+            if (it.detail.isEmpty()) return@CarOptionPagerAdapter
+            val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
+            if (countWithImgUrl > 0) {
+                showSwipeDialog(requireContext(), it)
+            } else {
+                showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+            }
         }
 
 
@@ -600,6 +622,13 @@ class CarCustomizationFragment : Fragment() {
     private fun displayOnRecyclerView(optionInfos: List<OptionInfo>, tabName: String) {
         val adapter = CarOptionPagerAdapter(carViewModel) {
             Log.d("로그", "3. 디테일 정보 입니다: " + it.detail.toString())
+            if (it.detail.isEmpty()) return@CarOptionPagerAdapter
+            val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
+            if (countWithImgUrl > 0) {
+                showSwipeDialog(requireContext(), it)
+            } else {
+                showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+            }
         }
         binding.rvSubOptionList.adapter = adapter
         adapter.setOptions(
@@ -616,6 +645,13 @@ class CarCustomizationFragment : Fragment() {
     private fun displayOnViewPager(optionInfos: List<OptionInfo>, tabName: String) {
         val adapter = CarOptionPagerAdapter(carViewModel) {
             Log.d("로그", "2. 디테일 정보 입니다: " + it.detail.toString())
+            if (it.detail.isEmpty()) return@CarOptionPagerAdapter
+            val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
+            if (countWithImgUrl > 0) {
+                showSwipeDialog(requireContext(), it)
+            } else {
+                showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+            }
         }
         binding.vpOptionContainer.adapter = adapter
         val selectedOptions = carViewModel.isSelectedOptions(tabName) ?: listOf()
