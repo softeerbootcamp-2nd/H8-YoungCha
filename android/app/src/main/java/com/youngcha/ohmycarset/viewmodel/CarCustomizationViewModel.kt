@@ -45,6 +45,8 @@ class CarCustomizationViewModel(
     val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
+    val carRotateView = MutableLiveData<Int>(0)
+
     fun setLoadingState(state: Boolean) {
         _isLoading.value = state
     }
@@ -176,7 +178,7 @@ class CarCustomizationViewModel(
                 _currentTabPosition.value = 0
                 currentTabName.value = currentMainTabs.value!![0]
                 currentSubTabPosition.value = 0
-                totalPrice.value = 36000000
+                totalPrice.value = 41980000
                 categories.value = categoryRepository.getAllSubCategories()
             }
             initialization.complete(Unit)
@@ -202,6 +204,7 @@ class CarCustomizationViewModel(
                     categories.value = it
                     _selectedCar.value = guideModeRepository.car.value
 
+                    _currentType.value = "GuideMode"
                     _selectedCar.value?.let { selectedCarValue ->
 
                         // 1. mainOptions 처리
@@ -220,10 +223,10 @@ class CarCustomizationViewModel(
 
                                     if (key == "외장 색상" && values.isNotEmpty()) {
                                         _currentExteriorColor.value = values[0].name
+                                        setLoadingState(false)
                                     }
 
                                     exteriorButtonChange.value = 1
-
 
                                     if (values.isNotEmpty()) key to values else null
                                 }.toMap()
@@ -263,7 +266,7 @@ class CarCustomizationViewModel(
                 currentTabName.value = currentMainTabs.value!![0]
                 currentSubTabPosition.value = 0
                 _currentType.value = "SelfMode"
-                totalPrice.value = 36000000
+                totalPrice.value = 41980000
                 repository.setCarComponent(2, "파워 트레인", categories.value!!)
                 _selectedCar.value = repository.car.value
             }
@@ -326,9 +329,8 @@ class CarCustomizationViewModel(
         _currentComponentName.value = tabName
 
         prevPrice.value = totalPrice.value?.minus(getMyCarTotalPrice())
-        totalPrice.value = 36000000
+        totalPrice.value = 41980000
         setCurrentComponentName(tabName)
-
     }
 
 
@@ -362,7 +364,7 @@ class CarCustomizationViewModel(
             _currentTabPosition.value = 0
             currentTabName.value = currentMainTabs.value!![0]
             currentSubTabPosition.value = 0
-            totalPrice.value = 36000000
+            totalPrice.value = 41980000
             _customizedParts.value = emptyList()
             _selectedCar.value = Car()
 
@@ -811,6 +813,10 @@ class CarCustomizationViewModel(
 
     fun setExteriorColor(colorName: String) {
         _currentExteriorColor.value = colorName
+    }
+
+    fun setCurrentSelectedOption(option: OptionInfo) {
+        currentSelectedOption.value = option
     }
 
     // 선택 완료 시
