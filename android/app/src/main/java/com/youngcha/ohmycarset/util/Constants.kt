@@ -6,7 +6,7 @@ const val OPTION_SELECTION = "옵션 선택"
 const val CREAMY_WHITE_PEARL_NAME = "크리미 화이트 펄"
 const val ABYSS_BLACK_PEARL_NAME = "어비스 블랙펄"
 const val SHIMMERING_SILVER_METALLIC_NAME = "쉬머링 실버 메탈릭"
-const val LAPIRITE_GRAY_METALLIC_NAME = "라파이트 그레이 메탈릭"
+const val LAPIRITE_GRAY_METALLIC_NAME = "그라파이트 그레이 메탈릭"
 const val GAIA_BROWN_PEARL_NAME = "가이아 브라운 펄"
 const val MOONLIGHT_BLUE_PEARL_NAME = "문라이트 블루 펄"
 

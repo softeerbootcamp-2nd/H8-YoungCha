@@ -1,9 +1,12 @@
 package com.youngcha.ohmycarset.util
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.MotionEvent
 import android.widget.ImageView
 import androidx.core.widget.NestedScrollView
+import coil.load
+import com.bumptech.glide.Glide
 
 /*
 이미지 뷰에 터치 리스너를 설정하여 사용자가 화면을 좌우로 스와이프할 때마다 이미지를 변경하는 기능을 구현합니다.
@@ -17,11 +20,20 @@ val images = List(60) { id ->
 
 binding.fragmentEstimate.ivEstimateDone.setupImageSwipe(images)
  */
+fun preloadImagesWithGlide(context: Context, images: List<String>) {
+    for (imageUrl in images) {
+        Glide.with(context)
+            .load(imageUrl)
+            .preload()
+    }
+}
+
 @SuppressLint("ClickableViewAccessibility")
-fun ImageView.setupImageSwipeWithScrollView(images: List<Int>) {
+fun ImageView.setupImageSwipeWithPreloadedGlide(images: List<String>) {
     var downX = 0f
     var index = 0
-    this.setImageResource(images[index])
+
+    Glide.with(this).load(images[index]).into(this)
 
     this.setOnTouchListener { _, event ->
         when (event.action) {
@@ -33,10 +45,9 @@ fun ImageView.setupImageSwipeWithScrollView(images: List<Int>) {
                 downX = event.x
                 val moveIndex = (distance / this.width * images.size).toInt()
                 index = ((index + moveIndex) % images.size + images.size) % images.size
-                this.setImageResource(images[index])
+                Glide.with(this).load(images[index]).into(this)
             }
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-            }
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {}
         }
         true
     }

@@ -303,7 +303,7 @@ fun setPartPrice(
             }
         }
     }
-    textView.text = "%,d원".format(partPrice)
+    textView.text = "+ %,d원".format(partPrice)
 }
 
 
@@ -480,7 +480,7 @@ fun bindFormattedCurrency(view: TextView, value: Int) {
 
 @BindingAdapter("plusPrice")
 fun setPriceText(view: TextView, price: Int) {
-    view.text ="+ %,d원".format(price)
+    view.text = "+ %,d원".format(price)
 }
 
 @BindingAdapter(value = ["componentName", "subImage"], requireAll = false)
