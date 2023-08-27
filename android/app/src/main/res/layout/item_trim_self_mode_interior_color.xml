@@ -6,7 +6,7 @@
 
         <variable
             name="interior_color"
-            type="com.youngcha.ohmycarset.data.model.TrimSelfModeInteriorColor" />
+            type="com.youngcha.ohmycarset.data.dto.TrimMainData.Data.Trim.InteriorColor" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +20,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:testImageSource="@{interior_color.url}" />
+            app:round_corner_imageUrl="@{interior_color.imgUrl}" />
 
         <TextView
             android:id="@+id/tv_interior_color_name"

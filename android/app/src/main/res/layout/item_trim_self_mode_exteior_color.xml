@@ -10,12 +10,12 @@
 
         <variable
             name="exterior_color"
-            type="com.youngcha.ohmycarset.data.model.TrimSelfModeExteriorColor" />
+            type="com.youngcha.ohmycarset.data.dto.TrimMainData.Data.Trim.ExteriorColor" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="166dp"
-        android:layout_height="116dp"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
         android:background="@color/cool_grey_001">
 
         <View
@@ -43,12 +43,12 @@
             app:layout_constraintStart_toStartOf="@id/v_best_color"
             app:layout_constraintTop_toTopOf="@id/v_best_color" />
 
-        <com.youngcha.ohmycarset.ui.customview.CircleView
-            android:id="@+id/cv_circle_view"
+        <ImageView
+            android:id="@+id/iv_circle_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="19dp"
-            app:fillColor="@{exterior_color.code}"
+            app:exterior_imageUrl="@{exterior_color.imgUrl}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -62,7 +62,7 @@
             android:textColor="@color/cool_grey_black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cv_circle_view" />
+            app:layout_constraintTop_toBottomOf="@id/iv_circle_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -13,7 +13,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.youngcha.ohmycarset.R
+import com.youngcha.ohmycarset.data.api.RetrofitClient
+import com.youngcha.ohmycarset.data.model.GuideParam
+import com.youngcha.ohmycarset.data.repository.CategoryRepository
+import com.youngcha.ohmycarset.data.repository.GuideModeRepository
+import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.databinding.FragmentGuidemodePreliminariesBinding
 import com.youngcha.ohmycarset.enums.PreliminariesStepType
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.AgeAdapter
@@ -23,7 +29,10 @@ import com.youngcha.ohmycarset.ui.adapter.recyclerview.StrengthAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.UseAdapter
 import com.youngcha.ohmycarset.util.decorator.GridItemDecoration
 import com.youngcha.ohmycarset.util.decorator.LinearItemDecoration
+import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
 import com.youngcha.ohmycarset.viewmodel.UserTagViewModel
+import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactory
+import com.youngcha.ohmycarset.viewmodel.factory.GuideModeViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -70,7 +79,6 @@ class EstimateReadyFragment : Fragment() {
         binding.layoutPreliminariesAge.clRootView.visibility = View.VISIBLE
         binding.layoutPreliminariesGender.clRootView.visibility = View.GONE
         binding.layoutPreliminariesKeyword.clRootView.visibility = View.GONE
-//        binding.layoutEstimateReady.clRootView.visibility = View.GONE
     }
 
 
@@ -85,8 +93,6 @@ class EstimateReadyFragment : Fragment() {
             animationSet.addAnimation(slideInAnimation)
             animationSet.addAnimation(fadeInAnimation)
 
-//            binding.layoutEstimateReady.ivParticle.visibility = View.VISIBLE
-//            binding.layoutEstimateReady.ivParticle.startAnimation(animationSet)
         }
     }
 
@@ -104,8 +110,6 @@ class EstimateReadyFragment : Fragment() {
 
             PreliminariesStepType.KEYWORD -> {
                 binding.layoutPreliminariesKeyword.clRootView.visibility = View.GONE
-                //원래는 로딩 프래그먼트로 전환
-                //binding.layoutEstimateReady.clRootView.visibility = View.VISIBLE
             }
 
             PreliminariesStepType.READY -> {
@@ -132,6 +136,23 @@ class EstimateReadyFragment : Fragment() {
 
         userTagViewModel.useList.observe(viewLifecycleOwner) { updateUseList ->
             useAdapter.useList = updateUseList
+        }
+
+        userTagViewModel.tagNumbers.observe(viewLifecycleOwner) { tagNumbers ->
+            if(tagNumbers.size >= 5) {
+                val guideParam = GuideParam(
+                    id = 2,
+                    gender = tagNumbers[0],
+                    age = tagNumbers[1],
+                    keyword1Id = tagNumbers[2],
+                    keyword2Id = tagNumbers[3],
+                    keyword3Id = tagNumbers[4]
+                )
+                val action = EstimateReadyFragmentDirections.actionEstimateReadyFragmentToLoadingFragment(guideParam)
+                findNavController().navigate(action)
+            } else {
+                Snackbar.make(binding.root, "선택 부분을 확인해주세요.", Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -203,7 +224,6 @@ class EstimateReadyFragment : Fragment() {
 
     private fun onClickFunction() {
         binding.layoutPreliminariesKeyword.btnNext.setOnClickListener {
-            Log.d("Fragment", userTagViewModel.isChange.value.toString())
             if (userTagViewModel.isChange.value == 1) {
                 //로딩 프래그먼트로 전환
                 handlePreliminariesStep(PreliminariesStepType.KEYWORD)
@@ -211,11 +231,9 @@ class EstimateReadyFragment : Fragment() {
         }
 
         binding.layoutPreliminariesKeyword.btnNext.setOnClickListener {
-            findNavController().navigate(R.id.action_estimateReadyFragment_to_loadingFragment)
+            if (userTagViewModel.selectedList.size != 3) return@setOnClickListener
+            userTagViewModel.getTagNumber()
         }
 
-//        binding.layoutEstimateReady.btnSkip.setOnClickListener {
-//            findNavController().navigate(R.id.action_estimateReadyFragment_to_loadingFragment)
-//        }
     }
 }

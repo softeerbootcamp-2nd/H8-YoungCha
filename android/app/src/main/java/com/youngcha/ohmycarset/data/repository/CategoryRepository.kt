@@ -8,6 +8,11 @@ import com.youngcha.ohmycarset.data.dto.Category
 
 class CategoryRepository(private val categoryAPIService: CategoriesApiService) {
 
+    companion object {
+        private val MAIN_CATEGORY_IDS = 1..5
+        private val SUB_CATEGORY_IDS = 7..10
+    }
+
     private val _mainCategories = MutableLiveData<List<String>>()
     val mainCategories: LiveData<List<String>> = _mainCategories
 
@@ -18,38 +23,41 @@ class CategoryRepository(private val categoryAPIService: CategoriesApiService) {
     val categories: LiveData<List<Category>> = _categories
 
     suspend fun getCategories() {
-        try {
+        val categories = fetchCategories() ?: return
+
+        val mainCategoriesName = categories.filter { it.id in MAIN_CATEGORY_IDS }
+            .sortedBy { it.id }
+            .map { it.name } + listOf("휠 선택", "옵션 선택", "견적 내기")
+
+        val subCategoriesName = categories.filter { it.id in SUB_CATEGORY_IDS }
+            .sortedBy { it.id }
+            .map { it.name }
+
+        _mainCategories.postValue(mainCategoriesName)
+        _subCategories.postValue(subCategoriesName)
+        _categories.postValue(categories.filter { it.id in SUB_CATEGORY_IDS })
+    }
+
+    suspend fun getAllSubCategories(): List<Category>? {
+        val categories = fetchCategories() ?: return null
+        return categories.filter { it.id in SUB_CATEGORY_IDS }.sortedBy { it.id }
+    }
+
+    private suspend fun fetchCategories(): List<Category>? {
+        return try {
             val response = categoryAPIService.getCategories()
             if (response.message == "success") {
-                // Filter out categories with ids 1-6, extract their names, and sort them
-                val sortedCategoryNames = response.data.categories
-                    .filter { it.id in 1..5 }
-                    .sortedBy { it.id }
-                    .map { it.name }
-
-                // "옵션 선택" and "견적 내기" items
-                val mainCategoriesName = sortedCategoryNames + listOf("휠 선택", "옵션 선택", "견적 내기")
-
-                val subCategoriesName = response.data.categories
-                    .filter { it.id in 7..10 }  // Here we change to get IDs from 7 to 10
-                    .sortedBy { it.id }
-                    .map { it.name }
-
-                val sortedCategories = response.data.categories
-                    .filter { it.id in 7..10 }  // And here as well
-                    .sortedBy { it.id }
-
-                _mainCategories.postValue(mainCategoriesName)
-                _subCategories.postValue(subCategoriesName)
-                _categories.postValue(sortedCategories)
+                response.data.categories
             } else {
                 _mainCategories.postValue(emptyList())
                 _subCategories.postValue(emptyList())
+                null
             }
         } catch (e: Exception) {
+            // Here you can log the exception if needed
             _mainCategories.postValue(emptyList())
             _subCategories.postValue(emptyList())
+            null
         }
     }
-
 }

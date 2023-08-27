@@ -1,11 +1,43 @@
 package com.youngcha.ohmycarset.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.youngcha.ohmycarset.data.model.tag.Tag
 
 class UserTagViewModel : ViewModel() {
+
+    private val _tagNumbers = MutableLiveData<List<Int>>()
+    val tagNumbers: LiveData<List<Int>> = _tagNumbers
+
+    // 참조 태그 목록
+    val referenceTags = listOf(
+        "주행력",
+        "소음",
+        "효율",
+        "파워",
+        "디자인",
+        "차량 보호",
+        "온도 조절",
+        "건강",
+        "신기술",
+        "안전",
+        "차박",
+        "가족 여행"
+    )
+
+    val ageGenderReference = mapOf(
+        "20대" to 2,
+        "30대" to 3,
+        "40대" to 4,
+        "50대" to 5,
+        "60대" to 6,
+        "70대 이상" to 7,
+        "남성" to 0,
+        "여성" to 1,
+        "선택 안함" to 2
+    )
 
     private val _ageList = MutableLiveData<List<Tag>>()
     val ageList: LiveData<List<Tag>> = _ageList
@@ -24,10 +56,10 @@ class UserTagViewModel : ViewModel() {
 
     private val _selectedTag = MutableLiveData<Tag?>()
 
-
     private var cnt = 0
     val isChange = MutableLiveData<Int>(0)
 
+    // 선택된 tag
     var selectedList = mutableListOf<Tag>()
 
     private var selectedAge: Tag? = null
@@ -35,6 +67,47 @@ class UserTagViewModel : ViewModel() {
     private var selectedStrength: Tag? = null
     private var selectedImportant: Tag? = null
     private var selectedUse: Tag? = null
+
+    fun getTagNumber() {
+        val numbers = mutableListOf<Int>()
+
+        // ageList에서 isSelected가 true인 태그 번호 추가
+        val ageSelected = ageList.value?.filter { it.isSelected }?.mapNotNull {
+            ageGenderReference[it.name]
+        }
+
+        if (ageSelected.isNullOrEmpty()) {
+            numbers.add(2)  // 연령 값이 선택되지 않은 경우 2 추가
+        } else {
+            numbers.addAll(ageSelected)
+        }
+
+        // genderList에서 isSelected가 true인 태그 번호 추가
+        val genderSelected = genderList.value?.filter { it.isSelected }?.mapNotNull {
+            ageGenderReference[it.name]
+        }
+
+        if (genderSelected.isNullOrEmpty()) {
+            numbers.add(2)  // 성별 값이 선택되지 않은 경우 2 추가
+        } else {
+            numbers.addAll(genderSelected)
+        }
+
+        // selectedList에서 해당하는 태그 번호 추가
+        numbers.addAll(
+            selectedList.mapNotNull { tag ->
+                val index = referenceTags.indexOf(tag.name)
+                if (index != -1) {
+                    Log.d("로그", index.toString() + " !@!@")
+                    index + 1
+                } else {
+                    null
+                }
+            }
+        )
+
+        _tagNumbers.value = numbers
+    }
 
     init {
         initData()

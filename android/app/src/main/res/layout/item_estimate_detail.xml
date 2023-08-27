@@ -61,6 +61,8 @@
             android:layout_height="64dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
+            app:detailMainImageUrl="@{option_info.mainImage}"
+            app:detailSubImageUrl="@{option_info.subImage}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/v_bar" />
 

@@ -4,6 +4,9 @@
         <attr name="fillColor" format="color" />
         <attr name="borderColor" format="color" />
         <attr name="borderWidth" format="dimension" />
+        <attr name="circleText" format="string"/>
+        <attr name="textColor" format="color"/>
+        <attr name="textSize" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="HeaderToolBar">

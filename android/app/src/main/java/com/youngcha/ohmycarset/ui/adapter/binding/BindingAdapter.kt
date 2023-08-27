@@ -2,6 +2,7 @@ package com.youngcha.ohmycarset.ui.adapter.binding
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.util.Log
@@ -21,8 +22,20 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.ComponentRegistry
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.decode.SvgDecoder
+import coil.load
+import coil.request.ImageRequest
+import coil.transform.CircleCropTransformation
+import coil.transform.RoundedCornersTransformation
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.data.model.car.Car
 import com.youngcha.ohmycarset.data.model.car.OptionInfo
@@ -32,12 +45,10 @@ import com.youngcha.ohmycarset.ui.customview.FeedbackView
 import com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
 import com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
 import com.youngcha.ohmycarset.ui.interfaces.OnHyundaiButtonClickListener
-import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.util.RoundedBackgroundSpan
 
 @BindingAdapter(value = ["mainImageUrl", "subImageUrl"], requireAll = false)
 fun loadImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
-    Log.d("로그", "서브 URL 이미지 입니다. " + subImageUrl?.toString())
     if (subImageUrl.isNullOrEmpty()) {
         if (mainImageUrl.isNullOrEmpty()) {
             Glide.with(view.context).clear(view)
@@ -52,6 +63,78 @@ fun loadImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
             .load(subImageUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(view)
+    }
+}
+
+@BindingAdapter(value = ["detailMainImageUrl", "detailSubImageUrl"], requireAll = false)
+fun setLogoImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
+    if (mainImageUrl == "") {
+        Glide.with(view.context)
+            .load(subImageUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(view)
+    } else {
+        Glide.with(view.context)
+            .load(mainImageUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(view)
+    }
+}
+
+@BindingAdapter("imageUrl")
+fun loadImageCoil(view: ImageView, imageUrl: String?) {
+    imageUrl.let {
+        view.load(it) {
+        }
+    }
+}
+
+@BindingAdapter("svgImageUrl")
+fun loadSvgImage(imageView: ImageView, url: String?) {
+    val context = imageView.context
+
+    Glide.with(context)
+        .load(url)
+        .listener(object : RequestListener<Drawable> {
+            override fun onResourceReady(
+                resource: Drawable,
+                model: Any,
+                target: com.bumptech.glide.request.target.Target<Drawable>?,
+                dataSource: DataSource,
+                isFirstResource: Boolean
+            ): Boolean {
+                imageView.setImageDrawable(resource)
+                return true
+            }
+
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Drawable>,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
+
+        })
+        .into(imageView)
+}
+
+@BindingAdapter("exterior_imageUrl")
+fun loadExteriorImage(view: ImageView, imageUrl: String?) {
+    imageUrl.let {
+        view.load(it) {
+            transformations(CircleCropTransformation())
+        }
+    }
+}
+
+@BindingAdapter("round_corner_imageUrl")
+fun loadInteriorImage(view: ImageView, imageUrl: String?) {
+    imageUrl.let {
+        view.load(it) {
+            transformations(RoundedCornersTransformation(10f))
+        }
     }
 }
 
@@ -221,6 +304,27 @@ fun bindRecyclerView(
     adapter.updateOptionInfo(matchedOptionsMap)
 }
 
+@BindingAdapter(value = ["partPrice", "partViewType"], requireAll = false)
+fun setPartPrice(
+    textView: TextView,
+    myCarData: List<Map<String, List<OptionInfo>>>?,
+    viewType: String
+) {
+
+    var partPrice = 0
+    myCarData?.forEach { mapEntry ->
+        mapEntry.forEach { (key, optionList) ->
+            optionList.forEach { option ->
+                if (option.optionType == viewType) {
+                    partPrice += option.price
+                }
+            }
+        }
+    }
+    textView.text = "+ %,d원".format(partPrice)
+}
+
+
 @BindingAdapter(value = ["currentTypeForBackground", "visibleForBackground"], requireAll = false)
 fun View.setCurrentType(currentType: String?, visible: Int) {
     val backgroundView = this.findViewById<View>(R.id.v_background)
@@ -338,8 +442,9 @@ fun setTitle(view: HeaderToolBarView, title: String?) {
     requireAll = false
 )
 fun HyundaiButtonView.borderAnimation(currentType: String?, visible: Int) {
-    if (currentType == "GuideMode" && visible == 1)
+    if (currentType == "GuideMode" && visible == 1) {
         this.animateBorder()
+    }
 }
 
 @BindingAdapter(value = ["currentTypeForTag", "visibleForTag", "tagData"], requireAll = false)
@@ -393,7 +498,7 @@ fun bindFormattedCurrency(view: TextView, value: Int) {
 
 @BindingAdapter("plusPrice")
 fun setPriceText(view: TextView, price: Int) {
-    view.text ="+ %,d원".format(price)
+    view.text = "+ %,d원".format(price)
 }
 
 @BindingAdapter(value = ["componentName", "subImage"], requireAll = false)

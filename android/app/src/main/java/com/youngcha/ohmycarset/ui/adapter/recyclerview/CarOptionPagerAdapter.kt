@@ -57,6 +57,8 @@ class CarOptionPagerAdapter(
                     viewModel.addCarComponents(viewModel.currentComponentName.value!!, it)
                 }
             }
+        } else {
+            viewModel.setCurrentSelectedOption(currentSelectedOptions[0])
         }
 
         if (animatedTabs[subOption]?.not() == true || animatedTabs[subOption] == null) {
@@ -103,7 +105,6 @@ class CarOptionPagerAdapter(
         }
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(options[position], isDisplayingInPager, currentType, componentName!!)
     }
@@ -119,6 +120,10 @@ class CarOptionPagerAdapter(
             }
 
             hyundaiButtonView.setOnClickListener {
+                if (subOptionName == "외장 색상") {
+                    viewModel.setExteriorColor(options[adapterPosition].name)
+                }
+
                 viewModel.setSubOptionImage(0)
                 if (currentType == "GuideMode") {
                     hyundaiButtonView.animateBorder().withEndAction {
