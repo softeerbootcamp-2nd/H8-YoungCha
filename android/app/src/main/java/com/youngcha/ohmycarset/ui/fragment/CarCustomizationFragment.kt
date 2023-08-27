@@ -450,6 +450,7 @@ class CarCustomizationFragment : Fragment() {
 
         carViewModel.detailOptionInfo.observe(viewLifecycleOwner) {
             Log.d("로그", "5. 디테일 정보 표시 입니다.: " + it.toString())
+
         }
 
         baekcasajeonViewModel.baekcasajeonState.observe(viewLifecycleOwner) { state ->
