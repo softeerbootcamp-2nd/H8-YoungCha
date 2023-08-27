@@ -2,6 +2,10 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { UserSelectedOptionDataContext } from '@/pages/making';
 import getOptionGroupsTotalPrice from '@/utils/getTotalPrice.ts';
 
+function easeOutExpo(t: number): number {
+  return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+}
+
 const DURATION = 1000;
 const FRAME_RATE = 1000 / 60;
 
@@ -32,7 +36,7 @@ function useAnimatedPrice() {
     let currentNumber = 0;
     prevCount.current = count;
     const counter = setInterval(() => {
-      const progress = ++currentNumber / totalFrame;
+      const progress = easeOutExpo(++currentNumber / totalFrame);
       setCount(
         totalPrice > prevCount.current
           ? Math.round(
