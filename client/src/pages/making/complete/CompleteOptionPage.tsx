@@ -17,11 +17,11 @@ import DetailBasicOptionBox from '../detail-option-box/DetailBasicOptionBox';
 import RotateCarImage from '@/components/RotateCarImage';
 import getRotateImages from '@/utils/getRotateImages';
 import Confetti from '@/components/Confetti';
-import { UserSelectedOptionDataContext } from '..';
 import getOptionGroupTotalPrice from '@/utils/getTotalPrice';
 import getOptionGroupsTotalPrice from '@/utils/getTotalPrice';
 import { formatPrice } from '@/utils';
 import { getStorage } from '@/utils/optionStorage';
+import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionContext';
 
 function CompleteOptionPage() {
   const [selectedColorType, setSelectedColorType] =

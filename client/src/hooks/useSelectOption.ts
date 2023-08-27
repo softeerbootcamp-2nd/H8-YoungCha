@@ -32,6 +32,14 @@ function useSelectOption() {
     });
   }
 
+  function initData() {
+    setUserSelectedOptionData(INITIAL_USER_SELECTED_DATA);
+    setStorage<UserSelectedOptionDataType>({
+      key: 'optionData',
+      value: INITIAL_USER_SELECTED_DATA,
+    });
+  }
+
   useEffect(() => {
     if (userSelectedOptionData === INITIAL_USER_SELECTED_DATA) {
       const saveData = getStorage<UserSelectedOptionDataType>({
@@ -42,7 +50,12 @@ function useSelectOption() {
     }
   }, []);
 
-  return { userSelectedOptionData, setUserSelectedOptionData, saveOptionData };
+  return {
+    userSelectedOptionData,
+    setUserSelectedOptionData,
+    saveOptionData,
+    initData,
+  };
 }
 
 export default useSelectOption;

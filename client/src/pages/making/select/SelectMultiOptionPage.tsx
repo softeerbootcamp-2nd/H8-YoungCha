@@ -11,8 +11,8 @@ import { AllOptionType } from '@/types/option';
 import { SelectOptionPageProps } from '@/pages/making/select/type.ts';
 import Spinner from '@/components/Spinner';
 import Skeleton from '@/components/OptionCard/Skeleton.tsx';
-import { UserSelectedOptionDataContext } from '..';
 import { optionTypeName } from '@/constant';
+import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionContext';
 
 const CATEGORY = ['시스템', '온도관리', '외부장치', '내부장치'];
 

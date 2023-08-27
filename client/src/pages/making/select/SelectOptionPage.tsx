@@ -9,7 +9,6 @@ import { PathParamsType } from '@/types/router';
 import { AllOptionType } from '@/types/option';
 import { SelectOptionPageProps } from '@/pages/making/select/type.ts';
 import { optionTypeName } from '@/constant.ts';
-import { UserSelectedOptionDataContext } from '@/pages/making';
 import { OptionGroupType } from '../type';
 import { useModal } from '@/hooks/useModal';
 import OptionCard from '@/components/OptionCard';
@@ -18,6 +17,7 @@ import getRotateImages from '@/utils/getRotateImages.ts';
 import Spinner from '@/components/Spinner';
 import Skeleton from '@/components/OptionCard/Skeleton.tsx';
 import PowerTrainChangePopUp from './PowerTrainChangePopUp';
+import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionContext';
 
 const EXTERIOR_COLOR_STEP = 5;
 const FEEDBACK_DELAY_TIME = 2000;

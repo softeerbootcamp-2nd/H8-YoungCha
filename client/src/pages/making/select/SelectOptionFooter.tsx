@@ -5,9 +5,9 @@ import { DownArrow } from '@/assets/icons';
 import { Link } from 'react-router-dom';
 import Button from '@/components/Button';
 import SummaryModal from '@/components/SummaryModal';
-import { UserSelectedOptionDataContext } from '..';
 import getOptionGroupsTotalPrice from '@/utils/getTotalPrice';
 import { formatPrice } from '@/utils';
+import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionContext';
 
 interface SelectOptionFooterProps
   extends Pick<PathParamsType, 'mode' | 'id' | 'step'> {

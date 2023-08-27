@@ -1,14 +1,9 @@
-import { createContext, useContext } from 'react';
+import { useContext } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { SelectOptionPage, SelectMultiOptionPage } from './select';
 import CompleteOptionPage from './complete/CompleteOptionPage';
 import CompleteOptionPageWithLoading from './complete/CompleteOptionPageWithLoading';
-import useSelectOption from '@/hooks/useSelectOption.ts';
-import {
-  INITIAL_KEYWORDS,
-  INITIAL_USER_SELECTED_DATA,
-  LAST_STEP,
-} from './constant';
+import { INITIAL_KEYWORDS, LAST_STEP } from './constant';
 import { OptionType, UserSelectedOptionDataType } from './type';
 import { PathParamsType } from '@/types/router.ts';
 import useFetch from '@/hooks/useFetch.ts';
@@ -18,6 +13,7 @@ import {
   PROGRESS_LIST,
 } from '@/pages/making/select/constant.ts';
 import { getStorage } from '@/utils/optionStorage.ts';
+import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionContext.tsx';
 
 export interface UserSelectedOptionDataContextType {
   userSelectedOptionData: UserSelectedOptionDataType;
@@ -30,13 +26,6 @@ export interface UserSelectedOptionDataContextType {
     newOptions?: OptionType[];
   }) => void;
 }
-
-export const UserSelectedOptionDataContext =
-  createContext<UserSelectedOptionDataContextType>({
-    userSelectedOptionData: INITIAL_USER_SELECTED_DATA,
-    setUserSelectedOptionData: () => {},
-    saveOptionData: () => {},
-  });
 
 function MakingPage() {
   const { step, mode } = useParams() as PathParamsType;
@@ -83,20 +72,7 @@ function MakingPage() {
 }
 
 export default function MakingPageWithProvider() {
-  const { userSelectedOptionData, setUserSelectedOptionData, saveOptionData } =
-    useSelectOption();
-
-  return (
-    <UserSelectedOptionDataContext.Provider
-      value={{
-        userSelectedOptionData,
-        setUserSelectedOptionData,
-        saveOptionData,
-      }}
-    >
-      <MakingPage />
-    </UserSelectedOptionDataContext.Provider>
-  );
+  return <MakingPage />;
 }
 
 export { default as MakingPageLayout } from './layout.tsx';

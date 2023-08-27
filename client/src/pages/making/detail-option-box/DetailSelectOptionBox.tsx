@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import DetailOption from './DetailOption';
 import { SelectOptionsId } from '@/constant';
 import { SelectOptionFilterType } from '@/types';
-import { UserSelectedOptionDataContext } from '..';
+import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionContext';
 
 function DetailSelectOptionBox() {
   const [selectedOptionFilter, setSelectedOptionFilter] =
