@@ -3,27 +3,27 @@ package com.youngcha.ohmycarset.ui.fragment
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
+import coil.ImageLoader
+import coil.request.ImageRequest
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -44,21 +44,21 @@ import com.youngcha.ohmycarset.util.AnimationUtils.animateValueChange
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.baekcasajeon.*
 import com.youngcha.ohmycarset.data.api.RetrofitClient
-import com.youngcha.ohmycarset.data.api.SelfModeApiService
 import com.youngcha.ohmycarset.data.repository.CategoryRepository
 import com.youngcha.ohmycarset.data.repository.GuideModeRepository
 import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
-import com.youngcha.ohmycarset.util.ImagePreloadHelper
+import com.youngcha.ohmycarset.util.CarImageUtils
 import com.youngcha.ohmycarset.util.getColorCodeFromName
-import com.youngcha.ohmycarset.util.preloadImagesWithGlide
-import com.youngcha.ohmycarset.util.setupImageSwipeWithPreloadedGlide
+import com.youngcha.ohmycarset.util.setupImageSwipeWithPreloadedCoil
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
 import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
+import coil.disk.DiskCache
+import coil.memory.MemoryCache
+import kotlinx.coroutines.Dispatchers
 
 class CarCustomizationFragment : Fragment() {
     private var _binding: FragmentCarCustomizationBinding? = null
@@ -176,6 +176,7 @@ class CarCustomizationFragment : Fragment() {
         }.attach()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun observeViewModel() {
         carViewModel.startAnimationEvent.observe(viewLifecycleOwner) { feedbackViewId ->
             toggleButtonsState(false)
@@ -282,33 +283,46 @@ class CarCustomizationFragment : Fragment() {
             }
         }
 
+        carViewModel.isLoading.observe(viewLifecycleOwner) { isPreloading ->
+            binding.pbLoading.visibility = if (isPreloading) View.VISIBLE else View.GONE
+        }
+
         carViewModel.currentExteriorColor.observe(viewLifecycleOwner) { exteriorColorName ->
             val colorCode = getColorCodeFromName(exteriorColorName)
-            carViewModel.currentExteriorColorFirstUrl.value = "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/${
-                "001.png"
-            }"
+            carViewModel.currentExteriorColorFirstUrl.value = "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/001.png"
+
             if (carViewModel.currentType.value == "GuideMode") {
                 if (carViewModel.currentComponentName.value != "외장 색상") return@observe
             }
 
             if (colorCode != null) {
                 val imageUrls = (1..60).map {
-                    "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/${
-                        String.format(
-                            "%03d.png",
-                            it
-                        )
-                    }"
+                    "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/${String.format("%03d.png", it)}"
                 }
 
-                carViewModel._isLoading.value = true
-                ImagePreloadHelper.preloadImagesWithGlide(requireContext(), imageUrls) {
-                    carViewModel._isLoading.value = false
-                    binding.ivMainImg.setupImageSwipeWithPreloadedGlide(imageUrls)
-                }
+                CarImageUtils.load360Images(
+                    requireContext(),
+                    imageUrls,
+                    onStart = {
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            carViewModel.setLoadingState(true)
+                        }
+                    },
+                    onComplete = { imgList ->
+                        val imageLoader = ImageLoader.Builder(requireContext()).build()
+
+                        if (imgList.isNotEmpty()) {
+                            binding.ivMainImg.setImageDrawable(imgList[0])
+                        }
+
+                        CarImageUtils.setupImageSwipe(binding.ivMainImg, imgList, imageLoader)
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            carViewModel.setLoadingState(false)
+                        }
+                    }
+                )
 
             }
-
         }
 
         carViewModel.currentComponentName.observe(viewLifecycleOwner) { componentName ->

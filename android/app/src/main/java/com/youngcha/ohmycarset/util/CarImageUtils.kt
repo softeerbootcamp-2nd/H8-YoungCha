@@ -10,62 +10,68 @@ import coil.ImageLoader
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import coil.request.ImageRequest
+import coil.request.SuccessResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 object CarImageUtils {
 
-    fun load360Images(context: Context, imageUrls: List<String>, onComplete: (List<Drawable>) -> Unit) {
+    fun load360Images(
+        context: Context,
+        imageUrls: List<String>,
+        onStart: () -> Unit,
+        onComplete: (List<Drawable>) -> Unit
+    ) {
+        val imageLoader = ImageLoader.Builder(context).build()
         val img360List = mutableListOf<Drawable>()
-        val imageLoader = ImageLoader.Builder(context)
-            .memoryCache {
-                MemoryCache.Builder(context)
-                    .maxSizePercent(0.3)
-                    .build()
-            }
-            .diskCache {
-                DiskCache.Builder()
-                    .directory(context.cacheDir.resolve("car_360_img"))
-                    .maxSizePercent(0.3)
-                    .build()
-            }
-            .build()
 
-        CoroutineScope(Dispatchers.Main).launch {
-            imageUrls.forEach { url ->
-                val request = ImageRequest.Builder(context)
-                    .data(url)
-                    .build()
-                imageLoader.execute(request).drawable?.let {
-                    img360List.add(it)
+        GlobalScope.launch(Dispatchers.IO) {
+            onStart.invoke()  // 시작시 로딩 시작 알림
+
+            for (url in imageUrls) {
+                val request = ImageRequest.Builder(context).data(url).build()
+                val result = imageLoader.execute(request)
+                if (result is SuccessResult) {
+                    img360List.add(result.drawable)
                 }
             }
-            onComplete(img360List)
+
+            withContext(Dispatchers.Main) {
+                onComplete.invoke(img360List)  // 모든 이미지 로딩 후 콜백 실행
+            }
         }
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    fun setupImageSwipe(view: ImageView, imgList: List<Drawable>, imageLoader: ImageLoader) {
+    fun setupImageSwipe(
+        imageView: ImageView,
+        images: List<Drawable>,
+        imageLoader: ImageLoader
+    ) {
         var startX = 0f
-        view.setOnTouchListener { _, event ->
+
+        imageView.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     startX = event.x
                     true
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    val dragIdx = (((startX - event.x) / (view.width) * 60).toInt() + 60) % 60
-                    val request = ImageRequest.Builder(view.context)
-                        .data(imgList[dragIdx])
+                    val dragIdx = (((startX - event.x) / imageView.width * 60).toInt() + 60) % 60
+                    val request = ImageRequest.Builder(imageView.context)
+                        .data(images[dragIdx])
                         .crossfade(false)
-                        .target(view)
-                        .placeholder(imgList[dragIdx])
+                        .target(imageView)
+                        .placeholder(images[dragIdx])
                         .build()
+
                     try {
                         imageLoader.enqueue(request)
-                    } catch (e: NullPointerException) {
-                    }
+                    } catch (e: NullPointerException) {}
+
                     true
                 }
                 else -> false
