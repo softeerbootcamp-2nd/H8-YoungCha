@@ -34,10 +34,7 @@ function useSelectOption() {
 
   function initData() {
     setUserSelectedOptionData(INITIAL_USER_SELECTED_DATA);
-    setStorage<UserSelectedOptionDataType>({
-      key: 'optionData',
-      value: INITIAL_USER_SELECTED_DATA,
-    });
+    sessionStorage.clear();
   }
 
   useEffect(() => {
