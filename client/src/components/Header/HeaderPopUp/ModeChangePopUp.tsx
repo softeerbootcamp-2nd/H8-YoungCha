@@ -56,21 +56,25 @@ function ModeChangePopUp({ mode, closePopUp }: ModeChangePopUpProps) {
             imgSrc={<ModeChangePopUpText.ImgSrc />}
           />
 
-          <div className={`${mode !== 'self' ? 'cursor-pointer' : ''}`}>
+          <div className="cursor-pointer">
             <PopUp.ModeSelectCard
               currentMode={mode}
               mode={SelfModeCard.mode}
               description={SelfModeCard.description}
-              onClick={() => setIsConfirmOpen(true)}
+              onClick={() => {
+                mode !== 'self' ? setIsConfirmOpen(true) : closePopUp();
+              }}
             />
           </div>
 
-          <div className={`${mode !== 'guide' ? 'cursor-pointer' : ''}`}>
+          <div className="cursor-pointer">
             <PopUp.ModeSelectCard
               currentMode={mode}
               mode={GuideModeCard.mode}
               description={GuideModeCard.description}
-              onClick={() => setIsConfirmOpen(true)}
+              onClick={() => {
+                mode !== 'guide' ? setIsConfirmOpen(true) : closePopUp();
+              }}
             />
           </div>
         </>
