@@ -52,7 +52,6 @@ class LoadingFragment : Fragment() {
 
     private lateinit var carCustomizationViewModel: CarCustomizationViewModel
 
-
     // guideModeViewModel은 접근이 가능하도록 lateinit으로 선언
     private lateinit var guideModeViewModel: GuideModeViewModel
 
@@ -82,10 +81,6 @@ class LoadingFragment : Fragment() {
             val colorCode = getColorCodeFromName(exteriorColorName)
             carCustomizationViewModel.currentExteriorColorFirstUrl.value = "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/001.png"
 
-            if (carCustomizationViewModel.currentType.value == "GuideMode") {
-                if (carCustomizationViewModel.currentComponentName.value != "외장 색상") return@observe
-            }
-
             if (colorCode != null) {
                 val imageUrls = (1..60).map {
                     "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/${String.format("%03d.png", it)}"
@@ -114,7 +109,6 @@ class LoadingFragment : Fragment() {
                 )
             }
         }
-
 
         setupClickListener()
         setupAnimations()

@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -288,9 +289,12 @@ class CarCustomizationFragment : Fragment() {
             carViewModel.currentExteriorColorFirstUrl.value = "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/001.png"
 
             if (carViewModel.currentType.value == "GuideMode") {
-                if (carViewModel.currentComponentName.value != "외장 색상") return@observe
+                if (carViewModel.currentComponentName.value != "외장 색상") {
+                    return@observe
+                }
             }
 
+            carViewModel.carRotateView.value = 1
             if (colorCode != null) {
                 val imageUrls = (1..60).map {
                     "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/${String.format("%03d.png", it)}"
@@ -323,6 +327,7 @@ class CarCustomizationFragment : Fragment() {
         }
 
         carViewModel.currentComponentName.observe(viewLifecycleOwner) { componentName ->
+            carViewModel.carRotateView.value = 0
             binding.tvTitle.viewTreeObserver.addOnPreDrawListener(object :
                 ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
