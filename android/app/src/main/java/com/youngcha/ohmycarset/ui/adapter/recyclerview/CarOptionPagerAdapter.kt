@@ -47,6 +47,8 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
                     viewModel.addCarComponents(viewModel.currentComponentName.value!!, it)
                 }
             }
+        } else {
+            viewModel.setCurrentSelectedOption(currentSelectedOptions[0])
         }
 
         if (animatedTabs[subOption]?.not() == true || animatedTabs[subOption] == null) {
@@ -91,7 +93,6 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
             0
         }
     }
-
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(options[position], isDisplayingInPager, currentType, componentName!!)
