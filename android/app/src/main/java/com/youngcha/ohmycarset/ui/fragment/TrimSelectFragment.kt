@@ -3,11 +3,13 @@ package com.youngcha.ohmycarset.ui.fragment
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.util.DisplayMetrics
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
@@ -16,10 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import com.google.android.material.tabs.TabLayout
 import com.youngcha.ohmycarset.R
+import com.youngcha.ohmycarset.data.api.RetrofitClient
 import com.youngcha.ohmycarset.databinding.FragmentTrimSelectBinding
 import com.youngcha.ohmycarset.enums.TrimType
 import com.youngcha.ohmycarset.data.model.TrimCategory
 import com.youngcha.ohmycarset.data.dto.OptionCategory
+import com.youngcha.ohmycarset.data.repository.BaekcasajeonRepository
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelectAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeExteriorColorAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeInteriorColorAdapter
@@ -30,7 +34,9 @@ import com.youngcha.ohmycarset.util.MILLISECONDS_PER_INCH
 import com.youngcha.ohmycarset.util.decorator.GridItemDecoration
 import com.youngcha.ohmycarset.util.decorator.LinearItemDecoration
 import com.youngcha.ohmycarset.util.decorator.TopSpacingItemDecoration
+import com.youngcha.ohmycarset.viewmodel.BaekcasajeonViewModel
 import com.youngcha.ohmycarset.viewmodel.TrimSelectViewModel
+import com.youngcha.ohmycarset.viewmodel.factory.BaekcasajeonFactory
 import kotlinx.coroutines.launch
 
 
@@ -41,6 +47,11 @@ class TrimSelectFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val trimSelectViewModel: TrimSelectViewModel by viewModels()
+
+    private val baekcasajeonRepository by lazy { BaekcasajeonRepository(RetrofitClient.baekcasajeonApi) }
+    private val baekcasajeonViewModel: BaekcasajeonViewModel by activityViewModels {
+        BaekcasajeonFactory(baekcasajeonRepository)
+    }
 
     private lateinit var trimSelectAdapter: TrimSelectAdapter
     private lateinit var trimSelfModeMainOptionAdapter: TrimSelfModeMainOptionAdapter
@@ -71,6 +82,13 @@ class TrimSelectFragment : Fragment() {
     }
 
     private fun initViews() {
+        baekcasajeonViewModel.baekcasajeonSuccess.observe(viewLifecycleOwner) {
+            Log.d("로그", "init " + it.toString())
+        }
+
+        baekcasajeonViewModel.baekcasajeon.observe(viewLifecycleOwner) {
+            Log.d("로그", "1. " + it.toString())
+        }
         binding.layoutGuideMode.clRootView.visibility = View.VISIBLE
         binding.layoutSelfMode.clRootView.visibility = View.GONE
         binding.nsvSelfTrimScroll.setOnScrollChangeListener(

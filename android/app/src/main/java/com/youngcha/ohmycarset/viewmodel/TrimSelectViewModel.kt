@@ -41,7 +41,6 @@ class TrimSelectViewModel : ViewModel() {
     val filteredOptions: MutableLiveData<List<TrimDefaultOption.Data.Content>?> =
         MutableLiveData()
 
-
     init {
         initAPI()
     }
