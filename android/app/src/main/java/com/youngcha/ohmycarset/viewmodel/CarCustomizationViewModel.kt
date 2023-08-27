@@ -20,6 +20,7 @@ import com.youngcha.ohmycarset.data.repository.CategoryRepository
 import com.youngcha.ohmycarset.data.repository.GuideModeRepository
 import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
+import com.youngcha.ohmycarset.util.getColorCodeFromName
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -40,6 +41,20 @@ class CarCustomizationViewModel(
     val carObserver = Observer<Car> { newCar ->
         _selectedCar.value = newCar
     }
+
+    val _isLoading = MutableLiveData<Boolean>(false)
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    val carRotateView = MutableLiveData<Int>(0)
+
+    fun setLoadingState(state: Boolean) {
+        _isLoading.value = state
+    }
+
+    private val _currentExteriorColor =  MutableLiveData<String>("WC9")
+    val currentExteriorColor: LiveData<String> = _currentExteriorColor
+    val currentExteriorColorFirstUrl = MutableLiveData<String>("https://www.hyundai.com/contents/vr360/LX06/exterior/WC9/001.png")
+    val currentInteriorColorUrl = MutableLiveData<String>()
 
     val categories = MutableLiveData<List<Category>>()
 
@@ -81,7 +96,6 @@ class CarCustomizationViewModel(
     // 현재 선택된 옵션
     val currentSelectedOption = MutableLiveData<OptionInfo>()
     val subOptionImage = MutableLiveData<String>()
-
 
     // 옵션 선택 UI 관련 변수들
     // 관련된 변수: componentOption1Visibility, componentOption2Visibility, horizontalButtonVisible, swipeButtonVisible, subOptionButtonVisible, subOptionViewTypeChangeButton, subOptionViewType
@@ -164,8 +178,8 @@ class CarCustomizationViewModel(
                 _currentTabPosition.value = 0
                 currentTabName.value = currentMainTabs.value!![0]
                 currentSubTabPosition.value = 0
-                totalPrice.value = 36000000
-                categories.value = categoryRepository.getAllCategories()
+                totalPrice.value = 41980000
+                categories.value = categoryRepository.getAllSubCategories()
             }
             initialization.complete(Unit)
         }
@@ -182,7 +196,7 @@ class CarCustomizationViewModel(
     fun startGuideMode(guideParam: GuideParam) {
         viewModelScope.launch(Dispatchers.IO) {
 
-            val fetchedCategories = categoryRepository.getAllCategories()
+            val fetchedCategories = categoryRepository.getAllSubCategories()
             fetchedCategories?.let {
                 guideModeRepository.fetchAllGuideDataAndSetCar(guideParam, it)
                 withContext(Dispatchers.Main) {
@@ -190,6 +204,7 @@ class CarCustomizationViewModel(
                     categories.value = it
                     _selectedCar.value = guideModeRepository.car.value
 
+                    _currentType.value = "GuideMode"
                     _selectedCar.value?.let { selectedCarValue ->
 
                         // 1. mainOptions 처리
@@ -198,6 +213,20 @@ class CarCustomizationViewModel(
                                 optionMap.entries.mapNotNull { entry ->
                                     val key = entry.key
                                     val values = entry.value.filter { it.checked }
+
+
+                                    // 내장 색상에 대한 로직 추가
+                                    if(key == "내장 색상" && values.isNotEmpty()) {
+                                        // 체크된 값 중 첫번째 항목의 mainImage 값을 currentInteriorColorUrl에 할당
+                                        currentInteriorColorUrl.value = values[0].mainImage
+                                    }
+
+                                    if (key == "외장 색상" && values.isNotEmpty()) {
+                                        _currentExteriorColor.value = values[0].name
+                                        setLoadingState(false)
+                                    }
+
+                                    exteriorButtonChange.value = 1
 
                                     if (values.isNotEmpty()) key to values else null
                                 }.toMap()
@@ -237,7 +266,7 @@ class CarCustomizationViewModel(
                 currentTabName.value = currentMainTabs.value!![0]
                 currentSubTabPosition.value = 0
                 _currentType.value = "SelfMode"
-                totalPrice.value = 36000000
+                totalPrice.value = 41980000
                 repository.setCarComponent(2, "파워 트레인", categories.value!!)
                 _selectedCar.value = repository.car.value
             }
@@ -256,17 +285,9 @@ class CarCustomizationViewModel(
             "GuideMode" -> {
                 val lastTab = currentMainTabs.value?.lastOrNull()
                 if (startPoint == "start") {
-                    Log.d("로그", "시작")
-                    Log.d("로그", _selectedCar.value.toString())
                     logCustomizedParts()
                     currentTabName.value = currentMainTabs.value!![0]
                     updateTapPosition(0, "파워 트레인")
-                    Log.d("로그", "")
-                 //   onComponentOption1Selected()
-//                    _currentTabPosition.value = 0
-//                    _currentComponentName.value = "파워 트레인"
-
-                   // setCurrentComponentName(currentTabName.value!!)
                 } else {
                     if (lastTab == "견적 내기") {
                         totalPrice.value = totalPrice.value?.plus(getMyCarTotalPrice())
@@ -308,9 +329,8 @@ class CarCustomizationViewModel(
         _currentComponentName.value = tabName
 
         prevPrice.value = totalPrice.value?.minus(getMyCarTotalPrice())
-        totalPrice.value = 36000000
+        totalPrice.value = 41980000
         setCurrentComponentName(tabName)
-
     }
 
 
@@ -344,7 +364,7 @@ class CarCustomizationViewModel(
             _currentTabPosition.value = 0
             currentTabName.value = currentMainTabs.value!![0]
             currentSubTabPosition.value = 0
-            totalPrice.value = 36000000
+            totalPrice.value = 41980000
             _customizedParts.value = emptyList()
             _selectedCar.value = Car()
 
@@ -386,6 +406,7 @@ class CarCustomizationViewModel(
 
             setCurrentComponentName(tabName)
             _currentTabPosition.value = nextTabIndex
+
             when (tabName) {
                 OPTION_SELECTION -> handleSubTab()
                 else -> handleMainTab()
@@ -473,6 +494,11 @@ class CarCustomizationViewModel(
             horizontalButtonVisible.value = 0
             swipeButtonVisible.value = 0
             setSubOptionImage(0)
+
+            if (componentName == "외장 색상") {
+                setExteriorColor(getOption(currentComponentName.value!!, 0)!!.name)
+            }
+
             if ((componentName == "파워 트레인" || componentName == "바디 타입" || componentName == "구동 방식") && componentName != OPTION_SELECTION) {
                 horizontalButtonVisible.value = 1
                 alreadySelectedComponent(componentName)
@@ -512,6 +538,10 @@ class CarCustomizationViewModel(
         val updatedList = _customizedParts.value?.toMutableList() ?: mutableListOf()
 
         currentSelectedOption.value = option
+
+        if (componentName == "내장 색상") {
+            currentInteriorColorUrl.value = option.mainImage
+        }
 
         val keyName = subOptionName ?: componentName
         val index = updatedList.indexOfFirst { it.containsKey(keyName) }
@@ -781,6 +811,14 @@ class CarCustomizationViewModel(
         _estimateMainOptions.value = map
     }
 
+    fun setExteriorColor(colorName: String) {
+        _currentExteriorColor.value = colorName
+    }
+
+    fun setCurrentSelectedOption(option: OptionInfo) {
+        currentSelectedOption.value = option
+    }
+
     // 선택 완료 시
     fun executeRandomAnimation() {
         if (currentType.value == "GuideMode") {
@@ -803,6 +841,7 @@ class CarCustomizationViewModel(
             val optionsForComponent = partsList.find { it.containsKey(currentName) }?.get(currentName)
             if (!optionsForComponent.isNullOrEmpty()) {
                 currentSelectedOption.value = optionsForComponent[0]
+
             }
         }
 

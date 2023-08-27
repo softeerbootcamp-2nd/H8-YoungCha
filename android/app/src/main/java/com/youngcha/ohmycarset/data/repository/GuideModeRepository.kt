@@ -1,11 +1,9 @@
 package com.youngcha.ohmycarset.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.youngcha.ohmycarset.data.api.GuideModeApiService
 import com.youngcha.ohmycarset.data.dto.Category
-import com.youngcha.ohmycarset.data.dto.ComponentDTO
 import com.youngcha.ohmycarset.data.dto.GuideModeDTO
 import com.youngcha.ohmycarset.data.model.GuideParam
 import com.youngcha.ohmycarset.data.model.car.Car

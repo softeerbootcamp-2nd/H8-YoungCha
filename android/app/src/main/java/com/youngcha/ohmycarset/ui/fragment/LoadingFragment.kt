@@ -10,10 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
+import androidx.databinding.adapters.ImageViewBindingAdapter.setImageDrawable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import coil.ImageLoader
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.data.api.RetrofitClient
 import com.youngcha.ohmycarset.data.model.GuideParam
@@ -23,6 +26,8 @@ import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.databinding.FragmentLoadingBinding
 import com.youngcha.ohmycarset.util.AnimationUtils
 import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
+import com.youngcha.ohmycarset.util.CarImageUtils
+import com.youngcha.ohmycarset.util.getColorCodeFromName
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
 import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactory
@@ -46,7 +51,6 @@ class LoadingFragment : Fragment() {
     private lateinit var guideParam: GuideParam
 
     private lateinit var carCustomizationViewModel: CarCustomizationViewModel
-
 
     // guideModeViewModel은 접근이 가능하도록 lateinit으로 선언
     private lateinit var guideModeViewModel: GuideModeViewModel
@@ -72,6 +76,40 @@ class LoadingFragment : Fragment() {
         guideParam = args.guideParam!!
 
         carCustomizationViewModel.startGuideMode(guideParam)
+
+        carCustomizationViewModel.currentExteriorColor.observe(viewLifecycleOwner) { exteriorColorName ->
+            val colorCode = getColorCodeFromName(exteriorColorName)
+            carCustomizationViewModel.currentExteriorColorFirstUrl.value = "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/001.png"
+
+            if (colorCode != null) {
+                val imageUrls = (1..60).map {
+                    "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/${String.format("%03d.png", it)}"
+                }
+
+                CarImageUtils.load360Images(
+                    requireContext(),
+                    imageUrls,
+                    onStart = {
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            carCustomizationViewModel.setLoadingState(true)
+                        }
+                    },
+                    onComplete = { imgList ->
+                        val imageLoader = ImageLoader.Builder(requireContext()).build()
+
+                        if (imgList.isNotEmpty()) {
+                            binding.layoutEstimateReady.ivCar.setImageDrawable(imgList[0])
+                        }
+
+                        CarImageUtils.setupImageSwipe(binding.layoutEstimateReady.ivCar, imgList, imageLoader)
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            carCustomizationViewModel.setLoadingState(false)
+                        }
+                    }
+                )
+            }
+        }
+
         setupClickListener()
         setupAnimations()
     }

@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.data.api.CategoriesApiService
-import com.youngcha.ohmycarset.databinding.ActivityMainBinding
 import com.youngcha.ohmycarset.data.api.RetrofitClient
 import com.youngcha.ohmycarset.data.api.SelfModeApiService
 import com.youngcha.ohmycarset.data.dto.Category
@@ -25,7 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.appcompat.app.AppCompatActivity
 import com.youngcha.ohmycarset.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

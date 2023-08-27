@@ -38,7 +38,6 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
         this.componentName = componentName
         currentSelectedOptions = viewModel.isSelectedOptions(subOption!!) ?: listOf()
 
-        Log.d("Adapter", currentSelectedOptions.toString())
         // 만약 현재 선택된 옵션이 없다면 0번째 옵션을 추가
         if (currentSelectedOptions.isEmpty()) {
             val firstOption = options.firstOrNull()
@@ -48,6 +47,8 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
                     viewModel.addCarComponents(viewModel.currentComponentName.value!!, it)
                 }
             }
+        } else {
+            viewModel.setCurrentSelectedOption(currentSelectedOptions[0])
         }
 
         if (animatedTabs[subOption]?.not() == true || animatedTabs[subOption] == null) {
@@ -93,7 +94,6 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
         }
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(options[position], isDisplayingInPager, currentType, componentName!!)
     }
@@ -105,6 +105,10 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
         RecyclerView.ViewHolder(hyundaiButtonView) {
         init {
             hyundaiButtonView.setOnClickListener {
+                if (subOptionName == "외장 색상") {
+                    viewModel.setExteriorColor(options[adapterPosition].name)
+                }
+
                 viewModel.setSubOptionImage(0)
                 if (currentType == "GuideMode") {
                     hyundaiButtonView.animateBorder().withEndAction {

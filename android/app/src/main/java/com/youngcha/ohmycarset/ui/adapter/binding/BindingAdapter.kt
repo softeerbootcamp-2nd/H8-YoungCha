@@ -2,6 +2,7 @@ package com.youngcha.ohmycarset.ui.adapter.binding
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.util.Log
@@ -20,14 +21,20 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.ComponentRegistry
 import coil.ImageLoader
+import coil.ImageLoaderFactory
 import coil.decode.SvgDecoder
 import coil.load
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.data.model.car.Car
 import com.youngcha.ohmycarset.data.model.car.OptionInfo
@@ -60,32 +67,17 @@ fun loadImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
 
 @BindingAdapter(value = ["detailMainImageUrl", "detailSubImageUrl"], requireAll = false)
 fun setLogoImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
-
-    val context = view.context
-    val widthInPixels: Int
-    val heightInPixels: Int
-
     if (mainImageUrl == "") {
-        widthInPixels = (60 * context.resources.displayMetrics.density).toInt()
-        heightInPixels = (60 * context.resources.displayMetrics.density).toInt()
         Glide.with(view.context)
             .load(subImageUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
-            .circleCrop()
             .into(view)
     } else {
-        widthInPixels = (86 * context.resources.displayMetrics.density).toInt()
-        heightInPixels = (64 * context.resources.displayMetrics.density).toInt()
         Glide.with(view.context)
             .load(mainImageUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(view)
     }
-
-    val params = view.layoutParams
-    params.width = widthInPixels
-    params.height = heightInPixels
-    view.layoutParams = params
 }
 
 @BindingAdapter("imageUrl")
@@ -100,18 +92,31 @@ fun loadImageCoil(view: ImageView, imageUrl: String?) {
 fun loadSvgImage(imageView: ImageView, url: String?) {
     val context = imageView.context
 
-    val imageLoader = ImageLoader.Builder(context)
-        .componentRegistry {
-            add(SvgDecoder(context))
-        }
-        .build()
+    Glide.with(context)
+        .load(url)
+        .listener(object : RequestListener<Drawable> {
+            override fun onResourceReady(
+                resource: Drawable,
+                model: Any,
+                target: com.bumptech.glide.request.target.Target<Drawable>?,
+                dataSource: DataSource,
+                isFirstResource: Boolean
+            ): Boolean {
+                imageView.setImageDrawable(resource)
+                return true
+            }
 
-    val request = ImageRequest.Builder(context)
-        .data(url)
-        .target(imageView)
-        .build()
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Drawable>,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
 
-    imageLoader.enqueue(request)
+        })
+        .into(imageView)
 }
 
 @BindingAdapter("exterior_imageUrl")
@@ -132,10 +137,10 @@ fun loadInteriorImage(view: ImageView, imageUrl: String?) {
     }
 }
 
-
+@BindingAdapter("imageUrl")
 fun setLogoImage(view: ImageView, imageUrl: String?) {
     Glide.with(view.context)
-        .load(logoImageUrl)
+        .load(imageUrl)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(view)
 }
@@ -297,6 +302,27 @@ fun bindRecyclerView(
     }
     adapter.updateOptionInfo(matchedOptionsMap)
 }
+
+@BindingAdapter(value = ["partPrice", "partViewType"], requireAll = false)
+fun setPartPrice(
+    textView: TextView,
+    myCarData: List<Map<String, List<OptionInfo>>>?,
+    viewType: String
+) {
+
+    var partPrice = 0
+    myCarData?.forEach { mapEntry ->
+        mapEntry.forEach { (key, optionList) ->
+            optionList.forEach { option ->
+                if (option.optionType == viewType) {
+                    partPrice += option.price
+                }
+            }
+        }
+    }
+    textView.text = "+ %,d원".format(partPrice)
+}
+
 
 @BindingAdapter(value = ["currentTypeForBackground", "visibleForBackground"], requireAll = false)
 fun View.setCurrentType(currentType: String?, visible: Int) {
@@ -471,7 +497,7 @@ fun bindFormattedCurrency(view: TextView, value: Int) {
 
 @BindingAdapter("plusPrice")
 fun setPriceText(view: TextView, price: Int) {
-    view.text ="+ %,d원".format(price)
+    view.text = "+ %,d원".format(price)
 }
 
 @BindingAdapter(value = ["componentName", "subImage"], requireAll = false)

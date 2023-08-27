@@ -3,11 +3,13 @@ package com.youngcha.ohmycarset.ui.fragment
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -17,12 +19,11 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
+import coil.ImageLoader
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -41,20 +42,20 @@ import com.youngcha.ohmycarset.ui.customview.ButtonDialogView
 import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.util.AnimationUtils.animateValueChange
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
-import com.youngcha.ohmycarset.util.setupImageSwipeWithScrollView
 import com.youngcha.baekcasajeon.*
 import com.youngcha.ohmycarset.data.api.RetrofitClient
-import com.youngcha.ohmycarset.data.api.SelfModeApiService
 import com.youngcha.ohmycarset.data.repository.CategoryRepository
 import com.youngcha.ohmycarset.data.repository.GuideModeRepository
 import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
+import com.youngcha.ohmycarset.util.CarImageUtils
+import com.youngcha.ohmycarset.util.getColorCodeFromName
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
 import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
+import kotlinx.coroutines.Dispatchers
 
 class CarCustomizationFragment : Fragment() {
     private var _binding: FragmentCarCustomizationBinding? = null
@@ -63,16 +64,10 @@ class CarCustomizationFragment : Fragment() {
     private lateinit var detailAdapterMain: EstimateDetailAdapter
     private lateinit var detailAdapterSub: EstimateDetailAdapter
     private lateinit var trimSelfModeOptionAdapter: TrimSelfModeOptionAdapter
-    //private val carViewModel: CarCustomizationViewModel by viewModels()
-  //  private lateinit var carViewModel: CarCustomizationViewModel
     private lateinit var carViewModel: CarCustomizationViewModel
     private val selfModeRepository by lazy { SelfModeRepository(RetrofitClient.selfModeApi) }
     private val guideModeRepository by lazy { GuideModeRepository(RetrofitClient.guideModeApi) }
     private val categoryRepository by lazy { CategoryRepository(RetrofitClient.categoriesApi) }
-   // private val viewModelFactory by lazy { CarCustomizationViewModelFactory(selfModeRepository, guideModeRepository, categoryRepository) }
-    private var first: Boolean = true
-
-  //  private lateinit var viewModelFactory: CarCustomizationViewModel
 
     private val guideModeViewModel: GuideModeViewModel by activityViewModels()
 
@@ -95,8 +90,13 @@ class CarCustomizationFragment : Fragment() {
     }
 
     private fun setupViews() {
-        val factory = CarCustomizationViewModelFactory(selfModeRepository, guideModeRepository, categoryRepository)
-        carViewModel = ViewModelProvider(requireActivity(), factory).get(CarCustomizationViewModel::class.java)
+        val factory = CarCustomizationViewModelFactory(
+            selfModeRepository,
+            guideModeRepository,
+            categoryRepository
+        )
+        carViewModel =
+            ViewModelProvider(requireActivity(), factory).get(CarCustomizationViewModel::class.java)
         if (carViewModel.categories.value == null) {
             carViewModel.categories.value = categoryRepository.categories.value
         }
@@ -114,7 +114,7 @@ class CarCustomizationFragment : Fragment() {
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            if(mode == "SelfMode") {
+            if (mode == "SelfMode") {
                 carViewModel.startSelfMode()
             } else {
                 carViewModel.initCarCustomizationViewModel("GuideMode", startPoint)
@@ -126,11 +126,6 @@ class CarCustomizationFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupListener() {
-        val images = List(60) { id ->
-            resources.getIdentifier("image_0${id + 1}", "drawable", requireContext().packageName)
-        }
-        binding.layoutEstimate.ivEstimateDone.setupImageSwipeWithScrollView(images)
-
         binding.htbHeaderToolbar.listener = object : OnHeaderToolbarClickListener {
             override fun onExitClick() {
                 findNavController().navigate(R.id.action_makeCarFragment_to_trimSelectFragment)
@@ -178,6 +173,7 @@ class CarCustomizationFragment : Fragment() {
         }.attach()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun observeViewModel() {
         carViewModel.startAnimationEvent.observe(viewLifecycleOwner) { feedbackViewId ->
             toggleButtonsState(false)
@@ -254,7 +250,9 @@ class CarCustomizationFragment : Fragment() {
         carViewModel.currentMainTabs.observe(viewLifecycleOwner) { tabs ->
             tabs.let {
                 it.forEach { tabName ->
-                    binding.tlMainOptionTab.addTab(binding.tlMainOptionTab.newTab().setText(tabName))
+                    binding.tlMainOptionTab.addTab(
+                        binding.tlMainOptionTab.newTab().setText(tabName)
+                    )
                 }
             }
         }
@@ -272,8 +270,66 @@ class CarCustomizationFragment : Fragment() {
             }
         }
 
+        carViewModel.isLoading.observe(viewLifecycleOwner) { isPreloading ->
+            if (isPreloading) {
+                // 로딩 인디케이터 보이기
+                binding.pbLoading.visibility = View.VISIBLE
+            } else {
+                // 로딩 인디케이터 숨기기
+                binding.pbLoading.visibility = View.GONE
+            }
+        }
+
+        carViewModel.isLoading.observe(viewLifecycleOwner) { isPreloading ->
+            binding.pbLoading.visibility = if (isPreloading) View.VISIBLE else View.GONE
+        }
+
+        carViewModel.currentExteriorColor.observe(viewLifecycleOwner) { exteriorColorName ->
+            val colorCode = getColorCodeFromName(exteriorColorName)
+            carViewModel.currentExteriorColorFirstUrl.value = "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/001.png"
+
+            if (carViewModel.currentType.value == "GuideMode") {
+                if (carViewModel.currentComponentName.value != "외장 색상") {
+                    return@observe
+                }
+            }
+
+            carViewModel.carRotateView.value = 1
+            if (colorCode != null) {
+                val imageUrls = (1..60).map {
+                    "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/${String.format("%03d.png", it)}"
+                }
+
+                CarImageUtils.load360Images(
+                    requireContext(),
+                    imageUrls,
+                    onStart = {
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            carViewModel.setLoadingState(true)
+                        }
+                    },
+                    onComplete = { imgList ->
+                        val imageLoader = ImageLoader.Builder(requireContext()).build()
+
+                        if (imgList.isNotEmpty()) {
+                            binding.ivMainImg.setImageDrawable(imgList[0])
+                            binding.layoutEstimate.ivEstimateDone.setImageDrawable(imgList[0])
+                        }
+
+                        CarImageUtils.setupImageSwipe(binding.ivMainImg, imgList, imageLoader)
+                        CarImageUtils.setupImageSwipe(binding.layoutEstimate.ivEstimateDone, imgList, imageLoader)
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            carViewModel.setLoadingState(false)
+                        }
+                    }
+                )
+            }
+        }
+
         carViewModel.currentComponentName.observe(viewLifecycleOwner) { componentName ->
-            binding.tvTitle.viewTreeObserver.addOnPreDrawListener(object: ViewTreeObserver.OnPreDrawListener {
+            carViewModel.carRotateView.value = 0
+            binding.tvTitle.viewTreeObserver.addOnPreDrawListener(object :
+                ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     binding.tvTitle.viewTreeObserver.removeOnPreDrawListener(this)
                     showBaekcasajeon(binding.tvTitle, componentName)
@@ -284,7 +340,8 @@ class CarCustomizationFragment : Fragment() {
 
         carViewModel.estimateViewVisible.observe(viewLifecycleOwner) {
             if (it == 1) {
-                view?.viewTreeObserver?.addOnGlobalLayoutListener(object: ViewTreeObserver.OnGlobalLayoutListener{
+                view?.viewTreeObserver?.addOnGlobalLayoutListener(object :
+                    ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
                         // parent의 너비와 높이는 0이상인경우
                         explodeView(binding.flParticleContainer)
@@ -316,7 +373,8 @@ class CarCustomizationFragment : Fragment() {
         }
 
         carViewModel.customizedParts.observe(viewLifecycleOwner) { customized ->
-            val systemOptions: List<OptionInfo>? = customized?.firstOrNull { it.containsKey("시스템") }?.get("시스템")
+            val systemOptions: List<OptionInfo>? =
+                customized?.firstOrNull { it.containsKey("시스템") }?.get("시스템")
         }
 
         carViewModel.estimateSubOptions.observe(viewLifecycleOwner) { subOptions ->
@@ -390,7 +448,8 @@ class CarCustomizationFragment : Fragment() {
 
 
         val linearLayoutManagerForMainOption = LinearLayoutManager(requireContext())
-        binding.layoutEstimate.lyDetail.rvMainOption.layoutManager = linearLayoutManagerForMainOption
+        binding.layoutEstimate.lyDetail.rvMainOption.layoutManager =
+            linearLayoutManagerForMainOption
 
         detailAdapterMain = EstimateDetailAdapter { optionInfo ->
             // optionInfo에 해당하는 탭으로 이동
@@ -398,11 +457,10 @@ class CarCustomizationFragment : Fragment() {
 
             // 찾은 위치로 _currentTabPosition를 업데이트합니다.
             if (position != null && position != -1) {
-                Log.d("로그", "이동1" +  optionInfo.toString())
                 carViewModel.updateTapPosition(position, optionInfo)
             }
         }
-        binding.layoutEstimate.lyDetail.rvMainOption.adapter  = detailAdapterMain
+        binding.layoutEstimate.lyDetail.rvMainOption.adapter = detailAdapterMain
 
         val linearLayoutManagerForSubOption = LinearLayoutManager(requireContext())
         binding.layoutEstimate.lyDetail.rvSubOption.layoutManager = linearLayoutManagerForSubOption
@@ -413,10 +471,8 @@ class CarCustomizationFragment : Fragment() {
 
             // 찾은 위치로 _currentTabPosition를 업데이트합니다.
             if (position != null && position != -1) {
-                Log.d("로그", "이동2" +  optionInfo.toString())
                 carViewModel.updateTapPosition(position, optionInfo)
             } else {
-                Log.d("로그", "이동3" +  optionInfo.toString())
                 carViewModel.updateTapPosition(6, "옵션 선택")
             }
         }
@@ -524,8 +580,14 @@ class CarCustomizationFragment : Fragment() {
             keyword to KeywordOptions(
                 nonSelectedTextColor = Color.BLACK,  // 선택되지 않았을 때의 텍스트 색상
                 selectedTextColor = Color.WHITE,     // 선택되었을 때의 텍스트 색상
-                nonSelectedBackgroundColor = ContextCompat.getColor(requireContext(), R.color.yellow),
-                selectedBackgroundColor = ContextCompat.getColor(requireContext(), R.color.cool_grey_black),
+                nonSelectedBackgroundColor = ContextCompat.getColor(
+                    requireContext(),
+                    R.color.yellow
+                ),
+                selectedBackgroundColor = ContextCompat.getColor(
+                    requireContext(),
+                    R.color.cool_grey_black
+                ),
                 padding = Rect(15, 15, 15, 15),
                 cornerRadius = 20f,
                 isBold = true
@@ -533,7 +595,7 @@ class CarCustomizationFragment : Fragment() {
         )
 
         val keywordSpans = anchorView.baekcasajeon(options) { keyword ->
-            dialog.show(keyword, keyword.toString()+ " 백카사전")
+            dialog.show(keyword, keyword.toString() + " 백카사전")
         }
 
         dialog.setOnDismissAction {

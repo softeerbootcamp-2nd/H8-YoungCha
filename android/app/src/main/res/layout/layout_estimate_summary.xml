@@ -84,6 +84,8 @@
                 android:gravity="end"
                 android:textColor="@color/main_hyundai_blue"
                 android:textSize="16sp"
+                app:partPrice="@{viewModel.customizedParts}"
+                app:partViewType='@{"main"}'
                 app:layout_constraintBottom_toBottomOf="@id/v_main_option_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_car_name"
@@ -138,6 +140,8 @@
                 android:gravity="end"
                 android:textColor="@color/main_hyundai_blue"
                 android:textSize="16sp"
+                app:partPrice="@{viewModel.customizedParts}"
+                app:partViewType='@{"color"}'
                 app:layout_constraintBottom_toBottomOf="@id/v_option_color_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_car_name"
@@ -193,6 +197,8 @@
                 android:gravity="end"
                 android:textColor="@color/main_hyundai_blue"
                 android:textSize="16sp"
+                app:partPrice="@{viewModel.customizedParts}"
+                app:partViewType='@{"sub"}'
                 app:layout_constraintBottom_toBottomOf="@id/v_sub_option_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_sub_option"
