@@ -31,15 +31,9 @@ function FeedbackCard({
       >
         <div className="flex">
           {isGood ? <Icon.SmileIcon /> : <Icon.LaughingFaceIcon />}
-          <Transition
-            render={isGood}
-            className="origin-bottom-left"
-            from="opacity-0 scale-0"
-            to="opacity-100 scale-100"
-            unmount
-          >
-            <Icon.ThumbsUpIcon className="w-24px h-24px" />
-          </Transition>
+          {isGood && (
+            <Icon.ThumbsUpIcon className="w-24px h-24px origin-bottom-left animate-good" />
+          )}
         </div>
 
         <div className="font-medium text-white text-20px mt-10px">
