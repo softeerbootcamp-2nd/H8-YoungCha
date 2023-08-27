@@ -29,7 +29,7 @@ export const INITIAL_USER_SELECTED_DATA: UserSelectedOptionDataType = {
         type: '트림',
         name: 'Le Blanc(르블랑)',
         imgUrl: '/src/assets/mock/images/palisade.png',
-        price: 43_460_000,
+        price: 41_980_000,
       },
     },
   },
