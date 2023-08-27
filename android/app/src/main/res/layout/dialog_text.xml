@@ -14,7 +14,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="319dp"
         android:layout_height="wrap_content"
         android:background="@drawable/dialog_background">
 
@@ -54,12 +54,16 @@
 
         <TextView
             android:id="@+id/tv_explain"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:layout_marginEnd="20dp"
             android:fontFamily="@font/hyundai_sans_head_kr_regular"
+            android:gravity="start"
             android:text="@{text_dialog.explain}"
+            android:lineSpacingExtra="3dp"
             android:textColor="@color/cool_grey_black"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toBottomOf="@id/v_line" />
 
@@ -82,9 +86,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/hyundai_sans_head_kr_regular"
+                android:lineSpacingExtra="8dp"
                 android:text="@{text_dialog.subExplain}"
-                android:textColor="@color/cool_grey_004"
-                android:lineSpacingExtra="8dp"/>
+                android:textColor="@color/cool_grey_004" />
 
         </RelativeLayout>
 
