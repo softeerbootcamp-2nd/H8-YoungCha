@@ -21,7 +21,7 @@ import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionCont
 
 const EXTERIOR_COLOR_STEP = 5;
 const FEEDBACK_DELAY_TIME = 2000;
-
+const INIT_ITEM_INDEX = -1;
 function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
   const navigate = useNavigate();
   const { step, mode, id } = useParams() as PathParamsType;
@@ -31,7 +31,7 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
     UserSelectedOptionDataContext
   );
   // 선택 아이템 인덱스
-  const [selectedItem, setSelectedItem] = useState(-1);
+  const [selectedItem, setSelectedItem] = useState(INIT_ITEM_INDEX);
   const [isImageLoading, setIsImageLoading] = useState(true);
   function onNext() {
     if (mode === 'guide') {
@@ -39,6 +39,7 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
     }
 
     setTimeout(() => {
+      setSelectedItem(INIT_ITEM_INDEX);
       navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
     }, FEEDBACK_DELAY_TIME);
     setNext(true);
@@ -69,7 +70,7 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
   }, [data]);
 
   useEffect(() => {
-    if (!Array.isArray(data) || selectedItem === -1) return;
+    if (!Array.isArray(data) || selectedItem === INIT_ITEM_INDEX) return;
     const newOption = {
       id: data[selectedItem].id,
       name: data[selectedItem].name,
@@ -80,10 +81,9 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
     };
     saveOptionData({ newOption });
   }, [selectedItem]);
-
   return (
     <>
-      {selectedItem !== -1 && (
+      {selectedItem !== INIT_ITEM_INDEX && (
         <main
           className={`relative flex-grow ${next ? 'pointer-events-none' : ''}`}
         >

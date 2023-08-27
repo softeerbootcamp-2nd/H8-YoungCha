@@ -55,7 +55,8 @@ function MakingPage() {
       return Number(step) === INTERIOR_COLOR_STEP
         ? ({
             exteriorColorId:
-              userSelectedOptionData.colors.options.exteriorColor?.id.toString(),
+              userSelectedOptionData.colors.options.exteriorColor?.id.toString() ??
+              '12',
           } as Record<string, string>)
         : undefined;
     }

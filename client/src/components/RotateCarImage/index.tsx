@@ -54,7 +54,7 @@ function RotateCarImage({ images, className }: ImageRotatorProps) {
             state.isMouseDown ? 'cursor-grabbing' : 'cursor-grab'
           } relative w-full flex justify-center ${className}`}
         >
-          <div className="relative w-full flex justify-center items-center">
+          <div className="relative flex items-center justify-center w-full">
             {images.map((imgSrc, idx) => (
               <img
                 src={imgSrc}
@@ -65,7 +65,7 @@ function RotateCarImage({ images, className }: ImageRotatorProps) {
                 } pointer-events-none select-none`}
               />
             ))}
-            <div className="absolute top-16px right-16px flex items-center justify-center text-white rounded-full opacity-30 body2 bg-grey-black w-40px h-40px">
+            <div className="absolute flex items-center justify-center text-white rounded-full top-16px right-16px opacity-30 body2 bg-grey-black w-40px h-40px">
               360°
             </div>
           </div>
