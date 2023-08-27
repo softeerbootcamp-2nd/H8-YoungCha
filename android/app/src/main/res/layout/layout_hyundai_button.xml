@@ -138,16 +138,6 @@
             app:layout_constraintEnd_toEndOf="@+id/v_background"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/ib_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="21dp"
-            android:background="@drawable/ic_group"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
         <!-- Bottom line -->
         <View
             android:id="@+id/v_bottom_line"
@@ -187,6 +177,18 @@
             android:visibility='@{is_visible == 0 || current_type == "SelfMode" ? View.INVISIBLE : View.VISIBLE}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/ib_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="21dp"
+            android:background="@drawable/ic_group"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

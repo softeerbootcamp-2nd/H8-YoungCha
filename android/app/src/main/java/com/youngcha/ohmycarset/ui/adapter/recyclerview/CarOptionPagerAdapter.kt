@@ -10,7 +10,10 @@ import com.youngcha.ohmycarset.ui.customview.HyundaiButtonView
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 
-class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
+class CarOptionPagerAdapter(
+    private val viewModel: CarCustomizationViewModel,
+    private val onDetailClick: (OptionInfo) -> Unit
+) :
     RecyclerView.Adapter<CarOptionPagerAdapter.ViewHolder>() {
 
     private var options: List<OptionInfo> = emptyList()
@@ -29,7 +32,14 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
     private var currentSelectedOptions = listOf<OptionInfo>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setOptions(newOptions: List<OptionInfo>, type: String, subOption: String?, isDisplayingInPager: Boolean, currentType: String?, componentName: String?) {
+    fun setOptions(
+        newOptions: List<OptionInfo>,
+        type: String,
+        subOption: String?,
+        isDisplayingInPager: Boolean,
+        currentType: String?,
+        componentName: String?
+    ) {
         this.options = newOptions
         this.optionType = type
         this.subOptionName = subOption
@@ -74,12 +84,13 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-        }  else if (viewType == 0) {
+        } else if (viewType == 0) {
             val layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
             )
-            val marginBottom = (12 * parent.context.resources.displayMetrics.density).toInt()  // convert 12dp to pixels
+            val marginBottom =
+                (12 * parent.context.resources.displayMetrics.density).toInt()  // convert 12dp to pixels
             layoutParams.setMargins(0, 0, 0, marginBottom)
             hyundaiButtonView.layoutParams = layoutParams
         }
@@ -104,6 +115,10 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
     inner class ViewHolder(private val hyundaiButtonView: HyundaiButtonView) :
         RecyclerView.ViewHolder(hyundaiButtonView) {
         init {
+            hyundaiButtonView.setDetailClickListener {
+                onDetailClick(options[adapterPosition])
+            }
+
             hyundaiButtonView.setOnClickListener {
                 if (subOptionName == "외장 색상") {
                     viewModel.setExteriorColor(options[adapterPosition].name)
@@ -132,7 +147,8 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
                         handleSingleOptionSelection(clickedOption)
                     }
 
-                    currentSelectedOptions = viewModel.isSelectedOptions(subOptionName!!) ?: listOf()
+                    currentSelectedOptions =
+                        viewModel.isSelectedOptions(subOptionName!!) ?: listOf()
                     notifyDataSetChanged()
                 } else {
                     Log.e("로그", "Invalid adapter position: $adapterPosition")
@@ -149,17 +165,33 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
                 subOptionName?.let { viewModel.removeCarComponents(it, clickedOption) }
             } else {
                 subOptionName?.let {
-                    viewModel.addCarComponents(viewModel.currentComponentName.value!!, clickedOption, it)
-                } ?: viewModel.addCarComponents(viewModel.currentComponentName.value!!, clickedOption)
+                    viewModel.addCarComponents(
+                        viewModel.currentComponentName.value!!,
+                        clickedOption,
+                        it
+                    )
+                } ?: viewModel.addCarComponents(
+                    viewModel.currentComponentName.value!!,
+                    clickedOption
+                )
             }
         }
 
         private fun handleSingleOptionSelection(clickedOption: OptionInfo) {
-            viewModel.addCarComponents(viewModel.currentComponentName.value!!, clickedOption, subOptionName)
+            viewModel.addCarComponents(
+                viewModel.currentComponentName.value!!,
+                clickedOption,
+                subOptionName
+            )
         }
 
-        fun bind(option: OptionInfo, isViewPager: Boolean, currentType: String?, componentName: String) {
-            if (shouldAnimate  && currentType == "GuideMode") {
+        fun bind(
+            option: OptionInfo,
+            isViewPager: Boolean,
+            currentType: String?,
+            componentName: String
+        ) {
+            if (shouldAnimate && currentType == "GuideMode") {
                 hyundaiButtonView.animateBorder()
                 shouldAnimate = false // 애니메이션이 한 번 실행된 후 플래그를 초기화
             }
@@ -167,14 +199,16 @@ class CarOptionPagerAdapter(private val viewModel: CarCustomizationViewModel) :
             hyundaiButtonView.setOptionInfo(option)
             hyundaiButtonView.setIsViewPager(isViewPager)
             hyundaiButtonView.setCurrentType(currentType!!)
-            hyundaiButtonView.setIsVisible(when {
-                optionType == OPTION_SELECTION && currentSelectedOptions.contains(option) -> 1
-                optionType != OPTION_SELECTION && (currentSelectedOptions.isEmpty() && adapterPosition == 0 || currentSelectedOptions.contains(
-                    option
-                )) -> 1
+            hyundaiButtonView.setIsVisible(
+                when {
+                    optionType == OPTION_SELECTION && currentSelectedOptions.contains(option) -> 1
+                    optionType != OPTION_SELECTION && (currentSelectedOptions.isEmpty() && adapterPosition == 0 || currentSelectedOptions.contains(
+                        option
+                    )) -> 1
 
-                else -> 0
-            })
+                    else -> 0
+                }
+            )
         }
     }
 }

@@ -24,10 +24,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="179dp"
                 android:scaleType="fitXY"
+                app:imageUrl="@{swipe_dialog.img}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:testImageSource="@{swipe_dialog.img}" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_option_title"
@@ -46,14 +46,17 @@
 
             <TextView
                 android:id="@+id/tv_option_sub_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
                 android:fontFamily="@font/hyundai_sans_head_kr_medium"
+                android:gravity="start"
                 android:text="@{swipe_dialog.subTitle}"
                 android:textColor="@color/cool_grey_black"
                 android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tv_option_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_option_title"
                 app:layout_goneMarginTop="4dp" />
@@ -69,11 +72,15 @@
 
             <TextView
                 android:id="@+id/tv_option_explain"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="50dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="start"
+                android:lineSpacingExtra="3dp"
                 android:fontFamily="@font/hyundai_sans_head_kr_regular"
                 android:text="@{swipe_dialog.explain}"
                 android:textColor="@color/cool_grey_004"

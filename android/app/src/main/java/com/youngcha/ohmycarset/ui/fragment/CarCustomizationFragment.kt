@@ -18,6 +18,7 @@ import android.view.ViewTreeObserver
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -57,6 +58,8 @@ import com.youngcha.ohmycarset.util.findTextViews
 import com.youngcha.ohmycarset.util.getColorCodeFromName
 import com.youngcha.ohmycarset.util.hideBaekcasajeon
 import com.youngcha.ohmycarset.util.showBaekcasajeon
+import com.youngcha.ohmycarset.util.showSwipeDialog
+import com.youngcha.ohmycarset.util.showTextDialog
 import com.youngcha.ohmycarset.viewmodel.BaekcasajeonViewModel
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
@@ -118,7 +121,16 @@ class CarCustomizationFragment : Fragment() {
         binding.apply {
             viewModel = carViewModel
             lifecycleOwner = this@CarCustomizationFragment
-            vpOptionContainer.adapter = CarOptionPagerAdapter(carViewModel)
+            vpOptionContainer.adapter = CarOptionPagerAdapter(carViewModel) {
+                Log.d("로그", "4. 디테일 정보 입니다: " + it.detail.toString())
+                if (it.detail.isEmpty()) return@CarOptionPagerAdapter
+                val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
+                if (countWithImgUrl > 0) {
+                    showSwipeDialog(requireContext(), it)
+                } else {
+                    showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+                }
+            }
             attachTabLayoutMediator()
             setupRecyclerView()
             setupSubTabs()
@@ -140,6 +152,15 @@ class CarCustomizationFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupListener() {
+
+        binding.btnComponentOption1.ibDetail.setOnClickListener {
+            carViewModel.onDetailClicked("button1")
+        }
+
+        binding.btnComponentOption2.ibDetail.setOnClickListener {
+            carViewModel.onDetailClicked("button2")
+        }
+
         binding.htbHeaderToolbar.listener = object : OnHeaderToolbarClickListener {
             override fun onExitClick() {
                 findNavController().navigate(R.id.action_makeCarFragment_to_trimSelectFragment)
@@ -435,6 +456,18 @@ class CarCustomizationFragment : Fragment() {
             carViewModel.prevPrice.value = currentTotalPrice
         }
 
+
+        carViewModel.detailOptionInfo.observe(viewLifecycleOwner) {
+            Log.d("로그", "5. 디테일 정보 표시 입니다.: " + it.toString())
+            if (it.detail.isEmpty()) return@observe
+            val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
+            if (countWithImgUrl > 0) {
+                showSwipeDialog(requireContext(), it)
+            } else {
+                showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+            }
+        }
+
         baekcasajeonViewModel.baekcasajeonState.observe(viewLifecycleOwner) { state ->
             binding.htbHeaderToolbar.updateDictionaryState(state)
 
@@ -490,7 +523,16 @@ class CarCustomizationFragment : Fragment() {
         binding.rvSubOptionList.setHasFixedSize(true)
 
         // 초기 어댑터 설정 (옵션 데이터가 없는 초기 상태)
-        binding.rvSubOptionList.adapter = CarOptionPagerAdapter(carViewModel)
+        binding.rvSubOptionList.adapter = CarOptionPagerAdapter(carViewModel) {
+            Log.d("로그", "1. 디테일 정보 입니다: " + it.detail.toString())
+            if (it.detail.isEmpty()) return@CarOptionPagerAdapter
+            val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
+            if (countWithImgUrl > 0) {
+                showSwipeDialog(requireContext(), it)
+            } else {
+                showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+            }
+        }
 
 
         val linearLayoutManagerForMainOption = LinearLayoutManager(requireContext())
@@ -578,7 +620,16 @@ class CarCustomizationFragment : Fragment() {
 
     // sub option 상태에서만 가능
     private fun displayOnRecyclerView(optionInfos: List<OptionInfo>, tabName: String) {
-        val adapter = CarOptionPagerAdapter(carViewModel)
+        val adapter = CarOptionPagerAdapter(carViewModel) {
+            Log.d("로그", "3. 디테일 정보 입니다: " + it.detail.toString())
+            if (it.detail.isEmpty()) return@CarOptionPagerAdapter
+            val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
+            if (countWithImgUrl > 0) {
+                showSwipeDialog(requireContext(), it)
+            } else {
+                showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+            }
+        }
         binding.rvSubOptionList.adapter = adapter
         adapter.setOptions(
             optionInfos,
@@ -592,7 +643,16 @@ class CarCustomizationFragment : Fragment() {
 
     // main & sub 전부 가능
     private fun displayOnViewPager(optionInfos: List<OptionInfo>, tabName: String) {
-        val adapter = CarOptionPagerAdapter(carViewModel)
+        val adapter = CarOptionPagerAdapter(carViewModel) {
+            Log.d("로그", "2. 디테일 정보 입니다: " + it.detail.toString())
+            if (it.detail.isEmpty()) return@CarOptionPagerAdapter
+            val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
+            if (countWithImgUrl > 0) {
+                showSwipeDialog(requireContext(), it)
+            } else {
+                showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+            }
+        }
         binding.vpOptionContainer.adapter = adapter
         val selectedOptions = carViewModel.isSelectedOptions(tabName) ?: listOf()
 
