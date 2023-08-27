@@ -38,6 +38,10 @@ object RetrofitClient {
         retrofit.create(CategoriesApiService::class.java)
     }
 
+    val baekcasajeonApi: BaekcasajeonApiService by lazy {
+        retrofit.create(BaekcasajeonApiService::class.java)
+    }
+
     val apiService: ApiService by lazy {
         retrofit.create(ApiService::class.java)
     }
