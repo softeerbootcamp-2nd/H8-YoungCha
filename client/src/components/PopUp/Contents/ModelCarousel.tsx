@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { hydrogenElectricCars } from '@/assets/mock/ModelListMock';
 import PopUp from '..';
 
@@ -9,13 +9,13 @@ function ModelCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeIndex, setactiveIndex] = useState(-1);
 
-  const modelCards = Array.from({ length: listLength }, (_, i) => (
+  const modelCards = Array.from({ length: listLength }, (_, index) => (
     <PopUp.ModelSelectCard
-      key={`modelSelectCard-${i}`}
-      index={i}
+      key={`modelSelectCard-${index}`}
+      index={index}
       activeIndex={activeIndex}
       onClick={() => {
-        setactiveIndex(i);
+        setactiveIndex(index);
       }}
     ></PopUp.ModelSelectCard>
   ));
@@ -23,13 +23,13 @@ function ModelCarousel() {
   const startIndex = currentSlide * itemsPerSlide;
   const endIndex = startIndex + itemsPerSlide;
   const visibleItems = modelCards.slice(startIndex, endIndex);
-  const dotIndicator = Array.from({ length: pages }, (_, i) => (
+  const dotIndicator = Array.from({ length: pages }, (_, index) => (
     <div
-      key={i}
+      key={`dotIndicator-${index}`}
       className={`w-8px h-8px rounded-6px bg-grey-002 ${
-        currentSlide === i ? 'bg-grey-004' : ''
+        currentSlide === index ? 'bg-grey-004' : ''
       }`}
-      onClick={() => moveToAnotherSlide(i)}
+      onClick={() => moveToAnotherSlide(index)}
       role="none"
     ></div>
   ));
@@ -46,8 +46,8 @@ function ModelCarousel() {
         ))}
       </div>
       <div className="flex justify-center gap-8px mt-12px">
-        {dotIndicator.map((item) => (
-          <>{item}</>
+        {dotIndicator.map((item, index) => (
+          <Fragment key={index}>{item}</Fragment>
         ))}
       </div>
     </div>

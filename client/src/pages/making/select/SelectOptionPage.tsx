@@ -5,29 +5,32 @@ import {
   SelectOptionListContainer,
   SelectOptionFooter,
 } from './';
-import { UserSelectedOptionDataContext } from '@/pages/making';
-import OptionCard from '@/components/OptionCard';
-import RotateCarImage from '@/components/RotateCarImage';
-import getRotateImages from '@/utils/getRotateImages.ts';
 import { PathParamsType } from '@/types/router';
 import { AllOptionType } from '@/types/option';
 import { SelectOptionPageProps } from '@/pages/making/select/type.ts';
 import { optionTypeName } from '@/constant.ts';
+import { UserSelectedOptionDataContext } from '@/pages/making';
+import { OptionGroupType } from '../type';
+import { useModal } from '@/hooks/useModal';
+import OptionCard from '@/components/OptionCard';
+import RotateCarImage from '@/components/RotateCarImage';
+import getRotateImages from '@/utils/getRotateImages.ts';
 import Spinner from '@/components/Spinner';
 import Skeleton from '@/components/OptionCard/Skeleton.tsx';
-import { OptionGroupType } from '../type';
+import PowerTrainChangePopUp from './PowerTrainChangePopUp';
 
 const EXTERIOR_COLOR_STEP = 5;
 const FEEDBACK_DELAY_TIME = 2000;
 
 function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
-  const { step, mode, id } = useParams() as PathParamsType;
   const navigate = useNavigate();
+  const { step, mode, id } = useParams() as PathParamsType;
   const [next, setNext] = useState(false);
+  const { isOpen, openPopUp, closePopUp } = useModal();
   const { userSelectedOptionData, saveOptionData } = useContext(
     UserSelectedOptionDataContext
   );
-  // 선택 아이템 인덳스
+  // 선택 아이템 인덱스
   const [selectedItem, setSelectedItem] = useState(-1);
   const [isImageLoading, setIsImageLoading] = useState(true);
   function onNext() {
@@ -129,6 +132,13 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
                         key={`OptionCard-${item.name}`}
                         isActive={selectedItem === index}
                         onClick={() => {
+                          if (
+                            step === '1' &&
+                            selectedItem === 0 &&
+                            index === 1
+                          ) {
+                            openPopUp();
+                          }
                           setSelectedItem(index);
                         }}
                         item={item}
@@ -143,6 +153,12 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
             </div>
           </div>
         </main>
+      )}
+      {isOpen && (
+        <PowerTrainChangePopUp
+          closePopUp={closePopUp}
+          setSelectedItem={setSelectedItem}
+        />
       )}
     </>
   );
