@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@property --percentage {
+  initial-value: 0%;
+  inherits: false;
+  syntax: "<percentage>";
+}
+
 @font-face {
   font-family: 'Hyundai Sans Head KR';
   font-weight: 400;
@@ -114,5 +120,38 @@
       rgba(255, 255, 255, 1) 0%,
       rgba(255, 255, 255, 0) 100%
     );
+  }
+
+  .guide::before, .guide::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    padding: 2px;
+    border-radius: 8px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  .guide::before {
+    background: conic-gradient(from 0deg at 2px calc(100% - 2px), #4CA7CE var(--percentage), transparent 0);
+    animation: border-animation forwards 1s;
+  }
+
+  .guide::after {
+    background: conic-gradient(from 180deg at calc(100% - 2px) 2px, #4CA7CE var(--percentage), transparent 0);
+    animation: border-animation 1s 1s forwards;
+  }
+
+  @keyframes border-animation {
+    from {
+      --percentage: 0%;
+    }
+    to {
+      --percentage: 25%;
+    }
   }
 }
