@@ -2,6 +2,7 @@ package com.youngcha.ohmycarset.ui.adapter.binding
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.util.Log
@@ -22,13 +23,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.ComponentRegistry
 import coil.ImageLoader
+import coil.ImageLoaderFactory
 import coil.decode.SvgDecoder
 import coil.load
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.data.model.car.Car
 import com.youngcha.ohmycarset.data.model.car.OptionInfo
@@ -86,21 +92,32 @@ fun loadImageCoil(view: ImageView, imageUrl: String?) {
 fun loadSvgImage(imageView: ImageView, url: String?) {
     val context = imageView.context
 
-    val imageLoader = ImageLoader.Builder(context)
-        .componentRegistry {
-            // 여기에서 add() 메서드를 사용하여 SvgDecoder 등을 추가합니다.
-            add(SvgDecoder(context))
-        }
-        .build()
+    Glide.with(context)
+        .load(url)
+        .listener(object : RequestListener<Drawable> {
+            override fun onResourceReady(
+                resource: Drawable,
+                model: Any,
+                target: com.bumptech.glide.request.target.Target<Drawable>?,
+                dataSource: DataSource,
+                isFirstResource: Boolean
+            ): Boolean {
+                imageView.setImageDrawable(resource)
+                return true
+            }
 
-    val request = ImageRequest.Builder(context)
-        .data(url)
-        .target(imageView)
-        .build()
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Drawable>,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
 
-    imageLoader.enqueue(request)
+        })
+        .into(imageView)
 }
-
 
 @BindingAdapter("exterior_imageUrl")
 fun loadExteriorImage(view: ImageView, imageUrl: String?) {
