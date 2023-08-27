@@ -27,6 +27,7 @@ export interface UserSelectedOptionDataContextType {
   }) => void;
 }
 
+const INIT_COLOR_CODE = '12';
 function MakingPage() {
   const { step, mode } = useParams() as PathParamsType;
   const { state } = useLocation();
@@ -56,7 +57,7 @@ function MakingPage() {
         ? ({
             exteriorColorId:
               userSelectedOptionData.colors.options.exteriorColor?.id.toString() ??
-              '12',
+              INIT_COLOR_CODE,
           } as Record<string, string>)
         : undefined;
     }
