@@ -7,6 +7,8 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Spannable
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -44,14 +46,19 @@ import com.youngcha.ohmycarset.util.AnimationUtils.animateValueChange
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.baekcasajeon.*
 import com.youngcha.ohmycarset.data.api.RetrofitClient
+import com.youngcha.ohmycarset.data.model.Baekcasajeon
+import com.youngcha.ohmycarset.data.repository.BaekcasajeonRepository
 import com.youngcha.ohmycarset.data.repository.CategoryRepository
 import com.youngcha.ohmycarset.data.repository.GuideModeRepository
 import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
 import com.youngcha.ohmycarset.util.CarImageUtils
+import com.youngcha.ohmycarset.util.findTextViews
 import com.youngcha.ohmycarset.util.getColorCodeFromName
+import com.youngcha.ohmycarset.viewmodel.BaekcasajeonViewModel
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
+import com.youngcha.ohmycarset.viewmodel.factory.BaekcasajeonFactory
 import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -68,6 +75,11 @@ class CarCustomizationFragment : Fragment() {
     private val selfModeRepository by lazy { SelfModeRepository(RetrofitClient.selfModeApi) }
     private val guideModeRepository by lazy { GuideModeRepository(RetrofitClient.guideModeApi) }
     private val categoryRepository by lazy { CategoryRepository(RetrofitClient.categoriesApi) }
+
+    private val baekcasajeonRepository by lazy { BaekcasajeonRepository(RetrofitClient.baekcasajeonApi) }
+    private val baekcasajeonViewModel: BaekcasajeonViewModel by activityViewModels {
+        BaekcasajeonFactory(baekcasajeonRepository)
+    }
 
     private val guideModeViewModel: GuideModeViewModel by activityViewModels()
 
@@ -155,11 +167,11 @@ class CarCustomizationFragment : Fragment() {
             }
 
             override fun onDictionaryOffClick() {
-                showSnackbar("Dictionary off clicked!")
+                baekcasajeonViewModel.setBaekcasajeonState()
             }
 
             override fun onModelChangeClick() {
-                showSnackbar("Model change clicked!")
+                showSnackbar("준비중 입니다.")
             }
 
             private fun showSnackbar(message: String) {
@@ -332,7 +344,7 @@ class CarCustomizationFragment : Fragment() {
                 ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     binding.tvTitle.viewTreeObserver.removeOnPreDrawListener(this)
-                    showBaekcasajeon(binding.tvTitle, componentName)
+                        //   showBaekcasajeon(binding.tvTitle, componentName)
                     return true
                 }
             })
@@ -411,6 +423,25 @@ class CarCustomizationFragment : Fragment() {
             carViewModel.prevPrice.value = currentTotalPrice
         }
 
+        baekcasajeonViewModel.baekcasajeonState.observe(viewLifecycleOwner) { state ->
+            binding.htbHeaderToolbar.updateDictionaryState(state)
+
+            val textViews = _binding?.clRoot?.findTextViews() ?: listOf()
+            if (state == 1) {
+                for (textView in textViews) {
+                  //  textView.text = "테일게이트"
+                    baekcasajeonViewModel.baekcasajeon.value.let {
+                        if (it != null) {
+                            showBaekcasajeon(textView, it)
+                        }
+                    }
+                }
+            } else if (state == 0) {
+                for (textView in textViews) {
+                    hideBaekcasajeon(textView)
+                }
+            }
+        }
     }
 
     // 현재 선택한 탭의 옵션 리스트를 ViewPager에 연결
@@ -573,11 +604,11 @@ class CarCustomizationFragment : Fragment() {
         binding.btnComponentOption2.isEnabled = isEnabled
     }
 
-    fun showBaekcasajeon(anchorView: TextView, keyword: String) {
-        val dialog = BaekcasajeonDialogView(anchorView)
+    fun showBaekcasajeon(anchorView: TextView, baekcasajeons: List<Baekcasajeon>) {
+        val dialog = BaekcasajeonDialogView(anchorView.context)
 
-        val options = mapOf(
-            keyword to KeywordOptions(
+        val options = baekcasajeons.associate { baekcasajeon ->
+            baekcasajeon.word to KeywordOptions(
                 nonSelectedTextColor = Color.BLACK,  // 선택되지 않았을 때의 텍스트 색상
                 selectedTextColor = Color.WHITE,     // 선택되었을 때의 텍스트 색상
                 nonSelectedBackgroundColor = ContextCompat.getColor(
@@ -592,16 +623,45 @@ class CarCustomizationFragment : Fragment() {
                 cornerRadius = 20f,
                 isBold = true
             )
-        )
+        }
 
         val keywordSpans = anchorView.baekcasajeon(options) { keyword ->
-            dialog.show(keyword, keyword.toString() + " 백카사전")
+            // baekcasajeonList에서 해당 keyword와 일치하는 Baekcasajeon 객체를 찾는다.
+            val matchingBaekcasajeon = baekcasajeons.find { it.word == keyword }
+
+            matchingBaekcasajeon.let {
+                if (it != null) {
+                    dialog.show(it)
+                }
+            }
+
         }
 
         dialog.setOnDismissAction {
-            keywordSpans[keyword]?.toggleSelected()
-
+            for (baekcasajeon in baekcasajeons) {
+                keywordSpans[baekcasajeon.word]?.toggleSelected()
+            }
         }
+    }
+
+    fun hideBaekcasajeon(anchorView: TextView) {
+        val text = anchorView.text
+        if (text is Spannable) {
+            // AnimatedRoundedBackgroundSpan을 제거
+            val backgroundSpans = text.getSpans(0, text.length, AnimatedRoundedBackgroundSpan::class.java)
+            for (span in backgroundSpans) {
+                text.removeSpan(span)
+            }
+
+            // ClickableSpan도 제거
+            val clickableSpans = text.getSpans(0, text.length, ClickableSpan::class.java)
+            for (span in clickableSpans) {
+                text.removeSpan(span)
+            }
+        }
+
+        anchorView.movementMethod = null  // 클릭 이벤트를 제거
+        anchorView.text = text  // 스팬을 제거한 후 텍스트 뷰를 다시 갱신
     }
 
     override fun onDestroyView() {

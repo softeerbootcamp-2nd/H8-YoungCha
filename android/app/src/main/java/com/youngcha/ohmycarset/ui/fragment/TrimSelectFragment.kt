@@ -1,15 +1,19 @@
 package com.youngcha.ohmycarset.ui.fragment
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
+import android.text.Spannable
+import android.text.style.ClickableSpan
 import android.transition.TransitionManager
 import android.util.DisplayMetrics
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
@@ -19,33 +23,34 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.youngcha.baekcasajeon.AnimatedRoundedBackgroundSpan
+import com.youngcha.baekcasajeon.KeywordOptions
+import com.youngcha.baekcasajeon.baekcasajeon
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.data.api.RetrofitClient
 import com.youngcha.ohmycarset.databinding.FragmentTrimSelectBinding
 import com.youngcha.ohmycarset.enums.TrimType
 import com.youngcha.ohmycarset.data.model.TrimCategory
 import com.youngcha.ohmycarset.data.dto.OptionCategory
-import com.youngcha.ohmycarset.data.model.dialog.ButtonDialog
-import com.youngcha.ohmycarset.data.model.dialog.ButtonHorizontal
-import com.youngcha.ohmycarset.data.model.dialog.ButtonVertical
+import com.youngcha.ohmycarset.data.model.Baekcasajeon
 import com.youngcha.ohmycarset.data.repository.BaekcasajeonRepository
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelectAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeExteriorColorAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeInteriorColorAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeMainOptionAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeOptionAdapter
-import com.youngcha.ohmycarset.ui.customview.ButtonDialogView
+import com.youngcha.ohmycarset.ui.customview.BaekcasajeonDialogView
 import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.ui.listener.CustomScrollChangeListener
 import com.youngcha.ohmycarset.util.MILLISECONDS_PER_INCH
 import com.youngcha.ohmycarset.util.decorator.GridItemDecoration
 import com.youngcha.ohmycarset.util.decorator.LinearItemDecoration
 import com.youngcha.ohmycarset.util.decorator.TopSpacingItemDecoration
+import com.youngcha.ohmycarset.util.findTextViews
 import com.youngcha.ohmycarset.viewmodel.BaekcasajeonViewModel
 import com.youngcha.ohmycarset.viewmodel.TrimSelectViewModel
 import com.youngcha.ohmycarset.viewmodel.factory.BaekcasajeonFactory
 import kotlinx.coroutines.launch
-
 
 class TrimSelectFragment : Fragment() {
 
@@ -160,6 +165,20 @@ class TrimSelectFragment : Fragment() {
     private fun observeViewModel() {
         baekcasajeonViewModel.baekcasajeonState.observe(viewLifecycleOwner) { state ->
             binding.htbHeaderToolbar.updateDictionaryState(state)
+            val textViews = _binding?.clRoot?.findTextViews() ?: listOf()
+            if (state == 1) {
+                for (textView in textViews) {
+                    baekcasajeonViewModel.baekcasajeon.value.let {
+                        if (it != null) {
+                            showBaekcasajeon(textView, it)
+                        }
+                    }
+                }
+            } else if (state == 0) {
+                for (textView in textViews) {
+                    hideBaekcasajeon(textView)
+                }
+            }
         }
 
         trimSelectViewModel.trimCategoryState.observe(viewLifecycleOwner) { trimState ->
@@ -315,6 +334,65 @@ class TrimSelectFragment : Fragment() {
             smoothScroller.targetPosition = position
             layoutManager.startSmoothScroll(smoothScroller)
         }
+    }
+
+    fun showBaekcasajeon(anchorView: TextView, baekcasajeons: List<Baekcasajeon>) {
+        val dialog = BaekcasajeonDialogView(anchorView.context)
+        val options = baekcasajeons.associate { baekcasajeon ->
+            baekcasajeon.word to KeywordOptions(
+                nonSelectedTextColor = Color.BLACK,  // 선택되지 않았을 때의 텍스트 색상
+                selectedTextColor = Color.WHITE,     // 선택되었을 때의 텍스트 색상
+                nonSelectedBackgroundColor = ContextCompat.getColor(
+                    requireContext(),
+                    R.color.yellow
+                ),
+                selectedBackgroundColor = ContextCompat.getColor(
+                    requireContext(),
+                    R.color.cool_grey_black
+                ),
+                padding = Rect(15, 15, 15, 15),
+                cornerRadius = 20f,
+                isBold = true
+            )
+        }
+
+        val keywordSpans = anchorView.baekcasajeon(options) { keyword ->
+            // baekcasajeonList에서 해당 keyword와 일치하는 Baekcasajeon 객체를 찾는다.
+            val matchingBaekcasajeon = baekcasajeons.find { it.word == keyword }
+
+            matchingBaekcasajeon.let {
+                if (it != null) {
+                    dialog.show(it)
+                }
+            }
+
+        }
+
+        dialog.setOnDismissAction {
+            for (baekcasajeon in baekcasajeons) {
+                keywordSpans[baekcasajeon.word]?.toggleSelected()
+            }
+        }
+    }
+
+    fun hideBaekcasajeon(anchorView: TextView) {
+        val text = anchorView.text
+        if (text is Spannable) {
+            // AnimatedRoundedBackgroundSpan을 제거
+            val backgroundSpans = text.getSpans(0, text.length, AnimatedRoundedBackgroundSpan::class.java)
+            for (span in backgroundSpans) {
+                text.removeSpan(span)
+            }
+
+            // ClickableSpan도 제거
+            val clickableSpans = text.getSpans(0, text.length, ClickableSpan::class.java)
+            for (span in clickableSpans) {
+                text.removeSpan(span)
+            }
+        }
+
+        anchorView.movementMethod = null  // 클릭 이벤트를 제거
+        anchorView.text = text  // 스팬을 제거한 후 텍스트 뷰를 다시 갱신
     }
 
     override fun onDestroyView() {
