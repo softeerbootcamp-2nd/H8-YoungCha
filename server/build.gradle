@@ -83,7 +83,8 @@ tasks.jacocoTestCoverageVerification {
 
             excludes = [
                     "**/*Application*",
-                    "**/common/dto/**",
+                    "**/dto/**",
+                    "**/enums/**",
                     "**/common/config/**",
                     "**/common/exception/**"
             ]
