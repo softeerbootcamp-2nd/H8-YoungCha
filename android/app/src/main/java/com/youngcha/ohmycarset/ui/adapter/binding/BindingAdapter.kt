@@ -61,32 +61,17 @@ fun loadImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
 
 @BindingAdapter(value = ["detailMainImageUrl", "detailSubImageUrl"], requireAll = false)
 fun setLogoImage(view: ImageView, mainImageUrl: String?, subImageUrl: String?) {
-
-    val context = view.context
-    val widthInPixels: Int
-    val heightInPixels: Int
-
     if (mainImageUrl == "") {
-        widthInPixels = (60 * context.resources.displayMetrics.density).toInt()
-        heightInPixels = (60 * context.resources.displayMetrics.density).toInt()
         Glide.with(view.context)
             .load(subImageUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
-            .circleCrop()
             .into(view)
     } else {
-        widthInPixels = (86 * context.resources.displayMetrics.density).toInt()
-        heightInPixels = (64 * context.resources.displayMetrics.density).toInt()
         Glide.with(view.context)
             .load(mainImageUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(view)
     }
-
-    val params = view.layoutParams
-    params.width = widthInPixels
-    params.height = heightInPixels
-    view.layoutParams = params
 }
 
 @BindingAdapter("imageUrl")
@@ -300,6 +285,27 @@ fun bindRecyclerView(
     }
     adapter.updateOptionInfo(matchedOptionsMap)
 }
+
+@BindingAdapter(value = ["partPrice", "partViewType"], requireAll = false)
+fun setPartPrice(
+    textView: TextView,
+    myCarData: List<Map<String, List<OptionInfo>>>?,
+    viewType: String
+) {
+
+    var partPrice = 0
+    myCarData?.forEach { mapEntry ->
+        mapEntry.forEach { (key, optionList) ->
+            optionList.forEach { option ->
+                if (option.optionType == viewType) {
+                    partPrice += option.price
+                }
+            }
+        }
+    }
+    textView.text = "%,d원".format(partPrice)
+}
+
 
 @BindingAdapter(value = ["currentTypeForBackground", "visibleForBackground"], requireAll = false)
 fun View.setCurrentType(currentType: String?, visible: Int) {
