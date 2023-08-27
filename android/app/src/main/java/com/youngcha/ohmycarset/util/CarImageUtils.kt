@@ -7,11 +7,8 @@ import android.graphics.drawable.Drawable
 import android.view.MotionEvent
 import android.widget.ImageView
 import coil.ImageLoader
-import coil.disk.DiskCache
-import coil.memory.MemoryCache
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

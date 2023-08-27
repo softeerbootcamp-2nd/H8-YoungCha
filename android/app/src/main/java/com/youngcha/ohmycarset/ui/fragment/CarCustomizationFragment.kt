@@ -23,7 +23,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.ImageLoader
-import coil.request.ImageRequest
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -50,14 +49,11 @@ import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
 import com.youngcha.ohmycarset.util.CarImageUtils
 import com.youngcha.ohmycarset.util.getColorCodeFromName
-import com.youngcha.ohmycarset.util.setupImageSwipeWithPreloadedCoil
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
 import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import coil.disk.DiskCache
-import coil.memory.MemoryCache
 import kotlinx.coroutines.Dispatchers
 
 class CarCustomizationFragment : Fragment() {
@@ -313,15 +309,16 @@ class CarCustomizationFragment : Fragment() {
 
                         if (imgList.isNotEmpty()) {
                             binding.ivMainImg.setImageDrawable(imgList[0])
+                            binding.layoutEstimate.ivEstimateDone.setImageDrawable(imgList[0])
                         }
 
                         CarImageUtils.setupImageSwipe(binding.ivMainImg, imgList, imageLoader)
+                        CarImageUtils.setupImageSwipe(binding.layoutEstimate.ivEstimateDone, imgList, imageLoader)
                         lifecycleScope.launch(Dispatchers.Main) {
                             carViewModel.setLoadingState(false)
                         }
                     }
                 )
-
             }
         }
 

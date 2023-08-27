@@ -34,24 +34,101 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:layout_marginEnd="20dp"
-            app:formattedCurrency="@{viewModel.totalPrice}"
             android:textColor="@color/cool_grey_black"
             android:textSize="18sp"
             android:textStyle="bold"
+            app:formattedCurrency="@{viewModel.totalPrice}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="41,300,000원" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_trim_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_total_price">
+
+            <TextView
+                android:id="@+id/tv_detail_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/trim"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_detail_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="16sp"
+                app:formattedCurrency="@{41980000}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="41,200,000원" />
+
+            <View
+                android:id="@+id/v_bar"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/cool_grey_001"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_name" />
+
+            <ImageView
+                android:id="@+id/iv_type"
+                android:layout_width="86dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                app:imageUrl="@{viewModel.currentExteriorColorFirstUrl}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_bar" />
+
+            <TextView
+                android:id="@+id/tv_type_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/leblanc_full_name"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_type"
+                app:layout_constraintStart_toEndOf="@id/iv_type"
+                app:layout_constraintTop_toTopOf="@id/iv_type" />
+
+            <TextView
+                android:id="@+id/tv_type_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_type"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_type"
+                app:plusPrice="@{41980000}" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_main_option"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             android:nestedScrollingEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_result_detail"
+            app:layout_constraintTop_toBottomOf="@id/cl_trim_data"
             tools:itemCount="6"
             tools:listitem="@layout/item_estimate_detail" />
 
@@ -59,9 +136,9 @@
             android:id="@+id/tv_detail_chooser_option_name"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:gravity="start"
             android:layout_marginStart="20dp"
             android:layout_marginTop="40dp"
+            android:gravity="start"
             android:text='@{viewModel.estimateSubTabType == "selectOption" ? "선택 옵션" : "기본 포함 품목"}'
             android:textColor="@color/cool_grey_black"
             android:textSize="16sp"
@@ -72,14 +149,14 @@
             android:id="@+id/btn_toggle_sub_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
             android:fontFamily="@font/hyundai_sans_text_regular"
-            android:textColor="@color/cool_grey_004"
-            android:text='@{viewModel.estimateSubTabType == "selectOption" ? "기본 포함 품목 보기" : "선택 옵션 보기"}'
             android:onClick="@{() -> viewModel.toggleSubTabType()}"
-            app:layout_constraintTop_toTopOf="@id/tv_detail_chooser_option_name"
+            android:text='@{viewModel.estimateSubTabType == "selectOption" ? "기본 포함 품목 보기" : "선택 옵션 보기"}'
+            android:textColor="@color/cool_grey_004"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_detail_chooser_option_name"
-            app:layout_constraintStart_toEndOf="@id/tv_detail_chooser_option_name"/>
+            app:layout_constraintStart_toEndOf="@id/tv_detail_chooser_option_name"
+            app:layout_constraintTop_toTopOf="@id/tv_detail_chooser_option_name" />
 
         <TextView
             android:id="@+id/tv_detail_chooser_option_price"
@@ -133,9 +210,9 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="50dp"
             android:nestedScrollingEnabled="false"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tl_option"
             tools:listitem="@layout/item_estimate_detail" />
 
