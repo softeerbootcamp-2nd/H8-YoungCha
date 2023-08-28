@@ -5,7 +5,7 @@ function Rate({
 }: {
   rate: number;
   isSelfMode: boolean;
-  isActive: boolean;
+  isActive?: boolean;
 }) {
   const rateTextColor = isActive
     ? isSelfMode

@@ -26,9 +26,14 @@ export default {
           '60%': { opacity: '0' },
           '100%': { opacity: '0' },
         },
+        good: {
+          from: { transform: 'scale(0)' },
+          to: { transform: 'scale(1)' },
+        },
       },
       animation: {
         fade: 'fade 1s ease-in-out infinite ',
+        good: 'good 0.5s ease-in-out forwards',
       },
     },
     fontFamily: {

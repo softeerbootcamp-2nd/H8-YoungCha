@@ -140,9 +140,9 @@ function SelectMultiOptionPage({ data, isLoading }: SelectOptionPageProps) {
           <SelectOptionListContainer>
             {isLoading ? (
               <>
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
+                <Skeleton mode={mode} />
+                <Skeleton mode={mode} />
+                <Skeleton mode={mode} />
               </>
             ) : (
               categorizedData[category]?.map((item: AllOptionType) => (
