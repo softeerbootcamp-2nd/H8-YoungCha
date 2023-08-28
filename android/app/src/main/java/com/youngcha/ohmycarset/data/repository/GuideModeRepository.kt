@@ -14,6 +14,23 @@ class GuideModeRepository(private val guideModeApiService: GuideModeApiService) 
     private val _car = MutableLiveData<Car>()
     val car: LiveData<Car> = _car
 
+    suspend fun <T> retryApiCall(apiCall: suspend () -> T): T? {
+        var retryCount = 0
+        val maxRetry = 1
+        while (retryCount <= maxRetry) {
+            try {
+                return apiCall()
+            } catch (e: Exception) {
+                if (retryCount >= maxRetry) {
+                    throw e
+                }
+                retryCount++
+            }
+        }
+        return null
+    }
+
+
     fun filterData(guideModeDTO: GuideModeDTO, type: String): List<OptionInfo> {
         return guideModeDTO.data.map { dataItem ->
             val mainImage: String = dataItem.images.find { it.imgType == 0 }?.imgUrl ?: ""
