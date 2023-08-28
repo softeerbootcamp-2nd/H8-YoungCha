@@ -47,7 +47,6 @@ import com.youngcha.ohmycarset.util.AnimationUtils.animateValueChange
 import com.youngcha.ohmycarset.util.OPTION_SELECTION
 import com.youngcha.baekcasajeon.*
 import com.youngcha.ohmycarset.data.api.RetrofitClient
-import com.youngcha.ohmycarset.data.model.Baekcasajeon
 import com.youngcha.ohmycarset.data.repository.BaekcasajeonRepository
 import com.youngcha.ohmycarset.data.repository.CategoryRepository
 import com.youngcha.ohmycarset.data.repository.GuideModeRepository
