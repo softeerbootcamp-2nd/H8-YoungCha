@@ -259,6 +259,7 @@ class LoadingFragment : Fragment() {
     private fun fadeOutViews() {
         val fadeOutDuration = 500L
 
+        if (!isAdded) return
         binding.pbProgressbar.animate().alpha(0f).setDuration(fadeOutDuration).start()
         binding.ivAnimation.animate().alpha(0f).setDuration(fadeOutDuration).start()
         binding.tvDescription.animate().alpha(0f).setDuration(fadeOutDuration).start()
@@ -271,6 +272,7 @@ class LoadingFragment : Fragment() {
     }
 
     private fun fadeInEstimateReady() {
+        if (!isAdded) return
         val fadeInDuration = 500L
         binding.layoutEstimateReady.root.visibility = View.VISIBLE
         binding.layoutEstimateReady.root.alpha = 0f
