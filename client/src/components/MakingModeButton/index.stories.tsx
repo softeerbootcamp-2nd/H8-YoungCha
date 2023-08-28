@@ -27,15 +27,15 @@ export const Default: Story = {
       <MakingModeButton.MainOptionList
         mainOptions={[
           {
-            imgUrl: 'src/assets/mock/TrimCard/option1.svg',
+            imgUrl: 'src/assets/story/TrimCard/option1.svg',
             name: '20인치\n 알로이 휠',
           },
           {
-            imgUrl: 'src/assets/mock/TrimCard/option2.svg',
+            imgUrl: 'src/assets/story/TrimCard/option2.svg',
             name: '서라운드 뷰\n 모니터',
           },
           {
-            imgUrl: 'src/assets/mock/TrimCard/option3.svg',
+            imgUrl: 'src/assets/story/TrimCard/option3.svg',
             name: '클러스터\n (12.3인치 컬러 LCD)',
           },
         ]}
