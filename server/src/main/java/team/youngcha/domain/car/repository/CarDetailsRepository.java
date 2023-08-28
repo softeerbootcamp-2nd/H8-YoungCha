@@ -25,7 +25,8 @@ public class CarDetailsRepository {
                 "trim.id AS trimId, " +
                 "trim.name AS trimName, " +
                 "trim.img_url AS trimImgUrl, " +
-                "trim.background_img_url AS trimBackgroundImgUrl, " +
+                "trim.background_img_url_web AS trimBackgroundImgUrlWeb, " +
+                "trim.background_img_url_android AS trimBackgroundImgUrlAndroid, " +
                 "trim.hashtag AS trimHashTag, " +
                 "trim.price AS trimPrice, " +
                 "trim.description AS trimDescription, " +
