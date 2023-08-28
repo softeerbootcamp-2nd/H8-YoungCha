@@ -37,7 +37,7 @@ function SummaryModal({ render, onClose }: SummaryModalProps) {
         unmount
       >
         <div className="flex items-center justify-between px-20px py-16px">
-          <h3 className="font-medium text-main-blue title3">
+          <h3 className="font-medium text-grey-black title3">
             {ESTIMATION_SUMMARY}
           </h3>
           <button onClick={onClose}>
@@ -54,7 +54,7 @@ function SummaryModal({ render, onClose }: SummaryModalProps) {
               return (
                 <Fragment key={title}>
                   <OptionTitle title={title} price={totalPrice} />
-                  <div className="flex flex-col p-20px gap-y-10px">
+                  <div className="flex flex-col p-20px gap-y-10px ">
                     {Object.values(options).map(
                       ({ type, name, price }, index) => {
                         const isDuplicatedType = title === '옵션' && index > 0;
@@ -81,9 +81,9 @@ function SummaryModal({ render, onClose }: SummaryModalProps) {
 
 function OptionTitle({ title, price }: OptionTitleProps) {
   return (
-    <div className="flex items-center justify-between font-medium text-main-blue bg-grey-001 px-20px pt-10px pb-8px title4">
-      <div>{title}</div>
-      <div>{formatPrice(price, true)}</div>
+    <div className="flex items-center justify-between font-medium bg-grey-001 px-20px pt-10px pb-8px title4">
+      <div className="text-grey-black">{title}</div>
+      <div className="text-main-blue">{formatPrice(price, true)}</div>
     </div>
   );
 }
