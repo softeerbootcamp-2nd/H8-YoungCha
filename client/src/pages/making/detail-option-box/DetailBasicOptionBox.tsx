@@ -29,7 +29,10 @@ function DetailBasicOptionBox() {
       <DetailOption.Tabs
         options={Object.keys(BasicOptionsId) as BasicOptionFilterType[]}
         selectedOption={selectedOptionFilter}
-        onClick={(option) => setSelectedOptionFilter(option)}
+        onClick={(option) => {
+          setCurrentSize(OPTION_SIZE);
+          setSelectedOptionFilter(option);
+        }}
       />
       {basicOptions?.contents?.map((option) => (
         <DetailOption.List
