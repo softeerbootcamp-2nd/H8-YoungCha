@@ -13,7 +13,8 @@ public class CarDetails {
     private Long trimId;
     private String trimName;
     private String trimImgUrl;
-    private String trimBackgroundImgUrl;
+    private String trimWebBackgroundImgUrl;
+    private String trimAndroidBackgroundImgUrl;
     private String trimHashTag;
     private Integer trimPrice;
     private String trimDescription;
@@ -23,11 +24,12 @@ public class CarDetails {
     private Integer optionImgType;
     private String optionImgUrl;
 
-    public CarDetails(Long trimId, String trimName, String trimImgUrl, String trimBackgroundImgUrl, String trimHashTag, Integer trimPrice, String trimDescription, Integer trimOptionType, String optionName, String optionCategoryName, Integer optionImgType, String optionImgUrl) {
+    public CarDetails(Long trimId, String trimName, String trimImgUrl, String trimWebBackgroundImgUrl, String trimAndroidBackgroundImgUrl, String trimHashTag, Integer trimPrice, String trimDescription, Integer trimOptionType, String optionName, String optionCategoryName, Integer optionImgType, String optionImgUrl) {
         this.trimId = trimId;
         this.trimName = trimName;
         this.trimImgUrl = trimImgUrl;
-        this.trimBackgroundImgUrl = trimBackgroundImgUrl;
+        this.trimWebBackgroundImgUrl = trimWebBackgroundImgUrl;
+        this.trimAndroidBackgroundImgUrl = trimAndroidBackgroundImgUrl;
         this.trimHashTag = trimHashTag;
         this.trimPrice = trimPrice;
         this.trimDescription = trimDescription;
