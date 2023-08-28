@@ -12,7 +12,7 @@ class UserTagViewModel : ViewModel() {
     val tagNumbers: LiveData<List<Int>> = _tagNumbers
 
     // 참조 태그 목록
-    val referenceTags = listOf(
+    private val referenceTags = listOf(
         "주행력",
         "소음",
         "효율",
@@ -27,7 +27,7 @@ class UserTagViewModel : ViewModel() {
         "가족 여행"
     )
 
-    val ageGenderReference = mapOf(
+    private val ageGenderReference = mapOf(
         "20대" to 2,
         "30대" to 3,
         "40대" to 4,
@@ -115,7 +115,7 @@ class UserTagViewModel : ViewModel() {
 
     private fun initData() {
         val tempAgeList = listOf(
-            Tag("0", "Age", "20대", isSelected = false),
+            Tag("0", "Age", "20대", isSelected = true),
             Tag("0", "Age", "30대", isSelected = false),
             Tag("0", "Age", "40대", isSelected = false),
             Tag("0", "Age", "50대", isSelected = false),
@@ -125,7 +125,7 @@ class UserTagViewModel : ViewModel() {
         val tempGenderList = listOf(
             Tag("0", "Gender", "여성", isSelected = false),
             Tag("0", "Gender", "남성", isSelected = false),
-            Tag("0", "Gender", "선택 안함", isSelected = false)
+            Tag("0", "Gender", "선택 안함", isSelected = true)
         )
         val tempStrength = listOf(
             Tag("0", "Strength", "주행력", isSelected = false),
@@ -143,7 +143,7 @@ class UserTagViewModel : ViewModel() {
         )
         val tempUse = listOf(
             Tag("0", "Use", "차박", isSelected = false),
-            Tag("0", "Use", "가족여행", isSelected = false)
+            Tag("0", "Use", "가족 여행", isSelected = false)
         )
 
         _ageList.value = tempAgeList
@@ -173,13 +173,18 @@ class UserTagViewModel : ViewModel() {
         }
         if (tag.isSelected) {
             selectedList.add(tag)
+            Log.d("LASTADD", selectedList.toString())
             tag.tagOrder = (selectedList.indexOf(tag) + 1).toString()
+            Log.d("LASTADD", tag.tagOrder)
+            Log.d("LASTADD", selectedList.toString())
         } else {
             selectedList.remove(tag)
             for (i in selectedList.indices) {
                 if (selectedList[i].tagOrder != "1") {
-                    selectedList[i].tagOrder = (selectedList[i].tagOrder.toInt() - 1).toString()
+                    Log.d("LASTREMOVE", selectedList.toString())
+                    selectedList[i].tagOrder = (selectedList[i].tagOrder.toInt()-1 ).toString()
                     tag.tagOrder = selectedList[i].tagOrder
+                    Log.d("LASTREMOVE", tag.tagOrder)
                 }
             }
         }
@@ -206,6 +211,7 @@ class UserTagViewModel : ViewModel() {
         selectedStrength = strength
         if (strength.isSelected) {
             cnt += 1
+            Log.d("KEYWORD TAG", cnt.toString())
         } else {
             cnt -= 1
         }
@@ -218,6 +224,7 @@ class UserTagViewModel : ViewModel() {
         selectedImportant = important
         if (important.isSelected) {
             cnt += 1
+            Log.d("KEYWORD TAG", cnt.toString())
         } else {
             cnt -= 1
         }
@@ -230,6 +237,7 @@ class UserTagViewModel : ViewModel() {
         selectedUse = use
         if (use.isSelected) {
             cnt += 1
+            Log.d("KEYWORD TAG", cnt.toString())
         } else {
             cnt -= 1
         }
@@ -237,7 +245,7 @@ class UserTagViewModel : ViewModel() {
         isChange.value = if (cnt == 3) 1 else 0
     }
 
-    fun updateTag() {
+    private fun updateTag() {
         _strengthList.value = _strengthList.value
         _importantList.value = _importantList.value
         _useList.value = _useList.value

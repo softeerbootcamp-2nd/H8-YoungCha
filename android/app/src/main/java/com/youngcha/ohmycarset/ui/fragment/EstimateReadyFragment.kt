@@ -15,11 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.youngcha.ohmycarset.R
-import com.youngcha.ohmycarset.data.api.RetrofitClient
 import com.youngcha.ohmycarset.data.model.GuideParam
-import com.youngcha.ohmycarset.data.repository.CategoryRepository
-import com.youngcha.ohmycarset.data.repository.GuideModeRepository
-import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.databinding.FragmentGuidemodePreliminariesBinding
 import com.youngcha.ohmycarset.enums.PreliminariesStepType
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.AgeAdapter
@@ -29,10 +25,7 @@ import com.youngcha.ohmycarset.ui.adapter.recyclerview.StrengthAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.UseAdapter
 import com.youngcha.ohmycarset.util.decorator.GridItemDecoration
 import com.youngcha.ohmycarset.util.decorator.LinearItemDecoration
-import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
 import com.youngcha.ohmycarset.viewmodel.UserTagViewModel
-import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactory
-import com.youngcha.ohmycarset.viewmodel.factory.GuideModeViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -60,8 +53,8 @@ class EstimateReadyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.layoutPreliminariesKeyword.viewModel=userTagViewModel
-        binding.layoutPreliminariesKeyword.lifecycleOwner=this
+        binding.layoutPreliminariesKeyword.viewModel = userTagViewModel
+        binding.layoutPreliminariesKeyword.lifecycleOwner = this
 
         initView()
         setRecyclerView()
@@ -139,7 +132,8 @@ class EstimateReadyFragment : Fragment() {
         }
 
         userTagViewModel.tagNumbers.observe(viewLifecycleOwner) { tagNumbers ->
-            if(tagNumbers.size >= 5) {
+            Log.d("LAST TAG", tagNumbers.toString())
+            if (tagNumbers.size >= 5) {
                 val guideParam = GuideParam(
                     id = 2,
                     gender = tagNumbers[0],
@@ -148,8 +142,12 @@ class EstimateReadyFragment : Fragment() {
                     keyword2Id = tagNumbers[3],
                     keyword3Id = tagNumbers[4]
                 )
-                val action = EstimateReadyFragmentDirections.actionEstimateReadyFragmentToLoadingFragment(guideParam)
+                val action =
+                    EstimateReadyFragmentDirections.actionEstimateReadyFragmentToLoadingFragment(
+                        guideParam
+                    )
                 findNavController().navigate(action)
+
             } else {
                 Snackbar.make(binding.root, "선택 부분을 확인해주세요.", Snackbar.LENGTH_SHORT).show()
             }
@@ -225,7 +223,6 @@ class EstimateReadyFragment : Fragment() {
     private fun onClickFunction() {
         binding.layoutPreliminariesKeyword.btnNext.setOnClickListener {
             if (userTagViewModel.isChange.value == 1) {
-                //로딩 프래그먼트로 전환
                 handlePreliminariesStep(PreliminariesStepType.KEYWORD)
             }
         }
@@ -234,6 +231,5 @@ class EstimateReadyFragment : Fragment() {
             if (userTagViewModel.selectedList.size != 3) return@setOnClickListener
             userTagViewModel.getTagNumber()
         }
-
     }
 }
