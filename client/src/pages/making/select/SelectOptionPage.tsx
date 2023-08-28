@@ -41,6 +41,7 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
     setTimeout(() => {
       setSelectedItem(INIT_ITEM_INDEX);
       navigate(`/model/${id}/making/${mode}/${Number(step) + 1}`);
+      setNext(false);
     }, FEEDBACK_DELAY_TIME);
     setNext(true);
   }
@@ -63,9 +64,7 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
 
   useEffect(() => {
     if (!Array.isArray(data)) return;
-
     const itemIndex = getSelectedItemIndex();
-    setNext(false);
     setSelectedItem(itemIndex);
   }, [data]);
 
@@ -120,8 +119,8 @@ function SelectOptionPage({ data, isLoading }: SelectOptionPageProps) {
               <SelectOptionListContainer>
                 {isLoading ? (
                   <>
-                    <Skeleton />
-                    <Skeleton />
+                    <Skeleton mode={mode} />
+                    <Skeleton mode={mode} />
                   </>
                 ) : (
                   Array.isArray(data) &&

@@ -1,13 +1,14 @@
-import { PathParamsType } from '@/types/router';
-import { useContext, useState } from 'react';
-
-import { DownArrow } from '@/assets/icons';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@/components/Button';
 import SummaryModal from '@/components/SummaryModal';
 import getOptionGroupsTotalPrice from '@/utils/getTotalPrice';
 import { formatPrice } from '@/utils';
 import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionContext';
+import useAnimatedPrice from '@/hooks/useAnimatedPrice.ts';
+import { PathParamsType } from '@/types/router';
+import { DownArrow } from '@/assets/icons';
+
 
 interface SelectOptionFooterProps
   extends Pick<PathParamsType, 'mode' | 'id' | 'step'> {
@@ -24,11 +25,8 @@ function SelectOptionFooter({
 
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
 
-  const { userSelectedOptionData } = useContext(UserSelectedOptionDataContext);
-  const totalPrice = Object.values(userSelectedOptionData).reduce(
-    (sum, { options }) => getOptionGroupsTotalPrice(options) + sum,
-    0
-  );
+  const price = useAnimatedPrice();
+
   return (
     <>
       <SummaryModal
@@ -50,9 +48,7 @@ function SelectOptionFooter({
               />
             </span>
           </button>
-          <span className="title1 text-grey-black">
-            {formatPrice(totalPrice)}
-          </span>
+          <span className="title1 text-grey-black">{formatPrice(price)}</span>
         </div>
         <div className="flex items-center gap-21px">
           {currentStep > 1 && (

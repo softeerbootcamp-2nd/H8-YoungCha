@@ -38,7 +38,7 @@ function OptionCard({
   const totalDivColor = isActive
     ? isSelfMode
       ? 'bg-white border-main-blue'
-      : 'bg-white border-sub-blue'
+      : `bg-white ${item.checked ? 'guide border-grey-002' : 'border-sub-blue'}`
     : 'bg-[#EDF2FA] border-[#EDF2FA] hover:border-grey-003';
 
   const hasDetail = !!item.details[0]?.description;
@@ -106,12 +106,10 @@ function OptionCard({
         {hasDetail && <MoreDetailsButton {...{ isExpanded, setIsExpanded }} />}
       </div>
       {mode === 'self' && next && isActive && (
-        // <Transition render={next} from="opacity-0" to="opacity-100" unmount>
         <FeedbackCard
           feedbackTitle={item.feedbackTitle}
           feedbackDescription={item.feedbackDescription}
         />
-        // </Transition>
       )}
     </button>
   );

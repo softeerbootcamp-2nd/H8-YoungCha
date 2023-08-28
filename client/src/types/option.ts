@@ -1,6 +1,7 @@
 export interface AllOptionType {
   id: number;
   categoryId: number;
+  checked?: boolean;
   rate: number;
   price: number;
   name: string;
