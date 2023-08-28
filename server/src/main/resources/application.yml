@@ -1,0 +1,88 @@
+spring:
+  profiles:
+    active:
+      - local
+      - secret
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  api-docs:
+    groups:
+      enabled: true
+server:
+  shutdown: graceful
+
+--- # local
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+  redis:
+    host: localhost
+    port: 6379
+  origin: http://localhost:8080
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: debug
+          datasource:
+            init:
+              ScriptUtils: debug
+
+--- # spring1
+spring:
+  config:
+    activate:
+      on-profile: spring1
+    import: secrets/application-env.yml
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  redis:
+    host: redis
+    port: 6379
+  origin: https://api.youngcha.team
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: debug
+          datasource:
+            init:
+              ScriptUtils: debug
+
+--- # spring2
+spring:
+  config:
+    activate:
+      on-profile: spring2
+    import: secrets/application-env.yml
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  redis:
+    host: redis
+    port: 6379
+  origin: https://api.youngcha.team
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: debug
+          datasource:
+            init:
+              ScriptUtils: debug

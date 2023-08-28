@@ -1,0 +1,15 @@
+INSERT INTO trim (id, name, img_url, background_img_url_web, background_img_url_android, hashtag, price, description, car_id)
+VALUES (1, 'Exclusive', 'https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/exclusivepng.png',
+        'backgroundImgUrlWeb', 'backgroundImgUrlWeb', 'backgroundImgUrlAndroid' '기본에 충실', 38960000, '기본에 충실', 1),
+       (2, 'Le Blanc (르블랑)', 'https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/leblanc.png',
+        'backgroundImgUrlWeb', 'backgroundImgUrlAndroid', '베스트셀러', 41980000,
+        '모두가 선택한 베스트 셀러', 1),
+       (3, 'Prestige', 'https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/presige.png',
+        'backgroundImgUrlWeb', 'backgroundImgUrlAndroid', '부담없는 고급감', 46240000, '부담없는 고급감',
+        1),
+       (4, 'Calligraphy', 'https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/calligraphy.png',
+        'backgroundImgUrlWeb', 'backgroundImgUrlAndroid', '최고를 원한다면', 51060000, '최고를 원한다면',
+        1),
+       (5, 'Guide Mode', 'https://www.hyundai.com/contents/vr360/LX06/exterior/A2B/001.png',
+        'backgroundImgUrlWeb', 'backgroundImgUrlAndroid', '나만을 위한 팰리세이드', 38960000, null,
+        1);

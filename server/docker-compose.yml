@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  spring1:
+    container_name: spring1
+    restart: always
+    image: img
+    environment:
+      SERVER_MODE: spring1
+    ports:
+      - "8081:8080"
+    depends_on:
+      - nginx
+      - redis
+    networks:
+      - youngcha
+
+  spring2:
+    container_name: spring2
+    restart: always
+    image: img
+    environment:
+      SERVER_MODE: spring2
+    ports:
+      - "8082:8080"
+    depends_on:
+      - nginx
+      - redis
+    networks:
+      - youngcha
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    restart: always
+    ports:
+      - "80:80/tcp"
+      - "443:443"
+    volumes:
+      - ~/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ~/nginx/conf.d/application.conf:/etc/nginx/conf.d/application.conf
+      - ~/nginx/conf.d/service-url.inc:/etc/nginx/conf.d/service-url.inc
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+    environment:
+      - TZ=Asia/Seoul
+    networks:
+      - youngcha
+
+  redis:
+    container_name: redis
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - youngcha
+
+networks:
+  youngcha:
+    driver: bridge
