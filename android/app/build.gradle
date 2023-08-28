@@ -80,7 +80,6 @@ dependencies {
 
     //coil
     implementation 'io.coil-kt:coil:2.4.0'
-    implementation 'io.coil-kt:coil-svg:1.2.0'
 
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
