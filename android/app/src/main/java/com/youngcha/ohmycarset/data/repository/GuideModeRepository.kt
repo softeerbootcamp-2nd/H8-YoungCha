@@ -4,61 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.youngcha.ohmycarset.data.api.GuideModeApiService
 import com.youngcha.ohmycarset.data.dto.Category
-import com.youngcha.ohmycarset.data.dto.GuideModeDTO
 import com.youngcha.ohmycarset.data.model.GuideParam
 import com.youngcha.ohmycarset.data.model.car.Car
 import com.youngcha.ohmycarset.data.model.car.OptionInfo
+import com.youngcha.ohmycarset.util.guideModeFilterData
+import com.youngcha.ohmycarset.util.retryApiCall
 
 class GuideModeRepository(private val guideModeApiService: GuideModeApiService) {
 
     private val _car = MutableLiveData<Car>()
     val car: LiveData<Car> = _car
 
-    suspend fun <T> retryApiCall(apiCall: suspend () -> T): T? {
-        var retryCount = 0
-        val maxRetry = 1
-        while (retryCount <= maxRetry) {
-            try {
-                return apiCall()
-            } catch (e: Exception) {
-                if (retryCount >= maxRetry) {
-                    throw e
-                }
-                retryCount++
-            }
-        }
-        return null
-    }
-
-
-    fun filterData(guideModeDTO: GuideModeDTO, type: String): List<OptionInfo> {
-        return guideModeDTO.data.map { dataItem ->
-            val mainImage: String = dataItem.images.find { it.imgType == 0 }?.imgUrl ?: ""
-            val subImage: String = dataItem.images.find { it.imgType == 1 }?.imgUrl ?: ""
-            val logoImage: String = dataItem.images.find { it.imgType == 2 }?.imgUrl ?: ""
-            val feedbackDescription = dataItem.feedbackDescription ?: ""
-
-            OptionInfo(
-                id = dataItem.id,
-                categoryId = dataItem.categoryId,
-                checked = dataItem.checked,
-                optionType = type,
-                rate = dataItem.rate.toString(),
-                name = dataItem.name,
-                price = dataItem.price,
-                feedbackTitle = dataItem.feedbackTitle,
-                feedbackDescription = feedbackDescription,
-                mainImage = mainImage,
-                subImage = subImage,
-                logoImage = logoImage,
-                detail = dataItem.details,
-                guideModeDescription = null
-            )
-        }
-    }
-
     suspend fun getAllGuideDataAndSetCar(guideParam: GuideParam, categories: List<Category>) {
-        val powerTrain = filterData(
+        val powerTrain = guideModeFilterData(
             retryApiCall {
                 guideModeApiService.getPowerTrainGuide(
                     guideParam.id, guideParam.age, guideParam.gender,
@@ -67,7 +25,7 @@ class GuideModeRepository(private val guideModeApiService: GuideModeApiService) 
             } ?: return, "main"
         )
 
-        val drivingSystem = filterData(
+        val drivingSystem = guideModeFilterData(
             retryApiCall {
                 guideModeApiService.getDrivingSystem(
                     guideParam.id, guideParam.age, guideParam.gender,
@@ -76,7 +34,7 @@ class GuideModeRepository(private val guideModeApiService: GuideModeApiService) 
             } ?: return, "main"
         )
 
-        val bodyType = filterData(
+        val bodyType = guideModeFilterData(
             retryApiCall {
                 guideModeApiService.getBodyTypeGuide(
                     guideParam.id, guideParam.age, guideParam.gender,
@@ -85,7 +43,7 @@ class GuideModeRepository(private val guideModeApiService: GuideModeApiService) 
             } ?: return, "main"
         )
 
-        val exteriorColor = filterData(
+        val exteriorColor = guideModeFilterData(
             retryApiCall {
                 guideModeApiService.getExteriorColorGuide(
                     guideParam.id, guideParam.age, guideParam.gender,
@@ -96,7 +54,7 @@ class GuideModeRepository(private val guideModeApiService: GuideModeApiService) 
 
         val firstExteriorId = exteriorColor.firstOrNull()?.id
         val interiorColor = if (firstExteriorId != null)
-            filterData(
+            guideModeFilterData(
                 retryApiCall {
                     guideModeApiService.getInteriorColorGuide(
                         guideParam.id, guideParam.age, guideParam.gender,
@@ -108,7 +66,7 @@ class GuideModeRepository(private val guideModeApiService: GuideModeApiService) 
         else emptyList()
 
         val wheel = if (firstExteriorId != null)
-            filterData(
+            guideModeFilterData(
                 retryApiCall {
                     guideModeApiService.getWheelGuide(
                         guideParam.id, guideParam.age, guideParam.gender,
@@ -120,7 +78,7 @@ class GuideModeRepository(private val guideModeApiService: GuideModeApiService) 
         else emptyList()
 
         val options = createSubOptionMap(
-            categories, filterData(
+            categories, guideModeFilterData(
                 retryApiCall {
                     guideModeApiService.getOptionsGuide(
                         guideParam.id, guideParam.age, guideParam.gender,
