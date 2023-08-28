@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="interior_color"
+            type="com.youngcha.ohmycarset.data.dto.TrimMainData.Data.Trim.InteriorColor" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_interior_img"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:round_corner_imageUrl="@{interior_color.imgUrl}" />
+
+        <TextView
+            android:id="@+id/tv_interior_color_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            android:text="@{interior_color.name}"
+            android:textColor="@color/cool_grey_black"
+            android:textSize="14sp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_interior_img" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.youngcha.ohmycarset.viewmodel.UserTagViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_root_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="18dp"
+            android:text="@string/gender_step"
+            android:textColor="@color/cool_grey_black"
+            android:fontFamily="@font/hyundai_sans_head_kr_medium"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gender_main_test"
+            android:textColor="@color/main_hyundai_blue"
+            android:fontFamily="@font/hyundai_sans_head_kr_medium"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@id/tv_step"
+            app:layout_constraintTop_toBottomOf="@id/tv_step" />
+
+        <TextView
+            android:id="@+id/tv_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/preliminaries_select"
+            android:textColor="@color/cool_grey_black"
+            android:textSize="20sp"
+            android:fontFamily="@font/hyundai_sans_head_kr_medium"
+            app:layout_constraintStart_toEndOf="@id/tv_main"
+            app:layout_constraintTop_toBottomOf="@id/tv_step" />
+
+        <TextView
+            android:id="@+id/tv_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/gender_sub"
+            android:fontFamily="@font/hyundai_sans_text_kr_regular"
+            android:textColor="#8C8C8C"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/tv_step"
+            app:layout_constraintTop_toBottomOf="@id/tv_main" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_tag"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_sub" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_next"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/shape_round"
+            android:backgroundTint="@color/main_hyundai_blue"
+            android:text="@string/preliminaries_next"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

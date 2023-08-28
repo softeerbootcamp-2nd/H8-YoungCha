@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="description"
+            type="String" />
+
+        <variable
+            name="img_url"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_round"
+        android:backgroundTint="@color/cool_grey_black"
+        android:paddingBottom="100dp">
+
+        <ImageView
+            android:id="@+id/iv_dictionary_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_dictionary_on"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@{title}"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_dictionary_icon"
+            app:layout_constraintStart_toEndOf="@id/iv_dictionary_icon"
+            app:layout_constraintTop_toTopOf="@id/iv_dictionary_icon" />
+
+        <TextView
+            android:id="@+id/tv_about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/about"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintStart_toEndOf="@id/tv_title"
+            app:layout_constraintTop_toTopOf="@id/tv_title" />
+
+        <View
+            android:id="@+id/v_understand"
+            android:layout_width="73dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/shape_round"
+            android:backgroundTint="@color/cool_grey_004"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_understand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/understand"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/v_understand"
+            app:layout_constraintEnd_toEndOf="@id/v_understand"
+            app:layout_constraintStart_toStartOf="@id/v_understand"
+            app:layout_constraintTop_toTopOf="@id/v_understand" />
+
+        <View
+            android:id="@+id/v_bar"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="13dp"
+            android:background="@color/cool_grey_004"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_dictionary_icon" />
+
+        <ImageView
+            android:id="@+id/iv_word"
+            android:layout_width="0dp"
+            android:layout_height="142dp"
+            app:imageUrl="@{img_url}"
+            android:layout_marginTop="20dp"
+            android:visibility="@{img_url != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@id/tv_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_bar" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="10dp"
+            android:text="@{description}"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_goneMarginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_word" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

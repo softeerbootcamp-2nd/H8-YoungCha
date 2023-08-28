@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="tag"
+            type="com.youngcha.ohmycarset.data.model.tag.Tag" />
+        <variable
+            name="order"
+            type="Integer" />
+        <variable
+            name="viewModel"
+            type="com.youngcha.ohmycarset.viewmodel.UserTagViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <View
+            android:id="@+id/v_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="@{() -> viewModel.onTagShortItemClick(tag)}"
+            android:background="@{tag.isSelected ? @drawable/btn_select_style : @drawable/btn_unselect_style}" />
+
+        <TextView
+            android:id="@+id/tv_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@{tag.name}"
+            android:textColor="@{tag.isSelected ? @color/cool_grey_black: @color/cool_grey_003}"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/v_background"
+            app:layout_constraintStart_toStartOf="@id/v_background"
+            app:layout_constraintTop_toTopOf="@id/v_background"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <ImageView
+            android:id="@+id/iv_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:src="@{tag.isSelected ? @drawable/ic_circle_checked: @drawable/ic_circle}"
+            app:layout_constraintBottom_toBottomOf="@id/v_background"
+            app:layout_constraintEnd_toEndOf="@id/v_background"
+            app:layout_constraintTop_toTopOf="@id/v_background"
+            app:layout_constraintVertical_bias="0.5"
+            tools:src="@drawable/ic_circle"/>
+
+        <TextView
+            android:id="@+id/tv_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{tag.tagOrder}"
+            android:textSize="15sp"
+            android:visibility="@{tag.isSelected ?android.view.View.VISIBLE:android.view.View.INVISIBLE}"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            app:layout_constraintStart_toStartOf="@id/iv_select"
+            app:layout_constraintTop_toTopOf="@id/iv_select"
+            app:layout_constraintBottom_toBottomOf="@id/iv_select"
+            app:layout_constraintEnd_toEndOf="@id/iv_select"
+            tools:text="1"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

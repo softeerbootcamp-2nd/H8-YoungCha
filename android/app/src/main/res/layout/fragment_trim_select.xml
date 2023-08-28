@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="trimCategory"
+            type="com.youngcha.ohmycarset.data.model.TrimCategoryState" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragment.TrimSelectFragment">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_self_trim_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/layout_guide_mode"
+                    layout="@layout/layout_guide_mode" />
+
+                <include
+                    android:id="@+id/layout_self_mode"
+                    layout="@layout/layout_self_mode" />
+
+                <TextView
+                    android:id="@+id/tv_select_main_trim_txt_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="19dp"
+                    android:layout_marginTop="74dp"
+                    android:fontFamily="@font/hyundai_sans_head_kr_medium"
+                    android:text="@string/trim_text_1"
+                    android:textColor="@color/cool_grey_black"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_select_sub_trim_txt_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/hyundai_sans_head_kr_otf_regular"
+                    android:text="@string/trim_text_2"
+                    android:textColor="@color/cool_grey_black"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@id/tv_select_main_trim_txt_1"
+                    app:layout_constraintTop_toTopOf="@id/tv_select_main_trim_txt_1" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_trim_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="22dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_select_main_trim_txt_1" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/tv_detail_info_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hyundai_sans_text_kr_regular"
+            android:text="@string/detail_info_txt"
+            android:textColor="@color/cool_grey_003"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/iv_drop_down_trim"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_drop_down_trim"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="12dp"
+            android:src="@drawable/ic_drop_down_trim"
+            app:layout_constraintBottom_toTopOf="@id/btn_trim_selected"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.youngcha.ohmycarset.ui.customview.HyundaiMainColorButtonView
+            android:id="@+id/btn_trim_selected"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            android:text="@string/select_complete"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.youngcha.ohmycarset.ui.customview.HeaderToolBarView
+            android:id="@+id/htb_header_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:modeChangeValid="0"
+            app:title="@string/title_create_my_car" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

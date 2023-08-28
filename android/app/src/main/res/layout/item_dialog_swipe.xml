@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="swipe_dialog"
+            type="com.youngcha.ohmycarset.data.model.dialog.SwipeDialog" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_option"
+                android:layout_width="match_parent"
+                android:layout_height="179dp"
+                android:scaleType="fitXY"
+                app:imageUrl="@{swipe_dialog.img}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_option_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/hyundai_sans_head_kr_regular"
+                android:text="@{swipe_dialog.title}"
+                android:textColor="@color/cool_grey_003"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_option"
+                app:layout_goneMarginTop="21dp" />
+
+            <TextView
+                android:id="@+id/tv_option_sub_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/hyundai_sans_head_kr_medium"
+                android:gravity="start"
+                android:text="@{swipe_dialog.subTitle}"
+                android:textColor="@color/cool_grey_black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tv_option_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_option_title"
+                app:layout_goneMarginTop="4dp" />
+
+            <View
+                android:id="@+id/v_line"
+                android:layout_width="40dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/cool_grey_003"
+                app:layout_constraintStart_toStartOf="@id/tv_option_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_option_sub_title" />
+
+            <TextView
+                android:id="@+id/tv_option_explain"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="50dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="start"
+                android:lineSpacingExtra="3dp"
+                android:fontFamily="@font/hyundai_sans_head_kr_regular"
+                android:text="@{swipe_dialog.explain}"
+                android:textColor="@color/cool_grey_004"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/tv_option_title"
+                app:layout_constraintTop_toBottomOf="@id/v_line"
+                app:layout_goneMarginTop="12dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

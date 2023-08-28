@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="button_vertical"
+            type="com.youngcha.ohmycarset.data.model.dialog.ButtonVertical" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <View
+            android:id="@+id/v_self_mode"
+            android:layout_width="301dp"
+            android:layout_height="116dp"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="21dp"
+            android:background="@drawable/style_hyundai_main_color_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_self_mode_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="18dp"
+            android:fontFamily="@font/hyundai_sans_head_bold"
+            android:text="@string/self_mode_kr"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/v_self_mode"
+            app:layout_constraintTop_toTopOf="@id/v_self_mode" />
+
+        <TextView
+            android:id="@+id/tv_self_mode_info_txt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/hyundai_sans_text_kr_regular"
+            android:lineSpacingExtra="3dp"
+            android:text="@string/self_mode_info"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/v_self_mode"
+            app:layout_constraintStart_toStartOf="@id/tv_self_mode_txt"
+            app:layout_constraintTop_toBottomOf="@id/tv_self_mode_txt" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/style_sky_blue_color_border"
+            android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            android:paddingStart="5dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="1dp"
+            android:text="@string/current_processing"
+            android:textColor="@color/main_hyundai_blue"
+            android:textSize="10sp"
+            android:visibility="@{button_vertical.currentState == `SelfMode` ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_self_mode_txt"
+            app:layout_constraintStart_toEndOf="@id/tv_self_mode_txt"
+            app:layout_constraintTop_toTopOf="@id/tv_self_mode_txt" />
+
+
+        <View
+            android:id="@+id/v_guide_mode"
+            android:layout_width="301dp"
+            android:layout_height="116dp"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/style_active_blue_color_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_self_mode" />
+
+        <TextView
+            android:id="@+id/tv_guide_mode_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="18dp"
+            android:fontFamily="@font/hyundai_sans_head_bold"
+            android:text="@string/guide_mode_name_kr"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/v_guide_mode"
+            app:layout_constraintTop_toTopOf="@id/v_guide_mode" />
+
+        <TextView
+            android:id="@+id/tv_guide_mode_info_txt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/hyundai_sans_text_kr_regular"
+            android:lineSpacingExtra="3dp"
+            android:text="@string/guide_mode_info"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/v_guide_mode"
+            app:layout_constraintStart_toStartOf="@id/tv_guide_mode_txt"
+            app:layout_constraintTop_toBottomOf="@id/tv_guide_mode_txt" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/style_sky_blue_color_border"
+            android:fontFamily="@font/hyundai_sans_text_kr_medium"
+            android:paddingStart="5dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="1dp"
+            android:text="@string/current_processing"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:visibility="@{button_vertical.currentState == `GuideMode` ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_guide_mode_txt"
+            app:layout_constraintStart_toEndOf="@id/tv_guide_mode_txt"
+            app:layout_constraintTop_toTopOf="@id/tv_guide_mode_txt"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

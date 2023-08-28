@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <font
+        android:font="@font/hyundai_sans_head_bold"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_kr_light"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_kr_medium"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_kr_otf_bold"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_kr_otf_light"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_kr_otf_medium"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_kr_otf_regular"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_kr_regular"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_kt_bold"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_light"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_medium"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_office_bold"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_office_light"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_office_regular"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_head_regular"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_bold"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_bold_italic"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_italic"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_kr_bold"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_kr_medium"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_kr_otf_medium"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_kr_otf_regular"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_kr_regular"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_medium"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_medium_italic"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_office_bold"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_office_bold_italic"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_office_italic"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_office_medium"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_office_medium_italic"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_office_regular"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/hyundai_sans_text_regular"
+        android:fontStyle="normal" />
+
+</font-family>

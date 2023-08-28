@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.youngcha.ohmycarset.data.dto.TrimMainData.Data.ModelName" />
+
+        <variable
+            name="guide"
+            type="com.youngcha.ohmycarset.data.dto.TrimMainData.Data.Guide" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_root_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.fragment.GuideModeFragment"
+            tools:layout_editor_absoluteX="58dp"
+            tools:layout_editor_absoluteY="-118dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/iv_guide"
+                    android:layout_width="0dp"
+                    android:layout_height="500dp"
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{guide.BackgroundImgUrl.android}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_guide_mode_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:fontFamily="@font/hyundai_sans_head_kr_medium"
+                    android:text="@string/guide_mode_name_en"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_guide"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_price_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/hyundai_sans_head_kr_regular"
+                    android:text="@string/price_start"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_guide"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/hyundai_sans_head_kr_regular"
+                    app:formattedCurrency="@{guide.price}"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_guide"
+                    app:layout_constraintEnd_toStartOf="@id/tv_price_start" />
+
+                <TextView
+                    android:id="@+id/tv_sub_script"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:fontFamily="@font/hyundai_sans_head_kr_otf_regular"
+                    android:text="@string/guide_mode_explain_txt"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toTopOf="@id/tv_guide_mode_name"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_main_feature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="24dp"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/hyundai_sans_head_kr_otf_medium"
+                    android:text="@string/main_feature"
+                    android:textColor="@color/cool_grey_black"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_guide" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_main_option"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_main_feature" />
+
+
+                <View
+                    android:id="@+id/v_guideline"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/cool_grey_001"
+                    app:layout_constraintTop_toBottomOf="@id/rv_main_option" />
+
+                <TextView
+                    android:id="@+id/tv_guide_process"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="24dp"
+                    android:fontFamily="@font/hyundai_sans_head_kr_otf_medium"
+                    android:text="@string/guide_process"
+                    android:textColor="@color/cool_grey_black"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_main_feature"
+                    app:layout_constraintTop_toBottomOf="@id/v_guideline" />
+
+                <ImageView
+                    android:id="@+id/iv_guide_process"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/img_progress"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_guide_process" />
+
+                <View
+                    android:id="@+id/v_guideline2"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/cool_grey_001"
+                    app:layout_constraintTop_toBottomOf="@id/iv_guide_process" />
+
+                <TextView
+                    android:id="@+id/tv_guide_target_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="24dp"
+                    android:fontFamily="@font/hyundai_sans_head_kr_otf_medium"
+                    android:text="@string/guide_target_user"
+                    android:textColor="@color/cool_grey_black"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_main_feature"
+                    app:layout_constraintTop_toBottomOf="@id/v_guideline2" />
+
+                <ImageView
+                    android:id="@+id/iv_guide_target"
+                    android:layout_width="343dp"
+                    android:layout_height="160dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="100dp"
+                    android:background="@drawable/img_support_explain"
+                    android:scaleType="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_guide_target_user" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

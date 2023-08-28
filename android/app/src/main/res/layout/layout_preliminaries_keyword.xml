@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.youngcha.ohmycarset.viewmodel.UserTagViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cl_root_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/sv_nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_step"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/keyword_step"
+                    android:fontFamily="@font/hyundai_sans_head_kr_medium"
+                    android:textColor="@color/cool_grey_black"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/keyword_main_text"
+                    android:fontFamily="@font/hyundai_sans_head_kr_medium"
+                    android:textColor="@color/main_hyundai_blue"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_step"
+                    app:layout_constraintTop_toBottomOf="@id/tv_step" />
+
+                <TextView
+                    android:id="@+id/tv_select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/preliminaries_select"
+                    android:textColor="@color/cool_grey_black"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/hyundai_sans_head_kr_medium"
+                    app:layout_constraintStart_toEndOf="@id/tv_main"
+                    app:layout_constraintTop_toBottomOf="@id/tv_step" />
+
+                <TextView
+                    android:id="@+id/tv_sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/keyword_sub"
+                    android:textColor="#8C8C8C"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/hyundai_sans_text_kr_regular"
+                    app:layout_constraintStart_toStartOf="@id/tv_step"
+                    app:layout_constraintTop_toBottomOf="@id/tv_main" />
+
+                <TextView
+                    android:id="@+id/tv_strength"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/strength"
+                    android:textColor="@color/cool_grey_black"
+                    android:fontFamily="@font/hyundai_sans_text_kr_medium"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_step"
+                    app:layout_constraintTop_toBottomOf="@id/tv_sub" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_strength"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_strength" />
+
+                <View
+                    android:id="@+id/v_line1"
+                    android:layout_width="0dp"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="24dp"
+                    android:background="#F4F4F4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_strength" />
+
+
+                <TextView
+                    android:id="@+id/tv_important"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/important"
+                    android:textColor="@color/cool_grey_black"
+                    android:fontFamily="@font/hyundai_sans_text_kr_medium"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_step"
+                    app:layout_constraintTop_toBottomOf="@id/v_line1" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_important"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_important" />
+
+                <View
+                    android:id="@+id/v_line2"
+                    android:layout_width="0dp"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="24dp"
+                    android:background="#F4F4F4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_important" />
+
+
+                <TextView
+                    android:id="@+id/tv_uses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/use"
+                    android:textColor="@color/cool_grey_black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_step"
+                    app:layout_constraintTop_toBottomOf="@id/v_line2" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_uses"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="120dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_uses" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:background="@drawable/gradation"
+                app:layout_constraintBottom_toTopOf="@id/btn_next"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_next"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/shape_round"
+                android:backgroundTint="@{viewModel.isChange == 1 ? @color/main_hyundai_blue : @color/cool_grey_001}"
+                android:text="@string/preliminaries_next"
+                android:textColor="@{viewModel.isChange == 1 ? @color/white : @color/cool_grey_003}"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
