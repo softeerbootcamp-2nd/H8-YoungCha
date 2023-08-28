@@ -32,7 +32,10 @@ export interface InternalColorType {
 }
 
 export interface GuideType {
-  backgroundImgUrl: string;
+  backgroundImgUrl: {
+    web: string;
+    android: string;
+  };
   hashTag: string;
   price: number;
 }
@@ -40,7 +43,10 @@ export interface GuideType {
 export interface TrimType {
   id: number;
   name: string;
-  backgroundImgUrl: string;
+  backgroundImgUrl: {
+    web: string;
+    android: string;
+  };
   imgUrl: string;
   hashTag: string;
   description: string;
