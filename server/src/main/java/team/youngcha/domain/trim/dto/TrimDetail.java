@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.youngcha.domain.car.dto.TrimBackgroundImgUrl;
 import team.youngcha.domain.option.dto.OptionSummary;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class TrimDetail {
     private String imgUrl;
 
     @Schema(description = "트림 배경 이미지 주소")
-    private String backgroundImgUrl;
+    private TrimBackgroundImgUrl backgroundImgUrl;
 
     @Schema(description = "해시 태그")
     private String hashTag;
@@ -49,7 +50,7 @@ public class TrimDetail {
     private List<OptionSummary> interiorColors;
 
     @Builder
-    public TrimDetail(Long id, String name, String backgroundImgUrl, String imgUrl, String hashTag, String description, boolean best, int price) {
+    public TrimDetail(Long id, String name, TrimBackgroundImgUrl backgroundImgUrl, String imgUrl, String hashTag, String description, boolean best, int price) {
         this.id = id;
         this.name = name;
         this.backgroundImgUrl = backgroundImgUrl;
