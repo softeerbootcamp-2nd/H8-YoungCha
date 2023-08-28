@@ -1,6 +1,8 @@
 import PopUp from '../../PopUp';
 import { ExitPopUpText } from '../../PopUp/constant';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionContext';
 
 interface ExitPopUpProps {
   closePopUp: () => void;
@@ -8,10 +10,10 @@ interface ExitPopUpProps {
 
 function ExitPopUp({ closePopUp }: ExitPopUpProps) {
   const navigate = useNavigate();
-
+  const { initData } = useContext(UserSelectedOptionDataContext);
   function handleOnClick() {
     closePopUp();
-    sessionStorage.clear();
+    initData();
     navigate('/model/LX06');
   }
 

@@ -28,8 +28,9 @@ export const INITIAL_USER_SELECTED_DATA: UserSelectedOptionDataType = {
         id: 2,
         type: '트림',
         name: 'Le Blanc(르블랑)',
-        imgUrl: '/src/assets/mock/images/palisade.png',
-        price: 43_460_000,
+        imgUrl:
+          'https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/leblanc.png',
+        price: 41_980_000,
       },
     },
   },

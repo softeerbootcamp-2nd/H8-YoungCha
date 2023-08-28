@@ -4,6 +4,8 @@ interface RotateImageType {
 }
 
 function getRotateImages({ url, count }: RotateImageType) {
+  if (!url) return [];
+
   const imgUrl = url.split('colorchip-exterior.png')[0];
   return Array.from(
     { length: count },

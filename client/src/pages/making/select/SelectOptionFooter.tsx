@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@/components/Button';
 import SummaryModal from '@/components/SummaryModal';
-import useAnimatedPrice from '@/hooks/useAnimatedPrice.ts';
 import { formatPrice } from '@/utils';
+import useAnimatedPrice from '@/hooks/useAnimatedPrice.ts';
 import { PathParamsType } from '@/types/router';
 import { DownArrow } from '@/assets/icons';
 

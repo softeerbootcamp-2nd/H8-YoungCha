@@ -1,14 +1,9 @@
-import { createContext, useContext } from 'react';
+import { useContext } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { SelectOptionPage, SelectMultiOptionPage } from './select';
 import CompleteOptionPage from './complete/CompleteOptionPage';
 import CompleteOptionPageWithLoading from './complete/CompleteOptionPageWithLoading';
-import useSelectOption from '@/hooks/useSelectOption.ts';
-import {
-  INITIAL_KEYWORDS,
-  INITIAL_USER_SELECTED_DATA,
-  LAST_STEP,
-} from './constant';
+import { INITIAL_KEYWORDS, LAST_STEP } from './constant';
 import { OptionType, UserSelectedOptionDataType } from './type';
 import { PathParamsType } from '@/types/router.ts';
 import useFetch from '@/hooks/useFetch.ts';
@@ -18,6 +13,7 @@ import {
   PROGRESS_LIST,
 } from '@/pages/making/select/constant.ts';
 import { getStorage } from '@/utils/optionStorage.ts';
+import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionContext.tsx';
 
 export interface UserSelectedOptionDataContextType {
   userSelectedOptionData: UserSelectedOptionDataType;
@@ -31,13 +27,7 @@ export interface UserSelectedOptionDataContextType {
   }) => void;
 }
 
-export const UserSelectedOptionDataContext =
-  createContext<UserSelectedOptionDataContextType>({
-    userSelectedOptionData: INITIAL_USER_SELECTED_DATA,
-    setUserSelectedOptionData: () => {},
-    saveOptionData: () => {},
-  });
-
+const INIT_COLOR_CODE = '12';
 function MakingPage() {
   const { step, mode } = useParams() as PathParamsType;
   const { state } = useLocation();
@@ -66,7 +56,8 @@ function MakingPage() {
       return Number(step) === INTERIOR_COLOR_STEP
         ? ({
             exteriorColorId:
-              userSelectedOptionData.colors.options.exteriorColor?.id.toString(),
+              userSelectedOptionData.colors.options.exteriorColor?.id.toString() ??
+              INIT_COLOR_CODE,
           } as Record<string, string>)
         : undefined;
     }
@@ -83,20 +74,7 @@ function MakingPage() {
 }
 
 export default function MakingPageWithProvider() {
-  const { userSelectedOptionData, setUserSelectedOptionData, saveOptionData } =
-    useSelectOption();
-
-  return (
-    <UserSelectedOptionDataContext.Provider
-      value={{
-        userSelectedOptionData,
-        setUserSelectedOptionData,
-        saveOptionData,
-      }}
-    >
-      <MakingPage />
-    </UserSelectedOptionDataContext.Provider>
-  );
+  return <MakingPage />;
 }
 
 export { default as MakingPageLayout } from './layout.tsx';

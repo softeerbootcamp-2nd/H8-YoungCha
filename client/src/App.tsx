@@ -4,6 +4,7 @@ import { createContext, useEffect, useState } from 'react';
 import { ModeType } from './types';
 import { DictionaryContextType, DictionaryType } from './types/dictionary';
 import { get } from './service';
+import UserSelectedOptionDataContextProvider from './store/useUserSelectedOptionContext';
 
 export const ModeContext = createContext<ModeType>('none');
 export const DictionaryContext = createContext<DictionaryContextType>({
@@ -30,8 +31,10 @@ function App() {
       value={{ dictionaryOn, setDictionaryOn, dictionary }}
     >
       <ModeContext.Provider value={mode}>
-        <Header mode={mode} setMode={setMode} />
-        <Outlet />
+        <UserSelectedOptionDataContextProvider>
+          <Header mode={mode} setMode={setMode} />
+          <Outlet />
+        </UserSelectedOptionDataContextProvider>
       </ModeContext.Provider>
     </DictionaryContext.Provider>
   );

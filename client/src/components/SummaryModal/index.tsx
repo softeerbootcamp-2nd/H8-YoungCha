@@ -4,8 +4,8 @@ import { formatPrice } from '@/utils';
 import Transition from '../Transition/Transition';
 import { Close } from '@/assets/icons';
 // import { mockUserSelectedOptionData } from '@/assets/mock/mock';
-import { UserSelectedOptionDataContext } from '@/pages/making';
 import getOptionGroupsTotalPrice from '@/utils/getTotalPrice';
+import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionContext';
 
 const ESTIMATION_SUMMARY = '견적 요약';
 

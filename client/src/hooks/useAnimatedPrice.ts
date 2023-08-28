@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { UserSelectedOptionDataContext } from '@/pages/making';
 import getOptionGroupsTotalPrice from '@/utils/getTotalPrice.ts';
+import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionContext';
 
 function easeOutExpo(t: number) {
   return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
