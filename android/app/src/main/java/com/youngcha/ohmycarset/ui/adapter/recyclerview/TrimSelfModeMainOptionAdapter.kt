@@ -4,17 +4,17 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.youngcha.ohmycarset.databinding.ItemTrimSelfModeMainOptionBinding
 import com.youngcha.ohmycarset.data.dto.TrimMainData
+import com.youngcha.ohmycarset.databinding.ItemTrimSelfModeMainOptionBinding
 
 class TrimSelfModeMainOptionAdapter :
     RecyclerView.Adapter<TrimSelfModeMainOptionAdapter.TrimSelfModeMainOptionViewHolder>() {
 
-    private var trimSelfModeInteriorColor: List<TrimMainData.Data.Trim.MainOption> = emptyList()
+    private var trimSelfModeMainOption: List<TrimMainData.Data.Trim.MainOption> = emptyList()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateTrimSelfModeMainOption(trimSelfModeInteriorColor: List<TrimMainData.Data.Trim.MainOption>) {
-        this.trimSelfModeInteriorColor = trimSelfModeInteriorColor
+    fun updateTrimSelfModeMainOption(trimSelfModeMainOption: List<TrimMainData.Data.Trim.MainOption>) {
+        this.trimSelfModeMainOption = trimSelfModeMainOption
         notifyDataSetChanged()
     }
 
@@ -28,10 +28,10 @@ class TrimSelfModeMainOptionAdapter :
     }
 
     override fun onBindViewHolder(holder: TrimSelfModeMainOptionViewHolder, position: Int) {
-        holder.bind(trimSelfModeInteriorColor[position])
+        holder.bind(trimSelfModeMainOption[position])
     }
 
-    override fun getItemCount(): Int = trimSelfModeInteriorColor.size
+    override fun getItemCount(): Int = trimSelfModeMainOption.size
 
     class TrimSelfModeMainOptionViewHolder(private val binding: ItemTrimSelfModeMainOptionBinding) :
         RecyclerView.ViewHolder(binding.root) {

@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.youngcha.ohmycarset.databinding.ItemTrimSelfModeInteriorColorBinding
 import com.youngcha.ohmycarset.data.dto.TrimMainData
+import com.youngcha.ohmycarset.databinding.ItemTrimSelfModeInteriorColorBinding
 
 class TrimSelfModeInteriorColorAdapter :
     RecyclerView.Adapter<TrimSelfModeInteriorColorAdapter.TrimSelfModeInteriorColorViewHolder>() {
