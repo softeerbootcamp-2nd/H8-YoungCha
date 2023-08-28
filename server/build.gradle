@@ -62,7 +62,8 @@ jacocoTestReport {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, excludes: [
                     "**/*Application*",
-                    "**/common/dto/**",
+                    "**/dto/**",
+                    "**/enums/**",
                     "**/common/config/**",
                     "**/common/exception/**"
             ])
@@ -83,7 +84,8 @@ tasks.jacocoTestCoverageVerification {
 
             excludes = [
                     "**/*Application*",
-                    "**/common/dto/**",
+                    "**/dto/**",
+                    "**/enums/**",
                     "**/common/config/**",
                     "**/common/exception/**"
             ]

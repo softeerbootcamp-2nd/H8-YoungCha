@@ -3,7 +3,6 @@ package team.youngcha.domain.option;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,7 @@ import team.youngcha.domain.option.dto.FindOptionDetailResponse;
 import team.youngcha.domain.option.dto.FindOptionImageResponse;
 import team.youngcha.domain.option.dto.FindSpecResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,26 +31,10 @@ import java.util.Map;
         "classpath:data/options_image.sql",
         "classpath:data/keyword.sql",
         "classpath:data/options_keyword.sql",
-        "classpath:data/spec.sql"})
+        "classpath:data/spec.sql",
+        "classpath:data/sell.sql",
+        "classpath:data/estimate.sql"})
 public class GuideOptionIntegrationTest extends IntegrationTestBase {
-
-    @BeforeEach
-    void setUp() {
-        // 유사 사용자는 trim id, keyword 모두 포함, 나이대, 성별로 판단
-        // 태그는 trim id, option id, keyword 중 하나 포함으로 판단
-        jdbcTemplate.update("insert into estimate (id, trim_id, engine_id, body_type_id, " +
-                "driving_system_id, exterior_color_id, interior_color_id, wheel_id, " +
-                "keyword1_id, keyword2_id, keyword3_id, age_range, gender, create_date) " +
-                "values (1, 2, 2, 5, 4, 1, 1, 1, 1, 2, 3, 3, 1, '2023-01-01 12:12:12')," +
-                "(2, 2, 1, 5, 3, 1, 1, 1, 2, 1, 3, 3, 1, '2023-01-01 12:12:12')," +
-                "(3, 2, 2, 5, 3, 1, 1, 1, 3, 2, 1, 3, 1, '2023-01-01 12:12:12')," +
-                "(4, 2, 2, 5, 3, 1, 1, 1, 1, 2, 3, 3, 1, '2023-01-01 12:12:12')," +
-                "(5, 2, 2, 5, 3, 1, 1, 1, 1, 2, 3, 3, 1, '2023-01-01 12:12:12')," +
-                "(6, 2, 2, 5, 3, 1, 1, 1, 1, 2, 4, 3, 1, '2023-01-01 12:12:12')," + // 유사 사용자 x
-                "(7, 2, 3, 6, 3, 1, 1, 1, 1, 2, 3, 3, 0, '2023-01-01 12:12:12')," +
-                "(8, 3, 2, 6, 3, 1, 1, 1, 1, 2, 3, 3, 1, '2023-01-01 12:12:12')," + // 조회 되지 않아야 하는 데이터(다른 트림)
-                "(9, 2, 2, 6, 3, 1, 1, 1, 1, 3, 4, 2, 1, '2023-01-01 12:12:12')"); // 유사 사용자 x
-    }
 
     Map<String, Object> params = new HashMap<>() {{
         put("gender", Gender.FEMALE.getType());
@@ -96,7 +80,7 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
         FindOptionDetailResponse dieselDetail = FindOptionDetailResponse.builder()
                 .description("강력한 토크와 탁월한 효율로 여유있는 파워와 높은 연비를 제공하는 디젤엔진입니다.")
                 .specs(List.of(dieselSpec1, dieselSpec2)).build();
-        KeywordRate tag = new KeywordRate(71, "소음");
+        KeywordRate tag = new KeywordRate(80, "소음");
 
         FindGuideOptionResponse optionResponse1 = FindGuideOptionResponse.builder()
                 .id(1L).categoryId(1L)
@@ -158,7 +142,7 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
                 .feedbackTitle("4WD는 파워풀해요!")
                 .feedbackDescription("힘있는 주행을 원하신다면, 탁월한 선택입니다.")
                 .name("4WD").checked(true)
-                .tags(List.of(new KeywordRate(12, "주행력")))
+                .tags(List.of(new KeywordRate(60, "주행력")))
                 .images(List.of(wd4Image))
                 .details(List.of(wd4Detail)).build();
 
@@ -209,6 +193,52 @@ public class GuideOptionIntegrationTest extends IntegrationTestBase {
                 .details(List.of(seat8Detail)).build();
 
         assertResponseAndExpected(response, List.of(optionResponse1, optionResponse2));
+    }
+
+    @Test
+    @DisplayName("가이드 모드 외장색상 조회를 검증한다.")
+    void findExteriorColor() {
+        //given
+        String url = "/car-make/2/guide/exterior-color";
+
+        FindGuideOptionResponse findGuideOptionResponse1 = new FindGuideOptionResponse(9L, 4L, true, 0, 0,
+                "문라이트 블루 펄", "문라이트 블루 펄은 활기찬 분위기에요!", "밝은 파란색의 외장색상으로, 차량에 상쾌하고 활기찬 느낌을 줍니다.",
+                List.of(new KeywordRate(50, "30대"), new KeywordRate(40, "여성")), new ArrayList<>(),
+                List.of(new FindOptionImageResponse("https://www.hyundai.com/contents/vr360/LX06/exterior/UB7/colorchip-exterior.png", 1)));
+
+        FindGuideOptionResponse findGuideOptionResponse2 = new FindGuideOptionResponse(7L, 4L, false, 0, 0,
+                "어비스 블랙펄", "어비스 블랙펄은 고급스러워요!", "깊은 검정색의 외장색상으로, 차량에 고급스러움과 우아함을 더해줍니다.",
+                List.of(new KeywordRate(0, "30대"), new KeywordRate(0, "여성")), new ArrayList<>(),
+                List.of(new FindOptionImageResponse("https://www.hyundai.com/contents/vr360/LX06/exterior/A2B/colorchip-exterior.png", 1)));
+
+        FindGuideOptionResponse findGuideOptionResponse3 = new FindGuideOptionResponse(8L, 4L, false, 0, 0,
+                "쉬머링 실버 메탈릭", "쉬머링 실버 메탈릭은 현대적이에요!", "은색 계열의 외장색상으로, 차량에 현대적이고 세련된 분위기를 더해줍니다.",
+                List.of(new KeywordRate(0, "30대"), new KeywordRate(20, "여성")), new ArrayList<>(),
+                List.of(new FindOptionImageResponse("https://www.hyundai.com/contents/vr360/LX06/exterior/R2T/colorchip-exterior.png", 1)));
+
+        FindGuideOptionResponse findGuideOptionResponse4 = new FindGuideOptionResponse(10L, 4L, false, 0, 0,
+                "가이아 브라운 펄", "가이아 브라운 펄은 고급스러워요!", "브라운 계열의 외장색상으로, 차량에 고급스러움과 차분한 분위기를 부여합니다.",
+                List.of(new KeywordRate(0, "30대"), new KeywordRate(0, "여성")), new ArrayList<>(),
+                List.of(new FindOptionImageResponse("https://www.hyundai.com/contents/vr360/LX06/exterior/D2S/colorchip-exterior.png", 1)));
+
+        FindGuideOptionResponse findGuideOptionResponse5 = new FindGuideOptionResponse(11L, 4L, false, 0, 0,
+                "그라파이트 그레이 메탈릭", "그라파이트 그레이 메탈릭은 세련된 느낌을 줘요!", "회색 계열의 외장색상으로, 차량에 현대적이고 세련된 분위기를 부여합니다.",
+                List.of(new KeywordRate(0, "30대"), new KeywordRate(0, "여성")), new ArrayList<>(),
+                List.of(new FindOptionImageResponse("https://www.hyundai.com/contents/vr360/LX06/exterior/P7V/colorchip-exterior.png", 1)));
+
+        FindGuideOptionResponse findGuideOptionResponse6 = new FindGuideOptionResponse(12L, 4L, false, 0, 100000,
+                "크리미 화이트 펄", "크리미 화이트 펄은 우아한 분위기에요!", "밝은 화이트(흰색)의 외장색상으로, 차량에 깨끗하고 우아한 느낌을 줍니다.",
+                List.of(new KeywordRate(50, "30대"), new KeywordRate(40, "여성")), new ArrayList<>(),
+                List.of(new FindOptionImageResponse("https://www.hyundai.com/contents/vr360/LX06/exterior/WC9/colorchip-exterior.png", 1)));
+
+        //when
+        ExtractableResponse<Response> response = callEndpoint(url, params);
+
+        //then
+        assertResponseAndExpected(response, List.of(
+                findGuideOptionResponse1, findGuideOptionResponse2,
+                findGuideOptionResponse3, findGuideOptionResponse4,
+                findGuideOptionResponse5, findGuideOptionResponse6));
     }
 
     private void assertResponseAndExpected(ExtractableResponse<Response> response, List<FindGuideOptionResponse> expectedResponses) {

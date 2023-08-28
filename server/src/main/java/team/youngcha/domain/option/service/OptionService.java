@@ -518,8 +518,8 @@ public class OptionService {
         return exteriorColorIds.stream()
                 .collect(Collectors.toMap(
                         id -> id,
-                        id -> List.of(ageRangeKeywordRate.get(id),
-                                genderKeywordRate.get(id))
+                        id -> List.of(ageRangeKeywordRate.getOrDefault(id, new KeywordRate(0, keywordAgeRange)),
+                                genderKeywordRate.getOrDefault(id, new KeywordRate(0, keywordGender)))
                 ));
     }
 
@@ -542,7 +542,7 @@ public class OptionService {
                             optionDetailsGroup.getOrDefault(option.getId(), new ArrayList<>())
                     );
                 })
-                .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> -sellRatio.get(response.getId())))
+                .sorted(Comparator.comparingDouble((FindGuideOptionResponse response) -> -sellRatio.getOrDefault(response.getId(), 0)))
                 .collect(Collectors.toList());
 
         if (!responses.isEmpty()) {
