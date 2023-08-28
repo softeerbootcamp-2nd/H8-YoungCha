@@ -117,18 +117,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.youngcha.ohmycarset.ui.customview.CircleView
-            android:id="@+id/cv_rotate_view"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            app:circleText="360°"
-            app:fillColor="@color/cool_grey_002"
-            app:layout_constraintEnd_toEndOf="@id/iv_car"
-            app:layout_constraintTop_toTopOf="@id/iv_car"
-            app:textColor="@color/white"
-            app:textSize="10sp" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

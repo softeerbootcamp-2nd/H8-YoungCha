@@ -72,7 +72,7 @@ fun TextView.hideBaekcasajeon() {
         }
     }
 
-    this.movementMethod = null  // 클릭 이벤트를 제거
+   // this.movementMethod = null  // 클릭 이벤트를 제거
     this.text = textContent  // 스팬을 제거한 후 텍스트 뷰를 다시 갱신
 }
 

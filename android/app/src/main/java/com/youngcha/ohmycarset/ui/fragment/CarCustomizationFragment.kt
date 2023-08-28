@@ -75,7 +75,6 @@ class CarCustomizationFragment : Fragment() {
 
     private lateinit var detailAdapterMain: EstimateDetailAdapter
     private lateinit var detailAdapterSub: EstimateDetailAdapter
-    private lateinit var trimSelfModeOptionAdapter: TrimSelfModeOptionAdapter
     private lateinit var carViewModel: CarCustomizationViewModel
     private val selfModeRepository by lazy { SelfModeRepository(RetrofitClient.selfModeApi) }
     private val guideModeRepository by lazy { GuideModeRepository(RetrofitClient.guideModeApi) }
@@ -122,7 +121,6 @@ class CarCustomizationFragment : Fragment() {
             viewModel = carViewModel
             lifecycleOwner = this@CarCustomizationFragment
             vpOptionContainer.adapter = CarOptionPagerAdapter(carViewModel) {
-                Log.d("로그", "4. 디테일 정보 입니다: " + it.detail.toString())
                 if (it.detail.isEmpty()) return@CarOptionPagerAdapter
                 val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
                 if (countWithImgUrl > 0) {
@@ -324,11 +322,11 @@ class CarCustomizationFragment : Fragment() {
             carViewModel.currentExteriorColorFirstUrl.value =
                 "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/001.png"
 
-            if (carViewModel.currentType.value == "GuideMode") {
-                if (carViewModel.currentComponentName.value != "외장 색상") {
-                    return@observe
-                }
+            if (carViewModel.currentComponentName.value != "외장 색상") {
+                return@observe
             }
+
+            Log.d("로그", "현재 부품 이름: " + carViewModel.currentComponentName.value!!)
 
             carViewModel.carRotateView.value = 1
             if (colorCode != null) {
@@ -377,7 +375,6 @@ class CarCustomizationFragment : Fragment() {
                 ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     binding.tvTitle.viewTreeObserver.removeOnPreDrawListener(this)
-                    //   showBaekcasajeon(binding.tvTitle, componentName)
                     return true
                 }
             })
@@ -458,7 +455,6 @@ class CarCustomizationFragment : Fragment() {
 
 
         carViewModel.detailOptionInfo.observe(viewLifecycleOwner) {
-            Log.d("로그", "5. 디테일 정보 표시 입니다.: " + it.toString())
             if (it.detail.isEmpty()) return@observe
             val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
             if (countWithImgUrl > 0) {
@@ -524,7 +520,6 @@ class CarCustomizationFragment : Fragment() {
 
         // 초기 어댑터 설정 (옵션 데이터가 없는 초기 상태)
         binding.rvSubOptionList.adapter = CarOptionPagerAdapter(carViewModel) {
-            Log.d("로그", "1. 디테일 정보 입니다: " + it.detail.toString())
             if (it.detail.isEmpty()) return@CarOptionPagerAdapter
             val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
             if (countWithImgUrl > 0) {
@@ -621,7 +616,6 @@ class CarCustomizationFragment : Fragment() {
     // sub option 상태에서만 가능
     private fun displayOnRecyclerView(optionInfos: List<OptionInfo>, tabName: String) {
         val adapter = CarOptionPagerAdapter(carViewModel) {
-            Log.d("로그", "3. 디테일 정보 입니다: " + it.detail.toString())
             if (it.detail.isEmpty()) return@CarOptionPagerAdapter
             val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
             if (countWithImgUrl > 0) {
@@ -644,7 +638,6 @@ class CarCustomizationFragment : Fragment() {
     // main & sub 전부 가능
     private fun displayOnViewPager(optionInfos: List<OptionInfo>, tabName: String) {
         val adapter = CarOptionPagerAdapter(carViewModel) {
-            Log.d("로그", "2. 디테일 정보 입니다: " + it.detail.toString())
             if (it.detail.isEmpty()) return@CarOptionPagerAdapter
             val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
             if (countWithImgUrl > 0) {
