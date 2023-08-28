@@ -15,6 +15,26 @@ class SelfModeRepository(private val selfModeApiService: SelfModeApiService) {
     private val _car = MutableLiveData<Car>()
     val car: LiveData<Car> = _car
 
+    suspend fun <T> retryApiCall(block: suspend () -> T): T? {
+        var result: T? = null
+        val maxRetries = 2
+        var currentAttempt = 0
+
+        while (currentAttempt < maxRetries) {
+            try {
+                result = block()
+                break
+            } catch (e: Exception) {
+                if (currentAttempt == maxRetries - 1) {
+                    throw e
+                }
+            }
+            currentAttempt++
+        }
+
+        return result
+    }
+
     fun filterData(componentDTO: ComponentDTO, type: String): List<OptionInfo> {
         return componentDTO.data.map { dataItem ->
             val mainImage: String = dataItem.images.find { it.imgType == 0 }?.imgUrl ?: ""
@@ -41,23 +61,19 @@ class SelfModeRepository(private val selfModeApiService: SelfModeApiService) {
         }
     }
 
-    // 차량 부품 추가 함수
     suspend fun setCarComponent(carMakeId: Int, componentType: String, categories: List<Category>) {
         val currentCar = _car.value ?: Car()
-        // 이미 추가된 경우, 추가하지 않음
         if (currentCar.mainOptions.any { it.containsKey(componentType) }) return
 
         val newComponent: Map<String, List<OptionInfo>>
 
         when (componentType) {
-            "파워 트레인" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getPowerTrain(carMakeId), "main"))
-            "구동 방식" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getDrivingSystem(carMakeId), "main"))
-            "바디 타입" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getBodyType(carMakeId), "main"))
-            "외장 색상" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getExteriorColor(carMakeId), "color"))
-            "휠 선택" -> newComponent = mapOf(componentType to filterData(selfModeApiService.getWheel(carMakeId), "main"))
-            "옵션 선택" -> {
-                newComponent = createSubOptionMap(categories, filterData(selfModeApiService.getOptions(carMakeId), "sub"))
-            }
+            "파워 트레인" -> newComponent = mapOf(componentType to filterData(retryApiCall { selfModeApiService.getPowerTrain(carMakeId) } ?: return, "main"))
+            "구동 방식" -> newComponent = mapOf(componentType to filterData(retryApiCall { selfModeApiService.getDrivingSystem(carMakeId) } ?: return, "main"))
+            "바디 타입" -> newComponent = mapOf(componentType to filterData(retryApiCall { selfModeApiService.getBodyType(carMakeId) } ?: return, "main"))
+            "외장 색상" -> newComponent = mapOf(componentType to filterData(retryApiCall { selfModeApiService.getExteriorColor(carMakeId) } ?: return, "color"))
+            "휠 선택" -> newComponent = mapOf(componentType to filterData(retryApiCall { selfModeApiService.getWheel(carMakeId) } ?: return, "main"))
+            "옵션 선택" -> newComponent = createSubOptionMap(categories, filterData(retryApiCall { selfModeApiService.getOptions(carMakeId) } ?: return, "sub"))
             else -> throw IllegalArgumentException("Unsupported component type: $componentType")
         }
 
@@ -68,10 +84,9 @@ class SelfModeRepository(private val selfModeApiService: SelfModeApiService) {
         _car.value = updatedCar
     }
 
-    // 내장 색상 업데이트 함수
     suspend fun setInteriorColor(carMakeId: Int, exteriorColorId: Int) {
         val currentCar = _car.value ?: Car()
-        val updatedComponent = mapOf("내장 색상" to filterData(selfModeApiService.getInteriorColor(carMakeId, exteriorColorId), "color"))
+        val updatedComponent = mapOf("내장 색상" to filterData(retryApiCall { selfModeApiService.getInteriorColor(carMakeId, exteriorColorId) } ?: return, "color"))
 
         val containsInteriorColor = currentCar.mainOptions.any { it.keys.contains("내장 색상") }
 
@@ -86,7 +101,6 @@ class SelfModeRepository(private val selfModeApiService: SelfModeApiService) {
         val updatedCar = currentCar.copy(mainOptions = newMainOptions)
         _car.value = updatedCar
     }
-
 
     fun createSubOptionMap(categories: List<Category>, options: List<OptionInfo>): Map<String, List<OptionInfo>> {
         // 카테고리 ID를 key로, 카테고리 이름을 value로 갖는 Map 생성
