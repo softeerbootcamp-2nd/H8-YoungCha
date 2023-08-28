@@ -35,7 +35,7 @@
                     android:layout_width="0dp"
                     android:layout_height="500dp"
                     android:scaleType="centerCrop"
-                    app:imageUrl="@{guide.backgroundImgUrl}"
+                    app:imageUrl="@{guide.BackgroundImgUrl.android}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -102,15 +102,17 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_guide" />
 
-                <ImageView
-                    android:id="@+id/iv_main_feature"
-                    android:layout_width="wrap_content"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_main_option"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/img_main_feature"
+                    android:nestedScrollingEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_main_feature" />
+
 
                 <View
                     android:id="@+id/v_guideline"
@@ -118,7 +120,7 @@
                     android:layout_height="12dp"
                     android:layout_marginTop="30dp"
                     android:background="@color/cool_grey_001"
-                    app:layout_constraintTop_toBottomOf="@id/iv_main_feature" />
+                    app:layout_constraintTop_toBottomOf="@id/rv_main_option" />
 
                 <TextView
                     android:id="@+id/tv_guide_process"
