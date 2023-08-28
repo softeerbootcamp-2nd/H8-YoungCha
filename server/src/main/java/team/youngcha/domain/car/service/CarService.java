@@ -43,12 +43,13 @@ public class CarService {
     private GuideModeDetails extractGuideModeDetails(List<CarDetails> carDetails) {
         for (CarDetails carDetail : carDetails) {
             if (carDetail.getTrimName().equals("Guide Mode")) {
-                return new GuideModeDetails(carDetail.getTrimBackgroundImgUrl(),
+                return new GuideModeDetails(
+                        new TrimBackgroundImgUrl(carDetail.getTrimBackgroundImgUrlWeb(), carDetail.getTrimBackgroundImgUrlAndroid()),
                         carDetail.getTrimHashTag(),
                         carDetail.getTrimPrice());
             }
         }
-        return new GuideModeDetails("", "", 0);
+        return new GuideModeDetails(new TrimBackgroundImgUrl("", ""), "", 0);
     }
 
     public FindCarsResponse findCars() {
