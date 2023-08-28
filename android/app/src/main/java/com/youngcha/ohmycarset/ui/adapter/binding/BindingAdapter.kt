@@ -2,16 +2,13 @@ package com.youngcha.ohmycarset.ui.adapter.binding
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup.MarginLayoutParams
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -22,20 +19,11 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import coil.ComponentRegistry
-import coil.ImageLoader
-import coil.ImageLoaderFactory
-import coil.decode.SvgDecoder
 import coil.load
-import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.data.model.car.Car
 import com.youngcha.ohmycarset.data.model.car.OptionInfo
@@ -87,37 +75,6 @@ fun loadImageCoil(view: ImageView, imageUrl: String?) {
         view.load(it) {
         }
     }
-}
-
-@BindingAdapter("svgImageUrl")
-fun loadSvgImage(imageView: ImageView, url: String?) {
-    val context = imageView.context
-
-    Glide.with(context)
-        .load(url)
-        .listener(object : RequestListener<Drawable> {
-            override fun onResourceReady(
-                resource: Drawable,
-                model: Any,
-                target: com.bumptech.glide.request.target.Target<Drawable>?,
-                dataSource: DataSource,
-                isFirstResource: Boolean
-            ): Boolean {
-                imageView.setImageDrawable(resource)
-                return true
-            }
-
-            override fun onLoadFailed(
-                e: GlideException?,
-                model: Any?,
-                target: Target<Drawable>,
-                isFirstResource: Boolean
-            ): Boolean {
-                return false
-            }
-
-        })
-        .into(imageView)
 }
 
 @BindingAdapter("exterior_imageUrl")

@@ -1,11 +1,7 @@
 package com.youngcha.ohmycarset.ui.fragment
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.Rect
 import android.os.Bundle
-import android.text.Spannable
-import android.text.style.ClickableSpan
 import android.transition.TransitionManager
 import android.util.DisplayMetrics
 import androidx.fragment.app.Fragment
@@ -13,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
@@ -23,23 +18,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import com.youngcha.baekcasajeon.AnimatedRoundedBackgroundSpan
-import com.youngcha.baekcasajeon.KeywordOptions
-import com.youngcha.baekcasajeon.baekcasajeon
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.data.api.RetrofitClient
 import com.youngcha.ohmycarset.databinding.FragmentTrimSelectBinding
 import com.youngcha.ohmycarset.enums.TrimType
 import com.youngcha.ohmycarset.data.model.TrimCategory
 import com.youngcha.ohmycarset.data.dto.OptionCategory
-import com.youngcha.ohmycarset.data.model.Baekcasajeon
 import com.youngcha.ohmycarset.data.repository.BaekcasajeonRepository
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelectAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeExteriorColorAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeInteriorColorAdapter
+import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeMainFeatureAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeMainOptionAdapter
 import com.youngcha.ohmycarset.ui.adapter.recyclerview.TrimSelfModeOptionAdapter
-import com.youngcha.ohmycarset.ui.customview.BaekcasajeonDialogView
 import com.youngcha.ohmycarset.ui.interfaces.OnHeaderToolbarClickListener
 import com.youngcha.ohmycarset.ui.listener.CustomScrollChangeListener
 import com.youngcha.ohmycarset.util.MILLISECONDS_PER_INCH
@@ -68,6 +59,7 @@ class TrimSelectFragment : Fragment() {
     }
 
     private lateinit var trimSelectAdapter: TrimSelectAdapter
+    private lateinit var trimSelfModeMainFeatureAdapter: TrimSelfModeMainFeatureAdapter
     private lateinit var trimSelfModeMainOptionAdapter: TrimSelfModeMainOptionAdapter
     private lateinit var trimSelfModeExteriorColorAdapter: TrimSelfModeExteriorColorAdapter
     private lateinit var trimSelfModeInteriorColorAdapter: TrimSelfModeInteriorColorAdapter
@@ -135,6 +127,12 @@ class TrimSelectFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = this@TrimSelectFragment.trimSelectAdapter
         }
+
+        trimSelfModeMainFeatureAdapter = TrimSelfModeMainFeatureAdapter()
+        binding.layoutGuideMode.rvMainOption.layoutManager=
+                LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+        binding.layoutGuideMode.rvMainOption.addItemDecoration(LinearItemDecoration(24))
+        binding.layoutGuideMode.rvMainOption.adapter=trimSelfModeMainFeatureAdapter
 
         //Main Option RecyclerView
         trimSelfModeMainOptionAdapter = TrimSelfModeMainOptionAdapter()

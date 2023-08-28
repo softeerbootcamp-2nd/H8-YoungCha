@@ -10,10 +10,15 @@ data class TrimMainData(
         val trims: List<Trim>
     ) {
         data class Guide(
-            val backgroundImgUrl: String,
+            val backgroundImgUrl: BackgroundImgUrl,
             val hashTag: String,
             val price: Int
-        )
+        ) {
+            data class BackgroundImgUrl(
+                val android: String,
+                val web: String
+            )
+        }
 
         data class ModelName(
             val en: String,
@@ -21,7 +26,7 @@ data class TrimMainData(
         )
 
         data class Trim(
-            val backgroundImgUrl: String,
+            val backgroundImgUrl: BackgroundImgUrl,
             val best: Boolean,
             val description: String,
             val exteriorColors: List<ExteriorColor>,
@@ -33,6 +38,11 @@ data class TrimMainData(
             val name: String,
             val price: Int
         ) {
+            data class BackgroundImgUrl(
+                val android: String,
+                val web: String
+            )
+
             data class ExteriorColor(
                 val imgUrl: String,
                 val name: String
