@@ -35,7 +35,7 @@
                     android:layout_width="0dp"
                     android:layout_height="500dp"
                     android:scaleType="centerCrop"
-                    app:imageUrl="@{guide.backgroundImgUrl}"
+                    app:imageUrl="@{guide.BackgroundImgUrl.android}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
