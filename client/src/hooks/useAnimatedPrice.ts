@@ -11,12 +11,13 @@ const FRAME_RATE = 1000 / 60;
 
 function useAnimatedPrice() {
   const { userSelectedOptionData } = useContext(UserSelectedOptionDataContext);
-  const [totalPrice, setTotalPrice] = useState(
-    Object.values(userSelectedOptionData).reduce(
-      (sum, { options }) => getOptionGroupsTotalPrice(options) + sum,
-      0
-    )
+
+  const price = Object.values(userSelectedOptionData).reduce(
+    (sum, { options }) => getOptionGroupsTotalPrice(options) + sum,
+    0
   );
+
+  const [totalPrice, setTotalPrice] = useState(price);
   const [count, setCount] = useState(totalPrice);
 
   const totalFrame = Math.round(DURATION / FRAME_RATE);
@@ -24,12 +25,7 @@ function useAnimatedPrice() {
   const prevCount = useRef(0);
 
   useEffect(() => {
-    setTotalPrice(
-      Object.values(userSelectedOptionData).reduce(
-        (sum, { options }) => getOptionGroupsTotalPrice(options) + sum,
-        0
-      )
-    );
+    setTotalPrice(price);
   }, [userSelectedOptionData]);
 
   useEffect(() => {
