@@ -26,7 +26,7 @@ function BasicOptionBox({ trims }: BasicOptionBoxProps) {
 
   return (
     <div className="flex flex-col gap-16px max-w-7xl">
-      <h3 className="font-medium text-center text-grey-black py-8px">
+      <h3 className="font-medium text-center text-grey-black py-8px font-hsans-head">
         {TITLE.BASIC_OPTION}
       </h3>
       <div className="flex flex-col items-center gap-32px">

@@ -14,7 +14,7 @@ function CarsImageBox({ trims }: CarsImageBoxProps) {
           key={`car-image-${index}`}
         >
           <img src={imgUrl} alt="palisade" />
-          <p className="font-normal body1 text-grey-black">
+          <p className="font-medium  body1 text-grey-black">
             {formatPrice(price)} 부터
           </p>
         </li>

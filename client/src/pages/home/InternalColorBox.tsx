@@ -24,7 +24,7 @@ function InternalColorBox({ trims }: InternalColorBoxProps) {
                 alt={name}
                 className="w-100px h-35px rounded-8px"
               />
-              <p className="body2 text-grey-black">{name}</p>
+              <p className="font-medium body2 text-grey-black">{name}</p>
             </li>
           ))}
         </ul>

@@ -21,7 +21,7 @@ function ExteriorColorBox({ trims }: ExteriorColorBoxProps) {
                 alt={name}
                 className="rounded-full w-20px h-20px"
               />
-              <p className="body2 text-grey-004">{name}</p>
+              <p className="font-medium body2 text-grey-004">{name}</p>
             </li>
           ))}
         </ul>

@@ -27,11 +27,11 @@ function CarsNameListBox({ trims }: CarsNameListBoxProps) {
               >
                 {best && (
                   <strong className="absolute title5 text-best-red top-[-8px]">
-                    best
+                    Best
                   </strong>
                 )}
                 <div></div>
-                <h3 className="text-grey-black text-28px font-medium tracking-[-0.84px]">
+                <h3 className=" font-hsans-head text-grey-black text-28px font-medium tracking-[-0.84px]">
                   {name}
                 </h3>
                 <p className="body2">{description}</p>
