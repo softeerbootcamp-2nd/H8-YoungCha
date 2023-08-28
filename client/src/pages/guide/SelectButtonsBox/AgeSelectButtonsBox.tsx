@@ -1,5 +1,5 @@
-import ActiveCheck from '@/assets/icons/select-check';
-import InactiveCheck from '@/assets/icons/select-check-inactive';
+import ActiveCheck from '@/assets/icons/SelectCheck';
+import InactiveCheck from '@/assets/icons/SelectCheckInactive';
 import SelectButton from '@/components/SelectButton';
 import { AgeType } from '../type';
 import { Fragment, useState } from 'react';
