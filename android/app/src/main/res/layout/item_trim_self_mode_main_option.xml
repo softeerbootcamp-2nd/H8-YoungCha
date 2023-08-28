@@ -17,10 +17,10 @@
             android:id="@+id/iv_main_option_img"
             android:layout_width="100dp"
             android:layout_height="80dp"
+            app:imageUrl="@{main_option.imgUrl}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:svgImageUrl="@{main_option.imgUrl}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_main_option_name"

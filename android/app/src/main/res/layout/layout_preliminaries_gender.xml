@@ -22,6 +22,7 @@
             android:layout_marginTop="18dp"
             android:text="@string/gender_step"
             android:textColor="@color/cool_grey_black"
+            android:fontFamily="@font/hyundai_sans_head_kr_medium"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,8 +33,8 @@
             android:layout_height="wrap_content"
             android:text="@string/gender_main_test"
             android:textColor="@color/main_hyundai_blue"
+            android:fontFamily="@font/hyundai_sans_head_kr_medium"
             android:textSize="20sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/tv_step"
             app:layout_constraintTop_toBottomOf="@id/tv_step" />
 
@@ -44,7 +45,7 @@
             android:text="@string/preliminaries_select"
             android:textColor="@color/cool_grey_black"
             android:textSize="20sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/hyundai_sans_head_kr_medium"
             app:layout_constraintStart_toEndOf="@id/tv_main"
             app:layout_constraintTop_toBottomOf="@id/tv_step" />
 
@@ -54,6 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="@string/gender_sub"
+            android:fontFamily="@font/hyundai_sans_text_kr_regular"
             android:textColor="#8C8C8C"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tv_step"
