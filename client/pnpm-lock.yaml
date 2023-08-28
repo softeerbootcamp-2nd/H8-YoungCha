@@ -17,6 +17,9 @@ dependencies:
   react-router-dom:
     specifier: ^6.14.2
     version: 6.14.2(react-dom@18.2.0)(react@18.2.0)
+  tailwindcss-pixel:
+    specifier: ^1.1.0
+    version: 1.1.0
 
 devDependencies:
   '@commitlint/cli':
@@ -9067,6 +9070,10 @@ packages:
       '@pkgr/utils': 2.4.2
       tslib: 2.6.1
     dev: true
+
+  /tailwindcss-pixel@1.1.0:
+    resolution: {integrity: sha512-IrIKJiZEG/qigI0B9n+mOsb0feVsBFBoT1xN7QjLtkFYB1axnUHVtsItHDHSPCAL3n6pD8LP4y9B9YP/TjJ4aw==}
+    dev: false
 
   /tailwindcss@3.3.3(ts-node@10.9.1):
     resolution: {integrity: sha512-A0KgSkef7eE4Mf+nKJ83i75TMyq8HqY3qmFIJSWy8bNt0v1lG7jUcpGpoTFxAwYcWOphcTBLPPJg+bDfhDf52w==}
