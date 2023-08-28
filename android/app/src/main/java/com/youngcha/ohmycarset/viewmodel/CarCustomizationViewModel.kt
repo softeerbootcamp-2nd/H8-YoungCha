@@ -198,6 +198,7 @@ class CarCustomizationViewModel(
 
 
     fun startGuideMode(guideParam: GuideParam) {
+        var tempSelectedCar: Car // 일반 변수를 사용
         viewModelScope.launch(Dispatchers.IO) {
 
             val fetchedCategories = categoryRepository.getAllSubCategories()
@@ -206,10 +207,10 @@ class CarCustomizationViewModel(
                 withContext(Dispatchers.Main) {
                     // 메인 스레드에서 LiveData 업데이트
                     categories.value = it
-                    _selectedCar.value = guideModeRepository.car.value
+                    tempSelectedCar = guideModeRepository.car.value!!
 
                     _currentType.value = "GuideMode"
-                    _selectedCar.value?.let { selectedCarValue ->
+                    tempSelectedCar.let { selectedCarValue ->
 
                         // 1. mainOptions 처리
                         val customizedMainOptions =
@@ -255,6 +256,7 @@ class CarCustomizationViewModel(
                         _customizedParts.value = combinedOptions
 
                     }
+                    _selectedCar.value = tempSelectedCar
                 }
             } ?: run {
             }
@@ -277,8 +279,6 @@ class CarCustomizationViewModel(
         }
     }
 
-
-
     /**
      *  초기 시작 지점
      *  가이드 모드일 경우 부품 미리 생성
@@ -289,7 +289,7 @@ class CarCustomizationViewModel(
             "GuideMode" -> {
                 val lastTab = currentMainTabs.value?.lastOrNull()
                 if (startPoint == "start") {
-                    logCustomizedParts()
+                   // logCustomizedParts()
                     currentTabName.value = currentMainTabs.value!![0]
                     updateTapPosition(0, "파워 트레인")
                 } else {
@@ -330,8 +330,7 @@ class CarCustomizationViewModel(
 
     fun updateTapPosition(position: Int, tabName: String) {
         _currentTabPosition.value = position
-        _currentComponentName.value = tabName
-
+        //_currentComponentName.value = tabName
         prevPrice.value = totalPrice.value?.minus(getMyCarTotalPrice())
         totalPrice.value = 41980000
         setCurrentComponentName(tabName)
@@ -346,21 +345,6 @@ class CarCustomizationViewModel(
     fun updateEstimateColorButton(view: View) {
         exteriorButtonChange.value = if (exteriorButtonChange.value == 1) 0 else 1
     }
-
-    /**
-     * 현재 타입 업데이트
-     */
-//    suspend fun updateCurrentType(currentType: String) {
-//        _currentType.value = currentType
-//        _currentTabPosition.value = 0
-//        currentTabName.value = currentMainTabs.value!![0]
-//        currentSubTabPosition.value = 0
-//        totalPrice.value = 36000000
-//        _customizedParts.value = emptyList()
-//        _selectedCar.value = Car()
-//        categories.value?.let { repository.setCarComponent(2, "파워 트레인", it) }
-//      //  setCurrentComponentName(currentTabName.value!!)
-//    }
 
     fun updateCurrentType(currentType: String) {
         viewModelScope.launch {
@@ -378,7 +362,6 @@ class CarCustomizationViewModel(
             // setCurrentComponentName(currentTabName.value!!)
         }
     }
-
 
     /**
      * 탭 정보 업데이트
@@ -400,6 +383,7 @@ class CarCustomizationViewModel(
      * 탭 변경 핸들러
      */
     fun handleTabChange(increment: Int) {
+        Log.d("로그", "탭 변경 ->")
         val currentTabIndex = currentTabPosition.value ?: 0
         val nextTabIndex = currentTabIndex + increment
 
@@ -463,6 +447,7 @@ class CarCustomizationViewModel(
     fun setCurrentComponentName(componentName: String) {
         viewModelScope.launch {
             if (!isAlreadySelectedComponent(componentName)) {
+                Log.d("로그", componentName + "!!!")
                 when (componentName) {
                     "내장 색상" -> {
                         // 내장 색상일 경우
@@ -825,6 +810,7 @@ class CarCustomizationViewModel(
 
     // 선택 완료 시
     fun executeRandomAnimation() {
+        Log.d("로그", "버튼 클릭?")
         if (currentType.value == "GuideMode") {
             handleTabChange(1)
             return
@@ -892,5 +878,4 @@ class CarCustomizationViewModel(
         repository.car.removeObserver(carObserver)
         super.onCleared()
     }
-
 }
