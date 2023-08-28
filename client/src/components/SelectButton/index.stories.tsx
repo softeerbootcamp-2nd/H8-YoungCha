@@ -25,23 +25,23 @@ export const Size: Story = {
     <>
       <SelectButton type="iconActive" size="md">
         <span>이름 입력</span>
-        <Icon.CheckActive />
+        <Icon.BlueCheckIcon />
       </SelectButton>
       <br />
       <SelectButton type="default" size="md">
         <span>이름 입력</span>
-        <Icon.CheckInactive />
+        <Icon.GreyCheckIcon />
       </SelectButton>
       <br />
       <br />
       <SelectButton type="iconActive" size="lg">
         <span>연령이나 성별 입력</span>
-        <Icon.CheckActive />
+        <Icon.BlueCheckIcon />
       </SelectButton>
       <br />
       <SelectButton type="default" size="lg">
         <span>연령이나 성별 입력</span>
-        <Icon.CheckInactive />
+        <Icon.BlueCheckIcon />
       </SelectButton>
     </>
   ),

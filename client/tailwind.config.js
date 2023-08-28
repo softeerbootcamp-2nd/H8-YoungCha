@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import pixel from './plugins/pixel';
+import pixel from 'tailwindcss-pixel';
 import typography from './plugins/typography';
 
 export default {
@@ -40,11 +40,7 @@ export default {
       'hsans-head': ['Hyundai Sans Head KR', 'sans-serif'],
       'hsans-text': ['Hyundai Sans Text KR', 'sans-serif'],
     },
-    backgroundImage: {
-      'main-background-image':
-        "url('/src/assets/images/main-background-car.png')",
-    },
   },
 
-  plugins: [typography, pixel],
+  plugins: [typography, pixel({ rem: true, extend: true, suffix: 'px' })],
 };
