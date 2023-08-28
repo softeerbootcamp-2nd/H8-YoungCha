@@ -1,4 +1,4 @@
-import ChevronRight from '@/assets/icons/ChevronRight';
+import { ChevronRight } from '@/assets/icons';
 import { Link } from 'react-router-dom';
 
 function GuideModeButton() {
