@@ -131,7 +131,6 @@ class EstimateReadyFragment : Fragment() {
         }
 
         userTagViewModel.tagNumbers.observe(viewLifecycleOwner) { tagNumbers ->
-            Log.d("LAST TAG", tagNumbers.toString())
             if (tagNumbers.size >= 5) {
                 val guideParam = GuideParam(
                     id = 2,
