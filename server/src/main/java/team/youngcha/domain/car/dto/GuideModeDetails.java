@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 public class GuideModeDetails {
 
     @Schema(description = "배경 이미지 주소")
-    String backgroundImgUrl;
+    TrimBackgroundImgUrl backgroundImgUrl;
     @Schema(description = "해시태그")
     String hashTag;
     @Schema(description = "가격")
     int price;
 
-    public GuideModeDetails(String backgroundImgUrl, String hashTag, int price) {
+    public GuideModeDetails(TrimBackgroundImgUrl backgroundImgUrl, String hashTag, int price) {
         this.backgroundImgUrl = backgroundImgUrl;
         this.hashTag = hashTag;
         this.price = price;

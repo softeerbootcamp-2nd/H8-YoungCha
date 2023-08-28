@@ -83,14 +83,16 @@ class CarServiceTest {
             Car car = new Car(1L, "팰리세이드", "Palisade");
 
             List<CarDetails> carDetails = List.of(
-                    new CarDetails(1L, "Guide Mode", "img1", "background1", "hashtag1", 500, null, null, null, null, null, null),
-                    new CarDetails(2L, "Leblanc", "img2", "background2", "hashtag2", 1000, "description2", 3, "option", "category", 1, "optionImg"));
+                    new CarDetails(1L, "Guide Mode", "img1", "background1", "background1", "hashtag1", 500, null, null, null, null, null, null),
+                    new CarDetails(2L, "Leblanc", "img2", "background2", "background2", "hashtag2", 1000, "description2", 3, "option", "category", 1, "optionImg"));
 
-            List<TrimDetail> trimDetails = List.of(new TrimDetail(2L, "Leblanc", "background2", "img2", "hashtag2", "description2", true, 1000));
+            List<TrimDetail> trimDetails = List.of(new TrimDetail(2L, "Leblanc",
+                    new TrimBackgroundImgUrl("background2", "background2"),
+                    "img2", "hashtag2", "description2", true, 1000));
 
             ModelName modelName = new ModelName("팰리세이드", "Palisade");
 
-            GuideModeDetails guideModeDetails = new GuideModeDetails("background1", "hashtag1", 500);
+            GuideModeDetails guideModeDetails = new GuideModeDetails(new TrimBackgroundImgUrl("background1", "background1"), "hashtag1", 500);
 
             FindCarDetailsResponse expectedResponse = new FindCarDetailsResponse(modelName, guideModeDetails, trimDetails);
 

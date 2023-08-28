@@ -13,6 +13,7 @@ import team.youngcha.common.dto.SuccessResponse;
 import team.youngcha.domain.car.dto.FindCarDetailsResponse;
 import team.youngcha.domain.car.dto.GuideModeDetails;
 import team.youngcha.domain.car.dto.ModelName;
+import team.youngcha.domain.car.dto.TrimBackgroundImgUrl;
 import team.youngcha.domain.option.dto.OptionSummary;
 import team.youngcha.domain.trim.dto.TrimDetail;
 
@@ -27,12 +28,13 @@ public class FindCarDetailsIntegrationTest extends IntegrationTestBase {
         //given
         ModelName modelName = new ModelName("팰리세이드", "Palisade");
 
-        GuideModeDetails guideModeDetails = new GuideModeDetails("guideModeBgImgUrl", "나만을 위한 팰리세이드", 38960000);
+        GuideModeDetails guideModeDetails = new GuideModeDetails(new TrimBackgroundImgUrl("guideModeBgImgUrlWeb", "guideModeBgImgUrlAndroid"),
+                "나만을 위한 팰리세이드", 38960000);
 
         TrimDetail leblancTrimDetail = new TrimDetail(
                 2L,
                 "Le Blanc (르블랑)",
-                "leblancBgImgUrl",
+                new TrimBackgroundImgUrl("leblancBgImgUrlWeb", "leblancBgImgUrlAndroid"),
                 "leblancImgUrl",
                 "베스트셀러",
                 "모두가 선택한 베스트셀러",

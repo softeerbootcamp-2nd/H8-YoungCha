@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import team.youngcha.common.exception.CustomException;
 import team.youngcha.domain.car.dto.CarDetails;
+import team.youngcha.domain.car.dto.TrimBackgroundImgUrl;
 import team.youngcha.domain.category.enums.RequiredCategory;
 import team.youngcha.domain.option.dto.DefaultOptionSummary;
 import team.youngcha.domain.option.dto.OptionSummary;
@@ -45,7 +46,7 @@ public class TrimService {
         return TrimDetail.builder()
                 .id(dto.getTrimId())
                 .name(dto.getTrimName())
-                .backgroundImgUrl(dto.getTrimBackgroundImgUrl())
+                .backgroundImgUrl(new TrimBackgroundImgUrl(dto.getTrimBackgroundImgUrlWeb(), dto.getTrimBackgroundImgUrlAndroid()))
                 .imgUrl(dto.getTrimImgUrl())
                 .hashTag(dto.getTrimHashTag())
                 .best(best)

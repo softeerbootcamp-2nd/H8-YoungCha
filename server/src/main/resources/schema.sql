@@ -8,21 +8,22 @@ CREATE TABLE IF NOT EXISTS `dictionary`
 
 CREATE TABLE IF NOT EXISTS `car`
 (
-    `id`   bigint       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id`      bigint       NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name_ko` varchar(100) NOT NULL,
     `name_en` varchar(100) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `trim`
 (
-    `id`                 bigint        NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `name`               varchar(50)   NOT NULL,
-    `img_url`            varchar(2083) NOT NULL,
-    `background_img_url` varchar(2083) NOT NULL,
-    `hashtag`            varchar(50)   NOT NULL,
-    `price`              int           NOT NULL,
-    `description`        varchar(50)   NULL,
-    `car_id`             bigint        NOT NULL,
+    `id`                         bigint        NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name`                       varchar(50)   NOT NULL,
+    `img_url`                    varchar(2083) NOT NULL,
+    `background_img_url_web`     varchar(2083) NOT NULL,
+    `background_img_url_android` varchar(2083) NOT NULL,
+    `hashtag`                    varchar(50)   NOT NULL,
+    `price`                      int           NOT NULL,
+    `description`                varchar(50)   NULL,
+    `car_id`                     bigint        NOT NULL,
     FOREIGN KEY (`car_id`) REFERENCES `car` (`id`)
 );
 

@@ -30,12 +30,12 @@ class SellSelectiveOptionRepositoryTest {
         jdbcTemplate.update("INSERT INTO car (id, name_ko, name_en) " +
                 "VALUES (1, '팰리세이드', 'Palisade');");
 
-        jdbcTemplate.update("INSERT INTO trim (id, name, img_url, background_img_url, hashtag, price, description, car_id) " +
+        jdbcTemplate.update("INSERT INTO trim (id, name, img_url, background_img_url_web, background_img_url_android, hashtag, price, description, car_id) " +
                 "VALUES (1, 'Exclusive', 'https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/exclusivepng.png', " +
-                "        'https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/guide-main.png', '기본에 충실', 38960000, '기본에 충실', 1), " +
-                "       (2, 'Le Blanc (르블랑)', 'https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/leblanc.png', " +
-                "        'https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/leblanc-main.png', '베스트셀러', 41980000, " +
-                "        '모두가 선택한 베스트 셀러', 1);");
+                "'trimBackgroundImgUrlWeb', 'trimBackgroundImgUrlAndroid', '기본에 충실', 38960000, '기본에 충실', 1), " +
+                "(2, 'Le Blanc (르블랑)', 'https://s3.ap-northeast-2.amazonaws.com/youngcha.team/image/leblanc.png', " +
+                "'trimBackgroundImgUrlWeb', 'trimBackgroundImgUrlAndroid', '베스트셀러', 41980000, " +
+                "'모두가 선택한 베스트 셀러', 1);");
 
         jdbcTemplate.update("INSERT INTO category (id, name) " +
                 "VALUES (1, '파워 트레인'), " +
