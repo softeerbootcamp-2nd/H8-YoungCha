@@ -3,7 +3,6 @@ package team.youngcha.domain.option;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -36,26 +35,6 @@ import java.util.Map;
         "classpath:data/sell.sql",
         "classpath:data/estimate.sql"})
 public class GuideOptionIntegrationTest extends IntegrationTestBase {
-
-    @BeforeEach
-    void setUp() {
-        // 유사 사용자는 trim id, keyword 모두 포함, 나이대, 성별로 판단
-        // 태그는 trim id, option id, keyword 중 하나 포함으로 판단
-/*        jdbcTemplate.update("insert into estimate (id, trim_id, engine_id, body_type_id, " +
-                "driving_system_id, exterior_color_id, interior_color_id, wheel_id, " +
-                "keyword1_id, keyword2_id, keyword3_id, age_range, gender, create_date) " +
-                "values (1, 2, 2, 5, 4, 1, 1, 1, 1, 2, 3, 3, 1, '2023-01-01 12:12:12')," +
-                "(2, 2, 1, 5, 3, 1, 1, 1, 2, 1, 3, 3, 1, '2023-01-01 12:12:12')," +
-                "(3, 2, 2, 5, 3, 1, 1, 1, 3, 2, 1, 3, 1, '2023-01-01 12:12:12')," +
-                "(4, 2, 2, 5, 3, 1, 1, 1, 1, 2, 3, 3, 1, '2023-01-01 12:12:12')," +
-                "(5, 2, 2, 5, 3, 1, 1, 1, 1, 2, 3, 3, 1, '2023-01-01 12:12:12')," +
-                "(6, 2, 2, 5, 3, 1, 1, 1, 1, 2, 4, 3, 1, '2023-01-01 12:12:12')," + // 유사 사용자 x
-                "(7, 2, 3, 6, 3, 1, 1, 1, 1, 2, 3, 3, 0, '2023-01-01 12:12:12')," +
-                "(8, 3, 2, 6, 3, 1, 1, 1, 1, 2, 3, 3, 1, '2023-01-01 12:12:12')," + // 조회 되지 않아야 하는 데이터(다른 트림)
-                "(9, 2, 2, 6, 3, 1, 1, 1, 1, 3, 4, 2, 1, '2023-01-01 12:12:12')"); // 유사 사용자 x*/
-
-        // 위의 데이터는 data/estimate.sql로 이동
-    }
 
     Map<String, Object> params = new HashMap<>() {{
         put("gender", Gender.FEMALE.getType());
