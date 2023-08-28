@@ -1,5 +1,4 @@
-import ActiveCheck from '@/assets/icons/SelectCheck';
-import InactiveCheck from '@/assets/icons/SelectCheckInactive';
+import * as Icon from '@/assets/icons';
 import SelectButton from '@/components/SelectButton';
 import { AgeType } from '../type';
 import { Fragment, useState } from 'react';
@@ -41,11 +40,11 @@ function AgeSelectButtonsBox() {
             >
               {age}
               {isSelected ? (
-                <ActiveCheck />
+                <Icon.BlueCheckIcon />
               ) : isHovered ? (
-                <ActiveCheck />
+                <Icon.BlueCheckIcon />
               ) : (
-                <InactiveCheck />
+                <Icon.GreyCheckIcon />
               )}
             </SelectButton>
           </Fragment>

@@ -1,5 +1,4 @@
-import ActiveCheck from '@/assets/icons/SelectCheck';
-import InactiveCheck from '@/assets/icons/SelectCheckInactive';
+import * as Icon from '@/assets/icons';
 import SelectButton from '@/components/SelectButton';
 import useTagRefreshNavigator from '@/hooks/useTagRefreshNavigator';
 import { GenderType } from '../type';
@@ -36,11 +35,11 @@ function GenderSelectButtonsBox() {
             >
               {Gender}
               {isSelected ? (
-                <ActiveCheck />
+                <Icon.BlueCheckIcon />
               ) : isHovered ? (
-                <ActiveCheck />
+                <Icon.BlueCheckIcon />
               ) : (
-                <InactiveCheck />
+                <Icon.GreyCheckIcon />
               )}
             </SelectButton>
           </Fragment>
