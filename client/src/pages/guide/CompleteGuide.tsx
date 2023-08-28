@@ -18,7 +18,7 @@ function CompleteGuide() {
   return (
     <>
       <Confetti particleCount={120} circleParticleCount={60} />
-      <div className="flex flex-col items-center w-full gap-16px">
+      <div className="flex flex-col items-center justify-center w-full gap-16px">
         <div className="w-450px">
           <RotateCarImage
             images={getRotateImages({

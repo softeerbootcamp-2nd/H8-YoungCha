@@ -1,11 +1,10 @@
-import { Fragment, HTMLAttributes, useContext } from 'react';
-import { OptionGroupType } from '@/pages/making/type';
 import { formatPrice } from '@/utils';
-import Transition from '../Transition/Transition';
-import { Close } from '@/assets/icons';
-// import { mockUserSelectedOptionData } from '@/assets/mock/mock';
-import getOptionGroupsTotalPrice from '@/utils/getTotalPrice';
+import { OptionGroupType } from '@/pages/making/type';
+import { Fragment, HTMLAttributes, useContext } from 'react';
 import { UserSelectedOptionDataContext } from '@/store/useUserSelectedOptionContext';
+import Transition from '../Transition/Transition';
+import * as Icon from '@/assets/icons';
+import getOptionGroupsTotalPrice from '@/utils/getTotalPrice';
 
 const ESTIMATION_SUMMARY = '견적 요약';
 
@@ -41,7 +40,7 @@ function SummaryModal({ render, onClose }: SummaryModalProps) {
             {ESTIMATION_SUMMARY}
           </h3>
           <button onClick={onClose}>
-            <Close className="fill-grey-003" />
+            <Icon.ModalCloseIcon className="fill-grey-003" />
           </button>
         </div>
 

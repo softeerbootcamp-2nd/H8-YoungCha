@@ -120,7 +120,7 @@ function CompleteGuideWithLoading() {
   }, []);
 
   return (
-    <div className="flex-grow h-full">
+    <div className="flex flex-grow h-full">
       {isTimerEnd && isRequestEnd ? <CompleteGuide /> : <Loading />}
     </div>
   );

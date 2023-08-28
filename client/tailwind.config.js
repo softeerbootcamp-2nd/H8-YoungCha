@@ -40,10 +40,6 @@ export default {
       'hsans-head': ['Hyundai Sans Head KR', 'sans-serif'],
       'hsans-text': ['Hyundai Sans Text KR', 'sans-serif'],
     },
-    backgroundImage: {
-      'main-background-image':
-        "url('/src/assets/images/main-background-car.png')",
-    },
   },
 
   plugins: [typography, pixel],

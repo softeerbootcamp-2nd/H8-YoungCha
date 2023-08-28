@@ -1,6 +1,6 @@
-import ChevronRight from '@/assets/icons/ChevronRight';
-import { SELF_MODE, GUIDE_MODE, PROGRESSING_NOW } from '../constant';
+import * as Icon from '@/assets/icons';
 import { HTMLAttributes } from 'react';
+import { SELF_MODE, GUIDE_MODE, PROGRESSING_NOW } from '../constant';
 
 interface ModeSelectCardProps extends HTMLAttributes<HTMLDivElement> {
   currentMode: string;
@@ -45,9 +45,9 @@ function ModeSelectCard({
         </div>
         <div className="absolute left-285px">
           {mode === SELF_MODE ? (
-            <ChevronRight size={24} />
+            <Icon.ChevronRight size={24} />
           ) : (
-            <ChevronRight size={24} color={'white'} />
+            <Icon.ChevronRight size={24} color={'white'} />
           )}
         </div>
       </div>
