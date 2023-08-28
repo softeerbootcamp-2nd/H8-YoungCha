@@ -1,4 +1,4 @@
-import ChevronRight from '@/assets/icons/ChevronRight';
+import ChevronRight from '@/assets/icons/popup/ChevronRight';
 import { SELF_MODE, GUIDE_MODE, PROGRESSING_NOW } from '../constant';
 import { HTMLAttributes } from 'react';
 

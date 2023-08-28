@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import DetailCard from '@/components/MakingModeButton/DetailCard.tsx';
-import ChevronRight from '@/assets/icons/ChevronRight';
+import ChevronRight from '@/assets/icons/popup/ChevronRight';
 import GuideModeDetailList from '@/components/MakingModeButton/GuideModeDetailList';
 import MainOptionList from '@/components/MakingModeButton/MainOptionList';
 import { formatPrice } from '@/utils';
