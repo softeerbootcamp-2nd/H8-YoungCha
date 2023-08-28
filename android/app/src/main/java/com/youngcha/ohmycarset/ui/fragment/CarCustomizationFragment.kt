@@ -75,7 +75,7 @@ class CarCustomizationFragment : Fragment() {
 
     private lateinit var detailAdapterMain: EstimateDetailAdapter
     private lateinit var detailAdapterSub: EstimateDetailAdapter
-    private lateinit var carViewModel: CarCustomizationViewModel
+    private lateinit var carCustomizationViewModel: CarCustomizationViewModel
     private val selfModeRepository by lazy { SelfModeRepository(RetrofitClient.selfModeApi) }
     private val guideModeRepository by lazy { GuideModeRepository(RetrofitClient.guideModeApi) }
     private val categoryRepository by lazy { CategoryRepository(RetrofitClient.categoriesApi) }
@@ -84,8 +84,6 @@ class CarCustomizationFragment : Fragment() {
     private val baekcasajeonViewModel: BaekcasajeonViewModel by activityViewModels {
         BaekcasajeonFactory(baekcasajeonRepository)
     }
-
-    private val guideModeViewModel: GuideModeViewModel by activityViewModels()
 
     private lateinit var mode: String
     private lateinit var startPoint: String
@@ -111,22 +109,22 @@ class CarCustomizationFragment : Fragment() {
             guideModeRepository,
             categoryRepository
         )
-        carViewModel =
+        carCustomizationViewModel =
             ViewModelProvider(requireActivity(), factory).get(CarCustomizationViewModel::class.java)
-        if (carViewModel.categories.value == null) {
-            carViewModel.categories.value = categoryRepository.categories.value
+        if (carCustomizationViewModel.categories.value == null) {
+            carCustomizationViewModel.categories.value = categoryRepository.categories.value
         }
 
         binding.apply {
-            viewModel = carViewModel
+            viewModel = carCustomizationViewModel
             lifecycleOwner = this@CarCustomizationFragment
-            vpOptionContainer.adapter = CarOptionPagerAdapter(carViewModel) {
+            vpOptionContainer.adapter = CarOptionPagerAdapter(carCustomizationViewModel) {
                 if (it.detail.isEmpty()) return@CarOptionPagerAdapter
                 val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
                 if (countWithImgUrl > 0) {
                     showSwipeDialog(requireContext(), it)
                 } else {
-                    showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+                    showTextDialog(requireContext(), carCustomizationViewModel.currentComponentName.value ?: "", it)
                 }
             }
             attachTabLayoutMediator()
@@ -139,9 +137,9 @@ class CarCustomizationFragment : Fragment() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             if (mode == "SelfMode") {
-                carViewModel.startSelfMode()
+                carCustomizationViewModel.startSelfMode()
             } else {
-                carViewModel.initCarCustomizationViewModel("GuideMode", startPoint)
+                carCustomizationViewModel.initCarCustomizationViewModel("GuideMode", startPoint)
             }
         }, 300)
 
@@ -152,11 +150,11 @@ class CarCustomizationFragment : Fragment() {
     private fun setupListener() {
 
         binding.btnComponentOption1.ibDetail.setOnClickListener {
-            carViewModel.onDetailClicked("button1")
+            carCustomizationViewModel.onDetailClicked("button1")
         }
 
         binding.btnComponentOption2.ibDetail.setOnClickListener {
-            carViewModel.onDetailClicked("button2")
+            carCustomizationViewModel.onDetailClicked("button2")
         }
 
         binding.htbHeaderToolbar.listener = object : OnHeaderToolbarClickListener {
@@ -169,13 +167,13 @@ class CarCustomizationFragment : Fragment() {
                     requireContext(), ButtonDialog(
                         "Vertical", R.drawable.ic_change, "모드를 변경하시겠어요?", ButtonHorizontal(
                             "", 1, "", ""
-                        ), ButtonVertical(carViewModel.currentType.value!!)
+                        ), ButtonVertical(carCustomizationViewModel.currentType.value!!)
                     )
                 )
 
                 dialog.setOnVerticalButtonClickListener { value ->
                     if (value == "SelfMode") {
-                        carViewModel.startSelfMode()
+                        carCustomizationViewModel.startSelfMode()
                         // 탭을 첫 번째로 이동
                         binding.tlMainOptionTab.getTabAt(0)?.select()
                     } else {
@@ -208,7 +206,7 @@ class CarCustomizationFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun observeViewModel() {
-        carViewModel.startAnimationEvent.observe(viewLifecycleOwner) { feedbackViewId ->
+        carCustomizationViewModel.startAnimationEvent.observe(viewLifecycleOwner) { feedbackViewId ->
             toggleButtonsState(false)
 
             val targetView = when (feedbackViewId) {
@@ -224,7 +222,7 @@ class CarCustomizationFragment : Fragment() {
 
                 override fun onAnimationEnd(animation: Animation?) {
                     targetView?.visibility = View.INVISIBLE
-                    carViewModel.handleTabChange(1)
+                    carCustomizationViewModel.handleTabChange(1)
                     toggleButtonsState(true)
                 }
 
@@ -255,32 +253,32 @@ class CarCustomizationFragment : Fragment() {
                     //  Coroutine을 사용하여 일정 시간 후에 handleTabChange(1)을 호출
                     lifecycleScope.launch {
                         delay(1000) // 1초 대기
-                        carViewModel.handleTabChange(1)
+                        carCustomizationViewModel.handleTabChange(1)
                         toggleButtonsState(true)
                     }
                 }
             }
         }
 
-        carViewModel.selectedCar.observe(viewLifecycleOwner) { car ->
+        carCustomizationViewModel.selectedCar.observe(viewLifecycleOwner) { car ->
             car.mainOptions.let {
                 val firstKey = car.mainOptions.first().keys.firstOrNull()
-                if (carViewModel.currentType.value != "GuideMode") {
-                    carViewModel.setCurrentComponentName(firstKey!!)
+                if (carCustomizationViewModel.currentType.value != "GuideMode") {
+                    carCustomizationViewModel.setCurrentComponentName(firstKey!!)
                 }
             }
         }
 
-        carViewModel.subOptionViewType.observe(viewLifecycleOwner) {
-            carViewModel.updateDataContainer()
+        carCustomizationViewModel.subOptionViewType.observe(viewLifecycleOwner) {
+            carCustomizationViewModel.updateDataContainer()
         }
 
         // 메인 탭 옵션 리스트 (ex: 파워 트레인 -> [디젤], [가솔린])
-        carViewModel.currentOptionList.observe(viewLifecycleOwner) { optionList ->
+        carCustomizationViewModel.currentOptionList.observe(viewLifecycleOwner) { optionList ->
             handleOptionListUpdates(optionList)
         }
 
-        carViewModel.currentMainTabs.observe(viewLifecycleOwner) { tabs ->
+        carCustomizationViewModel.currentMainTabs.observe(viewLifecycleOwner) { tabs ->
             tabs.let {
                 it.forEach { tabName ->
                     binding.tlMainOptionTab.addTab(
@@ -290,20 +288,20 @@ class CarCustomizationFragment : Fragment() {
             }
         }
 
-        carViewModel.currentSubTabs.observe(viewLifecycleOwner) { tabs ->
+        carCustomizationViewModel.currentSubTabs.observe(viewLifecycleOwner) { tabs ->
             tabs.forEach { tabName ->
                 binding.tlSubOptionTab.addTab(createCustomTab(tabName))
             }
         }
 
-        carViewModel.currentEstimateSubTabs.observe(viewLifecycleOwner) { tabs ->
+        carCustomizationViewModel.currentEstimateSubTabs.observe(viewLifecycleOwner) { tabs ->
             binding.layoutEstimate.lyDetail.tlOption.removeAllTabs()
             tabs.forEach { tabName ->
                 binding.layoutEstimate.lyDetail.tlOption.addTab(createCustomTabInEstimate(tabName))
             }
         }
 
-        carViewModel.isLoading.observe(viewLifecycleOwner) { isPreloading ->
+        carCustomizationViewModel.isLoading.observe(viewLifecycleOwner) { isPreloading ->
             if (isPreloading) {
                 // 로딩 인디케이터 보이기
                 binding.pbLoading.visibility = View.VISIBLE
@@ -313,22 +311,22 @@ class CarCustomizationFragment : Fragment() {
             }
         }
 
-        carViewModel.isLoading.observe(viewLifecycleOwner) { isPreloading ->
+        carCustomizationViewModel.isLoading.observe(viewLifecycleOwner) { isPreloading ->
             binding.pbLoading.visibility = if (isPreloading) View.VISIBLE else View.GONE
         }
 
-        carViewModel.currentExteriorColor.observe(viewLifecycleOwner) { exteriorColorName ->
+        carCustomizationViewModel.currentExteriorColor.observe(viewLifecycleOwner) { exteriorColorName ->
             val colorCode = getColorCodeFromName(exteriorColorName)
-            carViewModel.currentExteriorColorFirstUrl.value =
+            carCustomizationViewModel.currentExteriorColorFirstUrl.value =
                 "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/001.png"
 
-            if (carViewModel.currentComponentName.value != "외장 색상") {
+            if (carCustomizationViewModel.currentComponentName.value != "외장 색상") {
                 return@observe
             }
 
-            Log.d("로그", "현재 부품 이름: " + carViewModel.currentComponentName.value!!)
+            Log.d("로그", "현재 부품 이름: " + carCustomizationViewModel.currentComponentName.value!!)
 
-            carViewModel.carRotateView.value = 1
+            carCustomizationViewModel.carRotateView.value = 1
             if (colorCode != null) {
                 val imageUrls = (1..60).map {
                     "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/${
@@ -344,7 +342,7 @@ class CarCustomizationFragment : Fragment() {
                     imageUrls,
                     onStart = {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            carViewModel.setLoadingState(true)
+                            carCustomizationViewModel.setLoadingState(true)
                         }
                     },
                     onComplete = { imgList ->
@@ -362,15 +360,15 @@ class CarCustomizationFragment : Fragment() {
                             imageLoader
                         )
                         lifecycleScope.launch(Dispatchers.Main) {
-                            carViewModel.setLoadingState(false)
+                            carCustomizationViewModel.setLoadingState(false)
                         }
                     }
                 )
             }
         }
 
-        carViewModel.currentComponentName.observe(viewLifecycleOwner) { componentName ->
-            carViewModel.carRotateView.value = 0
+        carCustomizationViewModel.currentComponentName.observe(viewLifecycleOwner) { componentName ->
+            carCustomizationViewModel.carRotateView.value = 0
             binding.tvTitle.viewTreeObserver.addOnPreDrawListener(object :
                 ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
@@ -380,7 +378,7 @@ class CarCustomizationFragment : Fragment() {
             })
         }
 
-        carViewModel.estimateViewVisible.observe(viewLifecycleOwner) {
+        carCustomizationViewModel.estimateViewVisible.observe(viewLifecycleOwner) {
             if (it == 1) {
                 view?.viewTreeObserver?.addOnGlobalLayoutListener(object :
                     ViewTreeObserver.OnGlobalLayoutListener {
@@ -391,14 +389,14 @@ class CarCustomizationFragment : Fragment() {
                         view?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
                     }
                 })
-                carViewModel.filteredMainSub()
-                carViewModel.filterSubOptions("전체")
+                carCustomizationViewModel.filteredMainSub()
+                carCustomizationViewModel.filterSubOptions("전체")
             }
         }
 
-        carViewModel.displayOnRecyclerViewOnViewPager.observe(viewLifecycleOwner) { mode ->
-            carViewModel.currentTabName.value?.let { tabName ->
-                carViewModel.getOptionInfoByKey(tabName).let {
+        carCustomizationViewModel.displayOnRecyclerViewOnViewPager.observe(viewLifecycleOwner) { mode ->
+            carCustomizationViewModel.currentTabName.value?.let { tabName ->
+                carCustomizationViewModel.getOptionInfoByKey(tabName).let {
                     when (mode) {
                         0 -> it?.let { optionInfo -> displayOnRecyclerView(optionInfo, tabName) }
                         1 -> it?.let { optionInfo -> displayOnViewPager(optionInfo, tabName) }
@@ -410,26 +408,26 @@ class CarCustomizationFragment : Fragment() {
         }
 
 
-        carViewModel.currentTabPosition.observe(viewLifecycleOwner) {
+        carCustomizationViewModel.currentTabPosition.observe(viewLifecycleOwner) {
             binding.tlMainOptionTab.getTabAt(it)?.select()
         }
 
-        carViewModel.customizedParts.observe(viewLifecycleOwner) { customized ->
+        carCustomizationViewModel.customizedParts.observe(viewLifecycleOwner) { customized ->
             val systemOptions: List<OptionInfo>? =
                 customized?.firstOrNull { it.containsKey("시스템") }?.get("시스템")
         }
 
-        carViewModel.estimateSubOptions.observe(viewLifecycleOwner) { subOptions ->
+        carCustomizationViewModel.estimateSubOptions.observe(viewLifecycleOwner) { subOptions ->
             val emptySubOptions: Map<String, List<OptionInfo>> = emptyMap()
             detailAdapterSub.updateOptionInfo(subOptions ?: emptySubOptions)
         }
 
-        carViewModel.estimateMainOptions.observe(viewLifecycleOwner) { mainOptions ->
+        carCustomizationViewModel.estimateMainOptions.observe(viewLifecycleOwner) { mainOptions ->
             val emptyMainOptions: Map<String, List<OptionInfo>> = emptyMap()
             detailAdapterMain.updateOptionInfo(mainOptions ?: emptyMainOptions)
         }
 
-        carViewModel.customizedParts.observe(viewLifecycleOwner) {
+        carCustomizationViewModel.customizedParts.observe(viewLifecycleOwner) {
             var totalPrice: Int = 0
             it.forEach { map ->
                 map.values.forEach { optionInfos ->
@@ -440,9 +438,9 @@ class CarCustomizationFragment : Fragment() {
                 }
             }
 
-            val prevTotalPrice = carViewModel.prevPrice.value
+            val prevTotalPrice = carCustomizationViewModel.prevPrice.value
             val currentTotalPrice =
-                carViewModel.totalPrice.value?.plus(carViewModel.getMyCarTotalPrice())
+                carCustomizationViewModel.totalPrice.value?.plus(carCustomizationViewModel.getMyCarTotalPrice())
 
             animateValueChange(
                 binding.tvEstimatePrice,
@@ -450,17 +448,17 @@ class CarCustomizationFragment : Fragment() {
                 currentTotalPrice!!,
                 requireContext().resources
             ).start()
-            carViewModel.prevPrice.value = currentTotalPrice
+            carCustomizationViewModel.prevPrice.value = currentTotalPrice
         }
 
 
-        carViewModel.detailOptionInfo.observe(viewLifecycleOwner) {
+        carCustomizationViewModel.detailOptionInfo.observe(viewLifecycleOwner) {
             if (it.detail.isEmpty()) return@observe
             val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
             if (countWithImgUrl > 0) {
                 showSwipeDialog(requireContext(), it)
             } else {
-                showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+                showTextDialog(requireContext(), carCustomizationViewModel.currentComponentName.value ?: "", it)
             }
         }
 
@@ -491,21 +489,21 @@ class CarCustomizationFragment : Fragment() {
     // 현재 선택한 탭의 옵션 리스트를 ViewPager에 연결
     private fun handleOptionListUpdates(optionList: List<OptionInfo>) {
         // optionList.size가 2이상이라면 viewpager에 데이터가 보여야함
-        if (carViewModel.currentComponentName.value == "파워 트레인" || carViewModel.currentComponentName.value == "바디 타입" || carViewModel.currentComponentName.value == "구동 방식") {
+        if (carCustomizationViewModel.currentComponentName.value == "파워 트레인" || carCustomizationViewModel.currentComponentName.value == "바디 타입" || carCustomizationViewModel.currentComponentName.value == "구동 방식") {
             (binding.vpOptionContainer.adapter as? CarOptionPagerAdapter)?.clearOptions()
             return
         }
 
-        val currentKey = carViewModel.currentComponentName.value
+        val currentKey = carCustomizationViewModel.currentComponentName.value
         (binding.vpOptionContainer.adapter as? CarOptionPagerAdapter)?.setOptions(
             optionList,
             "",
             currentKey,
             true,
-            carViewModel.currentType.value,
-            carViewModel.currentComponentName.value
+            carCustomizationViewModel.currentType.value,
+            carCustomizationViewModel.currentComponentName.value
         )
-        val selectedOptions = carViewModel.isSelectedOptions(currentKey!!) ?: listOf()
+        val selectedOptions = carCustomizationViewModel.isSelectedOptions(currentKey!!) ?: listOf()
         val position = optionList.indexOf(selectedOptions.getOrNull(0)).takeIf { it != -1 } ?: 0
         binding.vpOptionContainer.setCurrentItem(position, false)
     }
@@ -519,13 +517,13 @@ class CarCustomizationFragment : Fragment() {
         binding.rvSubOptionList.setHasFixedSize(true)
 
         // 초기 어댑터 설정 (옵션 데이터가 없는 초기 상태)
-        binding.rvSubOptionList.adapter = CarOptionPagerAdapter(carViewModel) {
+        binding.rvSubOptionList.adapter = CarOptionPagerAdapter(carCustomizationViewModel) {
             if (it.detail.isEmpty()) return@CarOptionPagerAdapter
             val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
             if (countWithImgUrl > 0) {
                 showSwipeDialog(requireContext(), it)
             } else {
-                showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+                showTextDialog(requireContext(), carCustomizationViewModel.currentComponentName.value ?: "", it)
             }
         }
 
@@ -536,11 +534,11 @@ class CarCustomizationFragment : Fragment() {
 
         detailAdapterMain = EstimateDetailAdapter { optionInfo ->
             // optionInfo에 해당하는 탭으로 이동
-            val position = carViewModel.currentMainTabs.value?.indexOf(optionInfo)
+            val position = carCustomizationViewModel.currentMainTabs.value?.indexOf(optionInfo)
 
             // 찾은 위치로 _currentTabPosition를 업데이트합니다.
             if (position != null && position != -1) {
-                carViewModel.updateTapPosition(position, optionInfo)
+                carCustomizationViewModel.updateTapPosition(position, optionInfo)
             }
         }
         binding.layoutEstimate.lyDetail.rvMainOption.adapter = detailAdapterMain
@@ -550,13 +548,13 @@ class CarCustomizationFragment : Fragment() {
 
         detailAdapterSub = EstimateDetailAdapter { optionInfo ->
             // optionInfo에 해당하는 탭으로 이동
-            val position = carViewModel.currentMainTabs.value?.indexOf(optionInfo)
+            val position = carCustomizationViewModel.currentMainTabs.value?.indexOf(optionInfo)
 
             // 찾은 위치로 _currentTabPosition를 업데이트합니다.
             if (position != null && position != -1) {
-                carViewModel.updateTapPosition(position, optionInfo)
+                carCustomizationViewModel.updateTapPosition(position, optionInfo)
             } else {
-                carViewModel.updateTapPosition(6, "옵션 선택")
+                carCustomizationViewModel.updateTapPosition(6, "옵션 선택")
             }
         }
         binding.layoutEstimate.lyDetail.rvSubOption.adapter = detailAdapterSub
@@ -567,8 +565,8 @@ class CarCustomizationFragment : Fragment() {
         // 옵션 선택에서 sub tab이 클릭되었을때
         binding.tlSubOptionTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                carViewModel.currentSubTabPosition.value = tab.position
-                carViewModel.updateDataContainer()
+                carCustomizationViewModel.currentSubTabPosition.value = tab.position
+                carCustomizationViewModel.updateDataContainer()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -585,9 +583,9 @@ class CarCustomizationFragment : Fragment() {
                 val tvTabName = customView?.findViewById<TextView>(R.id.tv_tab_name)
                 val tabName = tvTabName?.text.toString()
 
-                when (carViewModel.estimateSubTabType.value) {
-                    "selectOption" -> carViewModel.filterOptionsByTabName(tabName)
-                    "basicOption" -> carViewModel.filterSubOptions(tabName)
+                when (carCustomizationViewModel.estimateSubTabType.value) {
+                    "selectOption" -> carCustomizationViewModel.filterOptionsByTabName(tabName)
+                    "basicOption" -> carCustomizationViewModel.filterSubOptions(tabName)
                 }
             }
 
@@ -615,13 +613,13 @@ class CarCustomizationFragment : Fragment() {
 
     // sub option 상태에서만 가능
     private fun displayOnRecyclerView(optionInfos: List<OptionInfo>, tabName: String) {
-        val adapter = CarOptionPagerAdapter(carViewModel) {
+        val adapter = CarOptionPagerAdapter(carCustomizationViewModel) {
             if (it.detail.isEmpty()) return@CarOptionPagerAdapter
             val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
             if (countWithImgUrl > 0) {
                 showSwipeDialog(requireContext(), it)
             } else {
-                showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+                showTextDialog(requireContext(), carCustomizationViewModel.currentComponentName.value ?: "", it)
             }
         }
         binding.rvSubOptionList.adapter = adapter
@@ -630,24 +628,24 @@ class CarCustomizationFragment : Fragment() {
             OPTION_SELECTION,
             tabName,
             false,
-            carViewModel.currentType.value,
-            carViewModel.currentComponentName.value
+            carCustomizationViewModel.currentType.value,
+            carCustomizationViewModel.currentComponentName.value
         )
     }
 
     // main & sub 전부 가능
     private fun displayOnViewPager(optionInfos: List<OptionInfo>, tabName: String) {
-        val adapter = CarOptionPagerAdapter(carViewModel) {
+        val adapter = CarOptionPagerAdapter(carCustomizationViewModel) {
             if (it.detail.isEmpty()) return@CarOptionPagerAdapter
             val countWithImgUrl = it.detail.count { !it.imgUrl.isNullOrEmpty() }
             if (countWithImgUrl > 0) {
                 showSwipeDialog(requireContext(), it)
             } else {
-                showTextDialog(requireContext(), carViewModel.currentComponentName.value ?: "", it)
+                showTextDialog(requireContext(), carCustomizationViewModel.currentComponentName.value ?: "", it)
             }
         }
         binding.vpOptionContainer.adapter = adapter
-        val selectedOptions = carViewModel.isSelectedOptions(tabName) ?: listOf()
+        val selectedOptions = carCustomizationViewModel.isSelectedOptions(tabName) ?: listOf()
 
         val position =
             optionInfos.indexOfFirst { it == selectedOptions.firstOrNull() }.takeIf { it != -1 }
@@ -658,8 +656,8 @@ class CarCustomizationFragment : Fragment() {
             OPTION_SELECTION,
             tabName,
             true,
-            carViewModel.currentType.value,
-            carViewModel.currentComponentName.value
+            carCustomizationViewModel.currentType.value,
+            carCustomizationViewModel.currentComponentName.value
         )
     }
 
