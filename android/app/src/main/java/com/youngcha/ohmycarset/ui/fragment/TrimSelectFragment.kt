@@ -60,7 +60,8 @@ class TrimSelectFragment : Fragment() {
     private var _binding: FragmentTrimSelectBinding? = null
     private val binding get() = _binding!!
 
-    private val trimSelectViewModel: TrimSelectViewModel by viewModels()
+    //private val trimSelectViewModel: TrimSelectViewModel by viewModels()
+    private val trimSelectViewModel: TrimSelectViewModel by activityViewModels()
 
     private val baekcasajeonRepository by lazy { BaekcasajeonRepository(RetrofitClient.baekcasajeonApi) }
     private val baekcasajeonViewModel: BaekcasajeonViewModel by activityViewModels {

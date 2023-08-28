@@ -15,6 +15,7 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.TextView
+import okhttp3.internal.format
 import java.lang.Math.cos
 import java.lang.Math.sin
 import kotlin.random.Random
@@ -101,6 +102,7 @@ object AnimationUtils {
             textView.text = formatToCurrency(newValue)
         }
 
+
         valueAnimator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 textView.setTextColor(resources.getColor(android.R.color.black, null))
@@ -110,7 +112,7 @@ object AnimationUtils {
         return valueAnimator
     }
 
-    private fun formatToCurrency(value: Int): String {
+    fun formatToCurrency(value: Int): String {
         return "%,d원".format(value)
     }
 }

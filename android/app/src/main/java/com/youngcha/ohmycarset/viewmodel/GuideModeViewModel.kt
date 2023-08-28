@@ -28,7 +28,7 @@ class GuideModeViewModel(private val repository: GuideModeRepository, private va
             val fetchedCategories = categoryRepository.getAllSubCategories()
 
             fetchedCategories?.let {
-                repository.fetchAllGuideDataAndSetCar(guideParam, it)
+                repository.getAllGuideDataAndSetCar(guideParam, it)
                 withContext(Dispatchers.Main) {
                     // 메인 스레드에서 LiveData 업데이트
                     categories.value = it

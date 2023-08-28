@@ -28,7 +28,6 @@ import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactor
 import com.youngcha.ohmycarset.viewmodel.factory.GuideModeViewModelFactory
 import kotlinx.coroutines.*
 
-
 class LoadingFragment : Fragment() {
 
     private var _binding: FragmentLoadingBinding? = null
