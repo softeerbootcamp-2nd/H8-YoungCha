@@ -12,10 +12,11 @@ function SelectOptionMessage({ step }: SelectOptionMessageProps) {
 
   return (
     <div className="font-hsans-head text-24px tracking-[-0.96px] pt-64px pb-32px px-32px">
-      <span className="font-medium">
+      <span className="flex font-medium ">
         <Highlighter dictionary={dictionary} isActivate={dictionaryOn}>
-          {`${OPTION_ORDER[step - 1]}을 선택해주세요.`}
+          {`${OPTION_ORDER[step - 1]}`}
         </Highlighter>
+        <span className="font-normal">을 선택해주세요.</span>
       </span>
     </div>
   );

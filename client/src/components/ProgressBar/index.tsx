@@ -59,7 +59,9 @@ function ProgressItem({ children, ...props }: ProgressItemProps) {
     <NavLink
       className={({ isActive }) =>
         `flex-1 flex justify-center items-center h-26px 
-        ${isActive ? 'text-main-blue font-medium' : 'text-grey-002'}`
+        ${
+          isActive ? 'text-main-blue font-medium' : 'text-grey-002'
+        } pointer-events-none`
       }
       {...props}
     >

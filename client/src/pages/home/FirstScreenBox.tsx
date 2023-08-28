@@ -11,7 +11,7 @@ interface FirstScreenBoxProps {
 function FirstScreenBox({ data }: FirstScreenBoxProps) {
   const secondPageRef = useRef<HTMLDivElement>(null);
   const [backgroundImgUrl, setBackgroundImgUrl] = useState(
-    data.guide.backgroundImgUrl
+    data.guide.backgroundImgUrl.web
   );
 
   return (

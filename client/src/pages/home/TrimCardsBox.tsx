@@ -23,7 +23,7 @@ function TrimCardsBox({
         to="guide/age"
         position="first"
         handleBackgroundImgUrlChange={() =>
-          setBackgroundImgUrl(trims[0].backgroundImgUrl)
+          setBackgroundImgUrl(trims[0].backgroundImgUrl.web)
         }
       >
         <MakingModeButton.GuideModeDetailList />
@@ -42,7 +42,7 @@ function TrimCardsBox({
             key={`making-mode-button-${index}`}
             position={position}
             handleBackgroundImgUrlChange={() =>
-              setBackgroundImgUrl(trim.backgroundImgUrl)
+              setBackgroundImgUrl(trim.backgroundImgUrl.web)
             }
           >
             <MakingModeButton.MainOptionList mainOptions={trim.mainOptions} />
