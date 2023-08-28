@@ -81,6 +81,22 @@ class LoadingFragment : Fragment() {
             }
         }
 
+        // 30초의 타이머 시작
+        lifecycleScope.launch(Dispatchers.Main) {
+            withTimeoutOrNull(30000L) { // 30초
+                while (isActive) {
+                    if (isCarSelected) {
+                        return@withTimeoutOrNull
+                    }
+                    delay(500)  // 0.5초마다 검사
+                }
+            } ?: run {
+                // 타이머가 종료된 후에 아직 isCarSelected 가 false 라면
+                val action = LoadingFragmentDirections.actionLoadingFragmentToTrimSelectFragment()
+                findNavController().navigate(action)  // TrimSelectFragment로 이동
+            }
+        }
+
         continuousAnimations()
         setupClickListener()
     }
