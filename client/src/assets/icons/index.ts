@@ -20,7 +20,6 @@ import MoreDetailsArrow from './option-card/MoreDetailsArrow';
 import SmileIcon from './option-card/SmileIcon';
 import LaughingFaceIcon from './option-card/LaughingFaceIcon';
 import ThumbsUpIcon from './option-card/ThumbsUpIcon';
-import NPerformance from '@/assets/mock/icons/NPerformance';
 import ChevronRight from './common/ChevronRight';
 
 export {
@@ -46,6 +45,5 @@ export {
   SmileIcon,
   LaughingFaceIcon,
   ThumbsUpIcon,
-  NPerformance,
   ChevronRight,
 };
