@@ -1,67 +1,7 @@
 // TODO: 실제 데이터로 변경
 
 import { UserSelectedOptionDataType } from '@/pages/making/type';
-import { BasicOptionType, TrimType } from '@/types';
-
-export const mockLeblanc: TrimType = {
-  id: 1,
-  name: 'LeBlanc',
-  backgroundImgUrl: '/src/assets/mock/images/main-background-car.png',
-  imgUrl: '/src/assets/mock/images/palisade.png',
-  hashTag: '#베스트셀러',
-  description: '모두가 선택한 베스트셀러',
-  best: true,
-  price: 10000000,
-  mainOptions: [
-    {
-      imgUrl: '/src/assets/mock/icons/main-navigation-option.svg',
-      name: '20인치\n 알로이 휠',
-    },
-    {
-      imgUrl: '/src/assets/mock/icons/main-navigation-option.svg',
-      name: '20인치\n 알로이 휠',
-    },
-    {
-      imgUrl: '/src/assets/mock/icons/main-navigation-option.svg',
-      name: '20인치\n 알로이 휠',
-    },
-  ],
-  exteriorColors: [
-    {
-      imgUrl: '#ffffff',
-      name: '펄화이트',
-    },
-    {
-      imgUrl: '#000000',
-      name: '펄블랙',
-    },
-    {
-      imgUrl: '#ff0000',
-      name: '펄레드',
-    },
-  ],
-  interiorColors: [
-    {
-      imgUrl: '/src/assets/mock/images/black-leather.png',
-      name: '블랙',
-    },
-    {
-      imgUrl: '/src/assets/mock/images/black-leather.png',
-      name: '블랙',
-    },
-    {
-      imgUrl: '/src/assets/mock/images/black-leather.png',
-      name: '블랙',
-    },
-  ],
-};
-
-export const mockTrims: TrimType[] = [
-  mockLeblanc,
-  mockLeblanc,
-  mockLeblanc,
-  mockLeblanc,
-];
+import { BasicOptionType } from '@/types';
 
 export const mockBasicOptions: BasicOptionType = {
   first: true,
