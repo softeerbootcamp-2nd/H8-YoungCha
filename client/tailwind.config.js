@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import pixel from './plugins/pixel';
+import pixel from 'tailwindcss-pixel';
 import typography from './plugins/typography';
 
 export default {
@@ -42,5 +42,5 @@ export default {
     },
   },
 
-  plugins: [typography, pixel],
+  plugins: [typography, pixel({ rem: true, extend: true, suffix: 'px' })],
 };
