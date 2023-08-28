@@ -4,123 +4,88 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.youngcha.ohmycarset.data.api.GuideModeApiService
 import com.youngcha.ohmycarset.data.dto.Category
-import com.youngcha.ohmycarset.data.dto.GuideModeDTO
 import com.youngcha.ohmycarset.data.model.GuideParam
 import com.youngcha.ohmycarset.data.model.car.Car
 import com.youngcha.ohmycarset.data.model.car.OptionInfo
+import com.youngcha.ohmycarset.util.guideModeFilterData
+import com.youngcha.ohmycarset.util.retryApiCall
 
 class GuideModeRepository(private val guideModeApiService: GuideModeApiService) {
 
     private val _car = MutableLiveData<Car>()
     val car: LiveData<Car> = _car
 
-    fun filterData(guideModeDTO: GuideModeDTO, type: String): List<OptionInfo> {
-        return guideModeDTO.data.map { dataItem ->
-            val mainImage: String = dataItem.images.find { it.imgType == 0 }?.imgUrl ?: ""
-            val subImage: String = dataItem.images.find { it.imgType == 1 }?.imgUrl ?: ""
-            val logoImage: String = dataItem.images.find { it.imgType == 2 }?.imgUrl ?: ""
-            val feedbackDescription = dataItem.feedbackDescription ?: ""
-
-            OptionInfo(
-                id = dataItem.id,
-                categoryId = dataItem.categoryId,
-                checked = dataItem.checked,
-                optionType = type,
-                rate = dataItem.rate.toString(),
-                name = dataItem.name,
-                price = dataItem.price,
-                feedbackTitle = dataItem.feedbackTitle,
-                feedbackDescription = feedbackDescription,
-                mainImage = mainImage,
-                subImage = subImage,
-                logoImage = logoImage,
-                detail = dataItem.details,
-                guideModeDescription = null
-            )
-        }
-    }
-
-    suspend fun fetchAllGuideDataAndSetCar(guideParam: GuideParam, categories: List<Category>) {
-        val powerTrain = filterData(
-            guideModeApiService.getPowerTrainGuide(
-                guideParam.id,
-                guideParam.age,
-                guideParam.gender,
-                guideParam.keyword1Id,
-                guideParam.keyword2Id,
-                guideParam.keyword3Id
-            ), "main"
+    suspend fun getAllGuideDataAndSetCar(guideParam: GuideParam, categories: List<Category>) {
+        val powerTrain = guideModeFilterData(
+            retryApiCall {
+                guideModeApiService.getPowerTrainGuide(
+                    guideParam.id, guideParam.age, guideParam.gender,
+                    guideParam.keyword1Id, guideParam.keyword2Id, guideParam.keyword3Id
+                )
+            } ?: return, "main"
         )
 
-        val drivingSystem = filterData(
-            guideModeApiService.getDrivingSystem(
-                guideParam.id,
-                guideParam.age,
-                guideParam.gender,
-                guideParam.keyword1Id,
-                guideParam.keyword2Id,
-                guideParam.keyword3Id
-            ), "main"
+        val drivingSystem = guideModeFilterData(
+            retryApiCall {
+                guideModeApiService.getDrivingSystem(
+                    guideParam.id, guideParam.age, guideParam.gender,
+                    guideParam.keyword1Id, guideParam.keyword2Id, guideParam.keyword3Id
+                )
+            } ?: return, "main"
         )
 
-        val bodyType = filterData(
-            guideModeApiService.getBodyTypeGuide(
-                guideParam.id,
-                guideParam.age,
-                guideParam.gender,
-                guideParam.keyword1Id,
-                guideParam.keyword2Id,
-                guideParam.keyword3Id
-            ), "main"
+        val bodyType = guideModeFilterData(
+            retryApiCall {
+                guideModeApiService.getBodyTypeGuide(
+                    guideParam.id, guideParam.age, guideParam.gender,
+                    guideParam.keyword1Id, guideParam.keyword2Id, guideParam.keyword3Id
+                )
+            } ?: return, "main"
         )
 
-        val exteriorColor = filterData(
-            guideModeApiService.getExteriorColorGuide(
-                guideParam.id,
-                guideParam.age,
-                guideParam.gender,
-                guideParam.keyword1Id,
-                guideParam.keyword2Id,
-                guideParam.keyword3Id
-            ), "color"
+        val exteriorColor = guideModeFilterData(
+            retryApiCall {
+                guideModeApiService.getExteriorColorGuide(
+                    guideParam.id, guideParam.age, guideParam.gender,
+                    guideParam.keyword1Id, guideParam.keyword2Id, guideParam.keyword3Id
+                )
+            } ?: return, "color"
         )
+
         val firstExteriorId = exteriorColor.firstOrNull()?.id
         val interiorColor = if (firstExteriorId != null)
-            filterData(
-                guideModeApiService.getInteriorColorGuide(
-                    guideParam.id,
-                    guideParam.age,
-                    guideParam.gender,
-                    guideParam.keyword1Id,
-                    guideParam.keyword2Id,
-                    guideParam.keyword3Id, firstExteriorId
-                ), "color"
+            guideModeFilterData(
+                retryApiCall {
+                    guideModeApiService.getInteriorColorGuide(
+                        guideParam.id, guideParam.age, guideParam.gender,
+                        guideParam.keyword1Id, guideParam.keyword2Id,
+                        guideParam.keyword3Id, firstExteriorId
+                    )
+                } ?: return, "color"
             )
         else emptyList()
 
         val wheel = if (firstExteriorId != null)
-            filterData(
-                guideModeApiService.getWheelGuide(
-                    guideParam.id,
-                    guideParam.age,
-                    guideParam.gender,
-                    guideParam.keyword1Id,
-                    guideParam.keyword2Id,
-                    guideParam.keyword3Id, firstExteriorId
-                ), "main"
+            guideModeFilterData(
+                retryApiCall {
+                    guideModeApiService.getWheelGuide(
+                        guideParam.id, guideParam.age, guideParam.gender,
+                        guideParam.keyword1Id, guideParam.keyword2Id,
+                        guideParam.keyword3Id, firstExteriorId
+                    )
+                } ?: return, "main"
             )
         else emptyList()
 
         val options = createSubOptionMap(
-            categories, filterData(
-                guideModeApiService.getOptionsGuide(
-                    guideParam.id,
-                    guideParam.age,
-                    guideParam.gender,
-                    guideParam.keyword1Id,
-                    guideParam.keyword2Id,
-                    guideParam.keyword3Id
-                ), "sub"
+            categories, guideModeFilterData(
+                retryApiCall {
+                    guideModeApiService.getOptionsGuide(
+                        guideParam.id, guideParam.age, guideParam.gender,
+                        guideParam.keyword1Id, guideParam.keyword2Id,
+                        guideParam.keyword3Id
+                    )
+                } ?: return, "sub"
             )
         )
 
@@ -146,7 +111,6 @@ class GuideModeRepository(private val guideModeApiService: GuideModeApiService) 
         )
         _car.postValue(updatedCar)
     }
-
 
     fun createSubOptionMap(
         categories: List<Category>,

@@ -4,19 +4,15 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
-import androidx.databinding.adapters.ImageViewBindingAdapter.setImageDrawable
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import coil.ImageLoader
 import com.youngcha.ohmycarset.R
 import com.youngcha.ohmycarset.data.api.RetrofitClient
 import com.youngcha.ohmycarset.data.model.GuideParam
@@ -24,9 +20,7 @@ import com.youngcha.ohmycarset.data.repository.CategoryRepository
 import com.youngcha.ohmycarset.data.repository.GuideModeRepository
 import com.youngcha.ohmycarset.data.repository.SelfModeRepository
 import com.youngcha.ohmycarset.databinding.FragmentLoadingBinding
-import com.youngcha.ohmycarset.util.AnimationUtils
 import com.youngcha.ohmycarset.util.AnimationUtils.explodeView
-import com.youngcha.ohmycarset.util.CarImageUtils
 import com.youngcha.ohmycarset.util.getColorCodeFromName
 import com.youngcha.ohmycarset.viewmodel.CarCustomizationViewModel
 import com.youngcha.ohmycarset.viewmodel.GuideModeViewModel
@@ -34,11 +28,10 @@ import com.youngcha.ohmycarset.viewmodel.factory.CarCustomizationViewModelFactor
 import com.youngcha.ohmycarset.viewmodel.factory.GuideModeViewModelFactory
 import kotlinx.coroutines.*
 
-
 class LoadingFragment : Fragment() {
 
     private var _binding: FragmentLoadingBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding ?: throw IllegalStateException("Binding is null.")
 
     private val imageResources = listOf(R.drawable.ic_change, R.drawable.ic_model_change)
     private var currentIndex = 0
@@ -54,6 +47,8 @@ class LoadingFragment : Fragment() {
 
     // guideModeViewModel은 접근이 가능하도록 lateinit으로 선언
     private lateinit var guideModeViewModel: GuideModeViewModel
+
+    private var isCarSelected: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,42 +72,46 @@ class LoadingFragment : Fragment() {
 
         carCustomizationViewModel.startGuideMode(guideParam)
 
-        carCustomizationViewModel.currentExteriorColor.observe(viewLifecycleOwner) { exteriorColorName ->
-            val colorCode = getColorCodeFromName(exteriorColorName)
-            carCustomizationViewModel.currentExteriorColorFirstUrl.value = "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/001.png"
-
-            if (colorCode != null) {
-                val imageUrls = (1..60).map {
-                    "https://www.hyundai.com/contents/vr360/LX06/exterior/$colorCode/${String.format("%03d.png", it)}"
-                }
-
-                CarImageUtils.load360Images(
-                    requireContext(),
-                    imageUrls,
-                    onStart = {
-                        lifecycleScope.launch(Dispatchers.Main) {
-                            carCustomizationViewModel.setLoadingState(true)
-                        }
-                    },
-                    onComplete = { imgList ->
-                        val imageLoader = ImageLoader.Builder(requireContext()).build()
-
-                        if (imgList.isNotEmpty()) {
-                            binding.layoutEstimateReady.ivCar.setImageDrawable(imgList[0])
-                        }
-
-                        CarImageUtils.setupImageSwipe(binding.layoutEstimateReady.ivCar, imgList, imageLoader)
-                        lifecycleScope.launch(Dispatchers.Main) {
-                            carCustomizationViewModel.setLoadingState(false)
-                        }
-                    }
-                )
+        carCustomizationViewModel.selectedCar.observe(viewLifecycleOwner) { car ->
+            binding.layoutEstimateReady.imageUrl = "https://www.hyundai.com/contents/vr360/LX06/exterior/WC9/001.png"
+            isCarSelected = car != null
+            if (isCarSelected) {
+                startProgressAnimation(false)
             }
         }
 
+        // 30초의 타이머 시작
+        lifecycleScope.launch(Dispatchers.Main) {
+            withTimeoutOrNull(30000L) { // 30초
+                while (isActive) {
+                    if (isCarSelected) {
+                        return@withTimeoutOrNull
+                    }
+                    delay(500)  // 0.5초마다 검사
+                }
+            } ?: run {
+                // 타이머가 종료된 후에 아직 isCarSelected 가 false 라면
+                val action = LoadingFragmentDirections.actionLoadingFragmentToTrimSelectFragment()
+                findNavController().navigate(action)  // TrimSelectFragment로 이동
+            }
+        }
+
+        continuousAnimations()
         setupClickListener()
-        setupAnimations()
     }
+
+    private fun continuousAnimations() {
+        startProgressAnimation(true)
+        startImageChangeAnimation()
+        startImageAndTextAnimation()
+    }
+
+    private fun stopAllAnimations() {
+        imageAnimationCoroutine?.cancel()
+        imageAndTextAnimationCoroutine?.cancel()
+        // 다른 애니메이션 중단 코드도 여기에 추가하세요
+    }
+
 
     private fun initGuideModeViewModel() {
         val factory = GuideModeViewModelFactory(guideModeRepository, categoryRepository, guideParam)
@@ -144,31 +143,32 @@ class LoadingFragment : Fragment() {
         }
     }
 
-    private fun setupAnimations() {
-        startProgressAnimation()
-        startImageChangeAnimation()
-        startImageAndTextAnimation()
-    }
-
-    private fun startProgressAnimation() {
+    private fun startProgressAnimation(isInfinite: Boolean) {
+        if (_binding == null || !isAdded) return
         val animator = ValueAnimator.ofInt(0, 100)
         animator.duration = 3000
         animator.addUpdateListener { valueAnimator ->
             val progress = valueAnimator.animatedValue as Int
-            binding.pbProgressbar.progress = progress
+            if (!isAdded) return@addUpdateListener
+            binding?.pbProgressbar?.progress = progress
         }
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                fadeOutViews()
-                fadeInEstimateReady()
-            }
-        })
+        if (isInfinite) {
+            animator.repeatCount = ValueAnimator.INFINITE
+        } else {
+            animator.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    fadeOutViews()
+                    fadeInEstimateReady()
+                }
+            })
+        }
         animator.start()
     }
 
     private fun startImageChangeAnimation() {
-        imageAnimationCoroutine = GlobalScope.launch {
+        imageAnimationCoroutine = lifecycleScope.launch {
             while (isActive) {
+                if (!isAdded) return@launch
                 withContext(Dispatchers.Main) {
                     binding.ivAnimation.setImageResource(imageResources[currentIndex])
                     currentIndex = (currentIndex + 1) % imageResources.size
@@ -179,8 +179,9 @@ class LoadingFragment : Fragment() {
     }
 
     private fun startImageAndTextAnimation() {
-        imageAndTextAnimationCoroutine = GlobalScope.launch(Dispatchers.Main) {
+        imageAndTextAnimationCoroutine = lifecycleScope.launch(Dispatchers.Main) {
             while (isActive) {
+                if (!isAdded) return@launch
                 // 엔진
                 binding.ivLoadEngine.setImageResource(R.drawable.ic_loading1)
                 binding.tvLoadEngine.setTextColor(
@@ -189,11 +190,20 @@ class LoadingFragment : Fragment() {
                         R.color.main_hyundai_blue
                     )
                 )
-                binding.tvLoadEngine.text = "엔진 장착 중!"
-                delay(500)
-                binding.ivLoadEngine.setImageResource(R.drawable.ic_loading3)
-                binding.tvLoadEngine.text = "엔진 장착 완료!"
-                delay(500)
+
+                if (!isCarSelected) {
+                    binding.tvLoadEngine.text = "엔진 장착 중.."
+                    delay(500)
+                    binding.ivLoadEngine.setImageResource(R.drawable.ic_loading3)
+                    binding.tvLoadEngine.text = "엔진 장착 중..."
+                    delay(500)
+                } else {
+                    binding.tvLoadEngine.text = "엔진 장착 중!"
+                    delay(500)
+                    binding.ivLoadEngine.setImageResource(R.drawable.ic_loading3)
+                    binding.tvLoadEngine.text = "엔진 장착 완료!"
+                    delay(500)
+                }
 
                 // 도색
                 binding.ivLoadColor.setImageResource(R.drawable.ic_loading1)
@@ -203,11 +213,20 @@ class LoadingFragment : Fragment() {
                         R.color.main_hyundai_blue
                     )
                 )
-                binding.tvLoadColor.text = "도색하는 중!"
-                delay(500)
-                binding.ivLoadColor.setImageResource(R.drawable.ic_loading3)
-                binding.tvLoadColor.text = "도색 완료!"
-                delay(500)
+
+                if (!isCarSelected) {
+                    binding.tvLoadColor.text = "도색하는 중.."
+                    delay(500)
+                    binding.ivLoadColor.setImageResource(R.drawable.ic_loading3)
+                    binding.tvLoadColor.text = "도색하는 중..."
+                    delay(500)
+                } else {
+                    binding.tvLoadColor.text = "도색하는 중!"
+                    delay(500)
+                    binding.ivLoadColor.setImageResource(R.drawable.ic_loading3)
+                    binding.tvLoadColor.text = "도색 완료!"
+                    delay(500)
+                }
 
                 // 옵션
                 binding.ivLoadOption.setImageResource(R.drawable.ic_loading1)
@@ -217,18 +236,29 @@ class LoadingFragment : Fragment() {
                         R.color.main_hyundai_blue
                     )
                 )
-                binding.tvLoadOption.text = "옵션 장착 중!"
-                delay(500)
-                binding.ivLoadOption.setImageResource(R.drawable.ic_loading3)
-                binding.tvLoadOption.text = "옵션 장착 완료!"
-                delay(500)
+
+                if (!isCarSelected) {
+                    binding.tvLoadOption.text = "옵션 장착 중.."
+                    delay(500)
+                    binding.ivLoadOption.setImageResource(R.drawable.ic_loading3)
+                    binding.tvLoadOption.text = "옵션 장착 중..."
+                    delay(500)
+                } else {
+                    binding.tvLoadOption.text = "옵션 장착 중!"
+                    delay(500)
+                    binding.ivLoadOption.setImageResource(R.drawable.ic_loading3)
+                    binding.tvLoadOption.text = "옵션 장착 완료!"
+                    delay(500)
+                }
             }
         }
     }
 
+
     private fun fadeOutViews() {
         val fadeOutDuration = 500L
 
+        if (!isAdded) return
         binding.pbProgressbar.animate().alpha(0f).setDuration(fadeOutDuration).start()
         binding.ivAnimation.animate().alpha(0f).setDuration(fadeOutDuration).start()
         binding.tvDescription.animate().alpha(0f).setDuration(fadeOutDuration).start()
@@ -241,6 +271,7 @@ class LoadingFragment : Fragment() {
     }
 
     private fun fadeInEstimateReady() {
+        if (!isAdded) return
         val fadeInDuration = 500L
         binding.layoutEstimateReady.root.visibility = View.VISIBLE
         binding.layoutEstimateReady.root.alpha = 0f

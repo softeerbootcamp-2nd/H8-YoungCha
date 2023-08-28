@@ -45,11 +45,11 @@
                 android:gravity="end"
                 android:textColor="@color/main_hyundai_blue"
                 android:textSize="20sp"
+                app:formattedCurrency="@{viewModel.bottomSheetTotalPrice}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_estimate_summary_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_estimate_summary_title"
-                app:layout_constraintTop_toTopOf="parent"
-                app:formattedCurrency="@{viewModel.totalPrice}" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:id="@+id/v_main_option_view"
