@@ -1,6 +1,6 @@
 import { SVGProps } from 'react';
 
-function Close(props: SVGProps<SVGSVGElement>) {
+function ModalCloseIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="24"
@@ -15,4 +15,4 @@ function Close(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export default Close;
+export default ModalCloseIcon;

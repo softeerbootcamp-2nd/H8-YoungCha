@@ -1,28 +1,27 @@
-import HDLogo from './logo/HDLogo';
-import CarIcon from './CarIcon';
-import ModelChangeArrow from './ModelChangeArrow';
-import DictionaryOffIcon from './DictionaryOffIcon';
-import DictionaryOnIcon from './DictionaryOnIcon';
-import MainBelowArrow from './MainBelowArrow';
-import CheckInactive from './SelectCheckInactive';
-import CheckActive from './SelectCheck';
-import Spanner from './Spanner';
-import MoreViewArrow from './MoreViewArrow';
-import CryingFaceIcon from './CryingFaceIcon';
-import ModeChangeIcon from './ModeChangeIcon';
-import ModelChangeIcon from './ModelChangeIcon';
-import RecommendationIcon from './RecommendationIcon';
+import HDLogo from './header/HDLogo';
+import CarIcon from './common/CarIcon';
+import ModelChangeArrow from './header/ModelChangeArrow';
+import DictionaryOffIcon from './header/DictionaryOffIcon';
+import DictionaryOnIcon from './header/DictionaryOnIcon';
+import MainBelowArrow from './main/MainBelowArrow';
+import Spanner from './loading/Spanner';
+import MoreViewArrow from './main/MoreViewArrow';
+import CryingFaceIcon from './popup/CryingFaceIcon';
+import ModeChangeIcon from './popup/ModeChangeIcon';
+import ModelChangeIcon from './popup/ModelChangeIcon';
+import RecommendationIcon from './popup/RecommendationIcon';
 import InactiveRound from './prepare-guide/InactiveRound';
-import Close from './Close';
-import DownArrow from './DownArrow';
-import BlueCheckIcon from './BlueCheckIcon';
-import GreyCheckIcon from './GreyCheckIcon';
-import SubBlueCheckIcon from './SubBlueCheckIcon';
-import MoreDetailsArrow from './MoreDetailsArrow';
-import SmileIcon from './SmileIcon';
-import LaughingFaceIcon from './LaughingFaceIcon';
-import ThumbsUpIcon from './ThumbsUpIcon';
+import ModalCloseIcon from './summary-modal/ModalCloseIcon';
+import DownArrow from './select-option-footer/DownArrow';
+import BlueCheckIcon from './common/BlueCheckIcon';
+import GreyCheckIcon from './common/GreyCheckIcon';
+import SubBlueCheckIcon from './common/SubBlueCheckIcon';
+import MoreDetailsArrow from './option-card/MoreDetailsArrow';
+import SmileIcon from './option-card/SmileIcon';
+import LaughingFaceIcon from './option-card/LaughingFaceIcon';
+import ThumbsUpIcon from './option-card/ThumbsUpIcon';
 import NPerformance from '@/assets/mock/icons/NPerformance';
+import ChevronRight from './common/ChevronRight';
 
 export {
   HDLogo,
@@ -31,8 +30,6 @@ export {
   DictionaryOffIcon,
   DictionaryOnIcon,
   MainBelowArrow,
-  CheckInactive,
-  CheckActive,
   Spanner,
   MoreViewArrow,
   CryingFaceIcon,
@@ -40,7 +37,7 @@ export {
   ModelChangeIcon,
   RecommendationIcon,
   InactiveRound,
-  Close,
+  ModalCloseIcon,
   DownArrow,
   BlueCheckIcon,
   GreyCheckIcon,
@@ -50,4 +47,5 @@ export {
   LaughingFaceIcon,
   ThumbsUpIcon,
   NPerformance,
+  ChevronRight,
 };
