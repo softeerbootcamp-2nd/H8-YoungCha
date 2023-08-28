@@ -10,8 +10,8 @@ import com.youngcha.ohmycarset.data.model.TrimCategory
 import com.youngcha.ohmycarset.data.model.TrimCategoryState
 import com.youngcha.ohmycarset.data.dto.OptionCategory
 import com.youngcha.ohmycarset.data.dto.TrimDefaultOption
-import com.youngcha.ohmycarset.data.dto.TrimMainData
 import com.youngcha.ohmycarset.data.api.RetrofitClient
+import com.youngcha.ohmycarset.data.dto.TrimMainData
 import kotlinx.coroutines.launch
 
 class TrimSelectViewModel : ViewModel() {

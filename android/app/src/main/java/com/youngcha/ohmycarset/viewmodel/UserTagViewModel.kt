@@ -115,7 +115,7 @@ class UserTagViewModel : ViewModel() {
 
     private fun initData() {
         val tempAgeList = listOf(
-            Tag("0", "Age", "20대", isSelected = true),
+            Tag("0", "Age", "20대", isSelected = false),
             Tag("0", "Age", "30대", isSelected = false),
             Tag("0", "Age", "40대", isSelected = false),
             Tag("0", "Age", "50대", isSelected = false),
@@ -125,7 +125,7 @@ class UserTagViewModel : ViewModel() {
         val tempGenderList = listOf(
             Tag("0", "Gender", "여성", isSelected = false),
             Tag("0", "Gender", "남성", isSelected = false),
-            Tag("0", "Gender", "선택 안함", isSelected = true)
+            Tag("0", "Gender", "선택 안함", isSelected = false)
         )
         val tempStrength = listOf(
             Tag("0", "Strength", "주행력", isSelected = false),
