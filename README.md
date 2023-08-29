@@ -42,8 +42,6 @@ https://github.com/softeerbootcamp-2nd/H8-YoungCha/assets/63232876/dc3bb228-bb45
 ## 🚀 CI/CD
 ![aws - 2 페이지](https://github.com/softeerbootcamp-2nd/H8-YoungCha/assets/63232876/09100da3-fd7a-46e4-a605-1bb1807b9e80)
 
-![cicd](https://github.com/softeerbootcamp-2nd/H8-YoungCha/assets/63232876/f7569210-b023-43ee-bef8-aaac14c5bdb3)
-
 **[더 자세한 내용을 알아보고 싶다면, 여기로 와주세요!](https://github.com/softeerbootcamp-2nd/H8-YoungCha/wiki)**
 
 ## 👨‍💻 팀원 소개
